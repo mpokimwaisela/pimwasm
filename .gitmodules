@@ -1,0 +1,3 @@
+[submodule "third-party/prim-benchmarks"]
+	path = third-party/prim-benchmarks
+	url = https://github.com/CMU-SAFARI/prim-benchmarks.git
