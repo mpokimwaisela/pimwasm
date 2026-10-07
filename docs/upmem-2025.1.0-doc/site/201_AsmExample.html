@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Examples of an assembly program &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Integrating assembly code with C programs" href="201_AsmAndC.html" />
+    <link rel="prev" title="DPU condition classes" href="200_AsmConditions.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples of an assembly program</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#saying-hello-to-the-world">Saying hello to the world</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-source-code">The source code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building-the-program">Building the program</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-program">Running the program</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#placing-numerical-values-in-memory">Placing numerical values in memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#useful-common-linker-directives">Useful common linker directives</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-static-buffer-of-data">Creating a static buffer of data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#useful-tips-and-tricks">Useful tips and tricks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dpuasmdoc">dpuasmdoc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Examples of an assembly program</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/201_AsmExample.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="examples-of-an-assembly-program">
+<h1>Examples of an assembly program<a class="headerlink" href="#examples-of-an-assembly-program" title="Permalink to this heading"></a></h1>
+<p>This section gives concrete examples of how to develop, build, and test pure assembly programs for the DPU.</p>
+<section id="saying-hello-to-the-world">
+<h2>Saying hello to the world<a class="headerlink" href="#saying-hello-to-the-world" title="Permalink to this heading"></a></h2>
+<p>This first illustration is similar to the “hello world” introductory program:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Declare a string equal to “hello world”</p></li>
+<li><p>Compute the checksum of these characters and store the result into <code class="docutils literal notranslate"><span class="pre">r0</span></code></p></li>
+</ul>
+</div></blockquote>
+<section id="the-source-code">
+<h3>The source code<a class="headerlink" href="#the-source-code" title="Permalink to this heading"></a></h3>
+<p>The string declaration is achieved with the help of <code class="docutils literal notranslate"><span class="pre">.string</span></code> directive. The code hereafter defines
+a “global variable” <code class="docutils literal notranslate"><span class="pre">hello</span></code> equal to this string. This variable must reside in the <code class="docutils literal notranslate"><span class="pre">data</span></code> section of the
+program (which automatically places it in WRAM):</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>.data
+.global $hello
+hello:
+    .string &quot;hello world&quot;
+</pre></div>
+</div>
+<p>The main function loops on each character of the string until finding zero. This main routine is in the <code class="docutils literal notranslate"><span class="pre">text</span></code> section
+of the program (which automatically places it in IRAM) and marked as <code class="docutils literal notranslate"><span class="pre">global</span></code>, so that the RTE can bootstrap it.</p>
+<p>The hello world program (<code class="docutils literal notranslate"><span class="pre">helloworld.S</span></code>) is:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Hello world, written in assembly: computes the checksum of &quot;hello world&quot;</span>
+
+<span class="p">.</span><span class="n">text</span>
+<span class="p">.</span><span class="n">globl</span><span class="w"> </span><span class="n">__bootstrap</span>
+<span class="nl">__bootstrap</span><span class="p">:</span>
+<span class="cp">#define stringPointer r1</span>
+<span class="cp">#define checksum r0</span>
+<span class="w">	</span><span class="n">move</span><span class="w"> </span><span class="n">checksum</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">	</span><span class="n">move</span><span class="w"> </span><span class="n">stringPointer</span><span class="p">,</span><span class="w"> </span><span class="n">hello</span>
+
+<span class="cp">#define currentCharacter r2</span>
+<span class="w">	</span><span class="nl">checksum_loop</span><span class="p">:</span>
+<span class="w">		</span><span class="c1">// Load the current character</span>
+<span class="w">		</span><span class="n">lbu</span><span class="w">  </span><span class="n">currentCharacter</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">stringPointer</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">		</span><span class="c1">// And exit if this character is 0</span>
+<span class="w">		</span><span class="n">jz</span><span class="w">   </span><span class="n">currentCharacter</span><span class="p">,</span><span class="w"> </span><span class="n">end_of_loop</span>
+<span class="w">		</span><span class="n">add</span><span class="w"> </span><span class="n">checksum</span><span class="p">,</span><span class="w"> </span><span class="n">checksum</span><span class="p">,</span><span class="w"> </span><span class="n">currentCharacter</span>
+<span class="w">		</span><span class="c1">// Move to next character</span>
+<span class="w">		</span><span class="n">add</span><span class="w"> </span><span class="n">stringPointer</span><span class="p">,</span><span class="w"> </span><span class="n">stringPointer</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w">	</span><span class="n">checksum_loop</span>
+
+<span class="w">	</span><span class="nl">end_of_loop</span><span class="p">:</span>
+<span class="w">		</span><span class="n">stop</span>
+
+<span class="p">.</span><span class="n">data</span>
+<span class="p">.</span><span class="n">globl</span><span class="w"> </span><span class="n">hello</span>
+<span class="nl">hello</span><span class="p">:</span>
+<span class="w">    </span><span class="p">.</span><span class="n">string</span><span class="w"> </span><span class="s">&quot;hello world&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="building-the-program">
+<h3>Building the program<a class="headerlink" href="#building-the-program" title="Permalink to this heading"></a></h3>
+<p>Let’s assemble the program as usual using <code class="docutils literal notranslate"><span class="pre">dpu-upmem-dpurte-clang</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-upmem-dpurte-clang -nostartfiles -o helloworld helloworld.S
+</pre></div>
+</div>
+<p>Notice that we compiled with <code class="docutils literal notranslate"><span class="pre">-nostartfiles</span></code> to define the entry point ourselves (<code class="docutils literal notranslate"><span class="pre">__bootstrap</span></code>).</p>
+</section>
+<section id="running-the-program">
+<h3>Running the program<a class="headerlink" href="#running-the-program" title="Permalink to this heading"></a></h3>
+<p>Let’s verify that the code above is correct, using <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file helloworld
+process launch --stop-at-entry
+breakpoint set --source-pattern-regexp &quot;stop&quot;
+process continue
+register read r0
+exit
+</pre></div>
+</div>
+<p>When the program has terminated, verify that the return register is equal to “hello world“‘s checksum (i.e. <code class="docutils literal notranslate"><span class="pre">45c</span></code> hexa-decimal):</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>r0 = 0x0000045c
+</pre></div>
+</div>
+</section>
+</section>
+<section id="placing-numerical-values-in-memory">
+<h2>Placing numerical values in memory<a class="headerlink" href="#placing-numerical-values-in-memory" title="Permalink to this heading"></a></h2>
+<p>Many programs need some variables in memory (some <em>static</em> variables) to operate.</p>
+<p>The basic directives to do so are <code class="docutils literal notranslate"><span class="pre">.byte</span></code>, <code class="docutils literal notranslate"><span class="pre">.short</span></code>, <code class="docutils literal notranslate"><span class="pre">.long</span></code> and <code class="docutils literal notranslate"><span class="pre">quad</span></code>. Such variables must be
+declared in a <code class="docutils literal notranslate"><span class="pre">.data</span></code> section of the code.</p>
+<p>The next program uses two variables ‘a’ and ‘b’, fetched from the WRAM, and stores the sum of ‘a’ and ‘b’ into memory:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="p">.</span><span class="n">text</span>
+<span class="p">.</span><span class="n">globl</span><span class="w"> </span><span class="n">__bootstrap</span>
+<span class="nl">__bootstrap</span><span class="p">:</span>
+<span class="w">    </span><span class="n">move</span><span class="w"> </span><span class="n">r16</span><span class="p">,</span><span class="w"> </span><span class="n">values</span>
+<span class="w">    </span><span class="n">lw</span><span class="w"> </span><span class="n">r0</span><span class="p">,</span><span class="n">r16</span><span class="p">,</span><span class="mi">0</span>
+<span class="w">    </span><span class="n">lw</span><span class="w"> </span><span class="n">r1</span><span class="p">,</span><span class="n">r16</span><span class="p">,</span><span class="mi">4</span>
+<span class="w">    </span><span class="n">add</span><span class="w"> </span><span class="n">r0</span><span class="p">,</span><span class="w"> </span><span class="n">r0</span><span class="p">,</span><span class="n">r1</span>
+<span class="w">    </span><span class="n">sw</span><span class="w"> </span><span class="n">r16</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="n">r0</span>
+<span class="w">    </span><span class="n">stop</span>
+
+<span class="p">.</span><span class="n">data</span>
+<span class="p">.</span><span class="n">globl</span><span class="w"> </span><span class="n">values</span>
+<span class="nl">values</span><span class="p">:</span>
+<span class="p">.</span><span class="kt">long</span><span class="w"> </span><span class="mh">0x12345678</span><span class="w">    </span><span class="c1">//a</span>
+<span class="p">.</span><span class="kt">long</span><span class="w"> </span><span class="mh">0x9abcdef0</span><span class="w">    </span><span class="c1">//b</span>
+<span class="p">.</span><span class="kt">long</span><span class="w"> </span><span class="mi">0</span><span class="w">             </span><span class="c1">// s=a+b</span>
+</pre></div>
+</div>
+<p>Once the program is built:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-upmem-dpurte-clang -nostartfiles -o trivial_add trivial_add.S
+</pre></div>
+</div>
+<p>The debugger easily allows to verify the result:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file trivial_add
+process launch --stop-at-entry
+breakpoint set --source-pattern-regexp &quot;stop&quot;
+process continue
+parray 3 &amp;values
+exit
+</pre></div>
+</div>
+<p>The stored result is the sum of ‘a’ and ‘b’.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>  (void *) [0] = 0x12345678
+  (void *) [1] = 0x9abcdef0
+  (void *) [2] = 0xacf13568
+</pre></div>
+</div>
+</section>
+<section id="useful-common-linker-directives">
+<h2>Useful common linker directives<a class="headerlink" href="#useful-common-linker-directives" title="Permalink to this heading"></a></h2>
+<p>The list of assembler directives, along with a comprehensive description can be found in
+<a class="reference internal" href="200_AsmSyntax.html"><span class="doc">Assembler syntax</span></a>. The most commonly used are described hereafter.</p>
+<section id="creating-a-static-buffer-of-data">
+<h3>Creating a static buffer of data<a class="headerlink" href="#creating-a-static-buffer-of-data" title="Permalink to this heading"></a></h3>
+<p>The “zero” directives allow creating a static buffer of data with an initial value. The
+DPU assembler repeats the specified value (zero by default) a certain number of times.</p>
+<p>The DPU assembler defines:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">.zero</span></code> to create a buffer of bytes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.fill</span></code> to create a buffer of words</p></li>
+</ul>
+</div></blockquote>
+<p>The example below creates a static buffer of 7 bytes, equal to <code class="docutils literal notranslate"><span class="pre">42</span></code> hexa-decimal and returns
+puts the two words of this buffer into <code class="docutils literal notranslate"><span class="pre">r0</span></code> and <code class="docutils literal notranslate"><span class="pre">r1</span></code>:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Illustrates the creation and reference of a static</span>
+<span class="c1">// buffer of memory in assembler.</span>
+
+<span class="p">.</span><span class="n">data</span>
+
+<span class="p">.</span><span class="n">globl</span><span class="w"> </span><span class="n">static_buffer</span>
+<span class="p">.</span><span class="n">align</span><span class="w"> </span><span class="mi">4</span>
+<span class="nl">static_buffer</span><span class="p">:</span>
+<span class="w">	</span><span class="p">.</span><span class="n">fill</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x42</span>
+<span class="w">	</span><span class="p">.</span><span class="n">zero</span><span class="w"> </span><span class="mi">1</span>
+
+<span class="p">.</span><span class="n">text</span>
+<span class="p">.</span><span class="n">globl</span><span class="w"> </span><span class="n">__bootstrap</span>
+<span class="nl">__bootstrap</span><span class="p">:</span>
+<span class="w">    </span><span class="n">lw</span><span class="w"> </span><span class="n">r0</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">zero</span><span class="p">,</span><span class="w"> </span><span class="n">static_buffer</span>
+<span class="w">    </span><span class="n">move</span><span class="w"> </span><span class="n">r1</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span>
+<span class="w">    </span><span class="n">lw</span><span class="w"> </span><span class="n">r1</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">r1</span><span class="p">,</span><span class="w"> </span><span class="n">static_buffer</span>
+<span class="w">    </span><span class="n">stop</span>
+</pre></div>
+</div>
+<p>Build the program:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-upmem-dpurte-clang -nostartfiles static_buffer.S -o static_buffer
+</pre></div>
+</div>
+<p>Now, execute the program and verify that the registers and the memory match the
+expectations. Notice that the host is a little-endian machine in this test, implying
+that the 8th null byte in the buffer goes to the most significant bits of <code class="docutils literal notranslate"><span class="pre">r1</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file static_buffer
+process launch --stop-at-entry
+breakpoint set --source-pattern-regexp &quot;stop&quot;
+process continue
+register read
+parray 2 &amp;static_buffer
+exit
+</pre></div>
+</div>
+<p>As expected, <code class="docutils literal notranslate"><span class="pre">dpu-upmem-dpurte-clang</span></code> places exactly 7 bytes in memory:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>        r0 = 0x42424242
+        r1 = 0x00424242
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>  (void *) [0] = 0x42424242
+  (void *) [1] = 0x00424242
+</pre></div>
+</div>
+<p>Notice that the buffer is aligned on <cite>4</cite> (bytes), which is necessary to perform a load word from it. If the buffer would have been used for DMA purposes, it would have needed to be aligned on <cite>8</cite> (bytes).</p>
+</section>
+</section>
+<section id="useful-tips-and-tricks">
+<h2>Useful tips and tricks<a class="headerlink" href="#useful-tips-and-tricks" title="Permalink to this heading"></a></h2>
+<section id="dpuasmdoc">
+<h3>dpuasmdoc<a class="headerlink" href="#dpuasmdoc" title="Permalink to this heading"></a></h3>
+<p>This utility is the fastest way to remind the assembly syntax.
+By typing, for example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpuasmdoc ld
+</pre></div>
+</div>
+<p>One can get the syntax of all the DPU instructions containing the keyword ld:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ld endian:e dc ra off:s24
+	let @a = (ra + off)
+	dc = (Load 8 bytes from WRAM at address @a with endianness endian)
+ld endian:e dc sa off:s24
+	cc = (ra &amp; 0xffff) + off + 8 - (ra &gt;&gt; 16)
+	if (const_cc_ge0 cc) then
+		let @a = (ra &amp; 0xffff) + off &amp; 0xfff8
+		dc = (Load 8 bytes from WRAM at address @a with endianness endian)
+		raise exception(_memory_fault)
+	else
+		let @a = (ra &amp; 0xffff) + off
+		dc = (Load 8 bytes from WRAM at address @a with endianness endian)
+ld dc ra off:s24
+	let @a = (ra + off)
+	dc = (Load 8 bytes from WRAM at address @a with endianness endian)
+ldma ra rb immDma:u8
+	let @w = (ra &amp; 0xfffff8)
+	let @m = (rb &amp; 0xfffffff8)
+	let N = (1 + (immDma:U32 + (ra &gt;&gt; 24) &amp; 0xff) &amp; 0xff) &lt;&lt; 3
+	Load N bytes from MRAM at address @m into WRAM at address @w
+ldmai ra rb immDma:u8
+	let @i = (ra &amp; 0xfffff8)
+	let @m = (rb &amp; 0xfffffff8)
+	let N = (1 + (immDma:U32 + (ra &gt;&gt; 24) &amp; 0xff) &amp; 0xff) &lt;&lt; 3
+	Load N bytes from MRAM at address @m into IRAM at address @w
+lds dc ra off:s24
+	cc = (ra &amp; 0xffff) + off + 8 - (ra &gt;&gt; 16)
+	if (const_cc_ge0 cc) then
+		let @a = (ra &amp; 0xffff) + off &amp; 0xfff8
+		dc = (Load 8 bytes from WRAM at address @a with endianness endian)
+		raise exception(_memory_fault)
+	else
+		let @a = (ra &amp; 0xffff) + off
+		dc = (Load 8 bytes from WRAM at address @a with endianness endian)
+</pre></div>
+</div>
+<p>To get a help on a specific keyword (e.g. the ld instruction specifically), use:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpuasmdoc -match ld
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ld endian:e dc ra off:s24
+	let @a = (ra + off)
+	dc = (Load 8 bytes from WRAM at address @a with endianness endian)
+ld endian:e dc sa off:s24
+	cc = (ra &amp; 0xffff) + off + 8 - (ra &gt;&gt; 16)
+	if (const_cc_ge0 cc) then
+		let @a = (ra &amp; 0xffff) + off &amp; 0xfff8
+		dc = (Load 8 bytes from WRAM at address @a with endianness endian)
+		raise exception(_memory_fault)
+	else
+		let @a = (ra &amp; 0xffff) + off
+		dc = (Load 8 bytes from WRAM at address @a with endianness endian)
+ld dc ra off:s24
+	let @a = (ra + off)
+	dc = (Load 8 bytes from WRAM at address @a with endianness endian)
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="200_AsmConditions.html" class="btn btn-neutral float-left" title="DPU condition classes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="201_AsmAndC.html" class="btn btn-neutral float-right" title="Integrating assembly code with C programs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

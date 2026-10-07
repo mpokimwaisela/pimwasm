@@ -1,0 +1,7 @@
+dpu.disasm module
+=================
+
+.. automodule:: dpu.disasm
+   :members:
+   :undoc-members:
+   :show-inheritance:

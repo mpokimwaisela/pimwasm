@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dpu.compiler module &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/dark_mode_js/default_dark.js"></script>
+        <script src="../_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="dpu.disasm module" href="dpu.disasm.html" />
+    <link rel="prev" title="dpu.vpd.vpd module" href="dpu.vpd.vpd.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Python Library</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="modules.html#contents">Contents</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="dpu.html">dpu package</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="dpu.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="dpu.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dpu.html#module-dpu">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#debugging">Debugging</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Python Library</a></li>
+          <li class="breadcrumb-item"><a href="dpu.html">dpu package</a></li>
+      <li class="breadcrumb-item active">dpu.compiler module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/PythonAPI/dpu.compiler.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-dpu.compiler">
+<span id="dpu-compiler-module"></span><h1>dpu.compiler module<a class="headerlink" href="#module-dpu.compiler" title="Permalink to this heading"></a></h1>
+<p>This module provides standard C compilation features.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="dpu.compiler.Compiler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dpu.compiler.</span></span><span class="sig-name descname"><span class="pre">Compiler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.compiler.Compiler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A representation of a compiler with some parameters</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.compiler.Compiler.path">
+<span class="sig-name descname"><span class="pre">path</span></span><a class="headerlink" href="#dpu.compiler.Compiler.path" title="Permalink to this definition"></a></dt>
+<dd><p>Path to the compiler executable</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.compiler.Compiler.target">
+<span class="sig-name descname"><span class="pre">target</span></span><a class="headerlink" href="#dpu.compiler.Compiler.target" title="Permalink to this definition"></a></dt>
+<dd><p>if specified, the target to use instead of the default one</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.compiler.Compiler.verbose">
+<span class="sig-name descname"><span class="pre">verbose</span></span><a class="headerlink" href="#dpu.compiler.Compiler.verbose" title="Permalink to this definition"></a></dt>
+<dd><p>if set to True, outputs some details on the executed command and its outputs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.compiler.Compiler.compile">
+<span class="sig-name descname"><span class="pre">compile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sources</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">includes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_lvl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.compiler.Compiler.compile" title="Permalink to this definition"></a></dt>
+<dd><p>Compiles some sources files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sources</strong> (<em>str</em><em> or </em><em>list</em><em> of </em><em>str</em>) – The source files</p></li>
+<li><p><strong>output</strong> (<em>str</em><em>, </em><em>optional</em>) – The output file path (default is None)</p></li>
+<li><p><strong>includes</strong> (<em>(</em><em>list</em><em> of </em><em>str</em><em>)</em><em>, </em><em>optional</em>) – The include directories (default is [])</p></li>
+<li><p><strong>str</strong> (<em>defines</em><em> (</em><em>(</em><em>dict of</em>) – str, optional), optional): The defines to add during preprocessing (default is {})</p></li>
+<li><p><strong>options</strong> (<em>(</em><em>list</em><em> of </em><em>str</em><em>)</em><em>, </em><em>optional</em>) – Additional options for the compiler execution (default is [])</p></li>
+<li><p><strong>target</strong> (<em>str</em><em>, </em><em>optional</em>) – The target for the compilation (default is None)</p></li>
+<li><p><strong>opt_lvl</strong> (<em>str</em><em>, </em><em>optional</em>) – The optimization level to use (default is None)</p></li>
+<li><p><strong>debug</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the debug information should be added to the output (default is True)</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether compilation information concerning the executed command and its outputs should be printed (default is False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The status of the finish compiler executable execution</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CompletedProcess</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>CalledProcessError</strong> – If the compiler executable returns a non-zero exit code</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="dpu.compiler.O0">
+<span class="sig-prename descclassname"><span class="pre">dpu.compiler.</span></span><span class="sig-name descname"><span class="pre">O0</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'-O0'</span></em><a class="headerlink" href="#dpu.compiler.O0" title="Permalink to this definition"></a></dt>
+<dd><p>Optimization level corresponding to ‘-O0’</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="dpu.compiler.O1">
+<span class="sig-prename descclassname"><span class="pre">dpu.compiler.</span></span><span class="sig-name descname"><span class="pre">O1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'-O1'</span></em><a class="headerlink" href="#dpu.compiler.O1" title="Permalink to this definition"></a></dt>
+<dd><p>Optimization level corresponding to ‘-O1’</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="dpu.compiler.O2">
+<span class="sig-prename descclassname"><span class="pre">dpu.compiler.</span></span><span class="sig-name descname"><span class="pre">O2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'-O2'</span></em><a class="headerlink" href="#dpu.compiler.O2" title="Permalink to this definition"></a></dt>
+<dd><p>Optimization level corresponding to ‘-O2’</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="dpu.compiler.O3">
+<span class="sig-prename descclassname"><span class="pre">dpu.compiler.</span></span><span class="sig-name descname"><span class="pre">O3</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'-O3'</span></em><a class="headerlink" href="#dpu.compiler.O3" title="Permalink to this definition"></a></dt>
+<dd><p>Optimization level corresponding to ‘-O3’</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="dpu.compiler.Os">
+<span class="sig-prename descclassname"><span class="pre">dpu.compiler.</span></span><span class="sig-name descname"><span class="pre">Os</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'-Os'</span></em><a class="headerlink" href="#dpu.compiler.Os" title="Permalink to this definition"></a></dt>
+<dd><p>Optimization level corresponding to ‘-Os’</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="dpu.compiler.Oz">
+<span class="sig-prename descclassname"><span class="pre">dpu.compiler.</span></span><span class="sig-name descname"><span class="pre">Oz</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'-Oz'</span></em><a class="headerlink" href="#dpu.compiler.Oz" title="Permalink to this definition"></a></dt>
+<dd><p>Optimization level corresponding to ‘-Oz’</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dpu.compiler.getDpuArchVersion">
+<span class="sig-prename descclassname"><span class="pre">dpu.compiler.</span></span><span class="sig-name descname"><span class="pre">getDpuArchVersion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.compiler.getDpuArchVersion" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dpu.vpd.vpd.html" class="btn btn-neutral float-left" title="dpu.vpd.vpd module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dpu.disasm.html" class="btn btn-neutral float-right" title="dpu.disasm module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

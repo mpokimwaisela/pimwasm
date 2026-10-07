@@ -1,0 +1,12 @@
+Introduction
+============
+
+The next chapters describe how to debug a program running on a DPU.
+
+ * :doc:`080_AboutDPULLDB`: global information about the ``dpu-lldb`` and its capabilities.
+ * :doc:`081_DPUDebugExample`: how to use ``dpu-lldb`` to debug a simple DPU program.
+ * :doc:`082_DPUDebugHost`: how to attach to a DPU booted by a Host application.
+ * :doc:`083_DPUDebugHostExample`: how to use ``dpu-lldb`` to attach to a DPU booted by a host application.
+ * :doc:`084_DPUDebugAttachWithoutHost`
+ * :doc:`085_DPUCoreDump`: how to create snapshot of the state of the DPU.
+ * :doc:`086_DPUDebugLimitations`: current limitations to be aware of.

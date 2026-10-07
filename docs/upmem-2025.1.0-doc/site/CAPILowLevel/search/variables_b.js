@@ -1,0 +1,19 @@
+var searchData=
+[
+  ['name',['name',['../structdpu__elf__symbol.html#a5ac083a645d964373f022d03df4849c8',1,'dpu_elf_symbol']]],
+  ['nb_5fdpu_5frunning',['nb_dpu_running',['../struct__dpu__run__context__t.html#a644e79cd71c07df0272b8d5e9fd5161d',1,'_dpu_run_context_t']]],
+  ['next',['next',['../structdpu__vpd__string__pair.html#aff013ef13865e1d1c796a3dc19177a63',1,'dpu_vpd_string_pair']]],
+  ['nr_5fof_5fatomic_5fbits',['nr_of_atomic_bits',['../structdpu__hw__description__t.html#a5de47fd4327bf50c8cdcc6b0552ed12d',1,'dpu_hw_description_t']]],
+  ['nr_5fof_5fcontrol_5finterfaces',['nr_of_control_interfaces',['../structdpu__hw__description__t.html#a9cb1e347c2f2717df0f07a452d73cdab',1,'dpu_hw_description_t']]],
+  ['nr_5fof_5fdpus_5fper_5fcontrol_5finterface',['nr_of_dpus_per_control_interface',['../structdpu__hw__description__t.html#ac5ee90e69a3d7c6bcebf1211986eba96',1,'dpu_hw_description_t']]],
+  ['nr_5fof_5finstructions',['nr_of_instructions',['../struct__dpu__loader__context__t.html#a88cbd0e23918636ed006ebfa961c0685',1,'_dpu_loader_context_t']]],
+  ['nr_5fof_5fmcount_5fstats',['nr_of_mcount_stats',['../struct__dpu__profiling__context__t.html#a0e321d3666a8d99c9ea2d01d023f45e9',1,'_dpu_profiling_context_t']]],
+  ['nr_5fof_5fmram_5fbytes',['nr_of_mram_bytes',['../struct__dpu__loader__context__t.html#aae7c9b30f63026fb8f87a60fab1377dc',1,'_dpu_loader_context_t']]],
+  ['nr_5fof_5fnotify_5fbits',['nr_of_notify_bits',['../structdpu__hw__description__t.html#ac2b206206d305ac20f398658f80751be',1,'dpu_hw_description_t']]],
+  ['nr_5fof_5fthreads',['nr_of_threads',['../structdpu__hw__description__t.html#a058a5b39c405e5ed2e191712429e9e79',1,'dpu_hw_description_t']]],
+  ['nr_5fof_5fwork_5fregisters_5fper_5fthread',['nr_of_work_registers_per_thread',['../structdpu__hw__description__t.html#a3652d8b75db4f44d10f796444c431357',1,'dpu_hw_description_t']]],
+  ['nr_5fof_5fwram_5fwords',['nr_of_wram_words',['../struct__dpu__loader__context__t.html#a32846d14568cd4ba99987d74974f2df7',1,'_dpu_loader_context_t']]],
+  ['nr_5fsymbols',['nr_symbols',['../structdpu__elf__symbols.html#aaece2664c56217cb0db2081b82a83256',1,'dpu_elf_symbols']]],
+  ['nr_5fthreads',['nr_threads',['../struct__dpu__elf__runtime__info.html#af3202706bd841d558c2bcc80e0f601f0',1,'_dpu_elf_runtime_info']]],
+  ['nr_5fthreads_5fenabled',['nr_threads_enabled',['../structdpu__program__t.html#ae618481df1a4432f868d69d508e1ff60',1,'dpu_program_t']]]
+];

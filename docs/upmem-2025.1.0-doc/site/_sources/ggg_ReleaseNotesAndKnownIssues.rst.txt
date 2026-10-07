@@ -1,0 +1,391 @@
+Release notes
+=============
+
+Latest
+------
+
+Version 2025.1.0
+~~~~~~~~~~~~~~~~
+
+* Additions and improvements:
+    * Implement udev cache (improves DPU allocation performance)
+    * LLDB: reduce amount of memory transfer when transferring unaligned data
+      during a debug session
+    * dpu-diag: Add option to also disable DPUs which have IRAM or WRAM defects
+* Bug fixes:
+    * Fix some conditions in which a subset of valid DPUs would become unusable
+      (avoid resetting faulty DPUs, do not allocate DPUs related to a
+      non-functional Control Interface)
+    * Fix memory leaks in corner cases
+    * upmem_utilities: Add pyelftools as a dependency since it is needed for
+      dpu_sections and dpu_statistics
+    * Fix DPU toolchain file for CMake
+* Documentation:
+    * Improve documentation style
+    * Clarify various comments in code
+    * Clarify installation instructions
+
+Operating system / DPU support matrix:
+
++-------------------------+-------------------------+-------------------------+
+| Operating system        | V1A DPUs                | V1B DPUs                |
++=========================+=========================+=========================+
+| Debian 10 (1)           | Supported               | Supported               |
++-------------------------+-------------------------+-------------------------+
+| Ubuntu 20.04 LTS (1)    | Supported               | Not Supported           |
++-------------------------+-------------------------+-------------------------+
+| Ubuntu 22.04 LTS (2)    | Supported               | Supported               |
++-------------------------+-------------------------+-------------------------+
+| Rocky 8 (1)             | Supported               | Supported               |
++-------------------------+-------------------------+-------------------------+
+
+* (1) In future releases, all systems with a Linux kernel older than version
+  6.8 will be deprecated.
+* (2) In future releases, Ubuntu 22.04 LTS will only be supported with the
+  Hardware enablement stack (HWE) and the kernel 6.8.
+
+
+Previous
+--------
+
+Version 2024.2.0
+~~~~~~~~~~~~~~~~
+
+* Additions and improvements:
+    * Implement WRAM access in parallel of the DPU execution
+    * Add DPU v1B performance counters
+    * Add chip versioning tags to DPU binaries
+    * Fix lowlevel header files includes
+    * *IWYU users:* dpu.h now exports most of the DPU API
+    * Rely on dpu_types.h to get C standard integer types
+    * Utilities / dpu-diag:
+        * Added ``--no-update-vpd`` option
+        * Improved frequency measurement stability
+    * Utilities / upmem-dimm-configure:
+        * Update MCU DB fields
+        * General improvements
+    * Functional simulator: remove broken nrDpusPerCi option
+* Bug fixes:
+    * Fix rare Control Interface issue on V1B
+    * LLVM/Clang: minor bug fixes
+    * Run-time libraries:
+        * sequential reader: fix correctness issue
+        * Improvements to div32 and udiv32
+        * mem-alloc: early clobber output variable
+    * MCU firmware: fix utils alignment issue
+* Documentation:
+    * Run-time library documentation now in doxygen format
+        * Remove redundant dpurtldoc CLI tool
+    * Use modern theme for doxygen sites
+    * Support dark mode for documentation
+    * Document Upmem PPA
+    * Document UPMEM_PROFILE
+
+Operating system / DPU support matrix:
+
++-------------------------+-------------------------+-------------------------+
+| Operating system        | V1A DPUs                | V1B DPUs                |
++=========================+=========================+=========================+
+| Debian 10               | Supported               | Supported               |
++-------------------------+-------------------------+-------------------------+
+| Ubuntu 20.04 LTS        | Supported               | Not Supported           |
++-------------------------+-------------------------+-------------------------+
+| Ubuntu 22.04 LTS        | Supported               | Supported               |
++-------------------------+-------------------------+-------------------------+
+| Rocky 8                 | Supported               | Supported               |
++-------------------------+-------------------------+-------------------------+
+
+
+Version 2024.1.0
+~~~~~~~~~~~~~~~~
+
+* Add support for V1B UPMEM DIMMs on Ubuntu 22.04 and Debian 10
+* Fix performance degradation caused by
+  `Gather Data Sampling microcode mitigation <https://docs.kernel.org/admin-guide/hw-vuln/gather_data_sampling.html>`_
+  Courtesy of Manuel Penschuck from Goethe University Frankfurt.
+  For further performance improvements, check out his awesome work on
+  `his fork of the UPMEM backend <https://github.com/manpen/upmem-libdpu>`_ 
+  (`benchmarks <https://github.com/manpen/dpu-communication-bench>`_)
+* Add ``dpu_attach_first`` command to the debugger
+* Drop support for Ubuntu 18.04
+* Drop support for CentOS 7
+* Add documentation for:
+    * DPU chips characteristics
+    * Choosing the UPMEM chip version when compiling and running on simulator (cf. :doc:`240_Dpu_Versionning`)
+    * Configuring the UPMEM debugger port
+* Bugfixes:
+    * Memory leak in scatter-gather transfers
+    * Memory leaks and sanitization in LLVM tools
+    * Pyelftools version conflict in dpu_profiling
+    * Wrong python libraries path on rocky8
+
+Operating system / DPU support matrix:
+
++-------------------------+-------------------------+-------------------------+
+| Operating system        | V1A DPUs                | V1B DPUs                |
++=========================+=========================+=========================+
+| Debian 10               | Supported               | Supported               |
++-------------------------+-------------------------+-------------------------+
+| Ubuntu 20.04 LTS        | Supported               | Not Supported           |
++-------------------------+-------------------------+-------------------------+
+| Ubuntu 22.04 LTS        | Supported               | Supported               |
++-------------------------+-------------------------+-------------------------+
+| Rocky 8                 | Supported               | Supported               |
++-------------------------+-------------------------+-------------------------+
+
+Version 2023.2.0
+~~~~~~~~~~~~~~~~
+
+* Scatter-gather transfers update:
+    * The ``get_block_t`` struct now needs an additional ``args_size`` parameter to store the size of the function context
+    * The SDK now copies and manages the lifetime of the ``args`` context used by the ``get_block_func_t`` function
+    * Add C++ API for scatter-gather transfers
+    * C++ API for scatter-gather transfers also accepts capturing lambdas
+* Add support for Ubuntu 22.04
+* Add support for Rocky 8
+* Add documentation for:
+    * Setting up permissions for users access UPMEM hardware and for profiling
+    * Valid values for ``nrDpusPerCi`` with the functional simulator
+    * Using the clangd language server with the SDK
+* Fix for scatter-gather transfers in the functional simulator
+* Fix a bug in UFI config when counting faulty bits
+* Fix an edge-case compiler crash when using ``-O1`` or higher with ``mram_read`` or ``mram_write``.
+
+Version 2023.1.0
+~~~~~~~~~~~~~~~~
+
+* New APIs for scatter-gather memory transfers between host CPU and DPUs
+* Mutual exclusions extension : virtual mutexes and mutex pools
+* New APIs for partial support of unaligned MRAM accesses
+* Remove the dependency of dpu_profiling functions on UPMEM's modified Linux perf package
+* Add compatibility of dpu_profiling functions with Perfetto UI
+* Add static assert to prevent usage of perfcounter_config with -pg option
+* Update the UPMEM driver to support Linux kernel 5.15
+* Firmware support for PCB P21F
+
+Version 2021.4.0
+~~~~~~~~~~~~~~~~
+
+* Fix bug in calling convention when a DPU function has a large number of parameters
+* Fix bug with mux switch for sparse matrix MRAM transfer
+* Fix for putting DIMMs in power-saving mode
+* Static assertion when perfcounter_config is used with -pg option
+* Firmware support for PCB P21E
+
+Version 2021.3.0
+~~~~~~~~~~~~~~~~
+
+ * Upgrade compiler to LLVM-12.0.0
+ * Add support for new P21D PCB
+ * Update BIOS flashing procedure based on new flasher kit
+ * Document functional simulator
+ * Fix a corner case bug with Host <-> DPU MRAM transfer
+
+Version 2021.2.0
+~~~~~~~~~~~~~~~~
+
+ * New DPU profiling framework based on perfcounters
+ * Fix Functional Simulator MRAM management when using multiple DPUs
+ * Enhance Function Simulator instructions tracing
+ * Enhance DPU 8-bit multiplication
+ * Fix DPU 64-bit rotation
+ * Fix MCU firmware bug
+ * Update server installation documentation
+
+Version 2021.1.0
+~~~~~~~~~~~~~~~~
+
+ * Small improvements in Java host API (cf :doc:`206_JavaAPI`)
+ * Upgrade compiler to LLVM-11.0.0
+ * Fix various bugs in LLDB
+ * Add ``CLOCKS_PER_SEC`` constant in DPU library
+ * Fix bugs in host API
+ * Improve DPU program loading performance for multi-rank call
+ * Fix bug in ``dpugrind``
+ * Add documentation about C++/Java/Python APIs
+
+Version 2020.5.0
+~~~~~~~~~~~~~~~~
+
+ * Adding support for dual-socket servers
+ * Adding an host Java API (cf :doc:`206_JavaAPI`)
+ * Adding an host C++ API (cf :doc:`205_CppHostAPI`)
+ * Improving the performance of the Functional Simulator
+
+Version 2020.4.0
+~~~~~~~~~~~~~~~~
+
+ * Remove dependency on the JDK
+ * DPU Runtime Library: ``memcpy``/``memmove``/``memset`` can now be used with **MRAM** pointers as arguments
+ * Adding asynchronism in the Host API:
+
+   * ``dpu_push_xfer`` now has a ``DPU_XFER_ASYNC`` flag to copy asynchronously
+   * ``dpu_broadcast_to``, a new function with the same behavior as ``dpu_copy_to``, but contrary to its predecessor, can be used asynchronously
+   * ``dpu_callback``, a new function to insert callback that will be called asynchronously during the execution flow of the DPUs.
+
+Version 2020.3.0
+~~~~~~~~~~~~~~~~
+
+ * Upgrade compiler to LLVM-10.0.0
+ * Remove dependency on Python 2: only Python 3 is needed
+ * Add Python host API (cf :doc:`PythonAPI/modules`)
+ * Add support for ubuntu 20.4
+ * Remove support for debian 9
+ * Update driver ABI (and version):
+
+    * Gather sysfs attributes in a single directory
+    * Remove region index from device nodes' name
+ * Host API improvement (parallelize transfer when using dpu_set_t of multiple ranks)
+ * Add tool ``dpu-profiling`` to unify all profiling features
+
+Version 2020.2.0
+~~~~~~~~~~~~~~~~
+
+ * New transparent management of the DPU SRAM repairs
+ * Improved implementation of the ``MRAM`` sequential reader
+ * Core dump binaries now contain all the debug sections
+ * Both ``-flto=full`` and ``-flto=thin`` are supported for the DPU Runtime Library
+
+Version 2020.1.0
+~~~~~~~~~~~~~~~~
+
+ * Improve significantly communications performance including copy to/from MRAM
+ * Add support for the ``centos8`` Linux distribution
+ * Add the ``dpu-diag`` self-diagnostic tool to dump information & check the SDK installation
+ * Update the functions to access **MRAM** from the DPU (only use ``mram_read`` and ``mram_write``)
+ * Macros to get ``barriers``, ``mutex`` and ``semaphore`` (``<OBJECT>_GET``) are no longer necessary
+ * Interrogate the DIMM hardware to get the DPU clock frequency rather than declaring it through ``UPMEM_PROFILE``
+
+Version 2019.4.0
+~~~~~~~~~~~~~~~~
+
+ * Upgrade compiler to LLVM-9.0.1
+ * ``dpu-lldb`` is now the default debugger
+ * Add tool ``dputrace`` for low level execution tracing (cf :doc:`087_DPUTrace`)
+ * Add tool ``dpu_stack_analyzer`` for static analysis of the DPU threads stack size (cf :doc:`270_StackAnalyzer`)
+ * Remove tasklet mailbox concept
+ * Refactor the Host API to be based on DPU sets
+ * *Experimental tool*: ``dpugrind`` is now available (cf :doc:`088_DPUMemcheck`)
+
+Version 2019.3.0
+~~~~~~~~~~~~~~~~
+
+ * Unification of the DPU Host libraries ``libdpu`` and ``libdpucni``
+ * Upgrade compiler to LLVM-8.0.1
+ * Clang is now able to compile x86 code, the default target is x86
+ * Add tool ``dpu-upmem-dpurte-clang`` which uses clang to target dpu backend by default
+ * The DPU runtime library is now compiled with debug information
+ * *Experimental tool*: LLDB is now available for dpu
+
+Version 2019.2.0
+~~~~~~~~~~~~~~~~
+
+ * Adding DPU logging module based on MRAM buffer (cf ``printf`` in ``stdio.h``)
+ * ``KTRACE`` and ``printf`` support print of 64-bit integers/floats.
+ * The Assembler syntax changed:
+
+    * ``%`` before a register is now optional and not print by ``llvm-objdump``.
+    * ``?`` and ``!`` before a condition is now optional and not print by ``llvm-objdump``.
+    * Condition ``in_buffX`` has been replaced by ``ncX``.
+ * Stabilization of MRAM variables
+
+Version 2019.1.0
+~~~~~~~~~~~~~~~~
+
+  * DPU program binaries are entirely built by ``clang``, ``dpucc`` has been removed
+  * the runtime library is pure C, there is no longer assembly generated by a configuration file and ``dpukconfig`` has been removed
+  * the tasklets configuration is done by declaring ``TASKLETS_INITIALIZER`` and including ``rt.h`` header (cf :doc:`030_DPURuntimeService_Tasklets`)
+  * updated runtime API in `barrier.h <DPURT/html/barrier_8h.html>`_, `mutex.h <DPURT/html/mutex_8h.html>`_, `sem.h <DPURT/html/sem_8h.html>`_
+  * the default optimization level for ``clang`` is ``-O0``, the developer must pass explicitly ``-O2``
+  * the compiler handles functions with variable arguments properly
+  * Changes in the assembly syntax
+  * *Experimental feature*: add variables stored in MRAM
+  * *Experimental feature*: a profiler for DPU binaries (cf :doc:`260_Profiling`)
+
+Version 2018.2.0
+~~~~~~~~~~~~~~~~
+  * Upgrade compiler to LLVM-7.0
+  * *Experimental feature*: DPUGrind tool
+
+
+Version 2018.1.0-EAP (January 2018)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Version 2017.1.5-EAP
+~~~~~~~~~~~~~~~~~~~~
+
+  * Support for ``klog`` logging source in the host API
+  * Finely tune the profiling parameters to select the instrumented data and the output file
+
+Version 2017.1.4-EAP
+~~~~~~~~~~~~~~~~~~~~
+
+  * DPU program binary format is now standard ELF
+  * DPU programs built with an older toolchain version need to be rebuilt
+  * Optimized procedures in the compiler for 8x8 and 16x16 multiplications
+  * Optimized procedures in the compiler for variable initialization
+  * Enriching and optimizing ``string.h`` (cf :doc:`04_Stdlib`)
+  * Adding dynamic allocation with the implementation of a buddy allocator (cf :doc:`031_DPURuntimeService_Memory`)
+  * *Experimental feature*: adding a Link Time Optimizer in ``dpucc`` (enabled when building with ``-flto``)
+
+Version 2017.1.3-EAP
+~~~~~~~~~~~~~~~~~~~~
+
+  * Bug fixes, including KI0284
+  * ``ktrace`` correctly handles ``%u`` format specifier
+
+Version 2017.1.2-EAP
+~~~~~~~~~~~~~~~~~~~~
+
+  * 64-bits types and operators support in the toolchain
+  * Fixed-Size Block Allocator (available in ``fsb_allocator.h`` or directly from ``alloc.h``)
+  * Make the DPU-side API of ``ktrace`` mimic printf
+  * Build host APIs for ``ktrace``, so that a x86 program can collect DPU traces programmatically
+  * IRAM and WRAM sizes when using the simulator are now configurable
+  * Software caches library functions optimized with 64-bits DMA instructions
+  * ``dpucc`` accepts static libraries as inputs
+
+Version 2017.1.1-EAP
+~~~~~~~~~~~~~~~~~~~~
+
+  * DMA instructions granularity and alignment on 64 bits
+  * -Os support for code optimization in size
+  * ``ktrace`` service infrastructure to print execution string and variables values in ``dpushell`` without using processor resources (cf :doc:`07_Logging`)
+
+Version 0.7.5-EAP
+~~~~~~~~~~~~~~~~~
+
+  * -O2 is now the default optimization of dpucc
+  * Command-line profiling tool
+  * Host API now accepts an "unlimited" number of simulators
+  * ``dpukconfig`` has the '-s' option to run scripts
+  * ``dpugeni`` available to create native interfaces to DPUs
+  * Assembler anonymous labels to easy asm code inlining
+
+Version 0.7.4-EAP
+~~~~~~~~~~~~~~~~~
+
+  * Host API allows callback parameters to tune DPU allocation on the fly
+  * Many optimizations and bug fixes of the C compiler
+  * Actor programming model available (deprecated)
+  * Software caches available to simplify prototyping
+
+Version 0.7.3-EAP
+~~~~~~~~~~~~~~~~~
+
+  * Integrated debugger with dpushell (cf :doc:`08_DebuggingWithUpmemDpu`)
+  * Sequential reader API
+  * Built-in assembler functions and syscalls available (cf :doc:`201_AsmAndC`)
+
+Version 0.7.2-EAP
+~~~~~~~~~~~~~~~~~
+
+  * -O1 is now the default optimization of ``dpucc``
+  * Many bug fixes and improvements
+
+Version 0.7.1-EAP
+~~~~~~~~~~~~~~~~~
+
+  * First complete toolchain including: assembler, compiler, shell, kconfig and APIs. (cf :doc:`00_ToolchainAtAGlance`)
+  * First programming model defined via tasklets
+  * Host API (cf :doc:`06_ControllingDPUFromHost`)

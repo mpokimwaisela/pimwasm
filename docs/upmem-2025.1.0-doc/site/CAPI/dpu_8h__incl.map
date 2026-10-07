@@ -1,0 +1,5 @@
+<map id="dpu.h" name="dpu.h">
+<area shape="rect" id="node8" href="$dpu__checkpoint_8h.html" title="C API to create and manage DPU checkpoints. " alt="" coords="594,87,730,114"/>
+<area shape="rect" id="node9" href="$dpu__error_8h.html" title="Define the possible status returned by the API functions. " alt="" coords="509,169,604,196"/>
+<area shape="rect" id="node10" href="$dpu__types_8h.html" title="Base DPU types in the C API. " alt="" coords="629,169,730,196"/>
+</map>

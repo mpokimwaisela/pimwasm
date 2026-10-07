@@ -1,0 +1,58 @@
+Verifying memory accesses with dpugrind
+=======================================
+
+``dpugrind`` tries to provide the same memory checks as ``valgrind``. It can warn of:
+
+ - uninitialized values when reading memory
+ - accesses to not-allocated memory
+ - stack overflows and underflows
+ - accesses to another thread stack area
+ - unaligned accesses when doing DMA transfers
+
+Notes
+~~~~~
+
+``dpugrind`` takes the same input files as ``dputrace`` (cf :doc:`087_DPUTrace` to know how to generate the trace files).
+It also provides the same **Watch Mode**, with the ``-w`` option.
+
+Example
+~~~~~~~
+
+We are going to consider a rather simple, but faulty, DPU program:
+
+.. literalinclude:: ../../../endtests/documentation/dpugrind_example/dpugrind_example.c
+    :language: c
+
+The array has 5 elements, but the program tries to access the 6th element.
+
+Let's build the program:
+
+.. literalinclude:: ../../../endtests/documentation/dpugrind_example/dpugrind_example.compile
+
+We now need to execute this program. Here, we are using ``dpu-lldb`` as a runner. Any host application based on the Host API would work.
+From a terminal, we are first setting ``UPMEM_TRACE_DIR``, then running the program, making sure that we run it on a functional
+simulator:
+
+.. literalinclude:: ../../../endtests/documentation/dpugrind_example/dpugrind_example.exports
+
+We can now launch ``dpu-lldb``:
+
+.. literalinclude:: ../../../endtests/documentation/dpugrind_example/dpugrind_example.lldb_script
+
+The exit value is not the expected one, because of the out-of-bound access. We can use ``dpugrind`` to try and find the error.
+A new file, ``trace-0000-00``, is available in the ``UPMEM_TRACE_DIR`` directory (in this example, the current directory).
+
+Now let's execute ``dpugrind``:
+
+.. literalinclude:: ../../../endtests/documentation/dpugrind_example/dpugrind_example.command
+
+.. literalinclude:: ../../../endtests/documentation/dpugrind_example/dpugrind_example.output_reference
+
+``dpugrind`` correctly detected the expected error and provide some information concerning the error location.
+
+Limitations
+~~~~~~~~~~~
+
+- trace input files can only be generated when using a functional simulator
+- out-of-bound array accesses may not be detected when another variable is located just after the array
+- currently, memory areas obtained with ``buddy_alloc.h`` are not correctly tracked

@@ -1,0 +1,5 @@
+<map id="dpu_vpd" name="dpu_vpd">
+<area shape="rect" id="node2" href="$structdpu__vpd__repair__entry.html" title="Description of a repair entry. " alt="" coords="5,95,168,121"/>
+<area shape="rect" id="node3" href="$structdpu__vpd__header.html" title="UPMEM DIMM Vital Product Data. " alt="" coords="193,95,322,121"/>
+<area shape="rect" id="node4" href="$structdpu__vpd__rank__data.html" title="Holds information about DPUs that contain repairs or that are disabled. " alt="" coords="183,5,332,32"/>
+</map>

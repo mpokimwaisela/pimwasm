@@ -1,0 +1,9 @@
+<map id="sysdef.h" name="sysdef.h">
+<area shape="rect" id="node2" href="$defs_8h.html" title="Miscellaneous system functions. " alt="" coords="5,80,68,107"/>
+<area shape="rect" id="node3" href="$handshake_8h.html" title="Synchronization with handshakes. " alt="" coords="92,80,197,107"/>
+<area shape="rect" id="node4" href="$mutex_8h.html" title="Mutual exclusions. " alt="" coords="221,80,297,107"/>
+<area shape="rect" id="node5" href="$vmutex_8h.html" title="Mutual exclusions extension (virtual mutexes). " alt="" coords="96,155,180,181"/>
+<area shape="rect" id="node7" href="$mutex__pool_8h.html" title="Mutual exclusions extension (hardware mutex pool). " alt="" coords="204,155,315,181"/>
+<area shape="rect" id="node8" href="$wramfifo_8h.html" title="WRAM input/output fifo for host/DPU communication. " alt="" coords="339,155,431,181"/>
+<area shape="rect" id="node6" href="$mram__unaligned_8h.html" title="APIs for unaligned MRAM access (address/size) and tasklet&#45;safe write/update of less than 8&#45;byte value..." alt="" coords="66,229,210,256"/>
+</map>

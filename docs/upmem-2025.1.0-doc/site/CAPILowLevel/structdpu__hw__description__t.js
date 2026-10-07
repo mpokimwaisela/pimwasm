@@ -1,0 +1,26 @@
+var structdpu__hw__description__t =
+[
+    [ "carousel", "structdpu__hw__description__t.html#a3b518bc39e54ceb93ff0efa1b7d4ed23", null ],
+    [ "chip_id", "structdpu__hw__description__t.html#a27f5d6cadb40c56ab2d1bf42e551a09b", null ],
+    [ "ci_mask", "structdpu__hw__description__t.html#a80c84748df64472c8f830dbe38e28300", null ],
+    [ "ci_pc_lsb_nr_phys_bits", "structdpu__hw__description__t.html#a01553ed1d6d8b54f24a06d6a17114cb3", null ],
+    [ "clock_division", "structdpu__hw__description__t.html#ab03a47427cc02fa0e191a0688a078e00", null ],
+    [ "dpu", "structdpu__hw__description__t.html#a45a7d21d2cdbe338b5e204d6c2e9d93f", null ],
+    [ "fck_frequency_in_mhz", "structdpu__hw__description__t.html#ae6717598048d94f7485b7c9924da5f9e", null ],
+    [ "iram_size", "structdpu__hw__description__t.html#aa5581ac8e4a7c879cbc04366d9779342", null ],
+    [ "memories", "structdpu__hw__description__t.html#ab23fbd77817709e73c13ef261df338f5", null ],
+    [ "mram_size", "structdpu__hw__description__t.html#a65210ebadf74edf3e62b29c0245fac3c", null ],
+    [ "nr_of_atomic_bits", "structdpu__hw__description__t.html#a5de47fd4327bf50c8cdcc6b0552ed12d", null ],
+    [ "nr_of_control_interfaces", "structdpu__hw__description__t.html#a9cb1e347c2f2717df0f07a452d73cdab", null ],
+    [ "nr_of_dpus_per_control_interface", "structdpu__hw__description__t.html#ac5ee90e69a3d7c6bcebf1211986eba96", null ],
+    [ "nr_of_notify_bits", "structdpu__hw__description__t.html#ac2b206206d305ac20f398658f80751be", null ],
+    [ "nr_of_threads", "structdpu__hw__description__t.html#a058a5b39c405e5ed2e191712429e9e79", null ],
+    [ "nr_of_work_registers_per_thread", "structdpu__hw__description__t.html#a3652d8b75db4f44d10f796444c431357", null ],
+    [ "pcb_transformation", "structdpu__hw__description__t.html#a04b5905eb46572d3b9d47f0d19d557ce", null ],
+    [ "reset_wait_duration", "structdpu__hw__description__t.html#a9baf1235d3aab09511c844b7120dbbe1", null ],
+    [ "signature", "structdpu__hw__description__t.html#a59753424a8046c32ed80b5e00838d8c7", null ],
+    [ "std_temperature", "structdpu__hw__description__t.html#afda1624562e690ed198c62a3a6747762", null ],
+    [ "timings", "structdpu__hw__description__t.html#a0345a61a7b1e2c1eca1b68be49a67f26", null ],
+    [ "topology", "structdpu__hw__description__t.html#a4e460e0572da6cf09684d74d244c6b17", null ],
+    [ "wram_size", "structdpu__hw__description__t.html#a8c2b1c24d1b496c683a277bed3741a4b", null ]
+];

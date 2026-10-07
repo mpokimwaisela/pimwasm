@@ -1,0 +1,27 @@
+var structdpu__context__t =
+[
+    [ "atomic_register", "structdpu__context__t.html#aa328c46e804f13434d92548f6fa723b0", null ],
+    [ "bkp_fault", "structdpu__context__t.html#aafc71865ce27365a544a0a37e913560d", null ],
+    [ "bkp_fault_id", "structdpu__context__t.html#a3a63330d3ecf6eb7e871f761ec82f458", null ],
+    [ "bkp_fault_thread_index", "structdpu__context__t.html#a23292d32122c5918b234c11dae19c5ad", null ],
+    [ "carry_flags", "structdpu__context__t.html#ab6cf25ba74a88ee427aefbd41f39c4be", null ],
+    [ "dma_fault", "structdpu__context__t.html#a577fd8069485b0f137d4efc46d4f800b", null ],
+    [ "dma_fault_thread_index", "structdpu__context__t.html#a1442de6dfdb5f198a89de1b04b4b9def", null ],
+    [ "info", "structdpu__context__t.html#ab002ed3e55e2e1e6aa28f4e8c425118d", null ],
+    [ "iram", "structdpu__context__t.html#a1eb50ac6625bfbb12fc96c8cbeb99a21", null ],
+    [ "iram_size", "structdpu__context__t.html#aa5581ac8e4a7c879cbc04366d9779342", null ],
+    [ "mem_fault", "structdpu__context__t.html#a63fcb6ee6ba4705d1dbfb6d9d9959f52", null ],
+    [ "mem_fault_thread_index", "structdpu__context__t.html#a2bbd7be0238b6ceb970b6aa90a26d03e", null ],
+    [ "mram", "structdpu__context__t.html#a37cd4f4f7c92e7b0610ca7c477b9b242", null ],
+    [ "mram_size", "structdpu__context__t.html#a65210ebadf74edf3e62b29c0245fac3c", null ],
+    [ "nr_atomic_bits", "structdpu__context__t.html#a289b96e6a770f7522e42d880f4933c47", null ],
+    [ "nr_of_running_threads", "structdpu__context__t.html#a4a2cf74e4cd0fad28f6af986421d6148", null ],
+    [ "nr_registers", "structdpu__context__t.html#aa6cd9be0e5abf73710f486d28db56fab", null ],
+    [ "nr_threads", "structdpu__context__t.html#a4bee515a7e030c8b0dac1cf0ce34a2a2", null ],
+    [ "pcs", "structdpu__context__t.html#ae90d6de23abfdcc95a4ced9cf346754b", null ],
+    [ "registers", "structdpu__context__t.html#a247f52293121e24c4b5d60835abdfaf9", null ],
+    [ "scheduling", "structdpu__context__t.html#a70368ffc358995e6e8cec5d362d336bf", null ],
+    [ "wram", "structdpu__context__t.html#a4dba948d6b47d0e2b4263d0e3883e91b", null ],
+    [ "wram_size", "structdpu__context__t.html#a8c2b1c24d1b496c683a277bed3741a4b", null ],
+    [ "zero_flags", "structdpu__context__t.html#a2467e0d59bbec7a8968c754689186cc5", null ]
+];

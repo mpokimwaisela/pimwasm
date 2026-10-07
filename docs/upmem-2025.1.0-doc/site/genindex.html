@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Index &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Index</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#J"><strong>J</strong></a>
+ | <a href="#K"><strong>K</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
+ | <a href="#Z"><strong>Z</strong></a>
+ 
+</div>
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.db.html#dpu.vpd.db.DPUVpdDatabase.add_byte">add_byte() (dpu.vpd.db.DPUVpdDatabase method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.db.html#dpu.vpd.db.DPUVpdDatabase.add_bytearray">add_bytearray() (dpu.vpd.db.DPUVpdDatabase method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.db.html#dpu.vpd.db.DPUVpdDatabase.add_int">add_int() (dpu.vpd.db.DPUVpdDatabase method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.add_library_search_dirs">add_library_search_dirs() (in module dpu.vpd.vpd)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.db.html#dpu.vpd.db.DPUVpdDatabase.add_long">add_long() (dpu.vpd.db.DPUVpdDatabase method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.db.html#dpu.vpd.db.DPUVpdDatabase.add_numeric">add_numeric() (dpu.vpd.db.DPUVpdDatabase method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.db.html#dpu.vpd.db.DPUVpdDatabase.add_short">add_short() (dpu.vpd.db.DPUVpdDatabase method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.db.html#dpu.vpd.db.DPUVpdDatabase.add_string">add_string() (dpu.vpd.db.DPUVpdDatabase method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_repair_entry.address">address (dpu.vpd.vpd.struct_dpu_vpd_repair_entry attribute)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuContext.atomic_bits">atomic_bits() (dpu.driver.DpuContext method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_repair_entry.bank">bank (dpu.vpd.vpd.struct_dpu_vpd_repair_entry attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_repair_entry.bits">bits (dpu.vpd.vpd.struct_dpu_vpd_repair_entry attribute)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuContext.bkp_fault">bkp_fault() (dpu.driver.DpuContext method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuSet.call">call() (dpu.driver.DpuSet method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.capitalize">capitalize() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.center">center() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuThreadContext.cf">cf() (dpu.driver.DpuThreadContext method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuSet.checkpoint">checkpoint() (dpu.driver.DpuSet method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_repair_entry.ci">ci (dpu.vpd.vpd.struct_dpu_vpd_repair_entry attribute)</a>
+</li>
+      <li><a href="PythonAPI/dpu.compiler.html#dpu.compiler.Compiler.compile">compile() (dpu.compiler.Compiler method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.compiler.html#dpu.compiler.Compiler">Compiler (class in dpu.compiler)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuSet.copy">copy() (dpu.driver.DpuSet method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.count">count() (dpu.vpd.vpd.UserString method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.DarwinLibraryLoader">DarwinLibraryLoader (class in dpu.vpd.vpd)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.DarwinLibraryLoader.Lookup">DarwinLibraryLoader.Lookup (class in dpu.vpd.vpd)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.String.data">data (dpu.vpd.vpd.String attribute)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuVariable.data">data() (dpu.driver.DpuVariable method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.decode">decode() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.dimm.html#dpu.vpd.dimm.DPUVpd.disable_dpu">disable_dpu() (dpu.vpd.dimm.DPUVpd method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.disasm.html#dpu.disasm.disassemble">disassemble() (in module dpu.disasm)</a>
+</li>
+      <li><a href="PythonAPI/dpu.disasm.html#dpu.disasm.disassemble_raw">disassemble_raw() (in module dpu.disasm)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuContext.dma_fault">dma_fault() (dpu.driver.DpuContext method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuVariable.double">double() (dpu.driver.DpuVariable method)</a>
+</li>
+      <li>
+    dpu
+
+      <ul>
+        <li><a href="PythonAPI/dpu.html#module-dpu">module</a>
+</li>
+      </ul></li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_repair_entry.dpu">dpu (dpu.vpd.vpd.struct_dpu_vpd_repair_entry attribute)</a>
+</li>
+      <li>
+    dpu.compiler
+
+      <ul>
+        <li><a href="PythonAPI/dpu.compiler.html#module-dpu.compiler">module</a>
+</li>
+      </ul></li>
+      <li>
+    dpu.disasm
+
+      <ul>
+        <li><a href="PythonAPI/dpu.disasm.html#module-dpu.disasm">module</a>
+</li>
+      </ul></li>
+      <li>
+    dpu.driver
+
+      <ul>
+        <li><a href="PythonAPI/dpu.driver.html#module-dpu.driver">module</a>
+</li>
+      </ul></li>
+      <li>
+    dpu.vpd
+
+      <ul>
+        <li><a href="PythonAPI/dpu.vpd.html#module-dpu.vpd">module</a>
+</li>
+      </ul></li>
+      <li>
+    dpu.vpd.db
+
+      <ul>
+        <li><a href="PythonAPI/dpu.vpd.db.html#module-dpu.vpd.db">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    dpu.vpd.dimm
+
+      <ul>
+        <li><a href="PythonAPI/dpu.vpd.dimm.html#module-dpu.vpd.dimm">module</a>
+</li>
+      </ul></li>
+      <li>
+    dpu.vpd.vpd
+
+      <ul>
+        <li><a href="PythonAPI/dpu.vpd.vpd.html#module-dpu.vpd.vpd">module</a>
+</li>
+      </ul></li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_rank_data.dpu_disabled">dpu_disabled (dpu.vpd.vpd.struct_dpu_vpd_rank_data attribute)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.dpu_vpd">dpu_vpd (in module dpu.vpd.vpd)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.dpu_vpd_database">dpu_vpd_database (in module dpu.vpd.vpd)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.dpu_vpd_header">dpu_vpd_header (in module dpu.vpd.vpd)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.dpu_vpd_rank_data">dpu_vpd_rank_data (in module dpu.vpd.vpd)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.dpu_vpd_repair_entry">dpu_vpd_repair_entry (in module dpu.vpd.vpd)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.dpu_vpd_string_pair">dpu_vpd_string_pair (in module dpu.vpd.vpd)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuContext">DpuContext (class in dpu.driver)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuError">DpuError</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuProgram">DpuProgram (class in dpu.driver)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuSet.dpus">dpus() (dpu.driver.DpuSet method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuSet">DpuSet (class in dpu.driver)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuSymbol">DpuSymbol (class in dpu.driver)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuThreadContext">DpuThreadContext (class in dpu.driver)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuVariable">DpuVariable (class in dpu.driver)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.dimm.html#dpu.vpd.dimm.DPUVpd">DPUVpd (class in dpu.vpd.dimm)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.db.html#dpu.vpd.db.DPUVpdDatabase">DPUVpdDatabase (class in dpu.vpd.db)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.db.html#dpu.vpd.db.DPUVpdError">DPUVpdError</a>, <a href="PythonAPI/dpu.vpd.dimm.html#dpu.vpd.dimm.DPUVpdError">[1]</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.db.html#dpu.vpd.db.DPUVpdDatabase.dump">dump() (dpu.vpd.db.DPUVpdDatabase method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.dimm.html#dpu.vpd.dimm.DPUVpd.enable_dpu">enable_dpu() (dpu.vpd.dimm.DPUVpd method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.encode">encode() (dpu.vpd.vpd.UserString method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.endswith">endswith() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuSet.exec">exec() (dpu.driver.DpuSet method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.expandtabs">expandtabs() (dpu.vpd.vpd.UserString method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuProgram.fetch_all_symbols">fetch_all_symbols() (dpu.driver.DpuProgram method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.find">find() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_database.first">first (dpu.vpd.vpd.struct_dpu_vpd_database attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuVariable.float">float() (dpu.driver.DpuVariable method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuSet.free">free() (dpu.driver.DpuSet method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuContext.from_buffer">from_buffer() (dpu.driver.DpuContext static method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.String.from_param">from_param() (dpu.vpd.vpd.String class method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.LibraryLoader.Lookup.get">get() (dpu.vpd.vpd.LibraryLoader.Lookup method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuProgram.get_symbol">get_symbol() (dpu.driver.DpuProgram method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.DarwinLibraryLoader.getdirs">getdirs() (dpu.vpd.vpd.DarwinLibraryLoader static method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.compiler.html#dpu.compiler.getDpuArchVersion">getDpuArchVersion() (in module dpu.compiler)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.LibraryLoader.getpaths">getpaths() (dpu.vpd.vpd.LibraryLoader method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.DarwinLibraryLoader.getplatformpaths">getplatformpaths() (dpu.vpd.vpd.DarwinLibraryLoader method)</a>
+
+      <ul>
+        <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.LibraryLoader.getplatformpaths">(dpu.vpd.vpd.LibraryLoader method)</a>
+</li>
+        <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.PosixLibraryLoader.getplatformpaths">(dpu.vpd.vpd.PosixLibraryLoader method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.LibraryLoader.Lookup.has">has() (dpu.vpd.vpd.LibraryLoader.Lookup method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuThreadContext.idx">idx (dpu.driver.DpuThreadContext attribute)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.MutableString.immutable">immutable() (dpu.vpd.vpd.MutableString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.index">index() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.disasm.html#dpu.disasm.Instruction">Instruction (class in dpu.disasm)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuVariable.int16">int16() (dpu.driver.DpuVariable method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuVariable.int32">int32() (dpu.driver.DpuVariable method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuVariable.int64">int64() (dpu.driver.DpuVariable method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuVariable.int8">int8() (dpu.driver.DpuVariable method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuContext.iram">iram() (dpu.driver.DpuContext method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_rank_data.iram_repair">iram_repair (dpu.vpd.vpd.struct_dpu_vpd_rank_data attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_repair_entry.iram_wram">iram_wram (dpu.vpd.vpd.struct_dpu_vpd_repair_entry attribute)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.isalnum">isalnum() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.isalpha">isalpha() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.isdecimal">isdecimal() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.isdigit">isdigit() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.islower">islower() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.isnumeric">isnumeric() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.isspace">isspace() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.istitle">istitle() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.isupper">isupper() (dpu.vpd.vpd.UserString method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="J">J</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.join">join() (dpu.vpd.vpd.UserString method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_string_pair.key">key (dpu.vpd.vpd.struct_dpu_vpd_string_pair attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.LibraryLoader">LibraryLoader (class in dpu.vpd.vpd)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.LibraryLoader.Lookup">LibraryLoader.Lookup (class in dpu.vpd.vpd)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.ljust">ljust() (dpu.vpd.vpd.UserString method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuSet.load">load() (dpu.driver.DpuSet method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuSet.log">log() (dpu.driver.DpuSet method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.lower">lower() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.lstrip">lstrip() (dpu.vpd.vpd.UserString method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuContext.mem_fault">mem_fault() (dpu.driver.DpuContext method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.DarwinLibraryLoader.Lookup.mode">mode (dpu.vpd.vpd.DarwinLibraryLoader.Lookup attribute)</a>
+
+      <ul>
+        <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.LibraryLoader.Lookup.mode">(dpu.vpd.vpd.LibraryLoader.Lookup attribute)</a>
+</li>
+      </ul></li>
+      <li>
+    module
+
+      <ul>
+        <li><a href="PythonAPI/dpu.html#module-dpu">dpu</a>
+</li>
+        <li><a href="PythonAPI/dpu.compiler.html#module-dpu.compiler">dpu.compiler</a>
+</li>
+        <li><a href="PythonAPI/dpu.disasm.html#module-dpu.disasm">dpu.disasm</a>
+</li>
+        <li><a href="PythonAPI/dpu.driver.html#module-dpu.driver">dpu.driver</a>
+</li>
+        <li><a href="PythonAPI/dpu.vpd.html#module-dpu.vpd">dpu.vpd</a>
+</li>
+        <li><a href="PythonAPI/dpu.vpd.db.html#module-dpu.vpd.db">dpu.vpd.db</a>
+</li>
+        <li><a href="PythonAPI/dpu.vpd.dimm.html#module-dpu.vpd.dimm">dpu.vpd.dimm</a>
+</li>
+        <li><a href="PythonAPI/dpu.vpd.vpd.html#module-dpu.vpd.vpd">dpu.vpd.vpd</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuContext.mram">mram() (dpu.driver.DpuContext method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.MutableString">MutableString (class in dpu.vpd.vpd)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuSymbol.name">name (dpu.driver.DpuSymbol attribute)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.DarwinLibraryLoader.name_formats">name_formats (dpu.vpd.vpd.DarwinLibraryLoader attribute)</a>
+
+      <ul>
+        <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.LibraryLoader.name_formats">(dpu.vpd.vpd.LibraryLoader attribute)</a>
+</li>
+        <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.PosixLibraryLoader.name_formats">(dpu.vpd.vpd.PosixLibraryLoader attribute)</a>
+</li>
+        <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.WindowsLibraryLoader.name_formats">(dpu.vpd.vpd.WindowsLibraryLoader attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_string_pair.next">next (dpu.vpd.vpd.struct_dpu_vpd_string_pair attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.compiler.html#dpu.compiler.O0">O0 (in module dpu.compiler)</a>
+</li>
+      <li><a href="PythonAPI/dpu.compiler.html#dpu.compiler.O1">O1 (in module dpu.compiler)</a>
+</li>
+      <li><a href="PythonAPI/dpu.compiler.html#dpu.compiler.O2">O2 (in module dpu.compiler)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.compiler.html#dpu.compiler.O3">O3 (in module dpu.compiler)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.ord_if_char">ord_if_char() (in module dpu.vpd.vpd)</a>
+</li>
+      <li><a href="PythonAPI/dpu.compiler.html#dpu.compiler.Os">Os (in module dpu.compiler)</a>
+</li>
+      <li><a href="PythonAPI/dpu.compiler.html#dpu.compiler.Oz">Oz (in module dpu.compiler)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.partition">partition() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.compiler.html#dpu.compiler.Compiler.path">path (dpu.compiler.Compiler attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuThreadContext.pc">pc() (dpu.driver.DpuThreadContext method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.PosixLibraryLoader">PosixLibraryLoader (class in dpu.vpd.vpd)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_repair_entry.rank">rank (dpu.vpd.vpd.struct_dpu_vpd_repair_entry attribute)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_header.rank_count">rank_count (dpu.vpd.vpd.struct_dpu_vpd_header attribute)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_header.ranks">ranks (dpu.vpd.vpd.struct_dpu_vpd_header attribute)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuSet.ranks">ranks() (dpu.driver.DpuSet method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.String.raw">raw (dpu.vpd.vpd.String attribute)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuThreadContext.regs">regs() (dpu.driver.DpuThreadContext method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_header.repair_count">repair_count (dpu.vpd.vpd.struct_dpu_vpd_header attribute)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd.repair_entries">repair_entries (dpu.vpd.vpd.struct_dpu_vpd attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.replace">replace() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuSet.restore">restore() (dpu.driver.DpuSet method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.ReturnString">ReturnString() (in module dpu.vpd.vpd)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.rfind">rfind() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.rindex">rindex() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.rjust">rjust() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.rpartition">rpartition() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.rsplit">rsplit() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.rstrip">rstrip() (dpu.vpd.vpd.UserString method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuContext.serialize">serialize() (dpu.driver.DpuContext method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuSymbol.size">size() (dpu.driver.DpuSymbol method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.split">split() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.splitlines">splitlines() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.startswith">startswith() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.String">String (class in dpu.vpd.vpd)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.strip">strip() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd">struct_dpu_vpd (class in dpu.vpd.vpd)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_database">struct_dpu_vpd_database (class in dpu.vpd.vpd)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_header">struct_dpu_vpd_header (class in dpu.vpd.vpd)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_rank_data">struct_dpu_vpd_rank_data (class in dpu.vpd.vpd)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_repair_entry">struct_dpu_vpd_repair_entry (class in dpu.vpd.vpd)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_string_pair">struct_dpu_vpd_string_pair (class in dpu.vpd.vpd)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_header.struct_id">struct_id (dpu.vpd.vpd.struct_dpu_vpd_header attribute)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_header.struct_size">struct_size (dpu.vpd.vpd.struct_dpu_vpd_header attribute)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_header.struct_ver">struct_ver (dpu.vpd.vpd.struct_dpu_vpd_header attribute)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.swapcase">swapcase() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuSet.sync">sync() (dpu.driver.DpuSet method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.compiler.html#dpu.compiler.Compiler.target">target (dpu.compiler.Compiler attribute)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuContext.threads">threads (dpu.driver.DpuContext attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.title">title() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.translate">translate() (dpu.vpd.vpd.UserString method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuVariable.uint16">uint16() (dpu.driver.DpuVariable method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuVariable.uint32">uint32() (dpu.driver.DpuVariable method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuVariable.uint64">uint64() (dpu.driver.DpuVariable method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuVariable.uint8">uint8() (dpu.driver.DpuVariable method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UNCHECKED">UNCHECKED() (in module dpu.vpd.vpd)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.upper">upper() (dpu.vpd.vpd.UserString method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString">UserString (class in dpu.vpd.vpd)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_string_pair.value">value (dpu.vpd.vpd.struct_dpu_vpd_string_pair attribute)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuSymbol.value">value() (dpu.driver.DpuSymbol method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_string_pair.value_len">value_len (dpu.vpd.vpd.struct_dpu_vpd_string_pair attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_string_pair.value_type">value_type (dpu.vpd.vpd.struct_dpu_vpd_string_pair attribute)</a>
+</li>
+      <li><a href="PythonAPI/dpu.compiler.html#dpu.compiler.Compiler.verbose">verbose (dpu.compiler.Compiler attribute)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd.vpd_header">vpd_header (dpu.vpd.vpd.struct_dpu_vpd attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.WindowsLibraryLoader">WindowsLibraryLoader (class in dpu.vpd.vpd)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.WindowsLibraryLoader.Lookup">WindowsLibraryLoader.Lookup (class in dpu.vpd.vpd)</a>
+</li>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuContext.wram">wram() (dpu.driver.DpuContext method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_rank_data.wram_repair">wram_repair (dpu.vpd.vpd.struct_dpu_vpd_rank_data attribute)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.db.html#dpu.vpd.db.DPUVpdDatabase.write_to_device">write_to_device() (dpu.vpd.db.DPUVpdDatabase method)</a>
+</li>
+      <li><a href="PythonAPI/dpu.vpd.db.html#dpu.vpd.db.DPUVpdDatabase.write_to_file">write_to_file() (dpu.vpd.db.DPUVpdDatabase method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Z">Z</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.driver.html#dpu.driver.DpuThreadContext.zf">zf() (dpu.driver.DpuThreadContext method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="PythonAPI/dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.zfill">zfill() (dpu.vpd.vpd.UserString method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

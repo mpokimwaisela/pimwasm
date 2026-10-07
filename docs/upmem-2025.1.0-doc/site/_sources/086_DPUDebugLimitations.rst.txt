@@ -1,0 +1,30 @@
+====================
+dpu-lldb limitations
+====================
+
+Attaching a DPU running on a simulator
+--------------------------------------
+
+ * Attaching a DPU running on a simulator **is not possible**:
+
+   * To attach a DPU booted by a host application, the DPU program must run on a ``hw`` backend.
+
+Modifying the DPU memories before the ``process launch`` command
+----------------------------------------------------------------
+
+ * Modifying the DPU memories before the ``process launch`` command when running the DPU code through ``dpu-lldb`` **is not possible**:
+
+   * Use the command ``process launch --stop-at-entry`` to start the ``dpu-lldb`` process, and then modify any DPU memory you want. Use ``process continue`` to resume the DPU after your modification.
+
+Exploring the DPU memories after the end of the execution of a program
+----------------------------------------------------------------------
+
+ * Exploring the DPU memories after the end of the execution of a program when running the DPU code through ``dpu-lldb`` **is not possible**:
+
+   * Set a breakpoint on the return line of your application to be able to print any memory/variable you want.
+
+ * Exploring the DPU memories after the end of the execution of a program on an attached DPU **is possible**:
+
+   * First detach the debugger from the DPU using the ``dpu_detach`` command
+   * And then attach back to it using the ``dpu_attach`` command
+   * You can now explore the DPU memories.

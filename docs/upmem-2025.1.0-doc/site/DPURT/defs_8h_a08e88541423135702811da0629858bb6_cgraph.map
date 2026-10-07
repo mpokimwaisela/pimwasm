@@ -1,0 +1,4 @@
+<map id="halt" name="halt">
+<area shape="rect" id="node2" href="$defs_8h.html#a7135d978ada918bafe859836e07c89bd" title="check_stack" alt="" coords="100,5,203,32"/>
+<area shape="rect" id="node3" href="$defs_8h.html#a7606206081894244bb3c1893214ceb7e" title="Returns the current tasklet&#39;s sysname. " alt="" coords="251,5,293,32"/>
+</map>

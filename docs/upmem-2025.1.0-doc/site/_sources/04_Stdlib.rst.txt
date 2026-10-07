@@ -1,0 +1,423 @@
+Standard library functions
+==========================
+
+The runtime service library comes along with a subset of the C standard library, complying with ISO C11 specifications.
+
+The next table summarizes the available functions and definitions:
+
+  +--------------------+--------------------------------------------------+
+  | Header file        | Available in the runtime service library         |
+  +====================+==================================================+
+  | ``assert.h``       | ``assert`` - Upon assertion failure as described |
+  |                    | in :doc:`05_Exceptions`                          |
+  +--------------------+--------------------------------------------------+
+  | ``ctype.h``        | All the functions defined by the standard        |
+  +--------------------+--------------------------------------------------+
+  | ``errno.h``        | Standard error constants and functions to report |
+  |                    | errors                                           |
+  +--------------------+--------------------------------------------------+
+  | ``inttypes.h``     | Character literals for formal string format      |
+  +--------------------+--------------------------------------------------+
+  | ``iso646.h``       | All the macros defined by the standard           |
+  +--------------------+--------------------------------------------------+
+  | ``limits.h``       | Minimum and maximum for elementary C types       |
+  +--------------------+--------------------------------------------------+
+  | ``stdalign.h``     | Align and offset convenience macros              |
+  +--------------------+--------------------------------------------------+
+  | ``stdarg.h``       | Variadic function arguments support              |
+  +--------------------+--------------------------------------------------+
+  | ``stdbool.h``      | The boolean type, as defined by the standard     |
+  +--------------------+--------------------------------------------------+
+  | ``stddef.h``       | All the types defined by the standard            |
+  +--------------------+--------------------------------------------------+
+  | ``stdint.h``       | Signed and unsigned integers on 8,16 and 32 bits |
+  +--------------------+--------------------------------------------------+
+  | ``stdlib.h``       | C standard library support                       |
+  +--------------------+--------------------------------------------------+
+  | ``stdnoreturn.h``  | Convenience macro for non-returning functions    |
+  +--------------------+--------------------------------------------------+
+  | ``string.h``       | All the functions defined by the standard        |
+  +--------------------+--------------------------------------------------+
+  | ``stdio.h``        | ``printf``, ``puts``, ``putchar`` functions      |
+  +--------------------+--------------------------------------------------+
+
+Other standard definitions are not available, since they do not fit with the context of UPMEM DPU.
+
+The include files are located in ``$UPMEM_HOME/share/upmem/include/stdlib`` and contain a brief
+explanation of each function. Next is an overview of the include files.
+
+assert.h
+--------
+
+Standard assertions are disabled when the source code is compiled with ``NDEBUG`` defined.
+
+By default, the ``assert`` macro executes a given expression and issues an assertion failure
+(see :doc:`05_Exceptions`) if the expression is not true.
+
+ctype.h
+-------
+
+This include contains a collection of utilities to test characters properties:
+
+  * ``isdigit``  : character is a digit, i.e. in the range ['0','9']
+  * ``islower``  : character is a lower-case letter, i.e. in the range ['a','z']
+  * ``isupper``  : character is an upper-case letter, i.e. in the range ['A','Z']
+  * ``isalpha``  : character is a letter, i.e. either a lower or upper-case letter
+  * ``isalnum``  : character is alpha-numeric, i.e. either a letter or a digit
+  * ``iscntrl``  : character is a control character, i.e. lower than the space character or ``0x7f``
+  * ``isprint``  : character is not a control character, implying that it is printable
+  * ``isgraph``  : character has a locale representation, i.e. it is printable and is not a space
+  * ``ispunct``  : character is a printable, non alpha-numeric character
+  * ``isspace``  : character is a space, i.e. one of '\\t', '\\n', '\\v', '\\f', '\\r' or a space
+  * ``isxdigit`` : character is an hexa-decimal digit, i.e. in one of the ranges ['0','9'], ['a','f'] or ['A','F']
+  * ``isblank``  : character is a common space, i.e. either a space or '\\t'
+
+Also, the following conversion functions are provided:
+
+  * ``tolower`` : if the character is a lower-case letter, converts it to its upper-case value
+  * ``toupper`` : if the character is an upper-case letter, converts it to its lower-case value
+
+errno.h
+-------
+
+Because of the native multi-threaded nature of DPU programs, this implementation of error numbers
+exposes the last error as a thread-local global variable ``errno``
+
+The file also defines the standard C error codes specified by default:
+
+  +----------------------+----------+
+  | Constant name        | Value    |
+  +======================+==========+
+  | E2BIG                | 1        |
+  +----------------------+----------+
+  | EACCES               | 2        |
+  +----------------------+----------+
+  | EADDRINUSE           | 3        |
+  +----------------------+----------+
+  | EADDRNOTAVAIL        | 4        |
+  +----------------------+----------+
+  | EAFNOSUPPORT         | 5        |
+  +----------------------+----------+
+  | EAGAIN               | 6        |
+  +----------------------+----------+
+  | EALREADY             | 7        |
+  +----------------------+----------+
+  | EBADF                | 8        |
+  +----------------------+----------+
+  | EBADMSG              | 9        |
+  +----------------------+----------+
+  | EBUSY                | 10       |
+  +----------------------+----------+
+  | ECANCELED            | 11       |
+  +----------------------+----------+
+  | ECHILD               | 12       |
+  +----------------------+----------+
+  | ECONNABORTED         | 13       |
+  +----------------------+----------+
+  | ECONNREFUSED         | 14       |
+  +----------------------+----------+
+  | ECONNRESET           | 15       |
+  +----------------------+----------+
+  | EDEADLK              | 16       |
+  +----------------------+----------+
+  | EDESTADDRREQ         | 17       |
+  +----------------------+----------+
+  | EDOM                 | 18       |
+  +----------------------+----------+
+  | EDQUOT               | 19       |
+  +----------------------+----------+
+  | EEXIST               | 20       |
+  +----------------------+----------+
+  | EFAULT               | 21       |
+  +----------------------+----------+
+  | EFBIG                | 22       |
+  +----------------------+----------+
+  | EHOSTUNREACH         | 23       |
+  +----------------------+----------+
+  | EIDRM                | 24       |
+  +----------------------+----------+
+  | EILSEQ               | 25       |
+  +----------------------+----------+
+  | EINPROGRESS          | 26       |
+  +----------------------+----------+
+  | EINTR                | 27       |
+  +----------------------+----------+
+  | EINVAL               | 28       |
+  +----------------------+----------+
+  | EIO                  | 29       |
+  +----------------------+----------+
+  | EISCONN              | 30       |
+  +----------------------+----------+
+  | EISDIR               | 31       |
+  +----------------------+----------+
+  | ELOOP                | 32       |
+  +----------------------+----------+
+  | EMFILE               | 33       |
+  +----------------------+----------+
+  | EMLINK               | 34       |
+  +----------------------+----------+
+  | EMSGSIZE             | 35       |
+  +----------------------+----------+
+  | EMULTIHOP            | 36       |
+  +----------------------+----------+
+  | ENAMETOOLONG         | 37       |
+  +----------------------+----------+
+  | ENETDOWN             | 38       |
+  +----------------------+----------+
+  | ENETRESET            | 39       |
+  +----------------------+----------+
+  | ENETUNREACH          | 40       |
+  +----------------------+----------+
+  | ENFILE               | 41       |
+  +----------------------+----------+
+  | ENOBUFS              | 42       |
+  +----------------------+----------+
+  | ENODATA              | 43       |
+  +----------------------+----------+
+  | ENODEV               | 44       |
+  +----------------------+----------+
+  | ENOENT               | 45       |
+  +----------------------+----------+
+  | ENOEXEC              | 46       |
+  +----------------------+----------+
+  | ENOLCK               | 47       |
+  +----------------------+----------+
+  | ENOLINK              | 48       |
+  +----------------------+----------+
+  | ENOMEM               | 49       |
+  +----------------------+----------+
+  | ENOMSG               | 50       |
+  +----------------------+----------+
+  | ENOPROTOOPT          | 51       |
+  +----------------------+----------+
+  | ENOSPC               | 52       |
+  +----------------------+----------+
+  | ENOSR                | 53       |
+  +----------------------+----------+
+  | ENOSTR               | 54       |
+  +----------------------+----------+
+  | ENOSYS               | 55       |
+  +----------------------+----------+
+  | ENOTCONN             | 56       |
+  +----------------------+----------+
+  | ENOTDIR              | 57       |
+  +----------------------+----------+
+  | ENOTEMPTY            | 58       |
+  +----------------------+----------+
+  | ENOTRECOVERABLE      | 59       |
+  +----------------------+----------+
+  | ENOTSOCK             | 60       |
+  +----------------------+----------+
+  | ENOTSUP              | 61       |
+  +----------------------+----------+
+  | ENOTTY               | 62       |
+  +----------------------+----------+
+  | ENXIO                | 63       |
+  +----------------------+----------+
+  | EOPNOTSUPP           | ENOTSUP  |
+  +----------------------+----------+
+  | EOVERFLOW            | 65       |
+  +----------------------+----------+
+  | EOWNERDEAD           | 66       |
+  +----------------------+----------+
+  | EPERM                | 67       |
+  +----------------------+----------+
+  | EPIPE                | 68       |
+  +----------------------+----------+
+  | EPROTO               | 69       |
+  +----------------------+----------+
+  | EPROTONOSUPPORT      | 70       |
+  +----------------------+----------+
+  | EPROTOTYPE           | 71       |
+  +----------------------+----------+
+  | ERANGE               | 72       |
+  +----------------------+----------+
+  | EROFS                | 73       |
+  +----------------------+----------+
+  | ESPIPE               | 74       |
+  +----------------------+----------+
+  | ESRCH                | 75       |
+  +----------------------+----------+
+  | ESTALE               | 76       |
+  +----------------------+----------+
+  | ETIME                | 77       |
+  +----------------------+----------+
+  | ETIMEDOUT            | 78       |
+  +----------------------+----------+
+  | ETXTBSY              | 79       |
+  +----------------------+----------+
+  | EWOULDBLOCK          | ENOTSUP  |
+  +----------------------+----------+
+  | EXDEV                | 81       |
+  +----------------------+----------+
+
+inttypes.h
+----------
+This extension of ``stdint.h`` defines convenience functions ``imaxabs`` and ``imaxdiv`` and
+the normalized string prefixes to represent integers in string formatters.
+
+iso646.h
+--------
+
+The ``C90`` standard introduced logical operators represented by bitwise operations:
+
+  * ``and`` : stands for ``&&``
+  * ``and_eq`` : stands for ``&=``
+  * ``bitand`` : stands for ``&``
+  * ``bitor`` : stands for ``|``
+  * ``compl`` : stands for ``~``
+  * ``not`` : stands for ``!``
+  * ``not_eq`` : stands for ``!=``
+  * ``or`` : stands for ``||``
+  * ``or_eq`` : stands for ``|=``
+  * ``xor`` : stands for ``^``
+  * ``xor_eq`` : stands for ``^=``
+
+limits.h
+--------
+Defines the standard limits of elementary types:
+
+  * ``SCHAR_MIN``
+  * ``SCHAR_MAX``
+  * ``UCHAR_MAX``
+  * ``SHRT_MIN``
+  * ``SHRT_MAX``
+  * ``USHRT_MAX``
+  * ``INT_MIN``
+  * ``INT_MAX``
+  * ``UINT_MAX``
+  * ``LONG_MIN``
+  * ``LONG_MAX``
+  * ``ULONG_MAX``
+
+stdalign.h
+----------
+Defines the macros:
+
+  * ``alignas`` to specify the alignment of a variable (e.g. ``struct alignas(8) X {...}``, to align on 64-bits)
+  * ``alignof`` to fetch the alignment of a given data type
+
+stdarg.h
+--------
+
+Defines the standard type ``va_list`` and the associated standard macros:
+
+  * ``va_start(ap, param)``
+  * ``va_end(ap)``
+  * ``va_arg(ap, type)``
+  * ``va_copy(dest, src)``
+
+stdbool.h
+---------
+
+This include file defines the normalized type ``bool`` and values ``true`` and ``false``, equal to 1 and 0, respectively.
+
+stddef.h
+--------
+
+Defines standard common types and helpers:
+
+  * The ``NULL`` pointer
+  * The standard types:
+
+    * ``ptrdiff_t``
+    * ``size_t``
+    * ``max_align_t``
+    * ``wchar_t``
+
+  * ``offsetof``, to get the offset of a field within a structure
+
+stdint.h
+--------
+
+Defines the integer types implemented by the DPU, in particular:
+
+  * ``int8_t``, ``int16_t``, ``int32_t`` and ``int64_t`` for signed integers of 8, 16, 32 and 64 bits, respectively
+  * ``uint8_t``, ``uint16_t``, ``uint32_t`` and ``uint64_t`` for unsigned integers of 8, 16, 32 and 64 bits, respectively
+
+stdlib.h
+--------
+
+Defines the following functions of the C standard library:
+
+  * ``abort()``: sets the DPU into fault, so that the whole processor execution terminates
+  * ``exit()``: aborts the execution of the invoking thread
+  * ``getenv()``: returns ``NULL``
+  * ``abs``, ``labs`` and ``llabs``: the absolute value of integers, longs and long longs
+  * ``div``, ``ldiv`` and ``lldiv``: return the numerator and denominator of a division
+  * ``atoi`` and ``atol``: convert strings to integers and longs
+
+Note: ``stdlib`` function ``strtol`` is **not implemented**.
+
+stdnoreturn.h
+-------------
+Defines the ``noreturn`` macro, which can be used to specify that a function does not return.
+
+string.h
+--------
+
+The common string and buffer operations (only for **WRAM** pointers if not specified otherwise):
+
+  * ``memcmp(area1, area2, size)`` : compares ``size`` bytes of the buffers pointed by ``area1`` and ``area2``
+  * ``memset(area, value, size)`` : fills in ``size`` bytes of the buffer pointed by ``area`` with ``value`` (for both **WRAM** and **MRAM** pointer)
+  * ``memchr(area, character, size)`` : returns the first position of ``character`` within the ``size`` bytes of the buffer pointed by ``area``, or ``NULL``
+  * ``memcpy(destination, source, size)`` : copies ``size`` bytes of the buffer pointed by ``source`` into the buffer pointed by ``destination`` (for both **WRAM** and **MRAM** pointer)
+  * ``memmove`` : a safer (but slower) version of ``memcpy``, considering overlapping buffers (for both **WRAM** and **MRAM** pointer)
+  * ``strlen(string)`` : returns the length of ``string``
+  * ``strnlen(string, size)`` : returns the maximum between ``size`` and the length of ``string``
+  * ``strcmp(string1, string2)`` : compares ``string1`` with ``string2``
+  * ``strncmp(string1, string2, size)`` : compares ``size`` bytes of ``string1`` with ``string2``
+  * ``strcat(destination, source)`` : appends the string ``source`` to ``destination``
+  * ``strncat(destination, source, size)`` : appends the first ``size`` bytes of ``source`` to ``destination``
+  * ``strchr(string, character)`` : returns the first occurrence of ``character`` within ``string``, or ``NULL``
+  * ``strrchr(string, character)`` : returns the last occurrence of ``character`` within ``string``, or ``NULL``
+  * ``strcpy(destination, source)`` : copies the string ``source`` into the buffer pointed by ``destination``
+  * ``stpcpy(destination, source)`` : copies the string ``source`` into the buffer pointed by ``destination``
+  * ``strncpy(destination, source, size)`` : copies at most ``size`` bytes of ``source`` into the buffer pointed by ``destination``
+  * ``stpncpy(destination, source, size)`` : copies at most ``size`` bytes of ``source`` into the buffer pointed by ``destination``
+  * ``strcoll`` is an alias of ``strcmp``, since there is no notion of locale in the runtime environment
+  * ``strxfrm`` is an alias of ``strncpy``, since there is no notion of locale in the runtime environment
+  * ``strlwr(string)`` : converts ``string`` to lowercase characters
+  * ``strupr(string)`` : converts ``string`` to uppercase characters
+  * ``strrev(string)`` : reverses the characters of ``string``
+  * ``strerr(errnum)`` : gives a description of the error corresponding to error number ``errnum``
+  * ``strdup(string)`` : creates a duplicate of ``string``
+  * ``strndup(string, size)`` : creates a duplicate of at most ``size`` bytes of ``string``
+  * ``strspn(string, accept)`` : computes the length of the longest prefix of ``string`` which consists entirely of bytes in ``accept``
+  * ``strcspn(string, reject)`` : computes the length of the longest prefix of ``string`` which consists entirely of bytes not in ``reject``
+  * ``strpbrk(string, accept)`` : locates the first occurrence in ``string`` of any of the bytes in ``accept``
+  * ``strstr(haystack, needle)`` : finds the first occurrence of ``needle`` in ``haystack``
+  * ``strtok_r(string, separator, save)`` : extract a token delimited by ``separator`` from ``string``
+  * ``strsep(string, separator)`` : extract a token delimited by ``separator`` from ``string``
+
+stdio.h
+-------
+
+It defines the following standard functions:
+  * ``printf``
+  * ``puts``
+  * ``putchar``
+
+For more information about logging see Section :doc:`07_Logging`.
+
+Not-supported headers
+---------------------
+
+The following headers are not implemented in the DPU standard library:
+  * ``complex.h``
+  * ``locale.h``
+  * ``math.h``
+  * ``setjmp.h``
+  * ``signal.h``
+  * ``stdatomic.h``
+  * ``tgmath.h``
+  * ``threads.h``
+  * ``time.h``
+
+Floating point support
+----------------------
+
+The system library re-uses the LLVM floating-point emulation functions so that floating points can be used
+natively in C. However, this is pure software emulation, giving very poor performance
+results: **floating points shall be used for very specific non-time-critical operations**.
+

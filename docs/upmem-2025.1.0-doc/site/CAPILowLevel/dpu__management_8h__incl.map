@@ -1,0 +1,6 @@
+<map id="dpu_management.h" name="dpu_management.h">
+<area shape="rect" id="node4" href="$dpu__description_8h.html" title="C API for DPU rank description. " alt="" coords="231,80,369,107"/>
+<area shape="rect" id="node5" href="$dpu__hw__description_8h.html" title="Hardware DPU rank description. " alt="" coords="297,155,460,181"/>
+<area shape="rect" id="node8" href="$dpu__target_8h.html" title="Definition of the different DPU backend types. " alt="" coords="169,155,273,181"/>
+<area shape="rect" id="node6" href="$dpu__chip__id_8h.html" title="Definition of the different DPU chip IDs. " alt="" coords="317,229,427,256"/>
+</map>

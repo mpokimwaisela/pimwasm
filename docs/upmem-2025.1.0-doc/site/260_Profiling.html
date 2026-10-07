@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profiling DPU binary &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Performance Counters" href="071_MeasuringPerformances.html" />
+    <link rel="prev" title="Kernel Driver" href="250_Driver.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Profiling DPU binary</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dpu-statistics-mode">dpu-statistics mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dpu-sections-mode">dpu-sections mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-does-that-work-advance-usage">How does that work / Advance usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Profiling DPU binary</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/260_Profiling.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="profiling-dpu-binary">
+<h1>Profiling DPU binary<a class="headerlink" href="#profiling-dpu-binary" title="Permalink to this heading"></a></h1>
+<section id="dpu-statistics-mode">
+<h2>dpu-statistics mode<a class="headerlink" href="#dpu-statistics-mode" title="Permalink to this heading"></a></h2>
+<p><strong>How to use it</strong></p>
+<p>The UPMEM <code class="docutils literal notranslate"><span class="pre">dpu-profiling</span></code> tool allows profiling the DPU to know how much time is spent in each function of a DPU program.</p>
+<p>To use this feature the DPU program needs to be compiled with the <code class="docutils literal notranslate"><span class="pre">-pg</span></code> compilation option.
+Then you need to execute the program with <code class="docutils literal notranslate"><span class="pre">dpu-profiling</span></code>.</p>
+<p>The program can either be a host application offloading the DPU program, or <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code> can be used to run the DPU program:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-profiling dpu-statistics -- &lt;host_program&gt;
+dpu-profiling dpu-statistics -- dpu-lldb --batch --one-line run -- &lt;dpu_program&gt;
+</pre></div>
+</div>
+<p><strong>Example</strong></p>
+<p>Considering the following DPU program (in <code class="docutils literal notranslate"><span class="pre">dpu_statistics_profiling.c</span></code>):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define BASE 10000</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">foo</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">15</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">res</span><span class="o">++</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">res</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">bar</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">85</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">res</span><span class="o">++</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">res</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">BASE</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">res</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">foo</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">bar</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">res</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Compile it with the <code class="docutils literal notranslate"><span class="pre">-pg</span></code> option:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-upmem-dpurte-clang -pg dpu_statistics_profiling.c -o dpu_statistics_profiling
+</pre></div>
+</div>
+<p>The program can be executed with <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-profiling dpu-statistics -- dpu-lldb --batch --one-line run -- dpu_statistics_profiling
+</pre></div>
+</div>
+<p>And it will produce the following output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>**************
+*** Global ***
+**************
+                                         main (#occ =        1) = 	0.000517
+                                  __bootstrap (#occ =        1) = 	0.000517
+                                          foo (#occ =    29034) = 	15.000620
+                                          bar (#occ =   164516) = 	84.998347
+                                Total samples = 	193552
+</pre></div>
+</div>
+</section>
+<section id="dpu-sections-mode">
+<h2>dpu-sections mode<a class="headerlink" href="#dpu-sections-mode" title="Permalink to this heading"></a></h2>
+<p><strong>How to use it</strong></p>
+<p>The UPMEM <code class="docutils literal notranslate"><span class="pre">dpu-profiling</span></code> tool allows profiling the DPU to know how much time each thread spent in a specified code section, compared to the global duration of the program.
+This is especially useful when the DPU program is composed of a small number of functions, or when doing link time optimization (LTO), where the other function-based profiling methods do not provide as much information.</p>
+<p>To use this feature the DPU program needs to be compiled with the <code class="docutils literal notranslate"><span class="pre">-pg</span></code> compilation option.
+Then you need to execute the program with <code class="docutils literal notranslate"><span class="pre">dpu-profiling</span></code>.</p>
+<p>The program can either be a host application offloading the DPU program, or <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code> can be used to run the DPU program:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-profiling dpu-sections -- &lt;host_program&gt;
+dpu-profiling dpu-sections -- dpu-lldb --batch --one-line run -- &lt;dpu_program&gt;
+</pre></div>
+</div>
+<p>Please note that the dpu-sections mode is only accurate when using UPMEM DIMMs.</p>
+<p><strong>Example</strong></p>
+<p>Considering the following DPU program (in <code class="docutils literal notranslate"><span class="pre">dpu_sections_profiling.c</span></code>):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;profiling.h&gt;</span>
+
+<span class="cp">#define BASE 10000</span>
+
+<span class="n">PROFILING_INIT</span><span class="p">(</span><span class="n">foo</span><span class="p">);</span>
+<span class="n">PROFILING_INIT</span><span class="p">(</span><span class="n">bar</span><span class="p">);</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">BASE</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">profiling_start</span><span class="p">(</span><span class="o">&amp;</span><span class="n">foo</span><span class="p">);</span>
+<span class="w">                </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">15</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="n">res</span><span class="o">++</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="n">profiling_stop</span><span class="p">(</span><span class="o">&amp;</span><span class="n">foo</span><span class="p">);</span>
+
+<span class="w">                </span><span class="n">profiling_start</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bar</span><span class="p">);</span>
+<span class="w">                </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">85</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="n">res</span><span class="o">++</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="n">profiling_stop</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bar</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">res</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Compile it with the <code class="docutils literal notranslate"><span class="pre">-pg</span></code> option:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-upmem-dpurte-clang -pg dpu_sections_profiling.c -o dpu_sections_profiling
+</pre></div>
+</div>
+<p>The program can be executed with <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-profiling dpu-sections -- dpu-lldb --batch --one-line run -- dpu_sections_profiling
+</pre></div>
+</div>
+<p>And it will produce the following output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>****************
+*** Sections ***
+****************
+                                          bar: 
+                                              thread#00 =       81.319500%
+                                          foo: 
+                                              thread#00 =       15.338500%
+</pre></div>
+</div>
+</section>
+<section id="how-does-that-work-advance-usage">
+<h2>How does that work / Advance usage<a class="headerlink" href="#how-does-that-work-advance-usage" title="Permalink to this heading"></a></h2>
+<p>By using <code class="docutils literal notranslate"><span class="pre">-pg</span></code> clang option, the compiler will add a call to the <code class="docutils literal notranslate"><span class="pre">mcount</span></code> function at each function entry.</p>
+<p>There are 3 different profiling modes at the moment:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nop</span></code>:</p></li>
+</ul>
+<p>The <cite>nop</cite> mode patches the calls to the <cite>mcount</cite> function with a <cite>nop</cite> instruction.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">statistics</span></code>:</p></li>
+</ul>
+<p>When using the <cite>statistics</cite> mode, the <cite>mcount</cite> function calls are patched with a <cite>sh</cite> instruction in order to write the thread PC in a dedicated WRAM area.
+This location is then regularly read from the host to compute how many times a thread was in a given function.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sections</span></code>:</p></li>
+</ul>
+<p>For a given DPU code section (defined by <cite>profiling_start</cite> and <cite>profiling_stop</cite> functions), we count for each thread the number of cyles spent in the section using the <cite>performance counter</cite>.
+We also register the DPU program duration time in order to compute the ratio of the time spent in the section.</p>
+<p>The mode can be selected using the <code class="docutils literal notranslate"><span class="pre">enableProfiling</span></code> property in the DPU profile (examples: <code class="docutils literal notranslate"><span class="pre">“enableProfiling=statistics”</span></code> or <code class="docutils literal notranslate"><span class="pre">“enableProfiling=nop”</span></code>).</p>
+<p>The UPMEM <code class="docutils literal notranslate"><span class="pre">dpu-profiling</span></code> tool is using either the <cite>statistics</cite> or the <cite>sections</cite> mode depending on the specified parameter. The DPU profile is automatically set up.</p>
+</section>
+<section id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>If a dpu function should not be profiled, use <code class="docutils literal notranslate"><span class="pre">&quot;__attribute__((no_instrument_function))&quot;</span></code> at the function definition.</p></li>
+<li><p>Only one DPU can be profiled in a rank at once, but one can choose a specific DPU by using the following properties in the DPU profile: <code class="docutils literal notranslate"><span class="pre">profilingDpuId</span></code> and <code class="docutils literal notranslate"><span class="pre">profilingSliceId</span></code> (default values are <code class="docutils literal notranslate"><span class="pre">0</span></code> for both properties)</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="250_Driver.html" class="btn btn-neutral float-left" title="Kernel Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="071_MeasuringPerformances.html" class="btn btn-neutral float-right" title="Performance Counters" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

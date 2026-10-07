@@ -1,0 +1,19 @@
+DPU Version Selection
+=====================
+
+Currently, there are two versions of the DPU: v1A and v1B.
+
+By default, if DIMMs of a specific version are present and the kernel driver is loaded, the SDK will automatically tune itself for the installed version.
+
+If the kernel driver is not loaded, the SDK will default to the v1A DPU version when using the functional simulator, and when compiling.
+
+You can force the SDK to target a specific version (v1A or v1B) by using one of two convenience helper scripts. Use the following commands::
+
+    $ source dpu_v1A_mode
+    $ source dpu_v1B_mode
+
+At runtime, a checking mechanism verifies that the DPU binary is compatible with the running target.
+
+Please note that it is not possible to convert a DPU binary compiled for one version to another. However, if you're using the functional simulator, you can use the commands above to match the DPU binary to the desired version.
+
+**Note:** Specifying the ``-mcpu=v1A`` or ``-mcpu=v1B`` compilation option during the compilation process will always take precedence over the version selection scripts and any environment variables.

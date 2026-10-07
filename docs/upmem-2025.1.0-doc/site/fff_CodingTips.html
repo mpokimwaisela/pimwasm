@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coding tips and recommended practices &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/tabs.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/tabs.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="The Clangd Language Server" href="ggg_LanguageServer.html" />
+    <link rel="prev" title="Logging" href="07_Logging.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Logging.html">Logging</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Coding tips and recommended practices</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#programming-dpus">Programming DPUs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#persistent-and-non-persistent-objects-amongst-boots">Persistent and non-persistent objects amongst boots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multiplications-and-divisions-of-shorts-and-integers-are-expensive">Multiplications and divisions of shorts and integers are expensive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bit-variables-are-expensive">64-bit variables are expensive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multi-threaded-programs-are-more-efficient-than-single-threaded">Multi-threaded programs are more efficient than single-threaded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#floating-point-support">Floating-point support</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#host-applications">Host applications</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#data-sharing">Data sharing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#memory-locality">Memory locality</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Coding tips and recommended practices</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/fff_CodingTips.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="coding-tips-and-recommended-practices">
+<h1>Coding tips and recommended practices<a class="headerlink" href="#coding-tips-and-recommended-practices" title="Permalink to this heading"></a></h1>
+<section id="programming-dpus">
+<h2>Programming DPUs<a class="headerlink" href="#programming-dpus" title="Permalink to this heading"></a></h2>
+<section id="persistent-and-non-persistent-objects-amongst-boots">
+<h3>Persistent and non-persistent objects amongst boots<a class="headerlink" href="#persistent-and-non-persistent-objects-amongst-boots" title="Permalink to this heading"></a></h3>
+<p>Let’s consider the following program, computing !5 (in <code class="docutils literal notranslate"><span class="pre">factorial.c</span></code>):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mram.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+
+<span class="n">__host</span><span class="w"> </span><span class="n">__dma_aligned</span><span class="w"> </span><span class="kt">int64_t</span><span class="w"> </span><span class="n">factorial</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int64_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">--</span><span class="p">)</span>
+<span class="w">    </span><span class="n">factorial</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>And its associated host program:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-Qw==" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-Qw==" name="Qw==" role="tab" tabindex="0">C</button><button aria-controls="panel-0-Qysr" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-Qysr" name="Qysr" role="tab" tabindex="-1">C++</button><button aria-controls="panel-0-SmF2YQ==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-SmF2YQ==" name="SmF2YQ==" role="tab" tabindex="-1">Java</button><button aria-controls="panel-0-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-0-Qw==" class="sphinx-tabs-panel group-tab" id="panel-0-Qw==" name="Qw==" role="tabpanel" tabindex="0"><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;dpu.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+
+<span class="cp">#ifndef DPU_EXE</span>
+<span class="cp">#define DPU_EXE &quot;factorial&quot;</span>
+<span class="cp">#endif</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">dpu_set_t</span><span class="w"> </span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">dpu</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int64_t</span><span class="w"> </span><span class="n">factorial</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_alloc</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">set</span><span class="p">));</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_load</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_EXE</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">));</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_launch</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_SYNCHRONOUS</span><span class="p">));</span>
+<span class="w">  </span><span class="n">DPU_FOREACH</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">dpu</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_copy_from</span><span class="p">(</span><span class="n">dpu</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;factorial&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">factorial</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">factorial</span><span class="p">)));</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;first iteration: factorial = %lli</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="p">)</span><span class="n">factorial</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_launch</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_SYNCHRONOUS</span><span class="p">));</span>
+<span class="w">  </span><span class="n">DPU_FOREACH</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">dpu</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_copy_from</span><span class="p">(</span><span class="n">dpu</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;factorial&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">factorial</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">factorial</span><span class="p">)));</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;second iteration: factorial = %lli</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="p">)</span><span class="n">factorial</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_free</span><span class="p">(</span><span class="n">set</span><span class="p">));</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-Qysr" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-Qysr" name="Qysr" role="tabpanel" tabindex="0"><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;dpu&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+
+<span class="cp">#ifndef DPU_BINARY</span>
+<span class="cp">#define DPU_BINARY &quot;factorial&quot;</span>
+<span class="cp">#endif</span>
+
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">dpu</span><span class="p">;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">dpu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DpuSet</span><span class="o">::</span><span class="n">allocate</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="n">dpu</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">DPU_BINARY</span><span class="p">);</span>
+<span class="w">    </span><span class="n">dpu</span><span class="p">.</span><span class="n">exec</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint64_t</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">factorial</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="n">factorial</span><span class="p">.</span><span class="n">front</span><span class="p">().</span><span class="n">resize</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="n">dpu</span><span class="p">.</span><span class="n">copy</span><span class="p">(</span><span class="n">factorial</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;factorial&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;first iteration: factorial = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span>
+<span class="w">      </span><span class="p">(</span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="p">)(</span><span class="n">factorial</span><span class="p">.</span><span class="n">front</span><span class="p">().</span><span class="n">front</span><span class="p">())</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">dpu</span><span class="p">.</span><span class="n">exec</span><span class="p">();</span>
+<span class="w">    </span><span class="n">dpu</span><span class="p">.</span><span class="n">copy</span><span class="p">(</span><span class="n">factorial</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;factorial&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;second iteration: factorial = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span>
+<span class="w">      </span><span class="p">(</span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="p">)(</span><span class="n">factorial</span><span class="p">.</span><span class="n">front</span><span class="p">().</span><span class="n">front</span><span class="p">())</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">DpuError</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-SmF2YQ==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-SmF2YQ==" name="SmF2YQ==" role="tabpanel" tabindex="0"><div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.nio.ByteBuffer</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.nio.ByteOrder</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">com.upmem.dpu.Dpu</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">com.upmem.dpu.DpuException</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">com.upmem.dpu.DpuSystem</span><span class="p">;</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">FactorialHost</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">DpuException</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">try</span><span class="p">(</span><span class="n">DpuSystem</span><span class="w"> </span><span class="n">dpu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DpuSystem</span><span class="p">.</span><span class="na">allocate</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">      </span><span class="n">dpu</span><span class="p">.</span><span class="na">load</span><span class="p">(</span><span class="s">&quot;factorial&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">dpu</span><span class="p">.</span><span class="na">exec</span><span class="p">();</span>
+
+<span class="w">      </span><span class="kt">byte</span><span class="o">[][]</span><span class="w"> </span><span class="n">factorial</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[</span><span class="mi">1</span><span class="o">][</span><span class="mi">8</span><span class="o">]</span><span class="p">;</span>
+<span class="w">      </span><span class="n">dpu</span><span class="p">.</span><span class="na">copy</span><span class="p">(</span><span class="n">factorial</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;factorial&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">ByteBuffer</span><span class="w"> </span><span class="n">wrapped</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ByteBuffer</span><span class="p">.</span><span class="na">wrap</span><span class="p">(</span><span class="n">factorial</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">);</span>
+<span class="w">      </span><span class="n">wrapped</span><span class="p">.</span><span class="na">order</span><span class="p">(</span><span class="n">ByteOrder</span><span class="p">.</span><span class="na">LITTLE_ENDIAN</span><span class="p">);</span>
+
+<span class="w">      </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;first iteration: factorial = &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">wrapped</span><span class="p">.</span><span class="na">getLong</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
+
+<span class="w">      </span><span class="n">dpu</span><span class="p">.</span><span class="na">exec</span><span class="p">();</span>
+<span class="w">      </span><span class="n">dpu</span><span class="p">.</span><span class="na">copy</span><span class="p">(</span><span class="n">factorial</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;factorial&quot;</span><span class="p">);</span>
+
+<span class="w">      </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;second iteration: factorial = &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">wrapped</span><span class="p">.</span><span class="na">getLong</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-UHl0aG9u" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="kn">from</span> <span class="nn">dpu</span> <span class="kn">import</span> <span class="n">DpuSet</span>
+<span class="kn">from</span> <span class="nn">dpu</span> <span class="kn">import</span> <span class="n">ALLOCATE_ALL</span>
+
+<span class="k">with</span> <span class="n">DpuSet</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">binary</span> <span class="o">=</span> <span class="s2">&quot;factorial&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dpus</span><span class="p">:</span>
+
+    <span class="n">dpus</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+    <span class="n">factorial</span> <span class="o">=</span> <span class="p">[</span><span class="nb">bytearray</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">dpus</span><span class="p">]</span>
+    <span class="n">dpus</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">factorial</span><span class="p">,</span> <span class="s1">&#39;factorial&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;first iteration: factorial = &quot;</span><span class="p">,</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">factorial</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;little&#39;</span><span class="p">))</span>
+
+    <span class="n">dpus</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+    <span class="n">dpus</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">factorial</span><span class="p">,</span> <span class="s1">&#39;factorial&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;second iteration: factorial = &quot;</span><span class="p">,</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">factorial</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;little&#39;</span><span class="p">))</span>
+
+
+</pre></div>
+</div>
+</div></div>
+<p>Build and execute it:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-Qw==" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-1-Qw==" name="Qw==" role="tab" tabindex="0">C</button><button aria-controls="panel-1-Qysr" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-Qysr" name="Qysr" role="tab" tabindex="-1">C++</button><button aria-controls="panel-1-SmF2YQ==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-SmF2YQ==" name="SmF2YQ==" role="tab" tabindex="-1">Java</button><button aria-controls="panel-1-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-1-Qw==" class="sphinx-tabs-panel group-tab" id="panel-1-Qw==" name="Qw==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dpu-upmem-dpurte-clang<span class="w"> </span>-o<span class="w"> </span>factorial<span class="w"> </span>factorial.c
+gcc<span class="w"> </span>--std<span class="o">=</span>c99<span class="w"> </span>-o<span class="w"> </span>factorial_host<span class="w"> </span>factorial_host.c<span class="w"> </span><span class="sb">`</span>dpu-pkg-config<span class="w"> </span>--cflags<span class="w"> </span>--libs<span class="w"> </span>dpu<span class="sb">`</span>
+./factorial_host
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-Qysr" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-Qysr" name="Qysr" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dpu-upmem-dpurte-clang<span class="w"> </span>-o<span class="w"> </span>factorial<span class="w"> </span>factorial.c
+g++<span class="w"> </span>--std<span class="o">=</span>c++11<span class="w"> </span>-o<span class="w"> </span>factorial_host_cpp<span class="w"> </span>factorial_host.cpp<span class="w"> </span><span class="sb">`</span>dpu-pkg-config<span class="w"> </span>--cflags<span class="w"> </span>--libs<span class="w"> </span>dpu<span class="sb">`</span><span class="w"> </span>-g
+./factorial_host_cpp
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-SmF2YQ==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-SmF2YQ==" name="SmF2YQ==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dpu-upmem-dpurte-clang<span class="w"> </span>-o<span class="w"> </span>factorial<span class="w"> </span>factorial.c
+javac<span class="w"> </span>-cp<span class="w"> </span><span class="k">$(</span>dpu-pkg-config<span class="w"> </span>--variable<span class="o">=</span>java<span class="w"> </span>dpu<span class="k">)</span><span class="w"> </span>FactorialHost.java
+java<span class="w"> </span>-cp<span class="w"> </span>.:<span class="k">$(</span>dpu-pkg-config<span class="w"> </span>--variable<span class="o">=</span>java<span class="w"> </span>dpu<span class="k">)</span><span class="w"> </span>FactorialHost
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-UHl0aG9u" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>factorial_host.py
+</pre></div>
+</div>
+</div></div>
+<p>The first time the program runs, the returned value is 120, as expected
+But when rebooting the DPU and checking the results again, one will observe that the returned value is not !5, but 14400 (3840 in hexadecimal, equal to !5x!5).</p>
+<p>The reason why the result after a second boot is 120x120 instead of 120 is that the <code class="docutils literal notranslate"><span class="pre">factorial</span></code> variable is not re-initialized at the second boot. In other words, saying:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">__dma_aligned</span><span class="w"> </span><span class="kt">int64_t</span><span class="w"> </span><span class="n">factorial</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>This means that the initial value for this variable is 1 only during the first boot.</p>
+<p>More generally, the <strong>Runtime Library</strong> does not reset system resources when re-booting.
+In particular, mutexes are not relaxed, and semaphore or barrier counters are not reset to their initial value.</p>
+</section>
+<section id="multiplications-and-divisions-of-shorts-and-integers-are-expensive">
+<h3>Multiplications and divisions of shorts and integers are expensive<a class="headerlink" href="#multiplications-and-divisions-of-shorts-and-integers-are-expensive" title="Permalink to this heading"></a></h3>
+<p>Multiplications of 32-bit words rely on the UPMEM DPU instruction <code class="docutils literal notranslate"><span class="pre">mul_step</span></code>, implying an over cost up to 42 clock cycles per multiplication.
+The same applies to the 32-bit division and the remainder.</p>
+<p>As a consequence, avoid using these operations when not needed.</p>
+</section>
+<section id="bit-variables-are-expensive">
+<h3>64-bit variables are expensive<a class="headerlink" href="#bit-variables-are-expensive" title="Permalink to this heading"></a></h3>
+<p>The DPU is a native 32-bit machine. 64-bit instructions are emulated by the toolchain and are usually more expensive
+than 32-bit ones. Typically, and addition is emulated by 2 or three instructions, so is twice or thrice more expensive.</p>
+<p>As a consequence, 64-bit code is slower and requires more program memory than 32-bit code.</p>
+</section>
+<section id="multi-threaded-programs-are-more-efficient-than-single-threaded">
+<h3>Multi-threaded programs are more efficient than single-threaded<a class="headerlink" href="#multi-threaded-programs-are-more-efficient-than-single-threaded" title="Permalink to this heading"></a></h3>
+<p>The DPU pipeline is reaching the nominal performance (about 1 instruction per cycle) when there are more threads in
+action than the depth of the pipeline.</p>
+<p>It is recommended to implement algorithms with 16 active tasklets to absorb the latency of memory accesses.</p>
+</section>
+<section id="floating-point-support">
+<h3>Floating-point support<a class="headerlink" href="#floating-point-support" title="Permalink to this heading"></a></h3>
+<p>Albeit understood natively by the compiler, floating points are emulated by software. As a consequence, floating
+point operations are very slow and should be avoided.</p>
+</section>
+</section>
+<section id="host-applications">
+<h2>Host applications<a class="headerlink" href="#host-applications" title="Permalink to this heading"></a></h2>
+<section id="data-sharing">
+<span id="data-sharing-label"></span><h3>Data sharing<a class="headerlink" href="#data-sharing" title="Permalink to this heading"></a></h3>
+<p>Communication with the DPU <strong>WRAM</strong> is slower than copies to/from <strong>MRAM</strong>.
+Moreover, the <strong>WRAM</strong> is a smaller memory compared to <strong>MRAM</strong>.
+As a consequence, the DPU <strong>WRAM</strong> should be used to share small amounts of data (tens to a hundred bytes).
+To share large buffers users should use copies to/from <strong>MRAM</strong>.</p>
+</section>
+<section id="memory-locality">
+<h3>Memory locality<a class="headerlink" href="#memory-locality" title="Permalink to this heading"></a></h3>
+<p>Each DPU can only access data in its own <strong>MRAM</strong>.
+It is recommended to organize the data flow to make DPU execution as much as possible independent
+from external data.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="07_Logging.html" class="btn btn-neutral float-left" title="Logging" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ggg_LanguageServer.html" class="btn btn-neutral float-right" title="The Clangd Language Server" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

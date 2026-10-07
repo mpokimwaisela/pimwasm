@@ -1,0 +1,54 @@
+:orphan:
+
+.. _pivot-source-code-label:
+
+Pivot Partitioning Complete Source Code
+=======================================
+
+This is the complete source code for the pivot partitioning algorithm used as an example for the scatter/gather transfers feature.
+
+The DPU code performs a partitioning around a pivot:
+
+.. literalinclude:: ../../../endtests/documentation/pivot_example/pivot_example.c
+    :language: c
+
+The code is built to be executed by a single tasklet:
+
+.. literalinclude:: ../../../endtests/documentation/pivot_example/pivot_example.compile_dpu
+    :language: bash
+
+The host code that uses scatter/gather transfers to aggregate the results of the DPU tasks is the following:
+
+.. tabs::
+    .. group-tab:: C
+
+       .. literalinclude:: ../../../endtests/documentation/pivot_example/pivot_example_host.c
+           :language: c
+
+    .. group-tab:: C++
+
+       .. literalinclude:: ../../../endtests/documentation/pivot_example/pivot_example_host.cpp
+           :language: c++
+
+    .. group-tab:: C++ (with lambda)
+
+       .. literalinclude:: ../../../endtests/documentation/pivot_example/pivot_example_lambda_host.cpp
+           :language: c++
+
+It can be compiled with:
+
+.. tabs::
+    .. group-tab:: C
+
+       .. literalinclude:: ../../../endtests/documentation/pivot_example/pivot_example.compile_host
+           :language: bash
+
+    .. group-tab:: C++
+
+       .. literalinclude:: ../../../endtests/documentation/pivot_example/pivot_example.compile_host_cpp
+           :language: bash
+
+    .. group-tab:: C++ (with lambda)
+
+       .. literalinclude:: ../../../endtests/documentation/pivot_example/pivot_example_lambda.compile_host_cpp
+           :language: bash

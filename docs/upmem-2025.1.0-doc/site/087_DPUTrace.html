@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Using dputrace tool &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Verifying memory accesses with dpugrind" href="088_DPUMemcheck.html" />
+    <link rel="prev" title="dpu-lldb limitations" href="086_DPUDebugLimitations.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using dputrace tool</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-generate-trace-files">How to generate trace files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#host-traces">Host traces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#watch-mode">Watch mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-options">Advanced options</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Using dputrace tool</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/087_DPUTrace.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="using-dputrace-tool">
+<h1>Using dputrace tool<a class="headerlink" href="#using-dputrace-tool" title="Permalink to this heading"></a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">dputrace</span></code> provides an exact representation of the low-level execution of a DPU program.
+Each executed assembly instruction is printed, with detailed information on the different registers modified by the instruction.
+This tool is mainly a low-level/assembly debugging helper.</p>
+<section id="how-to-generate-trace-files">
+<h2>How to generate trace files<a class="headerlink" href="#how-to-generate-trace-files" title="Permalink to this heading"></a></h2>
+<p>Trace files can only be generated by a DPU running on the functional simulator backend.
+By setting the environment variable <code class="docutils literal notranslate"><span class="pre">UPMEM_TRACE_DIR</span></code>, the simulator will output a binary trace file, named <code class="docutils literal notranslate"><span class="pre">trace-XXXX-YY</span></code>,
+where <code class="docutils literal notranslate"><span class="pre">XXXX</span></code> is the DPU rank ID and <code class="docutils literal notranslate"><span class="pre">YY</span></code> the DPU ID in the rank, in the directory specified by <code class="docutils literal notranslate"><span class="pre">UPMEM_TRACE_DIR</span></code>.
+Theses trace files are directly usable by the <code class="docutils literal notranslate"><span class="pre">dputrace</span></code> tool.</p>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this heading"></a></h2>
+<p>We are going to consider a rather simple DPU program:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">__attribute__</span><span class="p">((</span><span class="n">noinline</span><span class="p">))</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">foo</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">foo</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Let’s build the program:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-upmem-dpurte-clang -DNR_TASKLETS=16 dputrace_example.c -o dputrace_example -O2
+</pre></div>
+</div>
+<p>We now need to execute this program. Here, we are using <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code> as a runner. Any host application based on the Host API would work.
+From a terminal, we are first setting <code class="docutils literal notranslate"><span class="pre">UPMEM_TRACE_DIR</span></code>, then running the program, making sure that we run it on a functional
+simulator:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>export UPMEM_TRACE_DIR=.
+export UPMEM_PROFILE_BASE=backend=simulator
+</pre></div>
+</div>
+<p>We can now launch <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file dputrace_example
+process launch
+exit
+</pre></div>
+</div>
+<p>A new file, <code class="docutils literal notranslate"><span class="pre">trace-0000-00</span></code>, is available in the <code class="docutils literal notranslate"><span class="pre">UPMEM_TRACE_DIR</span></code> directory (in this example, the current directory).
+Now let’s execute <code class="docutils literal notranslate"><span class="pre">dputrace</span></code>, focusing on the thread 1 (hence the <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">1</span></code> option):</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dputrace -i trace-0000-00 --print-trace-count -t 1 -no-color -no-tree
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[#0x00000008][01@0x80000000]   jnz id (0x00000001), 0x80000030
+[#0x0000000a][01@0x80000030]   jeq id (0x00000001), 15 (0xf), 0x80000040
+[#0x0000000c][01@0x80000038]   boot id (0x00000001), 1 (0x1)
+[#0x0000000e][01@0x80000040]   ld d22 (0x000004d800000400), id8 (0x00000008), 24 (0x18)                   R: 0x00000020 (__sys_thread_stack_table_ptr + 8)
+[#0x00000011][01@0x80000048]   call r23 (0x0000000a), 0x80000068                                          =&gt; main
+[#0x00000014][01@0x80000068]   sd r22 (0x000004d8), 0 (0x0), d22 (0x000004d80000000a)                     W: 0x000004d8
+[#0x00000017][01@0x80000070]   add r22 (0x000004e0), r22 (0x000004d8), 8 (0x8)
+[#0x0000001b][01@0x80000078]   move r0 (0x00000004), 4 (0x4)
+[#0x0000001f][01@0x80000080]   call r23 (0x00000011), 0x80000058                                          =&gt; foo
+[#0x00000023][01@0x80000058]   lsl_add r0 (0x00000014), r0 (0x00000004), r0 (0x00000004), 2 (0x2)
+[#0x00000028][01@0x80000060]   jump r23 (0x00000011)                                                      &lt;= foo
+[#0x0000002d][01@0x80000088]   add r0 (0x00000016), r0 (0x00000014), 2 (0x2)
+[#0x00000031][01@0x80000090]   ld d22 (0x000004d80000000a), r22 (0x000004e0), -8                          R: 0x000004d8
+[#0x00000036][01@0x80000098]   jump r23 (0x0000000a)                                                      &lt;= main
+[#0x0000003b][01@0x80000050]   stop true, 0x80000050
+</pre></div>
+</div>
+<p>Each trace follows this schema:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Trace counter | Thread @ PC | Flags | Disassembled instruction | Function information
+</pre></div>
+</div>
+<p>The trace counter should not be interpreted as a cycle counter, as the functional simulator is not cycle-accurate.
+It is mainly used as a potential marker, to search and find a particular point from an execution program to another.</p>
+<p>Currently, the only flag is the “replay” flag, represented by an <code class="docutils literal notranslate"><span class="pre">*</span></code>. It indicates that the instruction was played twice,
+because of hardware constraints (cf <a class="reference internal" href="201_IS.html#scheduling-explanation-label"><span class="std std-ref">Efficient scheduling</span></a> for more details).</p>
+<p>The disassembled instruction embeds the value of the input registers before executing the instruction,
+and the value of the output register, if any, after executing the instruction.</p>
+<p>When the symbols are available, <code class="docutils literal notranslate"><span class="pre">dputrace</span></code> will try to give some context from the function calls, and provide some information
+when entering and exiting a function.</p>
+</section>
+<section id="host-traces">
+<h2>Host traces<a class="headerlink" href="#host-traces" title="Permalink to this heading"></a></h2>
+<p>When running <code class="docutils literal notranslate"><span class="pre">dputrace</span></code> without specifying a thread, some other traces are displayed, describing the host actions.
+Here is a fast description of the different possibles traces:</p>
+<p>Loading program:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[   LOAD PROGRAM    ]                   main.dpu
+</pre></div>
+</div>
+<p>Signals that a program is going to be loaded in the DPU, giving the path to the executable.</p>
+<p>Writing IRAM instruction:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[   WRITE IRAM      ][CI@0x80000000]    jnz id, 0x80000020
+</pre></div>
+</div>
+<p>Signals that an instruction has been written by the host, giving the instruction address and its disassembled form.</p>
+</section>
+<section id="watch-mode">
+<h2>Watch mode<a class="headerlink" href="#watch-mode" title="Permalink to this heading"></a></h2>
+<p>In the previous example, the execution program finished before starting to use <code class="docutils literal notranslate"><span class="pre">dputrace</span></code>.
+Sometimes, this is not a flexible workflow (for example when running a very long application, or when using <code class="docutils literal notranslate"><span class="pre">lldb</span></code>
+to have an interactive execution).
+In these cases, one can use the <code class="docutils literal notranslate"><span class="pre">-w</span></code> option that enables the watch mode. In that mode, <code class="docutils literal notranslate"><span class="pre">dputrace</span></code> will not exit at
+the end of the file. Instead, it will wait for more input and process it on the fly.</p>
+</section>
+<section id="advanced-options">
+<h2>Advanced options<a class="headerlink" href="#advanced-options" title="Permalink to this heading"></a></h2>
+<p>Some parts of the DPU execution are hidden from the``dputrace`` output. They correspond to programs executed by the Host API,
+which are usually of no interest for an end-user. One can manage this setting with the <code class="docutils literal notranslate"><span class="pre">-enable-event</span></code> and <code class="docutils literal notranslate"><span class="pre">-disable-event</span></code>
+options. A list of the different possible values can be printed with the <code class="docutils literal notranslate"><span class="pre">-list-events</span></code> option.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="086_DPUDebugLimitations.html" class="btn btn-neutral float-left" title="dpu-lldb limitations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="088_DPUMemcheck.html" class="btn btn-neutral float-right" title="Verifying memory accesses with dpugrind" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

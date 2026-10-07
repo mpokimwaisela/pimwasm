@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memory management &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Standard library functions" href="04_Stdlib.html" />
+    <link rel="prev" title="Tasklet management and synchronization" href="030_DPURuntimeService_Tasklets.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Memory management</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#wram-management">WRAM Management</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#heap-allocation">Heap allocation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#mram-management">MRAM Management</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mram-variables">MRAM variables</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#the-dpu-mram-heap-pointer">The DPU MRAM Heap Pointer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#software-cache">Software cache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#direct-access-to-the-mram">Direct access to the MRAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sequential-readers">Sequential readers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Memory management</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/031_DPURuntimeService_Memory.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="memory-management">
+<h1>Memory management<a class="headerlink" href="#memory-management" title="Permalink to this heading"></a></h1>
+<p>The UPMEM DPU <strong>Runtime Library</strong> defines a specific usage of memories:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The <strong>WRAM</strong> is the execution memory for programs. This is where the stacks, global variables, etc. are placed, according to a pre-defined scheme.</p></li>
+<li><p>Within the <strong>WRAM</strong>, the runtime configuration defines specific memory areas to implement a heap and shared memories.</p></li>
+<li><p>The <strong>MRAM</strong> is seen as an “external peripheral”, whose access is simplified by <strong>Runtime Library</strong> functions.</p></li>
+</ul>
+</div></blockquote>
+<p>From the programming perspective, this means that the <strong>Runtime Library</strong> defines primitives for:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>the <a class="reference internal" href="#wram-management">WRAM management</a>: to dynamically manage the <strong>WRAM</strong></p></li>
+<li><p>the <a class="reference internal" href="#mram-accesses">MRAM accesses</a>: to manage the transactions between the <strong>MRAM</strong> and the <strong>WRAM</strong></p></li>
+</ul>
+</div></blockquote>
+<section id="wram-management">
+<span id="id1"></span><h2>WRAM Management<a class="headerlink" href="#wram-management" title="Permalink to this heading"></a></h2>
+<p>Tasklets have the possibility to get buffers in memory for their own purpose or access some pre-reserved shared memories for collaborative work.</p>
+<section id="heap-allocation">
+<span id="alloc"></span><h3>Heap allocation<a class="headerlink" href="#heap-allocation" title="Permalink to this heading"></a></h3>
+<p>Due to the complexity and memory footprint required by dynamic memory allocators, the <strong>Runtime Library</strong> implements simple mechanisms to allocate memory within the <strong>WRAM</strong>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>an incremental allocator</p></li>
+<li><p>a fixed-size block allocator</p></li>
+<li><p>a buddy allocator</p></li>
+</ul>
+</div></blockquote>
+<p><strong>Incremental Allocator</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The <strong>Runtime Library</strong> organizes the <strong>WRAM</strong> in such a way that the memory ends with a “free area”, left to programs. The area size depends on the amount of memory used by the program, in particular, the total amount of stack needed to execute the tasklets</p></li>
+<li><p>Within this free area, a task can dynamically request a buffer, which is exclusively reserved for its own usage</p></li>
+<li><p>There is no “free” method: once allocated, a buffer remains the property of its owning tasklet until the program ends</p></li>
+<li><p>However, there’s a <em>reset</em> function, to clean-up the heap if very necessary: <code class="docutils literal notranslate"><span class="pre">mem_reset()</span></code>.
+In particular, if a DPU is booted multiple times by an application, it shall be used at the beginning of the program to ensure that it restarts from a “fresh heap”.</p></li>
+</ul>
+</div></blockquote>
+<p>To request a new buffer, a tasklet invokes <code class="docutils literal notranslate"><span class="pre">mem_alloc(size_t</span> <span class="pre">size)</span></code> (defined in <a class="reference external" href="202_RTL.html#alloc-h">alloc.h</a>), returning a pointer to the newly allocated buffer.
+If the heap is full, the function puts the DPU in error.</p>
+<p>The returned buffer address is aligned on 64 bits; the allocation procedure is multi-tasklet safe.
+The provided buffer is directly usable for transfers between the <em>WRAM</em> and the <em>MRAM</em>.</p>
+<p><strong>Fixed-Size Block Allocator</strong></p>
+<p>A fixed-size block allocator allows the user to allocate and free blocks of fixed size. The size and number of the blocks are defined
+when allocating and initializing the allocator.
+All the needed functions are defined in <a class="reference external" href="202_RTL.html#fsb_allocator-h">fsb_allocator.h</a>, but are also included in <a class="reference external" href="202_RTL.html#alloc-h">alloc.h</a>.</p>
+<p>To instantiate a new fixed-size block allocator, the user invokes <code class="docutils literal notranslate"><span class="pre">fsb_alloc(unsigned</span> <span class="pre">int</span> <span class="pre">block_size,</span> <span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">nb_of_blocks)</span></code>, returning the newly
+created and initialized allocator. If the heap if full, the function puts the DPU in error.</p>
+<p>To allocate a block, a tasklet invokes <code class="docutils literal notranslate"><span class="pre">fsb_get(fsb_allocator_t</span> <span class="pre">allocator)</span></code>, returning a pointer to the allocated block (or <em>NULL</em> if no block
+is available). The returned block address is aligned on 64 bits; the allocation procedure is multi-tasklet safe. After allocating a block,
+the memory content is undefined.</p>
+<p>To free an allocated block, a tasklet invokes <code class="docutils literal notranslate"><span class="pre">fsb_free(fsb_allocator_t</span> <span class="pre">allocator,</span> <span class="pre">void*</span> <span class="pre">ptr)</span></code>. The procedure is multi-tasklet safe.
+Beware that there is no protection preventing an invalid pointer to be freed or preventing a block from one allocator to be given back
+to another allocator. After freeing a block, the memory content is undefined.</p>
+<p>The following example illustrates how the fixed-size block allocator can be used with a simplistic list implementation:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>the allocator is defined</p></li>
+<li><p>the list is populated with some data</p></li>
+<li><p>some data is filtered out of the list</p></li>
+<li><p>the sum of the remaining data is calculated</p></li>
+<li><p>the list is cleaned</p></li>
+</ul>
+</div></blockquote>
+<p>Next is the code achieving this task (in <code class="docutils literal notranslate"><span class="pre">fsb_example.c</span></code>):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;alloc.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stddef.h&gt;</span>
+
+<span class="cp">#define BLOCK_SIZE (sizeof(list_t))</span>
+<span class="cp">#define NB_OF_BLOCKS (1000)</span>
+
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">_list_t</span><span class="w"> </span><span class="n">list_t</span><span class="p">;</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">_list_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
+<span class="w">  </span><span class="n">list_t</span><span class="w"> </span><span class="o">*</span><span class="n">next</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">fsb_allocator_t</span><span class="w"> </span><span class="n">allocator</span><span class="p">;</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">initialize_allocator</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">allocator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fsb_alloc</span><span class="p">(</span><span class="n">BLOCK_SIZE</span><span class="p">,</span><span class="w"> </span><span class="n">NB_OF_BLOCKS</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span><span class="w"> </span><span class="n">list_t</span><span class="w"> </span><span class="o">*</span><span class="nf">add_head_data</span><span class="p">(</span><span class="n">list_t</span><span class="w"> </span><span class="o">*</span><span class="n">list</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">list_t</span><span class="w"> </span><span class="o">*</span><span class="n">new_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fsb_get</span><span class="p">(</span><span class="n">allocator</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">new_data</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">new_data</span><span class="o">-&gt;</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
+<span class="w">  </span><span class="n">new_data</span><span class="o">-&gt;</span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">new_data</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span><span class="w"> </span><span class="n">list_t</span><span class="w"> </span><span class="o">*</span><span class="nf">populate_list</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">list_t</span><span class="w"> </span><span class="o">*</span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add_head_data</span><span class="p">(</span><span class="n">list</span><span class="p">,</span><span class="w"> </span><span class="mi">42</span><span class="p">);</span>
+<span class="w">  </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add_head_data</span><span class="p">(</span><span class="n">list</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">  </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add_head_data</span><span class="p">(</span><span class="n">list</span><span class="p">,</span><span class="w"> </span><span class="mi">-2</span><span class="p">);</span>
+<span class="w">  </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add_head_data</span><span class="p">(</span><span class="n">list</span><span class="p">,</span><span class="w"> </span><span class="mi">13</span><span class="p">);</span>
+<span class="w">  </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add_head_data</span><span class="p">(</span><span class="n">list</span><span class="p">,</span><span class="w"> </span><span class="mi">22</span><span class="p">);</span>
+<span class="w">  </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add_head_data</span><span class="p">(</span><span class="n">list</span><span class="p">,</span><span class="w"> </span><span class="mi">10000</span><span class="p">);</span>
+<span class="w">  </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add_head_data</span><span class="p">(</span><span class="n">list</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">  </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add_head_data</span><span class="p">(</span><span class="n">list</span><span class="p">,</span><span class="w"> </span><span class="mi">91</span><span class="p">);</span>
+<span class="w">  </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add_head_data</span><span class="p">(</span><span class="n">list</span><span class="p">,</span><span class="w"> </span><span class="mi">-45</span><span class="p">);</span>
+<span class="w">  </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add_head_data</span><span class="p">(</span><span class="n">list</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">);</span>
+<span class="w">  </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add_head_data</span><span class="p">(</span><span class="n">list</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">list</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">clean_list</span><span class="p">(</span><span class="n">list_t</span><span class="w"> </span><span class="o">*</span><span class="n">list</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">list_t</span><span class="w"> </span><span class="o">*</span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">current</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">list_t</span><span class="w"> </span><span class="o">*</span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">current</span><span class="p">;</span>
+<span class="w">    </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">current</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+<span class="w">    </span><span class="n">fsb_free</span><span class="p">(</span><span class="n">allocator</span><span class="p">,</span><span class="w"> </span><span class="n">tmp</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">list_t</span><span class="w"> </span><span class="o">*</span><span class="n">list</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">  </span><span class="cm">/* Allocator initialization */</span>
+<span class="w">  </span><span class="n">initialize_allocator</span><span class="p">();</span>
+
+<span class="w">  </span><span class="cm">/* List initialization with some data */</span>
+<span class="w">  </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">populate_list</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">list_t</span><span class="w"> </span><span class="o">*</span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">;</span>
+<span class="w">  </span><span class="n">list_t</span><span class="w"> </span><span class="o">*</span><span class="n">previous</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+
+<span class="w">  </span><span class="cm">/* Filtering out data that is even */</span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">current</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">current</span><span class="o">-&gt;</span><span class="n">data</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">list_t</span><span class="w"> </span><span class="o">*</span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">current</span><span class="p">;</span>
+<span class="w">      </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">current</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+<span class="w">      </span><span class="n">fsb_free</span><span class="p">(</span><span class="n">allocator</span><span class="p">,</span><span class="w"> </span><span class="n">tmp</span><span class="p">);</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">previous</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">previous</span><span class="o">-&gt;</span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">current</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">current</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">previous</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">current</span><span class="p">;</span>
+<span class="w">      </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">current</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">;</span>
+
+<span class="w">  </span><span class="cm">/* Computing the sum of the data in the list */</span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">current</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">result</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">current</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>
+<span class="w">    </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">current</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="cm">/* Cleaning the list */</span>
+<span class="w">  </span><span class="n">clean_list</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The code is built to be executed by a single tasklet:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-upmem-dpurte-clang fsb_example.c -o fsb_example
+</pre></div>
+</div>
+<p>To validate that everything works, let’s debug the program with <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file fsb_example
+process launch
+exit
+</pre></div>
+</div>
+<p>The exit status of the process should print the sum of the data (<code class="docutils literal notranslate"><span class="pre">0x45</span></code>):</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>exited with status = 69 (0x00000045)
+</pre></div>
+</div>
+<p><strong>Buddy Allocator</strong></p>
+<p>A buddy allocator uses a pre-allocated area in the heap to perform dynamic allocation and freeing of buffers, offering functions similar
+to standard <em>malloc</em> and <em>free</em>.</p>
+<p>All the needed functions are defined in <a class="reference external" href="202_RTL.html#buddy-alloc-h">buddy_alloc.h</a>, but are also included in <a class="reference external" href="202_RTL.html#alloc-h">alloc.h</a>.</p>
+<p>Any program that needs to use the buddy allocator must first allocate and initialize the <em>buddy area</em> in the heap by
+invoking <code class="docutils literal notranslate"><span class="pre">buddy_init</span></code>. Then the program can:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Allocate buffers, using <code class="docutils literal notranslate"><span class="pre">buddy_alloc</span></code>, with the following restrictions:</p>
+<ul>
+<li><p>Allocated buffer size should not exceed <strong>4096 bytes</strong></p></li>
+<li><p>Minimum size of allocated buffers is <strong>32 bytes</strong></p></li>
+<li><p>Allocated buffers are automatically aligned on DMA-transfer size, so that they can be used to transfer data from/to <code class="docutils literal notranslate"><span class="pre">MRAM</span></code></p></li>
+</ul>
+</li>
+<li><p>Free previously allocated buffers, using <code class="docutils literal notranslate"><span class="pre">buddy_free</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>The following example uses the buddy allocator to store temporary strings. The input is a list of cities and states represented
+in comma-separated values (<em>CSV</em>). It logs the states found in this initial list.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;alloc.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span>
+
+<span class="c1">// List of CSV data, processed by the program</span>
+<span class="c1">// A list of cities, along with their states.</span>
+<span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">city_list</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;New York,New York&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Los Angeles,California&quot;</span><span class="p">,</span>
+<span class="w">                                  </span><span class="s">&quot;Chicago,Illinois&quot;</span><span class="p">,</span><span class="w">  </span><span class="s">&quot;Houston,Texas&quot;</span><span class="p">,</span>
+<span class="w">                                  </span><span class="s">&quot;Phoenix,Arizona&quot;</span><span class="p">,</span><span class="w">   </span><span class="nb">NULL</span><span class="p">};</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">get_state_name_from_csv</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">csv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">state_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strchr</span><span class="p">(</span><span class="n">csv</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;,&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">result_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">state_name</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">buddy_alloc</span><span class="p">(</span><span class="n">result_len</span><span class="p">);</span>
+<span class="w">  </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">strcpy</span><span class="p">(</span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="n">state_name</span><span class="p">);</span>
+<span class="w">  </span><span class="n">result</span><span class="p">[</span><span class="n">result_len</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;,&#39;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">result</span><span class="p">[</span><span class="n">result_len</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">add_state_to_all_states</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">all_states</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">new_state</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">all_states_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">all_states</span><span class="p">);</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">new_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">new_state</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">all_states_len</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">new_all_states</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">buddy_alloc</span><span class="p">(</span><span class="n">new_len</span><span class="p">);</span>
+<span class="w">  </span><span class="n">strcpy</span><span class="p">(</span><span class="n">new_all_states</span><span class="p">,</span><span class="w"> </span><span class="n">all_states</span><span class="p">);</span>
+<span class="w">  </span><span class="n">strcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">new_all_states</span><span class="p">[</span><span class="n">all_states_len</span><span class="p">],</span><span class="w"> </span><span class="n">new_state</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">buddy_free</span><span class="p">(</span><span class="n">all_states</span><span class="p">);</span>
+<span class="w">  </span><span class="n">buddy_free</span><span class="p">(</span><span class="n">new_state</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">new_all_states</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">all_states</span><span class="p">;</span>
+<span class="w">  </span><span class="n">buddy_init</span><span class="p">(</span><span class="mi">4096</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">all_states</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">buddy_alloc</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">  </span><span class="o">*</span><span class="n">all_states</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">city_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">state_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_state_name_from_csv</span><span class="p">(</span><span class="n">city_list</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="w">    </span><span class="n">all_states</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add_state_to_all_states</span><span class="p">(</span><span class="n">all_states</span><span class="p">,</span><span class="w"> </span><span class="n">state_name</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The code is built to be executed by a single tasklet:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-upmem-dpurte-clang buddy_example.c -o buddy_example
+</pre></div>
+</div>
+<p>To validate that everything works, let’s debug the program with <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file buddy_example
+breakpoint set --source-pattern-regexp &quot;return 0;&quot;
+process launch
+frame variable all_states
+exit
+</pre></div>
+</div>
+<p>The debugger should print:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&quot;New York,California,Illinois,Texas,Arizona,&quot;
+</pre></div>
+</div>
+</section>
+</section>
+<section id="mram-management">
+<span id="mram-accesses"></span><h2>MRAM Management<a class="headerlink" href="#mram-management" title="Permalink to this heading"></a></h2>
+<p>The <strong>MRAM</strong> management routines define a collection of functions that simplify transactions between the <strong>MRAM</strong> and the <strong>WRAM</strong>, taking into account the alignment and size constraints defined by the UPMEM DPU.
+They also define some useful functions that simplify the programming model implying such transactions.</p>
+<p>These functions are grouped according to the level of abstraction they offset:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Low level accesses to the <strong>MRAM</strong> resources, via <a class="reference internal" href="#mram">mram</a> functions</p></li>
+<li><p>Mapping of the <strong>MRAM</strong> onto the <strong>WRAM</strong>, using <strong>sequential readers</strong> (<a class="reference internal" href="#seqread">seqread</a>)</p></li>
+</ul>
+</div></blockquote>
+<section id="mram-variables">
+<h3>MRAM variables<a class="headerlink" href="#mram-variables" title="Permalink to this heading"></a></h3>
+<p><strong>MRAM</strong> variable can be declared directly in the DPU program source code. Including <code class="docutils literal notranslate"><span class="pre">mram.h</span></code> gives access to three variable attributes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">__mram</span></code> which will place the associated variable in <strong>MRAM</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">__mram_noinit</span></code> which does the same as <code class="docutils literal notranslate"><span class="pre">__mram</span></code> but no initial value will be associated with the variable. This will help reduce the size of the DPU binary and the program loading, notably when declaring big MRAM arrays.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">__mram_ptr</span></code> which enable to use a pointer on a <strong>MRAM</strong> variable or declare a <code class="docutils literal notranslate"><span class="pre">extern</span></code> <strong>MRAM</strong> variable.</p></li>
+</ul>
+</div></blockquote>
+<section id="the-dpu-mram-heap-pointer">
+<span id="dpu-mram-heap-pointer-explanation-label"></span><h4>The DPU MRAM Heap Pointer<a class="headerlink" href="#the-dpu-mram-heap-pointer" title="Permalink to this heading"></a></h4>
+<p>A special <strong>MRAM</strong> variable is defined in <code class="docutils literal notranslate"><span class="pre">mram.h</span></code>: <code class="docutils literal notranslate"><span class="pre">DPU_MRAM_HEAP_POINTER</span></code>.
+It defines the end of the memory range used by the <strong>MRAM</strong> variables.
+The range from <code class="docutils literal notranslate"><span class="pre">DPU_MRAM_HEAP_POINTER</span></code> to the end of the <strong>MRAM</strong> can be used freely by a DPU program,
+for example to handle dynamically-sized <strong>MRAM</strong> arrays.</p>
+</section>
+<section id="software-cache">
+<span id="implicit-mram"></span><h4>Software cache<a class="headerlink" href="#software-cache" title="Permalink to this heading"></a></h4>
+<p>An <strong>MRAM</strong> variable can be accessed like any <strong>WRAM</strong> variable. When doing so, a pre-defined cache in <strong>WRAM</strong> is used
+to handle the <strong>MRAM</strong> transactions.</p>
+<p>This model is very convenient for developers who want to focus first on the algorithmic part of their implementation
+and then address the memory transactions. However, the cost of such a cache can be significant. Indeed, each access to
+an <strong>MRAM</strong> variable will imply an <strong>MRAM</strong> transfer, which is much slower than a WRAM access. Using <a class="reference external" href="_mram">direct MRAM access</a>
+can provide better results.</p>
+<p><strong>Implicit write access of MRAM variables is not multi-tasklet safe for data types lower than 8 bytes</strong> (e.g., char, int). Indeed, such an access is decomposed as three operations: 1) read 8 bytes in WRAM cache, 2) modify x bytes (x &lt; 8), and 3) write 8 bytes back. When two tasklets are trying to write values within the same 8-byte location (such as two consecutive integers), a race condition may happen.</p>
+</section>
+<section id="example">
+<h4>Example<a class="headerlink" href="#example" title="Permalink to this heading"></a></h4>
+<p>These attributes can be used like so:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;alloc.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mram.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+
+<span class="cm">/* Buffer in MRAM. */</span>
+<span class="kt">uint32_t</span><span class="w"> </span><span class="n">__mram_noinit</span><span class="w"> </span><span class="n">mram_array</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+
+<span class="kt">uint32_t</span><span class="w"> </span><span class="n">input</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">};</span>
+<span class="kt">uint32_t</span><span class="w"> </span><span class="n">output</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">mram_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">input</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">output</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mram_array</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The code is built to be executed:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-upmem-dpurte-clang mram_variable_example.c -o mram_variable_example
+</pre></div>
+</div>
+<p>To validate that everything works, let’s check the result in <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file mram_variable_example
+breakpoint set --source-pattern-regexp &quot;return 0;&quot;
+process launch
+target variable/x mram_array
+target variable/x output
+exit
+</pre></div>
+</div>
+<p>The result of the print should be the data stored from the <strong>WRAM</strong> <code class="docutils literal notranslate"><span class="pre">input</span></code> array:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(uint32_t [4]) output = ([0] = 0x00000000, [1] = 0x00000002, [2] = 0x00000004, [3] = 0x00000006)
+</pre></div>
+</div>
+</section>
+</section>
+<section id="direct-access-to-the-mram">
+<span id="mram"></span><h3>Direct access to the MRAM<a class="headerlink" href="#direct-access-to-the-mram" title="Permalink to this heading"></a></h3>
+<p>The first collection of functions of the <strong>Runtime Library</strong> defined in <a class="reference external" href="202_RTL.html#mram-h">mram.h</a> allow to perform transactions between the <strong>MRAM</strong> and the <strong>WRAM</strong>.
+The source and destination buffers must comply with the strict rules defined by DPUs:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The source or target address in <strong>WRAM</strong> must be aligned on 8 bytes.</p></li>
+<li><p>The source or target address in <strong>MRAM</strong> must be aligned on 8 bytes. Developers must carefully respect this rule since the <strong>Runtime Library</strong> does not perform any check regarding this point</p></li>
+<li><p>The size of the transfer must be a multiple of 8, at least equal to 8 and not greater than 2048.</p></li>
+</ul>
+</div></blockquote>
+<p>The <strong>Runtime Library</strong> defines two “low level” functions to perform a copy:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>From the <strong>WRAM</strong> to the <strong>MRAM</strong> (<code class="docutils literal notranslate"><span class="pre">mram_write(const</span> <span class="pre">void</span> <span class="pre">*from,</span> <span class="pre">__mram_ptr</span> <span class="pre">void</span> <span class="pre">*to,</span> <span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">nb_of_bytes)</span></code>)</p></li>
+<li><p>From the <strong>MRAM</strong> to the <strong>WRAM</strong> (<code class="docutils literal notranslate"><span class="pre">mram_read(const</span> <span class="pre">__mram_ptr</span> <span class="pre">void</span> <span class="pre">*from,</span> <span class="pre">void</span> <span class="pre">*to,</span> <span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">nb_of_bytes)</span></code>)</p></li>
+</ul>
+</div></blockquote>
+<p><strong>Notes</strong></p>
+<p>When possible, the compiler will try and check the different constraints, triggering an error if they are not respected.
+This is not always possible. For example, with no optimization (ie <code class="docutils literal notranslate"><span class="pre">-O0</span></code>), no check is made. It is also the case when
+the size argument is not a compile-time constant.</p>
+<p><strong>Example</strong></p>
+<p>The next example illustrates the <strong>WRAM</strong>/<strong>MRAM</strong> transactions with a simple copy:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>A buffer (<code class="docutils literal notranslate"><span class="pre">input</span></code>) in <strong>WRAM</strong> is populated with well-known data (a byte count)</p></li>
+<li><p>The buffer is copied in an <strong>MRAM</strong> buffer, defined as an <strong>MRAM</strong> variable</p></li>
+<li><p>The program reads back the <strong>MRAM</strong> at this location into a new buffer (<code class="docutils literal notranslate"><span class="pre">output</span></code>)</p></li>
+</ul>
+</div></blockquote>
+<p>Notice that the <strong>WRAM</strong> buffers (<code class="docutils literal notranslate"><span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">output</span></code>) are <code class="docutils literal notranslate"><span class="pre">__dma_aligned</span></code>.
+It is mandatory to use <code class="docutils literal notranslate"><span class="pre">__dma_aligned</span></code> for WRAM buffers used in direct MRAM access.</p>
+<p>Next is the code achieving this task (in <code class="docutils literal notranslate"><span class="pre">mram_example.c</span></code>):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mram.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+
+<span class="cp">#define BUFFER_SIZE 256</span>
+
+<span class="cm">/* Buffer in MRAM. */</span>
+<span class="kt">uint8_t</span><span class="w"> </span><span class="n">__mram_noinit</span><span class="w"> </span><span class="n">mram_array</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">];</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="cm">/* A 256-bytes buffer in WRAM, containing the initial data. */</span>
+<span class="w">  </span><span class="n">__dma_aligned</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">input</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">];</span>
+<span class="w">  </span><span class="cm">/* The other buffer in WRAM, where data are copied back. */</span>
+<span class="w">  </span><span class="n">__dma_aligned</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">output</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">];</span>
+
+<span class="w">  </span><span class="cm">/* Populate the initial buffer. */</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="n">input</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">  </span><span class="n">mram_write</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">mram_array</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">input</span><span class="p">));</span>
+
+<span class="w">  </span><span class="cm">/* Copy back the data. */</span>
+<span class="w">  </span><span class="n">mram_read</span><span class="p">(</span><span class="n">mram_array</span><span class="p">,</span><span class="w"> </span><span class="n">output</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">output</span><span class="p">));</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">output</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The code is built to be executed by a single tasklet:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-upmem-dpurte-clang mram_example.c -o mram_example
+</pre></div>
+</div>
+<p>To validate that everything works, let’s debug the program with <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file mram_example
+breakpoint set --source-pattern-regexp &quot;return 0&quot;
+process launch
+parray/x 20 &amp;input[0]
+parray/x 20 &amp;output[0]
+memory read `&amp;mram_array` -c 32
+exit
+</pre></div>
+</div>
+<p>We can see that everything is at the expected values:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>  (uint8_t) [0] = 0x00
+  (uint8_t) [1] = 0x01
+  (uint8_t) [2] = 0x02
+  (uint8_t) [3] = 0x03
+  (uint8_t) [4] = 0x04
+  (uint8_t) [5] = 0x05
+  (uint8_t) [6] = 0x06
+  (uint8_t) [7] = 0x07
+  (uint8_t) [8] = 0x08
+  (uint8_t) [9] = 0x09
+  (uint8_t) [10] = 0x0a
+  (uint8_t) [11] = 0x0b
+  (uint8_t) [12] = 0x0c
+  (uint8_t) [13] = 0x0d
+  (uint8_t) [14] = 0x0e
+  (uint8_t) [15] = 0x0f
+  (uint8_t) [16] = 0x10
+  (uint8_t) [17] = 0x11
+  (uint8_t) [18] = 0x12
+  (uint8_t) [19] = 0x13
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>0x08000000: 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f  ................
+0x08000010: 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f  ................
+</pre></div>
+</div>
+<p>Notice that for lldb the <strong>MRAM</strong> starts at the address <code class="docutils literal notranslate"><span class="pre">0x08000000</span></code>.</p>
+</section>
+<section id="sequential-readers">
+<span id="seqread"></span><h3>Sequential readers<a class="headerlink" href="#sequential-readers" title="Permalink to this heading"></a></h3>
+<p>The third collection of <strong>Runtime Library</strong> functions, defined in <a class="reference external" href="202_RTL.html#seqread-h">seqread.h</a> allow to simplify sequential reads of the <strong>MRAM</strong>.
+This abstraction uses a cache in <strong>WRAM</strong> to store temporary data from the <strong>MRAM</strong>, and a reader, to store where the next element should be read in <strong>WRAM</strong> and <strong>MRAM</strong>.
+Moreover, this abstraction implementation has been optimized and will provide better performance than a standard C check of the cache boundaries.</p>
+<p>A sequential reader is managed by three functions:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">seqread_alloc()</span></code> to allocate the cache. The cache size is determined by the macro <code class="docutils literal notranslate"><span class="pre">SEQREAD_CACHE_SIZE</span></code>, which is defined as <code class="docutils literal notranslate"><span class="pre">256</span></code> by default, but can be set to <code class="docutils literal notranslate"><span class="pre">32</span></code>, <code class="docutils literal notranslate"><span class="pre">64</span></code>, <code class="docutils literal notranslate"><span class="pre">128</span></code>, <code class="docutils literal notranslate"><span class="pre">256</span></code>, <code class="docutils literal notranslate"><span class="pre">512</span></code> or <code class="docutils literal notranslate"><span class="pre">1024</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">seqread_init(seqreader_buffer_t</span> <span class="pre">*cache,</span> <span class="pre">__mram_ptr</span> <span class="pre">void</span> <span class="pre">*mram_addr,</span> <span class="pre">seqreader_t</span> <span class="pre">*reader)</span></code> to initialize the reader, using the specified cache, starting at the specified <strong>MRAM</strong> address, and returning the first value corresponding to the <strong>MRAM</strong> address.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">seqread_get(void</span> <span class="pre">*ptr,</span> <span class="pre">uint32_t</span> <span class="pre">inc,</span> <span class="pre">seqreader_t</span> <span class="pre">*reader)</span></code> to get next value of the specified size for the specified reader.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">seqread_seek(__mram_ptr</span> <span class="pre">void</span> <span class="pre">*mram_addr,</span> <span class="pre">seqreader_t</span> <span class="pre">*reader)</span></code> to jump to a <strong>MRAM</strong> address for the specified reader, and returning the first value corresponding to the <strong>MRAM</strong> address.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">seqread_tell(void</span> <span class="pre">*ptr,</span> <span class="pre">seqreader_t</span> <span class="pre">*reader)</span></code> to get the current <strong>MRAM</strong> address corresponding to the specified pointer (which should be a pointer in the cache specified during the initialization of the reader).</p></li>
+</ul>
+</div></blockquote>
+<p>Notice that the sequential reader implementation is <strong>not thread-safe</strong>.</p>
+<p><strong>Example</strong></p>
+<p>The following example will illustrate a typical use of a sequential reader on a simple case. The goal is to compute the sum of some data placed in <strong>MRAM</strong> and to store the result at the start of the <strong>MRAM</strong>.
+The main task here is to read the data from the <strong>MRAM</strong>, the process of the data being trivial and the write-back consisting only of the result value.
+Thus the sequential reader can be really effective here. The <strong>MRAM</strong> structure is the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The first 4 bytes in <strong>MRAM</strong> represent the buffer size <code class="docutils literal notranslate"><span class="pre">N</span></code></p></li>
+<li><p>The subsequent <code class="docutils literal notranslate"><span class="pre">N</span></code> bytes in <strong>MRAM</strong> contain the data for which the application requests a checksum computation</p></li>
+</ul>
+</div></blockquote>
+<p>Next is the code placed in the <strong>DPU</strong> (in <code class="docutils literal notranslate"><span class="pre">seqreader_example.c</span></code>):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mram.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;seqread.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+
+<span class="cp">#define DLEN (1 &lt;&lt; 16)</span>
+
+<span class="n">__mram_noinit</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="n">DLEN</span><span class="p">];</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">bytes_read</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">buffer_size</span><span class="p">,</span><span class="w"> </span><span class="n">checksum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">  </span><span class="cm">/* Cache for the sequential reader */</span>
+<span class="w">  </span><span class="n">seqreader_buffer_t</span><span class="w"> </span><span class="n">local_cache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">seqread_alloc</span><span class="p">();</span>
+<span class="w">  </span><span class="cm">/* The reader */</span>
+<span class="w">  </span><span class="n">seqreader_t</span><span class="w"> </span><span class="n">sr</span><span class="p">;</span>
+<span class="w">  </span><span class="cm">/* The pointer where we will access the cached data */</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">current_char</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">seqread_init</span><span class="p">(</span><span class="n">local_cache</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sr</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">buffer_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">current_char</span><span class="p">;</span>
+<span class="w">  </span><span class="n">current_char</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">seqread_get</span><span class="p">(</span><span class="n">current_char</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sr</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">bytes_read</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">buffer_size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">checksum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="o">*</span><span class="n">current_char</span><span class="p">;</span>
+<span class="w">    </span><span class="n">bytes_read</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="n">current_char</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">seqread_get</span><span class="p">(</span><span class="n">current_char</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">current_char</span><span class="p">),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sr</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">checksum</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The code is built to be executed:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-upmem-dpurte-clang seqreader_example.c -o seqreader_example
+</pre></div>
+</div>
+<p>To validate that everything works, let’s check the result in <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code>, using a sample <strong>MRAM</strong> (<code class="docutils literal notranslate"><span class="pre">sample.bin</span></code> contains the <strong>MRAM</strong> image of 64KB of counting bytes):</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file seqreader_example
+breakpoint set --source-pattern-regexp &quot;return&quot;
+process launch --stop-at-entry
+memory write -i sample.bin `&amp;buffer[0]`
+process continue
+frame variable/x checksum
+exit
+</pre></div>
+</div>
+<p>The result of the print should be the checksum of 64KB of counting bytes:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(unsigned int) checksum = 0x007f8000
+</pre></div>
+</div>
+<p>Below is the code to generate <code class="docutils literal notranslate"><span class="pre">sample.bin</span></code> (in <code class="docutils literal notranslate"><span class="pre">sampleGenerator.c</span></code>):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="cp">#define DLEN (1 &lt;&lt; 16)</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="s">&quot;sample.bin&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wb&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">checksum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DLEN</span><span class="p">;</span>
+<span class="w">  </span><span class="n">fwrite</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">);</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">DLEN</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">ii</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="p">)</span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="n">fwrite</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ii</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">);</span>
+<span class="w">    </span><span class="n">checksum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">ii</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">fclose</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;checksum = %d = 0x%x</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">checksum</span><span class="p">,</span><span class="w"> </span><span class="n">checksum</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="030_DPURuntimeService_Tasklets.html" class="btn btn-neutral float-left" title="Tasklet management and synchronization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="04_Stdlib.html" class="btn btn-neutral float-right" title="Standard library functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

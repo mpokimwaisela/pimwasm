@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assembler syntax &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="DPU condition classes" href="200_AsmConditions.html" />
+    <link rel="prev" title="Reporting errors" href="ggg_ReportingErrors.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Assembler syntax</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview-of-an-assembler-program-structure">Overview of an assembler program structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pre-processor-directives">Pre-processor directives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assembly-instructions">Assembly instructions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#registers">Registers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#immediate-values">Immediate values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#labels">Labels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conditions">Conditions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#endianness-specification">Endianness specification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#implicit-operands">Implicit operands</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#linker-directives">Linker directives</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#text">text</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data">data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bss">bss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#align">align</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ascii">ascii</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#asciz">asciz</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#byte">byte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#short">short</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#long">long</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#quad">quad</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#zero">zero</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#global">global</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#string-format">String format</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Assembler syntax</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/200_AsmSyntax.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="assembler-syntax">
+<h1>Assembler syntax<a class="headerlink" href="#assembler-syntax" title="Permalink to this heading"></a></h1>
+<p>LLVM for DPU can assemble files to produce objects or immediate executables. By convention, assembly files shall end
+with ‘.S’ extension.</p>
+<p>A concrete coding example is given in section <a class="reference internal" href="201_AsmExample.html"><span class="doc">Examples of an assembly program</span></a>.</p>
+<section id="overview-of-an-assembler-program-structure">
+<h2>Overview of an assembler program structure<a class="headerlink" href="#overview-of-an-assembler-program-structure" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>Source code in assembler consists of the following types of lines:</dt><dd><ul class="simple">
+<li><p>Comments: a line of comment starts with <code class="docutils literal notranslate"><span class="pre">//</span></code></p></li>
+<li><p>Pre-processor directives, such as <code class="docutils literal notranslate"><span class="pre">#define</span></code></p></li>
+<li><p>Assembly instructions</p></li>
+<li><p>Linker directives, such as <code class="docutils literal notranslate"><span class="pre">.global</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="pre-processor-directives">
+<h2>Pre-processor directives<a class="headerlink" href="#pre-processor-directives" title="Permalink to this heading"></a></h2>
+<p>The assembler is fully compliant with the <strong>C Preprocessor</strong> standards.</p>
+<dl class="simple">
+<dt>In particular, it supports (not exhaustive):</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">#include</span></code>, given that the path to included files can be specified with <code class="docutils literal notranslate"><span class="pre">clang</span></code> option <code class="docutils literal notranslate"><span class="pre">-I</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">#define</span></code> and <code class="docutils literal notranslate"><span class="pre">#undef</span></code>, to set and unset constants and macros</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">#if</span></code>, <code class="docutils literal notranslate"><span class="pre">#else</span></code>, <code class="docutils literal notranslate"><span class="pre">#ifdef</span></code>, <code class="docutils literal notranslate"><span class="pre">#endif</span></code>: to check constant values</p></li>
+</ul>
+</dd>
+</dl>
+<p>The preprocessor macros can be defined internally or be provided upon the invocation of <code class="docutils literal notranslate"><span class="pre">clang</span></code>, using the <code class="docutils literal notranslate"><span class="pre">-D</span></code> option.</p>
+</section>
+<section id="assembly-instructions">
+<h2>Assembly instructions<a class="headerlink" href="#assembly-instructions" title="Permalink to this heading"></a></h2>
+<p>An assembly instruction is defined on a single line of source code, following the standard format:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>keyword arguments...
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">keyword</span></code> identifies the instruction and <code class="docutils literal notranslate"><span class="pre">arguments</span></code> is the list of instruction arguments, separated by commas.</p>
+<dl class="simple">
+<dt>The list of keywords, along with a description of the arguments can be found:</dt><dd><ul class="simple">
+<li><p>Either by invoking <code class="docutils literal notranslate"><span class="pre">dpuasmdoc</span></code> from the command line</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">dpuasmdoc</span> <span class="pre">key</span></code> searches for all the instructions with a keyword containing <code class="docutils literal notranslate"><span class="pre">key</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dpuasmdoc</span> <span class="pre">-match</span> <span class="pre">key</span></code> searches for all the instructions with a keyword exactly equal to <code class="docutils literal notranslate"><span class="pre">key</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dpuasmdoc</span> <span class="pre">-help</span></code> gives a list of additional options</p></li>
+</ul>
+</li>
+<li><p>Or in the instruction set reference section of this documentation</p></li>
+</ul>
+</dd>
+</dl>
+<p>Each assembly instruction argument can be:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>A <a class="reference internal" href="#register">register</a></p></li>
+<li><p>An <a class="reference internal" href="#immediate">immediate</a> value</p></li>
+<li><p>A <a class="reference internal" href="#label">label</a></p></li>
+<li><p>A <a class="reference internal" href="#condition-argument">condition</a></p></li>
+<li><p>An <a class="reference internal" href="#endianness">endianness</a> specification</p></li>
+</ul>
+</div></blockquote>
+<section id="registers">
+<span id="register"></span><h3>Registers<a class="headerlink" href="#registers" title="Permalink to this heading"></a></h3>
+<p>The next table gives the list of DPU registers, as understood by the assembler:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>Name</p></td>
+<td><p>Description</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rX</span></code></p></td>
+<td><p>32-bits read/write register, X being in the range [0..23]</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sX</span></code></p></td>
+<td><p>32-bits read/write <em>safe</em> register, X being in the range [0..23]</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><p><code class="docutils literal notranslate"><span class="pre">dX</span></code></p></td>
+<td rowspan="2"><p>64-bits read/write register, X being an even value in the range [0..22]</p>
+<p>Register <code class="docutils literal notranslate"><span class="pre">dx</span></code> is the combination of <code class="docutils literal notranslate"><span class="pre">r(X/2)</span></code> (most significant bits) and <code class="docutils literal notranslate"><span class="pre">r(X/2+1)</span></code></p>
+</td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">id</span></code></p></td>
+<td><p>Special read-only register equal to the invoking thread’s number</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">idX</span></code></p></td>
+<td><p>Special read-only register equal to X times the invoking thread’s number. X is equal to 2, 4 or 8.</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><p><code class="docutils literal notranslate"><span class="pre">zero</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">one</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">lneg</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">mneg</span></code></p>
+</td>
+<td rowspan="4"><p>Special read-only registers returning system constants, respectively equal to <code class="docutils literal notranslate"><span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">1</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">0xffffffff</span></code> and <code class="docutils literal notranslate"><span class="pre">0x80000000</span></code>.</p>
+</td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"></tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="immediate-values">
+<span id="immediate"></span><h3>Immediate values<a class="headerlink" href="#immediate-values" title="Permalink to this heading"></a></h3>
+<p>Immediate values are expressed as numerical values:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>In hexadecimal unsigned (prefixed with <code class="docutils literal notranslate"><span class="pre">0x</span></code>)</p></li>
+<li><p>In binary unsigned (prefixed with <code class="docutils literal notranslate"><span class="pre">0b</span></code>)</p></li>
+<li><p>With ASCII value (enclosed by <code class="docutils literal notranslate"><span class="pre">'</span></code>, example: <code class="docutils literal notranslate"><span class="pre">'a'</span></code> for the numerical value <code class="docutils literal notranslate"><span class="pre">97</span></code>)</p></li>
+<li><p>Or as signed decimal values</p></li>
+</ul>
+</div></blockquote>
+<p>Allowed values depend on the type of expected immediate (signedness and number of encoding bits) and the expression.</p>
+<p><strong>Expected operand is unsigned</strong></p>
+<p>Allowed values must be unsigned and fit in the number of encoding bits. For example, the <em>logical shift left</em>
+instruction, defined as:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>// Shift register &#39;ra&#39; by &#39;shift&#39; positions to the left
+// Store the result into register &#39;rc&#39;
+// &#39;shift&#39; is a 5 bits immediate value
+lsl rc ra shift:u5
+</pre></div>
+</div>
+<p>Allows the following expressions:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>// Shift by 31 positions to the left
+lsl r1, r0, 31
+// Ditto
+lsl r1, r0, 0x1f
+</pre></div>
+</div>
+<p>But not:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>// Shift by 32 positions to the left =&gt; not allowed
+lsl r1, r0, 32
+// Shift by a negative number of positions to the left =&gt; not allowed
+lsl r1, r0, -3
+</pre></div>
+</div>
+<p><strong>Expected operand is signed</strong></p>
+<p>Given that an expected immediate operand is encoded on N bits, corresponding immediate values must (2^X meaning <em>2 power X</em>):</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Either be unsigned (i.e. hexadecimal expressions) in the range [0x0, (2^(N-1))-1]</p></li>
+<li><p>Or be signed (i.e. decimal expressions) in the range [-(2^(N-1)), (2^(N-1))-1]</p></li>
+</ul>
+</div></blockquote>
+<p>Let consider, for example, the <em>subtract</em> instruction, defined as:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>// register &#39;rc&#39; is equal to &#39;imm&#39; minus &#39;ra&#39;
+// condition &#39;cc&#39; must be equal to &#39;false&#39;
+sub rc imm:s24 ra false_cc:cc
+</pre></div>
+</div>
+<p>Then, the following expressions are legal:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sub r1, 8388607,  r0, false   // r1 = (2^(24-1) - 1) - r0
+sub r1, 0x7fffff, r0, false   // Same with hexa-decimal expression
+sub r1, -8388608, r0, false   // r1 = -2^(24-1) - r0
+</pre></div>
+</div>
+<p>But not:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sub r1, 8388608,  r0, false    // 8388608 = 2^23 &gt; 2^(24-1) - 1
+sub r1, 0x800000, r0, false    // 0x800000 = 2^23
+</pre></div>
+</div>
+</section>
+<section id="labels">
+<span id="label"></span><h3>Labels<a class="headerlink" href="#labels" title="Permalink to this heading"></a></h3>
+<p>Labels keep track of specific positions in the source code, which can then be referred by any
+instruction as immediate values. Typically, labels are used by the instructions <code class="docutils literal notranslate"><span class="pre">jump</span></code> and <code class="docutils literal notranslate"><span class="pre">call</span></code>
+to change the program counter value, moving to the labeled location.</p>
+<p>A label is expressed on an individual line, followed by a colon.</p>
+<p>For example, the following program iterates 10000000 times on the same loop (in C: <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">(i=10000000-1;</span> <span class="pre">i&gt;=0;</span> <span class="pre">i--)</span></code>):</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#define ITERATIONS 9999999
+move r0, ITERATIONS
+loop:
+        // DO SOMETHING...
+        add r0, r0, -1, pl, loop     // Decrement r0 and iterate if positive.
+stop
+</pre></div>
+</div>
+<p>A label may also reference a forward position from the current PC value, using the syntax <code class="docutils literal notranslate"><span class="pre">.</span> <span class="pre">+</span> <span class="pre">offset</span></code>. The DPU assembler
+restricts the offset value to a positive integer lower than 8. <strong>Other values may lead to unpredictable behaviors</strong>.</p>
+</section>
+<section id="conditions">
+<span id="condition-argument"></span><h3>Conditions<a class="headerlink" href="#conditions" title="Permalink to this heading"></a></h3>
+<p>Conditions are used in specific DPU instructions:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Either to perform <strong>combo operations</strong>, i.e. compute, test, and jump in a row</p></li>
+<li><p>Or to perform <strong>test operations</strong>, i.e. compute and check result</p></li>
+</ul>
+</div></blockquote>
+<p><strong>Combo operations</strong></p>
+<p>The general syntax of a combo operation is:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>INSTRUCTION TARGET_REGISTER, OPERANDS, CONDITION, PC
+</pre></div>
+</div>
+<p>Which is interpreted as:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">TARGET_REGISTER</span></code> value to the result of <code class="docutils literal notranslate"><span class="pre">INSTRUCTION</span></code> applied to <code class="docutils literal notranslate"><span class="pre">OPERANDS</span></code></p></li>
+<li><p>If the operation result verifies <code class="docutils literal notranslate"><span class="pre">CONDITION</span></code> then jump at the instruction specified by <code class="docutils literal notranslate"><span class="pre">PC</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>We already saw an example of a combo operation in the previous paragraph, where the condition <code class="docutils literal notranslate"><span class="pre">pl</span></code> (ie. positive or null)
+was used to create a loop.</p>
+<p>Each instruction has its own set of allowed conditions, identified by <em>condition classes</em>.</p>
+<p><strong>Test operations</strong></p>
+<p>The general syntax of a test operation is:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>INSTRUCTION TARGET_REGISTER, OPERANDS, CONDITION
+</pre></div>
+</div>
+<p>Which is interpreted as:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">TARGET_REGISTER</span></code> to 1 if the result of <code class="docutils literal notranslate"><span class="pre">INSTRUCTION</span></code> applied to <code class="docutils literal notranslate"><span class="pre">OPERANDS</span></code> verified <code class="docutils literal notranslate"><span class="pre">CONDITION</span></code></p></li>
+<li><p>Otherwise set <code class="docutils literal notranslate"><span class="pre">TARGET_REGISTER</span></code> to 0</p></li>
+</ul>
+</div></blockquote>
+<p>For example</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>move r0, 255
+move r1, 512
+sub r2, r0, r1, ltu
+</pre></div>
+</div>
+<p>Will set <code class="docutils literal notranslate"><span class="pre">r2</span></code> to 1, as <code class="docutils literal notranslate"><span class="pre">r0</span></code> (which contains <code class="docutils literal notranslate"><span class="pre">255</span></code>) is lower than <code class="docutils literal notranslate"><span class="pre">r1</span></code> (which contains <code class="docutils literal notranslate"><span class="pre">512</span></code>)?</p>
+<p><strong>Available conditions and condition classes</strong></p>
+<p>The table below describes the available conditions:</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td><p>Condition is always true, whatever the operation result is</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>Condition is always false, whatever the operation result is</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">z</span></code></p></td>
+<td><p>The operation result equals zero</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nz</span></code></p></td>
+<td><p>The operation result does not equal zero</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">e</span></code></p></td>
+<td><p>The operation result is even</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">o</span></code></p></td>
+<td><p>The operation result is odd</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pl</span></code></p></td>
+<td><p>The operation result is greater or equal to zero</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mi</span></code></p></td>
+<td><p>The operation result is strictly lower than zero</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ov</span></code></p></td>
+<td><p>The operation result has overflow set</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nov</span></code></p></td>
+<td><p>The operation result does not have overflow set</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">c</span></code></p></td>
+<td><p>The operation result has carry set</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nc</span></code></p></td>
+<td><p>The operation result does not have carry set</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sz</span></code></p></td>
+<td><p>The source register operand is equal to zero</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">snz</span></code></p></td>
+<td><p>The source register operand is not equal to zero</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">spl</span></code></p></td>
+<td><p>The source register operand is positive or null</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">smi</span></code></p></td>
+<td><p>The source register operand is strictly negative</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">so</span></code></p></td>
+<td><p>The source register operand is odd</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">se</span></code></p></td>
+<td><p>The source register operand is even</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="10"><p><code class="docutils literal notranslate"><span class="pre">nc5</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">nc6</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">nc7</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">nc8</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">nc9</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">nc10</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">nc11</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">nc12</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">nc13</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">nc14</span></code></p>
+</td>
+<td rowspan="10"><p>Operation result set the carry flag number 5,6,7,8,9,10,11,12,13 or 14 respectively.</p>
+<p>These conditions may come in handy to quickly detect buffer overflows.</p>
+</td>
+</tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max</span></code></p></td>
+<td><p>Operation is a bit count and the result is the maximum count value</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nmax</span></code></p></td>
+<td><p>Operation is a bit count and the result is not the maximum count value</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sh32</span></code></p></td>
+<td><p>The second operand is a register with a value having bit number 5 equal to one</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nsh32</span></code></p></td>
+<td><p>The second operand is a register with a value having bit number 5 equal to zero</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">eq</span></code></p></td>
+<td><p>The first operand is equal to the second operand</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">neq</span></code></p></td>
+<td><p>The first operand is different from the second operand</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><p><code class="docutils literal notranslate"><span class="pre">ltu</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">leu</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">gtu</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">geu</span></code></p>
+</td>
+<td rowspan="4"><p>The first operand is respectively lower than, lower or equal to, greater than,</p>
+<p>greater or equal to the second operand when performing an unsigned comparison</p>
+</td>
+</tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"><td rowspan="4"><p><code class="docutils literal notranslate"><span class="pre">lts</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">les</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">gts</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">ges</span></code></p>
+</td>
+<td rowspan="4"><p>First operand of is respectively lower than, lower or equal to, greater than,</p>
+<p>greater or equal to the second operand when performing a signed comparison</p>
+</td>
+</tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">xz</span></code></p></td>
+<td><p>Operation result is null and <a class="reference internal" href="#zeroflag">ZeroFlag</a> is set</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">xnz</span></code></p></td>
+<td><p>Operation result is not null or <a class="reference internal" href="#zeroflag">ZeroFlag</a> is not set</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">xleu</span></code></p></td>
+<td><p>Either operation result holds carry flag or <a class="reference internal" href="#zeroflag">ZeroFlag</a> is set</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">xgtu</span></code></p></td>
+<td><p>Operation result holds carry flag and <a class="reference internal" href="#zeroflag">ZeroFlag</a> is not set</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">xles</span></code></p></td>
+<td><p><a class="reference internal" href="#zeroflag">ZeroFLag</a> is set and either operation result is negative or overflows</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">xgts</span></code></p></td>
+<td><p><a class="reference internal" href="#zeroflag">ZeroFlag</a> is not set and either operation result is positive or null or overflows</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">small</span></code></p></td>
+<td><p>Operation is an 8x8 multiplication and the result is a less than 256</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">large</span></code></p></td>
+<td><p>Operation is an 8x8 multiplication and the result is greater than 255</p></td>
+</tr>
+</tbody>
+</table>
+<p>The list of condition classes can be found in <a class="reference internal" href="200_AsmConditions.html"><span class="doc">DPU condition classes</span></a>.</p>
+</section>
+<section id="endianness-specification">
+<span id="endianness"></span><h3>Endianness specification<a class="headerlink" href="#endianness-specification" title="Permalink to this heading"></a></h3>
+<p>Load and store operations can be achieved either with the DPU native endianness (little-endian) or in big-endian. This specification is given by an <em>endian</em> instruction argument either <code class="docutils literal notranslate"><span class="pre">!little</span></code> or <code class="docutils literal notranslate"><span class="pre">!big</span></code>.</p>
+</section>
+<section id="implicit-operands">
+<h3>Implicit operands<a class="headerlink" href="#implicit-operands" title="Permalink to this heading"></a></h3>
+<p>Implicit operands are used by instructions and conditions to behave according to a previous operation result. These are
+particularly useful to emulate 64-bits operations.</p>
+<p>Previous operation results are maintained by <em>flags</em>, presented here-after.</p>
+<p id="zeroflag"><strong>Zero Flag</strong></p>
+<p>This flag is set when an operation result is equal to zero.</p>
+<p id="carryflag"><strong>Carry flag</strong></p>
+<p>This flag is set when an operation result holds a carry.</p>
+</section>
+</section>
+<section id="linker-directives">
+<h2>Linker directives<a class="headerlink" href="#linker-directives" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>Linker directives are forwarded to the linker process, so that it properly manages various aspects of the program, such as:</dt><dd><ul class="simple">
+<li><p>Fetching the label names when referenced from outer part of the assembly file</p></li>
+<li><p>Initializing the static memory at boot time</p></li>
+</ul>
+</dd>
+</dl>
+<p>Directives are represented by a dot, followed by the directive name, followed by specific arguments depending on the
+directive itself.</p>
+<p>For example, to re-align a pointer to 32 bits boundary in memory, one may use the align directive as follows:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>.align 4
+</pre></div>
+</div>
+<p>LLVM understands most of the Gnu Assembler directives. Next is a non-exhaustive list of the most relevant directives.</p>
+<section id="text">
+<h3>text<a class="headerlink" href="#text" title="Permalink to this heading"></a></h3>
+<p>The text directive declares a segment of text. All the subsequent information must be in assembly instructions, so that
+the linker puts those instructions into the program.</p>
+<p>Syntax: <code class="docutils literal notranslate"><span class="pre">.text</span></code></p>
+</section>
+<section id="data">
+<h3>data<a class="headerlink" href="#data" title="Permalink to this heading"></a></h3>
+<p>Declares segments of memory. All the subsequent information must define memory contents, using the
+directives described later in this section.</p>
+<p>Syntax: <code class="docutils literal notranslate"><span class="pre">.data</span></code></p>
+</section>
+<section id="bss">
+<h3>bss<a class="headerlink" href="#bss" title="Permalink to this heading"></a></h3>
+<p>Declares segments of memory. Notice that the DPU does not make any distinction between bss segment and common data:
+the linker puts all the data contents into an initial WRAM, enclosed in the program along with the code itself.</p>
+<p>Syntax: <code class="docutils literal notranslate"><span class="pre">.bss</span></code></p>
+</section>
+<section id="align">
+<h3>align<a class="headerlink" href="#align" title="Permalink to this heading"></a></h3>
+<p>The align directive inserts padding values into the current memory segment to ensure that the next declared variable
+will be aligned on the required boundary.</p>
+<p>Syntax: <code class="docutils literal notranslate"><span class="pre">.align</span> <span class="pre">x,</span> <span class="pre">fill,</span> <span class="pre">max</span></code></p>
+<dl class="simple">
+<dt>Where:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">x</span></code> is the alignment boundary, expressed in number of bytes (e.g. 2 for 16-bits boundary, 4 for 32-bits…)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fill</span></code> is an <strong>optional</strong> argument specifying the padding value. By default, the padding value is 0</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max</span></code> is an <strong>optional</strong> argument specifying a maximum padding length… If ever the padding requires more bytes
+than <em>max</em> to reach the requested boundary, then the linker stops after having written <em>max</em> bytes</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="ascii">
+<h3>ascii<a class="headerlink" href="#ascii" title="Permalink to this heading"></a></h3>
+<p>The ascii directive puts a string into the current memory segment.</p>
+<p>Syntax: <code class="docutils literal notranslate"><span class="pre">.ascii</span> <span class="pre">string...</span></code></p>
+<dl class="simple">
+<dt>Where:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">string</span></code> is one string, complying with the <a class="reference internal" href="#directive-string-format">directive string format</a></p></li>
+<li><p>there may be one or more strings</p></li>
+</ul>
+</dd>
+</dl>
+<p>Notice that a synonym for this directive is <code class="docutils literal notranslate"><span class="pre">.string</span></code>.</p>
+</section>
+<section id="asciz">
+<h3>asciz<a class="headerlink" href="#asciz" title="Permalink to this heading"></a></h3>
+<p>The asciz directive declares a null-terminated string into the current memory segment.
+It is equivalent to <code class="docutils literal notranslate"><span class="pre">.ascii</span></code>, but the assembler automatically adds a 0 at the end of each declared string.</p>
+<p>Syntax: <code class="docutils literal notranslate"><span class="pre">.asciz</span> <span class="pre">string...</span></code></p>
+</section>
+<section id="byte">
+<h3>byte<a class="headerlink" href="#byte" title="Permalink to this heading"></a></h3>
+<p>Puts one byte into the current memory segment.</p>
+<p>Syntax: <code class="docutils literal notranslate"><span class="pre">.byte</span> <span class="pre">value</span></code></p>
+<p>Where <code class="docutils literal notranslate"><span class="pre">value</span></code> is an immediate 8-bit value.</p>
+</section>
+<section id="short">
+<h3>short<a class="headerlink" href="#short" title="Permalink to this heading"></a></h3>
+<p>Puts a 16-bits word into the current memory segment.</p>
+<p>Syntax: <code class="docutils literal notranslate"><span class="pre">.half</span> <span class="pre">value</span></code>, <code class="docutils literal notranslate"><span class="pre">.hword</span> <span class="pre">value</span></code> or <code class="docutils literal notranslate"><span class="pre">.short</span> <span class="pre">value</span></code></p>
+<p>Where <code class="docutils literal notranslate"><span class="pre">value</span></code> is an immediate 16-bit value.</p>
+</section>
+<section id="long">
+<h3>long<a class="headerlink" href="#long" title="Permalink to this heading"></a></h3>
+<p>Puts a 32-bits word into the current memory segment.</p>
+<p>Syntax: <code class="docutils literal notranslate"><span class="pre">.word</span> <span class="pre">value</span></code> or <code class="docutils literal notranslate"><span class="pre">.long</span> <span class="pre">value</span></code></p>
+<p>Where <code class="docutils literal notranslate"><span class="pre">value</span></code> is a 32-bit value.</p>
+</section>
+<section id="quad">
+<h3>quad<a class="headerlink" href="#quad" title="Permalink to this heading"></a></h3>
+<p>Puts a 64-bits word into the current memory segment.</p>
+<p>Syntax: <code class="docutils literal notranslate"><span class="pre">.dword</span> <span class="pre">value</span></code> or <code class="docutils literal notranslate"><span class="pre">.quad</span> <span class="pre">value</span></code></p>
+<p>Where <code class="docutils literal notranslate"><span class="pre">value</span></code> is a 64-bit value.</p>
+</section>
+<section id="zero">
+<h3>zero<a class="headerlink" href="#zero" title="Permalink to this heading"></a></h3>
+<p>Puts some bytes into the current memory segment.</p>
+<p>Syntax: <code class="docutils literal notranslate"><span class="pre">.zero</span> <span class="pre">n,</span> <span class="pre">value</span></code></p>
+<dl class="simple">
+<dt>Where:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">n</span></code> is the number of bytes set to the specified value</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code> is an <strong>optional</strong> byte value (by default, the directive creates a series of 0s).</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="global">
+<h3>global<a class="headerlink" href="#global" title="Permalink to this heading"></a></h3>
+<p>The global (also called globl) directive “exports” the specified symbol, so that it can be referenced from
+another source.</p>
+<p>From a C perspective, this means that non-global symbols are seen as static items.</p>
+<p>Syntax: <code class="docutils literal notranslate"><span class="pre">.global</span> <span class="pre">symbol</span></code></p>
+<p>Where <code class="docutils literal notranslate"><span class="pre">symbol</span></code> is the exported symbol.</p>
+</section>
+<section id="string-format">
+<span id="directive-string-format"></span><h3>String format<a class="headerlink" href="#string-format" title="Permalink to this heading"></a></h3>
+<p>Strings for directives such as ascii are written between double-quotes and may contain ASCII characters, interpreted
+as it is, or special characters represented with an escape sequence marked by the backslash character, followed by the
+escape special character definition.</p>
+<dl class="simple">
+<dt>Possible definitions for special characters are:</dt><dd><ul class="simple">
+<li><p>b: backspace (ASCII octal code 010)</p></li>
+<li><p>f: form feed (ASCII octal code 014)</p></li>
+<li><p>n: new line  (ASCII octal code 012)</p></li>
+<li><p>r: carriage return (ASCII octal code 015)</p></li>
+<li><p>t: tabulation (ASCII octal code 011</p></li>
+<li><p>a backslash: so that <code class="docutils literal notranslate"><span class="pre">\\</span></code> stands for the backslash character</p></li>
+<li><p>double quotes</p></li>
+<li><p>A suite of digits representing the character value in octal (for example <code class="docutils literal notranslate"><span class="pre">\010</span></code> stands for backspace)</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ggg_ReportingErrors.html" class="btn btn-neutral float-left" title="Reporting errors" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="200_AsmConditions.html" class="btn btn-neutral float-right" title="DPU condition classes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

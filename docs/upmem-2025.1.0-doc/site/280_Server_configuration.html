@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Server installation &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Permissions Requirements" href="281_Permissions.html" />
+    <link rel="prev" title="Stack Analyzer" href="270_StackAnalyzer.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Server installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bios-flashing">BIOS Flashing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Server installation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/280_Server_configuration.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="server-installation">
+<h1>Server installation<a class="headerlink" href="#server-installation" title="Permalink to this heading"></a></h1>
+<p>This guide explains how to setup a fresh server, which mainly consists in flashing the UPMEM BIOS.</p>
+<p>The procedure requires an external laptop and a USB flash drive.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading"></a></h2>
+<ol class="arabic">
+<li><p>On the external laptop, install the necessary packages:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ sudo apt install python3 libpci-dev libusb-1.0-0-dev git make
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ sudo yum install python3 pciutils-devel libusbx-devel git make
+</pre></div>
+</div>
+</li>
+<li><p>Download, compile and install <cite>flashrom</cite> (<cite>flashrom</cite> provided by your Linux distribution may not be up-to-date):</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/flashrom/flashrom.git --depth 1 --branch v1.2
+$ cd flashrom
+$ make
+$ sudo make install
+</pre></div>
+</div>
+</li>
+<li><p>Download the latest UPMEM BIOS package from <a class="reference external" href="https://sdk.upmem.com">https://sdk.upmem.com</a>. The package contains the UPMEM BIOS image and a script called <cite>upmem-bios-configure.py</cite>.</p></li>
+<li><p>A test clip is necessary to flash the BIOS directly on the flash chip, provided within UPMEM BIOS Flasher kit.</p></li>
+<li><p>A USB-to-SPI device: UPMEM provides a flash device based on an STLink V3 programmer. Previous flash devices (<cite>bus pirate</cite> and <cite>bus blaster</cite>) are still supported and can be selected when using the <cite>upmem-bios-configure.py</cite> script.</p>
+<a class="reference internal image-reference" href="_images/bios_flashing_kit.jpg"><img alt="_images/bios_flashing_kit.jpg" src="_images/bios_flashing_kit.jpg" style="width: 400px;" /></a>
+</li>
+</ol>
+</section>
+<section id="bios-flashing">
+<h2>BIOS Flashing<a class="headerlink" href="#bios-flashing" title="Permalink to this heading"></a></h2>
+<ol class="arabic">
+<li><p>Save the initial BIOS image on the external laptop using flashrom and the test clip. It is <strong>mandatory to disconnect the AC Power plug from the server</strong> while connecting the test clip to the flash chip.</p>
+<ol class="loweralpha simple">
+<li><p>First, open the server:</p></li>
+</ol>
+<img alt="_images/bios_server_opening.jpg" src="_images/bios_server_opening.jpg" />
+<ol class="loweralpha simple" start="2">
+<li><p>You have to remove the left PCI expander as shown below:</p></li>
+</ol>
+<img alt="_images/bios_server_pcie_expander.jpg" src="_images/bios_server_pcie_expander.jpg" />
+<ol class="loweralpha simple" start="3">
+<li><p>Then you have to locate the flash chip:</p></li>
+</ol>
+<img alt="_images/bios_server_chip_identification.jpg" src="_images/bios_server_chip_identification.jpg" />
+<ol class="loweralpha simple" start="4">
+<li><p>Finally, setup the test clip: the red wire must be at the opposite of the DIMMs (if the test clip is not the same as the one in the image, the corresponding wire will be indicated on the clip).</p></li>
+</ol>
+<img alt="_images/bios_server_chip_clip_1.jpg" src="_images/bios_server_chip_clip_1.jpg" />
+<img alt="_images/bios_server_chip_clip_2.jpg" src="_images/bios_server_chip_clip_2.jpg" />
+<img alt="_images/bios_server_chip_clip_3.jpg" src="_images/bios_server_chip_clip_3.jpg" />
+<img alt="_images/bios_server_chip_clip_4.jpg" src="_images/bios_server_chip_clip_4.jpg" />
+</li>
+</ol>
+<p>Connect the flash device to the laptop using the USB cable, and launch the following command to read the flash content. Note that this requires root privilege:</p>
+<blockquote>
+<div><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ sudo ./upmem-bios-configure.py --dump-bios BIOS_ORIGINAL.bin
+</pre></div>
+</div>
+</div></blockquote>
+<p>The following output should appear:</p>
+<blockquote>
+<div><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Using clock_gettime for delay loops (clk_id: 1, resolution: 1ns).
+Connected to STLink V3 with bridge FW version: 4
+SCK frequency set to 12000 kHz
+Found Macronix flash chip &quot;MX66L51235F/MX25L51245G&quot; (65536 kB, SPI) on stlinkv3_spi.
+No data in flash context!
+Reading flash...
+</pre></div>
+</div>
+</div></blockquote>
+<p>If the following error happens, you should try to setup the test clip again:</p>
+<blockquote>
+<div><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Using clock_gettime for delay loops (clk_id: 1, resolution: 1ns).
+Connected to STLink V3 with bridge FW version: 4
+SCK frequency set to 12000 kHz
+No data in flash context!
+No EEPROM/flash device found.
+</pre></div>
+</div>
+<ol class="loweralpha simple" start="5">
+<li><p>Wait for <cite>flashrom</cite> to finish, remove the test clip, connect the AC power plug back in.</p></li>
+</ol>
+</div></blockquote>
+<ol class="arabic" start="2">
+<li><p>Prepare the UPMEM BIOS image:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ ./upmem-bios-configure.py --set-mac --original-bios BIOS_ORIGINAL.bin BIOS_UPMEM.bin
+</pre></div>
+</div>
+</li>
+<li><p>Download the latest firmware from Intel website: <a class="reference external" href="https://downloadcenter.intel.com/download/29753/Intel-Server-Board-S2600WF-Family-BIOS-and-Firmware-Update-Package-for-UEFI?v=t">https://downloadcenter.intel.com/download/29753/Intel-Server-Board-S2600WF-Family-BIOS-and-Firmware-Update-Package-for-UEFI?v=t</a>.
+As of this writing, the latest version is <cite>02.01.0013</cite>.</p>
+<img alt="_images/intel_firmwares_download.jpg" src="_images/intel_firmwares_download.jpg" />
+</li>
+<li><p>Remove the test clip and install the firmware to the server using the USB flash drive. Follow the instructions provided in <cite>General installation procedure</cite> of the above link.</p>
+<p>Press any key to start the update process:</p>
+<img alt="_images/intel_firmwares_updates_1.jpg" src="_images/intel_firmwares_updates_1.jpg" />
+<p><strong>When asked, you should only flash SDR, not FRU</strong> (type 1).</p>
+<img alt="_images/intel_firmwares_updates_2.jpg" src="_images/intel_firmwares_updates_2.jpg" />
+</li>
+<li><p>Power off the server and disconnect the AC Power plug. Using the external laptop and the test clip, flash the new BIOS image. Please note that this operation will take around 5 minutes:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ sudo ./upmem-bios-configure.py --flash-bios BIOS_UPMEM.bin
+</pre></div>
+</div>
+</li>
+<li><p>Remove the test clip and power on the server. Once up, download the <cite>syscfg</cite> tool from <a class="reference external" href="https://downloadcenter.intel.com/download/29693/Save-and-Restore-System-Configuration-Utility-SYSCFG">https://downloadcenter.intel.com/download/29693/Save-and-Restore-System-Configuration-Utility-SYSCFG</a>-?v=t and unzip its content. Then launch the following command:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ sudo ./syscfg /fan 1 100
+</pre></div>
+</div>
+</li>
+<li><p>Update kernel parameters. To do so, edit <cite>/etc/default/grub</cite>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ vim /etc/default/grub
+GRUB_CMDLINE_LINUX=&quot;intel_idle.max_cstate=1 iomem=relaxed&quot;
+</pre></div>
+</div>
+<p>And update grub configuration files:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ sudo update-grub
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ sudo grub2-mkconfig -o /boot/grub2/grub.cfg
+</pre></div>
+</div>
+</li>
+<li><p>Power off the server in order to install the UPMEM DIMMs inside the server, abiding by the usual DIMM population rules (described here <a class="reference external" href="https://www.intel.com/content/www/us/en/support/articles/000055509/server-products/server-boards.html">https://www.intel.com/content/www/us/en/support/articles/000055509/server-products/server-boards.html</a>) and the following rule: “legacy” and UPMEM DIMMs cannot be mixed inside a channel.
+For simplicity, we advise you to respect the following population for legacy DIMMs:</p>
+<img alt="_images/server_legacy_dimms_localisation.jpg" src="_images/server_legacy_dimms_localisation.jpg" />
+<p>The rest of memory slots can be populated with UPMEM DIMMs.</p>
+</li>
+<li><p>Set up the permissions according to <a class="reference internal" href="281_Permissions.html"><span class="doc">Permissions Requirements</span></a>.</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="270_StackAnalyzer.html" class="btn btn-neutral float-left" title="Stack Analyzer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="281_Permissions.html" class="btn btn-neutral float-right" title="Permissions Requirements" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

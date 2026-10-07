@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About dpu-lldb &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="An example of debugging" href="081_DPUDebugExample.html" />
+    <link rel="prev" title="Introduction" href="08_DebuggingWithUpmemDpu.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">About dpu-lldb</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dpu-lldb-supported-commands">dpu-lldb supported commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#memory-mapping">Memory mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">About dpu-lldb</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/080_AboutDPULLDB.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="about-dpu-lldb">
+<h1>About dpu-lldb<a class="headerlink" href="#about-dpu-lldb" title="Permalink to this heading"></a></h1>
+<p><a class="reference external" href="https://lldb.llvm.org/">LLDB</a> <cite>is a next generation, high-performance debugger. It is built as a set of reusable components which highly leverage existing libraries in the larger LLVM Project, such as the Clang expression parser and LLVM disassembler.</cite></p>
+<p>For GDB users, here is a document to easily find the corresponding LLDB command from a GDB one: <a class="reference external" href="https://lldb.llvm.org/use/map.html">GDB to LLDB command map</a></p>
+<p>As seen in the <a class="reference internal" href="03_ProgrammingWithUpmemDpu.html"><span class="doc">PROGRAMMING section</span></a>, <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code> can be used to execute DPU binaries.</p>
+<p>To be able to debug with as much information as possible, debug symbols are enabled by default in <code class="docutils literal notranslate"><span class="pre">dpu-upmem-dpurte-clang</span></code>. Make sure not to disabled them when debugging (using <code class="docutils literal notranslate"><span class="pre">-g0</span></code> by example).</p>
+<p>Also, note that debugging a program compiled in high optimization level can sometimes be tricky because:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Some variables may not be available because of the compiler optimizations</p></li>
+<li><p>Stepping through the code can feel random because the compiler has reorganized the code for better efficiency.</p></li>
+</ul>
+</div></blockquote>
+<p>For VSCode users, we distribute the <code class="docutils literal notranslate"><span class="pre">lldb-vscode</span></code> binary. It is a wrapper around lldb that implements the Visual Studio Code Debug Adapter Protocol.
+<code class="docutils literal notranslate"><span class="pre">dpu-lldb-vscode</span></code> and <code class="docutils literal notranslate"><span class="pre">dpu-lldb-attach-dpu-vscode</span></code> are also provided to debug DPU programs.</p>
+<section id="dpu-lldb-supported-commands">
+<h2>dpu-lldb supported commands<a class="headerlink" href="#dpu-lldb-supported-commands" title="Permalink to this heading"></a></h2>
+<p>Here is a non-exhaustive list of lldb commands supported for a DPU program:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">process</span> <span class="pre">launch</span></code>: Start a DPU program</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">process</span> <span class="pre">continue</span></code>: Resume a DPU program</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">process</span> <span class="pre">interrupt</span></code>: Stop a DPU program</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span> <span class="pre">list</span></code>: List all the threads of a DPU and where each thread is at</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span> <span class="pre">select</span></code>: Select a thread as the currently active thread</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span> <span class="pre">step-in</span></code>: Source level single step in current thread</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span> <span class="pre">step-over</span></code>: Source level single step in current thread, stepping over calls</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span> <span class="pre">step-inst</span></code>: Single step one instruction in current thread</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span> <span class="pre">step-inst-over</span></code>: Single step one instruction in current thread, stepping over calls</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span> <span class="pre">step-out</span></code>: Finish executing the function of the currently selected frame and return to its call site</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span> <span class="pre">until</span></code>: Run the current or specified thread until it reaches a given line number or address or leaves the current function</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span> <span class="pre">backtrace</span></code>: Show the stack of the current thread</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">frame</span> <span class="pre">select</span></code>: Select a frame by index from within the current thread and make it the current frame</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">frame</span> <span class="pre">info</span></code>: List information about the currently selected frame in the current thread</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">frame</span> <span class="pre">select</span> <span class="pre">--relative=&lt;n&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">up</span> <span class="pre">&lt;n&gt;</span></code>: Go up “n” frames in the stack (1 frame by default)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">frame</span> <span class="pre">select</span> <span class="pre">--relative=-&lt;n&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">down</span> <span class="pre">&lt;n&gt;</span></code>: Go down “n” frames in the stack (1 frame by default)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">frame</span> <span class="pre">variable</span></code>: Show frame variables</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">target</span> <span class="pre">variable</span></code>: Read global variables for the DPU program</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">breakpoint</span> <span class="pre">set|list|delete</span></code>: Manage breakpoint in the DPU program</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">register</span> <span class="pre">read</span></code>: Dump the contents of one or more register values from the current frame</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">register</span> <span class="pre">write</span></code>: Modify a single register value</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">memory</span> <span class="pre">read</span></code>: Read from the memory of the DPU program</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">memory</span> <span class="pre">write</span></code>: Write to the memory of the DPU program</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">disassemble</span></code>: Disassemble specified instructions of the DPU program</p></li>
+</ul>
+</div></blockquote>
+<p>Note that for every command, a help is available in <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code> by running your command preceding by <code class="docutils literal notranslate"><span class="pre">help</span></code>, for example:</p>
+<p><code class="docutils literal notranslate"><span class="pre">help</span> <span class="pre">process</span> <span class="pre">launch</span></code></p>
+</section>
+<section id="memory-mapping">
+<h2>Memory mapping<a class="headerlink" href="#memory-mapping" title="Permalink to this heading"></a></h2>
+<p>All the memories of the DPU are mapped in a single address space for <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>WRAM: <code class="docutils literal notranslate"><span class="pre">0x00000000</span></code> - <code class="docutils literal notranslate"><span class="pre">0x00010000</span></code></p></li>
+<li><p>MRAM: <code class="docutils literal notranslate"><span class="pre">0x08000000</span></code> - <code class="docutils literal notranslate"><span class="pre">0x0c000000</span></code></p></li>
+<li><p>IRAM: <code class="docutils literal notranslate"><span class="pre">0x80000000</span></code> - <code class="docutils literal notranslate"><span class="pre">0x80008000</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>To read or write in the WRAM or the MRAM, use the <code class="docutils literal notranslate"><span class="pre">memory</span> <span class="pre">read|write</span></code> command.</p>
+<p>To read the IRAM, use the <code class="docutils literal notranslate"><span class="pre">disassemble</span></code> command.
+<code class="docutils literal notranslate"><span class="pre">memory</span> <span class="pre">read|write</span></code> can also by used to read or write the IRAM but it will be in a binary format (not instruction format).</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="08_DebuggingWithUpmemDpu.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="081_DPUDebugExample.html" class="btn btn-neutral float-right" title="An example of debugging" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scatter Gather Memory Transfer &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/tabs.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/tabs.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Stack Analyzer" href="270_StackAnalyzer.html" />
+    <link rel="prev" title="Unaligned MRAM Accesses" href="264_MRAMUnaligned.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Scatter Gather Memory Transfer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#host-buffers-interface">Host Buffers Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#enabling-scatter-gather-transfers">Enabling scatter gather transfers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#performance">Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Scatter Gather Memory Transfer</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/265_ScatterGatherXfer.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="scatter-gather-memory-transfer">
+<h1>Scatter Gather Memory Transfer<a class="headerlink" href="#scatter-gather-memory-transfer" title="Permalink to this heading"></a></h1>
+<p>In addition to the <code class="docutils literal notranslate"><span class="pre">dpu_push_xfer</span></code> function (cf <a class="reference internal" href="032_DPURuntimeService_HostCommunication.html#dpu-memory-interface-label"><span class="std std-ref">Memory Interface</span></a>), the C host API provides
+the function <code class="docutils literal notranslate"><span class="pre">dpu_push_sg_xfer</span></code> to perform scatter/gather memory transfers between the host memory and the DPU
+<strong>MRAM</strong> memory</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">dpu_error_t</span><span class="w"> </span><span class="nf">dpu_push_sg_xfer</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">dpu_set_t</span><span class="w"> </span><span class="n">set</span><span class="p">,</span>
+<span class="w">                             </span><span class="n">dpu_xfer_t</span><span class="w"> </span><span class="n">xfer</span><span class="p">,</span>
+<span class="w">                             </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">symbol_name</span><span class="p">,</span>
+<span class="w">                             </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">symbol_offset</span><span class="p">,</span>
+<span class="w">                             </span><span class="kt">size_t</span><span class="w"> </span><span class="n">length</span><span class="p">,</span>
+<span class="w">                             </span><span class="n">get_block_t</span><span class="w"> </span><span class="o">*</span><span class="n">get_block_info</span><span class="p">,</span>
+<span class="w">                             </span><span class="n">dpu_sg_xfer_flags_t</span><span class="w"> </span><span class="n">flags</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The direction of the transfer (to or from the DPUs) is set with the <code class="docutils literal notranslate"><span class="pre">xfer</span></code> argument.
+Below is an illustration of the behavior of the function for each direction:</p>
+<blockquote>
+<div><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">DPU_XFER_TO_DPU</span></code></p>
+<p>In this case independent blocks of the host memory will be transferred and gathered into one block of the
+DPU memory.</p>
+<a class="reference internal image-reference" href="_images/gather_xfer.png"><img alt="_images/gather_xfer.png" src="_images/gather_xfer.png" style="width: 576.0px; height: 379.8px;" /></a>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DPU_XFER_FROM_DPU</span></code></p>
+<p>Symmetrically, in this case, one DPU memory block will be transferred and scattered into independent blocks of the
+host memory.</p>
+<a class="reference internal image-reference" href="_images/scatter_xfer.png"><img alt="_images/scatter_xfer.png" src="_images/scatter_xfer.png" style="width: 594.0px; height: 369.0px;" /></a>
+</li>
+</ul>
+</div></blockquote>
+<p>In the same way than for <code class="docutils literal notranslate"><span class="pre">dpu_push_xfer</span></code>, transfer options are specified with the <code class="docutils literal notranslate"><span class="pre">flags</span></code> argument. <code class="docutils literal notranslate"><span class="pre">DPU_SG_XFER_DEFAULT</span></code>
+is equivalent to <code class="docutils literal notranslate"><span class="pre">DPU_XFER_DEFAULT</span></code> and <code class="docutils literal notranslate"><span class="pre">DPU_SG_XFER_ASYNC</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">DPU_XFER_ASYNC</span></code>.</p>
+<p>Although the function shares most of its interface with <code class="docutils literal notranslate"><span class="pre">dpu_push_xfer</span></code>, the host buffers are specified in a different way.
+In the case of <code class="docutils literal notranslate"><span class="pre">dpu_push_xfer</span></code>, the <code class="docutils literal notranslate"><span class="pre">dpu_prepare_xfer</span></code> function allows to register explicitely a host memory address associated to each DPU.
+In the case of <code class="docutils literal notranslate"><span class="pre">dpu_push_sg_xfer</span></code>, a utility function needs to be written, which returns for each DPU the address of the next block where to get or put the data. This function is passed to <code class="docutils literal notranslate"><span class="pre">dpu_push_sg_xfer</span></code> through the <code class="docutils literal notranslate"><span class="pre">get_block_info</span></code> argument (more details on this parameter are provided in the next section).</p>
+<p>By default, it is expected that the utility function specifies a total number of bytes to gather to the DPU
+or to scatter to the host equal to <code class="docutils literal notranslate"><span class="pre">length</span></code>, for all the DPUs. An error message is generated during the transfer if
+this condition is not met, in order to detect potential errors in the logic that returns the block addresses.
+The length check can also be disabled with the flag <code class="docutils literal notranslate"><span class="pre">DPU_SG_XFER_DISABLE_LENGTH_CHECK</span></code>. In this case, a special behavior is applied when the total size of buffers specified for a DPU is lower than the <code class="docutils literal notranslate"><span class="pre">length</span></code> argument’s value.
+For a gather transfer (<code class="docutils literal notranslate"><span class="pre">DPU_XFER_TO_DPU</span></code>), the remaining MRAM bytes will be filled with zeros, as illustrated below</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/gather_padding_xfer.png"><img alt="_images/gather_padding_xfer.png" src="_images/gather_padding_xfer.png" style="width: 576.0px; height: 365.4px;" /></a>
+</div></blockquote>
+<p>For a scatter transfer (<code class="docutils literal notranslate"><span class="pre">DPU_XFER_FROM_DPU</span></code>), only the first bytes are transferred from the DPU MRAM to the host (until the host buffers are full), and the remaining bytes in MRAM are ignored.
+For both directions, the case of the total size for a DPU exceeding the <code class="docutils literal notranslate"><span class="pre">length</span></code> argument’s value is silently ignored (i.e., only the first <code class="docutils literal notranslate"><span class="pre">length</span></code> bytes are transfered, and no error is issued).</p>
+<section id="host-buffers-interface">
+<h2>Host Buffers Interface<a class="headerlink" href="#host-buffers-interface" title="Permalink to this heading"></a></h2>
+<p>Compared to <code class="docutils literal notranslate"><span class="pre">dpu_push_xfer</span></code>, the <code class="docutils literal notranslate"><span class="pre">dpu_push_sg_xfer</span></code> function uses a different interface for specifying the host buffers.
+The interface requires the user to provide a utility function which defines how to retrieve the scattered buffer’s addresses.
+The function <code class="docutils literal notranslate"><span class="pre">dpu_push_sg_xfer</span></code> takes as input a parameter of type <code class="docutils literal notranslate"><span class="pre">get_block_t</span></code>, which is a structure containing the utility function and its arguments (context)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">get_block_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/** The get_block function */</span>
+<span class="w">    </span><span class="n">get_block_func_t</span><span class="w"> </span><span class="n">f</span><span class="p">;</span>
+<span class="w">    </span><span class="cm">/** User arguments for the get_block function */</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">args</span><span class="p">;</span>
+<span class="w">    </span><span class="cm">/** Size of the user arguments */</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">args_size</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="n">get_block_t</span><span class="p">;</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">sg_block_info</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/** Starting address of the block */</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">addr</span><span class="p">;</span>
+<span class="w">    </span><span class="cm">/** Number of bytes to transfer for this block */</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">length</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">typedef</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">get_block_func_t</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">sg_block_info</span><span class="w"> </span><span class="o">*</span><span class="n">out</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">dpu_index</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">block_index</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">args</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The function <code class="docutils literal notranslate"><span class="pre">get_block_t.f</span></code> is used internally by <code class="docutils literal notranslate"><span class="pre">dpu_push_sg_xfer</span></code> to access the buffer addresses where to store or get the data for the transfer.
+More specifically, the function shall provide the host memory address and the length (in bytes) of one block at each call.
+It takes as input the DPU index and the block index. The blocks associated with a DPU index are assumed to be linearly numbered from 0 to n-1, with n being the total number of blocks for the DPU. The utility function will be first called with a block index of 0 to retrieve the first block address. When the first block length is exceeded, the function is called with a block index of 1 to retrieve the next block, and so on. When the last block’s length is exceeded (block index of n-1), the function is called with a block index of n, and it shall return <code class="docutils literal notranslate"><span class="pre">false</span></code>. This indicates that no more blocks are available for the specified DPU. For all previous calls, the function should return true and provide the new block’s description in the <code class="docutils literal notranslate"><span class="pre">out</span></code> argument.</p>
+<p>To prevent the SDK from accessing the user arguments in the <code class="docutils literal notranslate"><span class="pre">get_block_t</span></code> structure while the user is modifying them, the SDK will make a copy of the arguments in a temporary buffer.
+The size of this buffer is specified in the <code class="docutils literal notranslate"><span class="pre">get_block_t.args_size</span></code> field. The user shall ensure that the size is large enough to contain the arguments.
+If the size is not large enough, this will result in a buffer overflow.</p>
+<p><strong>Note</strong>: There is no guarantee as to the order in which <code class="docutils literal notranslate"><span class="pre">get_block_t.f</span></code> will be called, and the SDK may call it
+multiple times in parallel threads. Therefore, the user must ensure that the function is thread-safe and <a class="reference external" href="https://en.wikipedia.org/wiki/Reentrancy_(computing)">reentrant</a>.</p>
+</section>
+<section id="enabling-scatter-gather-transfers">
+<span id="enabling-sgxfer-label"></span><h2>Enabling scatter gather transfers<a class="headerlink" href="#enabling-scatter-gather-transfers" title="Permalink to this heading"></a></h2>
+<p>Scatter/gather transfers are disabled by default in the SDK, but can be enabled by adding <code class="docutils literal notranslate"><span class="pre">sgXferEnable=true</span></code> in the DPU profile.
+By default, the maximal number of blocks that can be transferred for one DPU is
+equal to the number of DPUs in the DPU set.
+For instance, if a rank of 64 DPUs is allocated, the utility function in the <code class="docutils literal notranslate"><span class="pre">dpu_push_sg_xfer</span></code> call
+shall not specify a number of blocks larger than 64 for any DPU.
+If this limit is not sufficient for the application,
+it can be changed by setting the variable <code class="docutils literal notranslate"><span class="pre">sgXferMaxBlocksPerDpu</span></code> in the DPU profile.
+Increasing this value however increases the memory footprint of the SDK.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">dpu_alloc</span><span class="p">(</span><span class="mi">2048</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sgXferEnable=true, sgXferMaxBlocksPerDpu=3096&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">dpu_set</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If the utility function specifies more than <code class="docutils literal notranslate"><span class="pre">sgXferMaxBlocksPerDpu</span></code> blocks per DPU,
+an error message is generated.</p>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this heading"></a></h2>
+<p>Suppose one wants to perform an in-place partition of a buffer such that all elements on the left are smaller than a given pivot,
+and all elements on the right are greater than the pivot. This partitioning is used for example in quicksort algorithms.</p>
+<p>The following code performs this partitioning on a DPU:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mram.h&gt;</span>
+
+<span class="cp">#define DPU_BUFFER_SIZE (1 &lt;&lt; 6)</span>
+
+<span class="n">__host</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">pivot</span><span class="p">;</span>
+<span class="n">__host</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">metadata</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+<span class="n">__mram_noinit</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="n">DPU_BUFFER_SIZE</span><span class="p">];</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="cm">/* load the data from MRAM */</span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">work_buffer</span><span class="p">[</span><span class="n">DPU_BUFFER_SIZE</span><span class="p">];</span>
+<span class="w">  </span><span class="n">mram_read</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">work_buffer</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_BUFFER_SIZE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">));</span>
+
+<span class="w">  </span><span class="cm">/* perform the pivot */</span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DPU_BUFFER_SIZE</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">DPU_BUFFER_SIZE</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">work_buffer</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">pivot</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">i</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">work_buffer</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">pivot</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">j</span><span class="o">--</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">work_buffer</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">      </span><span class="n">work_buffer</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">work_buffer</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+<span class="w">      </span><span class="n">work_buffer</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="cm">/* store the metadata */</span>
+<span class="w">  </span><span class="n">metadata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w">                   </span><span class="cm">/* length of left partition */</span>
+<span class="w">  </span><span class="n">metadata</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DPU_BUFFER_SIZE</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"> </span><span class="cm">/* length of right partition */</span>
+
+<span class="w">  </span><span class="cm">/* store the data back to MRAM */</span>
+<span class="w">  </span><span class="n">mram_write</span><span class="p">(</span><span class="o">&amp;</span><span class="n">work_buffer</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_BUFFER_SIZE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">));</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that the code writes the length of the left and right partitions in the table <code class="docutils literal notranslate"><span class="pre">metadata</span></code> to be communicated to the host.</p>
+<p>It can be used to distribute the partition of a buffer between multiple DPUs. The main function is:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-Qw==" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-Qw==" name="Qw==" role="tab" tabindex="0">C</button><button aria-controls="panel-0-Qysr" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-Qysr" name="Qysr" role="tab" tabindex="-1">C++</button><button aria-controls="panel-0-QysrICh3aXRoIGxhbWJkYSk=" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-QysrICh3aXRoIGxhbWJkYSk=" name="QysrICh3aXRoIGxhbWJkYSk=" role="tab" tabindex="-1">C++ (with lambda)</button></div><div aria-labelledby="tab-0-Qw==" class="sphinx-tabs-panel group-tab" id="panel-0-Qw==" name="Qw==" role="tabpanel" tabindex="0"><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">dpu_set_t</span><span class="w"> </span><span class="n">set</span><span class="p">;</span>
+
+<span class="w">  </span><span class="cm">/* Generate random data */</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">];</span>
+<span class="w">  </span><span class="n">fill_random_buffer</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">pivot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MAX_RANDOM</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+
+<span class="w">  </span><span class="cm">/* Initialize and run */</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_alloc</span><span class="p">(</span><span class="n">NB_DPUS</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sgXferEnable=true&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">set</span><span class="p">));</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_load</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_BINARY</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">));</span>
+<span class="w">  </span><span class="n">populate_mram</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span>
+<span class="w">  </span><span class="n">dpu_broadcast_to</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;pivot&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pivot</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">pivot</span><span class="p">),</span><span class="w"> </span><span class="n">DPU_XFER_DEFAULT</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_launch</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_SYNCHRONOUS</span><span class="p">));</span>
+
+<span class="w">  </span><span class="cm">/* Retrieve metadata and compute length of the left partition. */</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="o">**</span><span class="n">metadata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_metadata</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">NB_DPUS</span><span class="p">);</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="n">lower_length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_left_length</span><span class="p">(</span><span class="n">metadata</span><span class="p">);</span>
+
+<span class="w">  </span><span class="cm">/* Compute where to store the incoming blocks. */</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">***</span><span class="n">block_addresses</span><span class="w"> </span><span class="o">=</span>
+<span class="w">      </span><span class="n">bidimensional_malloc</span><span class="p">(</span><span class="n">NB_DPUS</span><span class="p">,</span><span class="w"> </span><span class="n">NB_BLOCKS</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="p">));</span>
+<span class="w">  </span><span class="n">compute_block_addresses</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span><span class="w"> </span><span class="n">block_addresses</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">lower_length</span><span class="p">);</span>
+
+<span class="w">  </span><span class="cm">/* Retrieve the result. */</span>
+<span class="w">  </span><span class="n">sg_xfer_context</span><span class="w"> </span><span class="n">sc_args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{.</span><span class="n">metadata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metadata</span><span class="p">,</span><span class="w"> </span><span class="p">.</span><span class="n">block_addresses</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">block_addresses</span><span class="p">};</span>
+<span class="w">  </span><span class="n">get_block_t</span><span class="w"> </span><span class="n">get_block_info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{.</span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">get_block</span><span class="p">,</span><span class="w"> </span><span class="p">.</span><span class="n">args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sc_args</span><span class="p">,</span><span class="w"> </span><span class="p">.</span><span class="n">args_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">sc_args</span><span class="p">)};</span>
+
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_push_sg_xfer</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_XFER_FROM_DPU</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;buffer&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">                              </span><span class="n">BUFFER_SIZE</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">NB_DPUS</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">),</span>
+<span class="w">                              </span><span class="o">&amp;</span><span class="n">get_block_info</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_SG_XFER_DEFAULT</span><span class="p">));</span>
+
+<span class="w">  </span><span class="cm">/* Validate the results. */</span>
+<span class="w">  </span><span class="n">validate_partition</span><span class="p">(</span><span class="n">pivot</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">lower_length</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">bidimensional_free</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span><span class="w"> </span><span class="n">NB_DPUS</span><span class="p">);</span>
+<span class="w">  </span><span class="n">bidimensional_free</span><span class="p">(</span><span class="n">block_addresses</span><span class="p">,</span><span class="w"> </span><span class="n">NB_DPUS</span><span class="p">);</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_free</span><span class="p">(</span><span class="n">set</span><span class="p">));</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-Qysr" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-Qysr" name="Qysr" role="tabpanel" tabindex="0"><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">int</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* Generate random data */</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">generate_random_vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">BUFFER_SIZE</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pivot</span><span class="p">{</span><span class="n">MAX_RANDOM</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">};</span>
+
+<span class="w">    </span><span class="cm">/* Initialize and run */</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">dpuSet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DpuSet</span><span class="o">::</span><span class="n">allocate</span><span class="p">(</span><span class="n">NB_DPUS</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sgXferEnable=true&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">dpuSet</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">DPU_BINARY</span><span class="p">);</span>
+<span class="w">    </span><span class="n">populate_mram</span><span class="p">(</span><span class="n">dpuSet</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span>
+<span class="w">    </span><span class="n">dpuSet</span><span class="p">.</span><span class="n">copy</span><span class="p">(</span><span class="s">&quot;pivot&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">pivot</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">dpuSet</span><span class="p">.</span><span class="n">exec</span><span class="p">();</span>
+
+<span class="w">    </span><span class="cm">/* Retrieve metadata and compute length of the left partition. */</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">metadata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_metadata</span><span class="p">(</span><span class="n">dpuSet</span><span class="p">);</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">lower_length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_left_length</span><span class="p">(</span><span class="n">metadata</span><span class="p">);</span>
+
+<span class="w">    </span><span class="cm">/* Compute the addresses of inbound blocks in the output buffer. */</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">block_addresses</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">compute_block_addresses</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">lower_length</span><span class="p">);</span>
+
+<span class="w">    </span><span class="cm">/* Retrieve the result. */</span>
+<span class="w">    </span><span class="n">sg_xfer_context</span><span class="w"> </span><span class="n">sc_args</span><span class="p">{</span><span class="n">metadata</span><span class="p">,</span><span class="w"> </span><span class="n">block_addresses</span><span class="p">};</span>
+<span class="w">    </span><span class="n">get_block_t</span><span class="w"> </span><span class="n">get_block_info</span><span class="p">{</span><span class="n">get_block</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sc_args</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">sc_args</span><span class="p">)};</span>
+
+<span class="w">    </span><span class="n">dpuSet</span><span class="p">.</span><span class="n">copyScatterGather</span><span class="p">(</span><span class="n">get_block_info</span><span class="p">,</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">NB_DPUS</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">T</span><span class="p">),</span>
+<span class="w">                             </span><span class="s">&quot;buffer&quot;</span><span class="p">);</span>
+
+<span class="w">    </span><span class="cm">/* Validate the result. */</span>
+<span class="w">    </span><span class="n">validate_partition</span><span class="p">(</span><span class="n">pivot</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">lower_length</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">DpuError</span><span class="w"> </span><span class="o">&amp;</span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-QysrICh3aXRoIGxhbWJkYSk=" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-QysrICh3aXRoIGxhbWJkYSk=" name="QysrICh3aXRoIGxhbWJkYSk=" role="tabpanel" tabindex="0"><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">int</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* Generate random data */</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">generate_random_vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">BUFFER_SIZE</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pivot</span><span class="p">{</span><span class="n">MAX_RANDOM</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">};</span>
+
+<span class="w">    </span><span class="cm">/* Initialize and run */</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">dpuSet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DpuSet</span><span class="o">::</span><span class="n">allocate</span><span class="p">(</span><span class="n">NB_DPUS</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sgXferEnable=true&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">dpuSet</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">DPU_BINARY</span><span class="p">);</span>
+<span class="w">    </span><span class="n">populate_mram</span><span class="p">(</span><span class="n">dpuSet</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span>
+<span class="w">    </span><span class="n">dpuSet</span><span class="p">.</span><span class="n">copy</span><span class="p">(</span><span class="s">&quot;pivot&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">pivot</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">dpuSet</span><span class="p">.</span><span class="n">exec</span><span class="p">();</span>
+
+<span class="w">    </span><span class="cm">/* Retrieve metadata and compute length of the left partition. */</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">metadata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_metadata</span><span class="p">(</span><span class="n">dpuSet</span><span class="p">);</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">lower_length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_left_length</span><span class="p">(</span><span class="n">metadata</span><span class="p">);</span>
+
+<span class="w">    </span><span class="cm">/* Compute the addresses of inbound blocks in the output buffer. */</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">block_addresses</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">compute_block_addresses</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">lower_length</span><span class="p">);</span>
+
+<span class="w">    </span><span class="cm">/* Retrieve the result. */</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">get_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="n">metadata</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">block_addresses</span><span class="p">](</span><span class="k">struct</span><span class="w"> </span><span class="nc">sg_block_info</span><span class="w"> </span><span class="o">*</span><span class="n">out</span><span class="p">,</span>
+<span class="w">                                                   </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">dpu_index</span><span class="p">,</span>
+<span class="w">                                                   </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">block_index</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">block_index</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">NB_BLOCKS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="cm">/* Set the output block */</span>
+<span class="w">      </span><span class="n">out</span><span class="o">-&gt;</span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metadata</span><span class="p">[</span><span class="n">dpu_index</span><span class="p">][</span><span class="n">block_index</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">T</span><span class="p">);</span>
+<span class="w">      </span><span class="n">out</span><span class="o">-&gt;</span><span class="n">addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">block_addresses</span><span class="p">[</span><span class="n">dpu_index</span><span class="p">][</span><span class="n">block_index</span><span class="p">];</span>
+
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="n">dpuSet</span><span class="p">.</span><span class="n">copyScatterGather</span><span class="p">(</span><span class="n">get_block</span><span class="p">,</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">NB_DPUS</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">T</span><span class="p">),</span>
+<span class="w">                             </span><span class="s">&quot;buffer&quot;</span><span class="p">);</span>
+
+<span class="w">    </span><span class="cm">/* Validate the result. */</span>
+<span class="w">    </span><span class="n">validate_partition</span><span class="p">(</span><span class="n">pivot</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">lower_length</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">DpuError</span><span class="w"> </span><span class="o">&amp;</span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></div>
+<p>The function <code class="docutils literal notranslate"><span class="pre">get_block</span></code> is used to prepare the buffers to be transferred to the DPUs.
+First, we define a structure <code class="docutils literal notranslate"><span class="pre">sg_xfer_context</span></code> that contains the execution context of <code class="docutils literal notranslate"><span class="pre">get_block</span></code>:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-Qw==" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-1-Qw==" name="Qw==" role="tab" tabindex="0">C</button><button aria-controls="panel-1-Qysr" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-Qysr" name="Qysr" role="tab" tabindex="-1">C++</button><button aria-controls="panel-1-QysrICh3aXRoIGxhbWJkYSk=" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-QysrICh3aXRoIGxhbWJkYSk=" name="QysrICh3aXRoIGxhbWJkYSk=" role="tab" tabindex="-1">C++ (with lambda)</button></div><div aria-labelledby="tab-1-Qw==" class="sphinx-tabs-panel group-tab" id="panel-1-Qw==" name="Qw==" role="tabpanel" tabindex="0"><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* User structure that stores the get_block function arguments */</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">sg_xfer_context</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="o">**</span><span class="n">metadata</span><span class="p">;</span><span class="w">          </span><span class="cm">/* [in] array of block lengths */</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">***</span><span class="n">block_addresses</span><span class="p">;</span><span class="w"> </span><span class="cm">/* [in] indexes to store the next block */</span>
+<span class="p">}</span><span class="w"> </span><span class="n">sg_xfer_context</span><span class="p">;</span>
+
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-Qysr" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-Qysr" name="Qysr" role="tabpanel" tabindex="0"><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* User structure that stores the get_block function arguments */</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">sg_xfer_context</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="o">&gt;&gt;</span>
+<span class="w">      </span><span class="o">&amp;</span><span class="n">metadata</span><span class="p">;</span><span class="w"> </span><span class="cm">/* [in] array of block lengths */</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*&gt;&gt;</span>
+<span class="w">      </span><span class="o">&amp;</span><span class="n">block_addresses</span><span class="p">;</span><span class="w"> </span><span class="cm">/* [in] array of</span>
+<span class="cm">                          block addresses */</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-QysrICh3aXRoIGxhbWJkYSk=" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-QysrICh3aXRoIGxhbWJkYSk=" name="QysrICh3aXRoIGxhbWJkYSk=" role="tabpanel" tabindex="0"><p>There is no need for a capturing structure in this case.</p>
+</div></div>
+<p><code class="docutils literal notranslate"><span class="pre">get_block</span></code> is defined as follows:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-Qw==" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-2-Qw==" name="Qw==" role="tab" tabindex="0">C</button><button aria-controls="panel-2-Qysr" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-2-Qysr" name="Qysr" role="tab" tabindex="-1">C++</button><button aria-controls="panel-2-QysrICh3aXRoIGxhbWJkYSk=" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-2-QysrICh3aXRoIGxhbWJkYSk=" name="QysrICh3aXRoIGxhbWJkYSk=" role="tab" tabindex="-1">C++ (with lambda)</button></div><div aria-labelledby="tab-2-Qw==" class="sphinx-tabs-panel group-tab" id="panel-2-Qw==" name="Qw==" role="tabpanel" tabindex="0"><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Callback function that returns the block information for a given DPU and</span>
+<span class="cm"> * block index. */</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">get_block</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">sg_block_info</span><span class="w"> </span><span class="o">*</span><span class="n">out</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">dpu_index</span><span class="p">,</span>
+<span class="w">               </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">block_index</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">block_index</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">NB_BLOCKS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="cm">/* Unpack the arguments */</span>
+<span class="w">  </span><span class="n">sg_xfer_context</span><span class="w"> </span><span class="o">*</span><span class="n">sc_args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">sg_xfer_context</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">args</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="o">**</span><span class="n">metadata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sc_args</span><span class="o">-&gt;</span><span class="n">metadata</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metadata</span><span class="p">[</span><span class="n">dpu_index</span><span class="p">][</span><span class="n">block_index</span><span class="p">];</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">***</span><span class="n">block_addresses</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sc_args</span><span class="o">-&gt;</span><span class="n">block_addresses</span><span class="p">;</span>
+
+<span class="w">  </span><span class="cm">/* Set the output block */</span>
+<span class="w">  </span><span class="n">out</span><span class="o">-&gt;</span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+<span class="w">  </span><span class="n">out</span><span class="o">-&gt;</span><span class="n">addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">block_addresses</span><span class="p">[</span><span class="n">dpu_index</span><span class="p">][</span><span class="n">block_index</span><span class="p">];</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-2-Qysr" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-2-Qysr" name="Qysr" role="tabpanel" tabindex="0"><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Callback function that returns the block information for a given DPU and</span>
+<span class="cm"> * block index. */</span>
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get_block</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">sg_block_info</span><span class="w"> </span><span class="o">*</span><span class="n">out</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">dpu_index</span><span class="p">,</span>
+<span class="w">                      </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">block_index</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">block_index</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">NB_BLOCKS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="cm">/* Unpack the arguments */</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="o">*</span><span class="n">sc_args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="n">sg_xfer_context</span><span class="w"> </span><span class="o">*&gt;</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sc_args</span><span class="o">-&gt;</span><span class="n">metadata</span><span class="p">[</span><span class="n">dpu_index</span><span class="p">][</span><span class="n">block_index</span><span class="p">];</span>
+
+<span class="w">  </span><span class="cm">/* Set the output block */</span>
+<span class="w">  </span><span class="n">out</span><span class="o">-&gt;</span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">T</span><span class="p">);</span>
+<span class="w">  </span><span class="n">out</span><span class="o">-&gt;</span><span class="n">addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sc_args</span><span class="o">-&gt;</span><span class="n">block_addresses</span><span class="p">[</span><span class="n">dpu_index</span><span class="p">][</span><span class="n">block_index</span><span class="p">];</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-2-QysrICh3aXRoIGxhbWJkYSk=" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-2-QysrICh3aXRoIGxhbWJkYSk=" name="QysrICh3aXRoIGxhbWJkYSk=" role="tabpanel" tabindex="0"><p>In this case the callback is defined as a lambda in the main function.</p>
+</div></div>
+<p>The full code can be found here: <a class="reference internal" href="a01_PivotExample.html#pivot-source-code-label"><span class="std std-ref">Pivot Partitioning Complete Source Code</span></a>.</p>
+</section>
+<section id="performance">
+<h2>Performance<a class="headerlink" href="#performance" title="Permalink to this heading"></a></h2>
+<p><em>The following remark does not apply to scatter/gather transfers from the host to the DPUs.</em></p>
+<p>The scatter gather transfer is an efficient way to transfer data between the host and the DPUs.
+However, when transferring data from the DPUs to the host, special care must be taken to avoid a slowdown due to cache invalidations
+If the length of a partition is small compared to the size of a cache line on the host (64 bytes on x86), and partitions from multiple DPUs are to be written in adjacent memory locations, the host will invalidate cache lines multiple times, which can be very costly.
+The problem can be solved by writing the partitions in a non-regular pattern.
+For example, consider the following <code class="docutils literal notranslate"><span class="pre">get_block</span></code> function and its context, used in the example above:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">sg_xfer_context</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="o">**</span><span class="n">metadata</span><span class="p">;</span><span class="w">          </span><span class="cm">/* [in] array of block lengths */</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">***</span><span class="n">block_addresses</span><span class="p">;</span><span class="w"> </span><span class="cm">/* [in] indexes to store the next block */</span>
+<span class="p">}</span><span class="w"> </span><span class="n">sg_xfer_context</span><span class="p">;</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">get_block</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">sg_block_info</span><span class="w"> </span><span class="o">*</span><span class="n">out</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">dpu_index</span><span class="p">,</span>
+<span class="w">              </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">block_index</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">block_index</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">NB_BLOCKS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="cm">/* Unpack the arguments */</span>
+<span class="w">  </span><span class="n">sg_xfer_context</span><span class="w"> </span><span class="o">*</span><span class="n">sc_args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">sg_xfer_context</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">args</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="o">**</span><span class="n">metadata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sc_args</span><span class="o">-&gt;</span><span class="n">metadata</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">***</span><span class="n">block_addresses</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sc_args</span><span class="o">-&gt;</span><span class="n">block_addresses</span><span class="p">;</span>
+
+<span class="w">  </span><span class="cm">/* Set the output block */</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metadata</span><span class="p">[</span><span class="n">dpu_index</span><span class="p">][</span><span class="n">block_index</span><span class="p">];</span>
+<span class="w">  </span><span class="n">out</span><span class="o">-&gt;</span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+<span class="w">  </span><span class="n">out</span><span class="o">-&gt;</span><span class="n">addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">block_addresses</span><span class="p">[</span><span class="n">dpu_index</span><span class="p">][</span><span class="n">block_index</span><span class="p">];</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">get_block</span></code> function is called by the SDK to get the address and length of each block.
+The transfers are executed from all DPUs in parallel, in order of ascending <code class="docutils literal notranslate"><span class="pre">block_index</span></code>.
+This scheme will cause cache invalidations, because all DPUs will write their block 0 to adjacent memory locations at the same time, then block 1, etc.
+It can be rewritten to avoid this, assuming you have generated an array <code class="docutils literal notranslate"><span class="pre">offsets[dpu_index]</span></code> of random block offsets for each DPU:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">sg_xfer_context</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="o">**</span><span class="n">metadata</span><span class="p">;</span><span class="w">          </span><span class="cm">/* [in] array of block lengths */</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">***</span><span class="n">block_addresses</span><span class="p">;</span><span class="w"> </span><span class="cm">/* [in] indexes to store the next block */</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="o">*</span><span class="n">offsets</span><span class="p">;</span><span class="w">            </span><span class="cm">/* [in] random offsets for each DPU */</span>
+<span class="p">}</span><span class="w"> </span><span class="n">sg_xfer_context</span><span class="p">;</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">get_block</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">sg_block_info</span><span class="w"> </span><span class="o">*</span><span class="n">out</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">dpu_index</span><span class="p">,</span>
+<span class="w">               </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">block_index</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">block_index</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">NB_BLOCKS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="cm">/* Unpack the arguments */</span>
+<span class="w">  </span><span class="n">sg_xfer_context</span><span class="w"> </span><span class="o">*</span><span class="n">sc_args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">sg_xfer_context</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">args</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="o">**</span><span class="n">metadata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sc_args</span><span class="o">-&gt;</span><span class="n">metadata</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">***</span><span class="n">block_addresses</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sc_args</span><span class="o">-&gt;</span><span class="n">block_addresses</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="o">*</span><span class="n">offsets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sc_args</span><span class="o">-&gt;</span><span class="n">offsets</span><span class="p">;</span>
+
+<span class="w">  </span><span class="cm">/* Offset index */</span>
+<span class="w">  </span><span class="n">block_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">block_index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">offsets</span><span class="p">[</span><span class="n">dpu_index</span><span class="p">])</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">NB_BLOCKS</span><span class="p">;</span>
+
+<span class="w">  </span><span class="cm">/* Set the output block */</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metadata</span><span class="p">[</span><span class="n">dpu_index</span><span class="p">][</span><span class="n">block_index</span><span class="p">];</span>
+<span class="w">  </span><span class="n">out</span><span class="o">-&gt;</span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+<span class="w">  </span><span class="n">out</span><span class="o">-&gt;</span><span class="n">addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">block_addresses</span><span class="p">[</span><span class="n">dpu_index</span><span class="p">][</span><span class="n">block_index</span><span class="p">];</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This assumes you also transfer the parameter <code class="docutils literal notranslate"><span class="pre">offset</span></code> corresponding to each DPU and adapt the DPU code by offsetting its output buffer.
+The reason for doing this (rather than simply reading the DPUs memory with an offset) is that the MRAM of all DPUs can only be accessed uniformly by the host.
+Schematically, the DPU code will look like this:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mram.h&gt;</span>
+
+<span class="n">__host</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">offset</span><span class="p">;</span>
+<span class="n">__mram_noinit</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">output_buffer</span><span class="p">;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="cm">/* Perfom computations */</span>
+<span class="w">  </span><span class="p">...</span>
+<span class="w">  </span><span class="cm">/* Results are stored in `result`</span>
+<span class="cm">  and their length in `result_length` */</span>
+
+<span class="w">  </span><span class="cm">/* Write the result to the output buffer, with an offset */</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">result_store_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">result_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">result_block</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NR_BLOCKS</span><span class="p">;</span><span class="w"> </span><span class="n">result_block</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">offset_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">result_block</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">offset</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">NR_BLOCKS</span><span class="p">;</span>
+<span class="w">    </span><span class="n">mram_write</span><span class="p">(</span><span class="o">&amp;</span><span class="n">output_buffer</span><span class="p">[</span><span class="n">result_store_index</span><span class="p">],</span>
+<span class="w">               </span><span class="o">&amp;</span><span class="n">result</span><span class="p">[</span><span class="n">offset_index</span><span class="p">],</span>
+<span class="w">               </span><span class="n">result_length</span><span class="p">[</span><span class="n">offset_index</span><span class="p">]);</span>
+<span class="w">    </span><span class="n">result_store_index</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">result_length</span><span class="p">[</span><span class="n">offset_index</span><span class="p">];</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="264_MRAMUnaligned.html" class="btn btn-neutral float-left" title="Unaligned MRAM Accesses" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="270_StackAnalyzer.html" class="btn btn-neutral float-right" title="Stack Analyzer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

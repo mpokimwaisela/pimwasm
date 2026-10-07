@@ -1,0 +1,30 @@
+Kernel Driver
+=============
+
+The Linux driver allows dealing with all the hardware platforms at once. It offers
+different functional modes depending on the type of hardware it controls.
+
+Modes
+-----
+
+There exist 3 different modes: performance, safe, and hybrid. Each type of hardware has
+its own set of capabilities, meaning that it supports a certain number of those modes.
+
+- **Safe** mode: all rank accesses go through the driver and are then protected from other applications.
+  To set this mode, use ``"regionMode=safe"`` profile option.
+
+- **Hybrid** mode: only some hardware provides this capability, it allows the userspace backend to mmap either the control interfaces or the MRAMs, providing then a
+  significant speedup (~20% performance increase for control interfaces accesses).
+  To set this mode, use ``"regionMode=hybrid"`` profile option.
+
+- **Performance** mode: this mode allows the userspace backend to mmap in one memory region the whole MRAMs and control interfaces, allowing to completely bypass the driver. Note that this mode mmaps the entire region (ie dpu_region) which possibly encompasses multiple interleaved ranks, so this mode grants access to all the ranks of a region to any application.
+  To set this mode, use ``"regionMode=perf"`` profile option.
+
+The default mode is **performance** if supported by the hardware, **safe** otherwise.
+
+Verbosity
+---------
+
+The driver can output more messages by activating the dynamic debug traces using the following command::
+
+    $ sudo bash -c 'echo "module dpu +p" > /sys/kernel/debug/dynamic_debug/control'

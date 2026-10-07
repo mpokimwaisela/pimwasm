@@ -1,0 +1,4 @@
+Host Library
+------------
+
+The detailed documentation of the API can be found in the `Reference to the C API <CAPI/index.html>`_.

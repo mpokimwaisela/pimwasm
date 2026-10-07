@@ -1,0 +1,5 @@
+<map id="dpu_chip_id.h" name="dpu_chip_id.h">
+<area shape="rect" id="node2" href="$dpu__hw__description_8h.html" title="Hardware DPU rank description. " alt="" coords="5,80,168,107"/>
+<area shape="rect" id="node3" href="$dpu__description_8h.html" title="C API for DPU rank description. " alt="" coords="18,155,155,181"/>
+<area shape="rect" id="node4" href="$dpu__management_8h.html" title="C API to allocate, free and access DPU ranks &amp; DPUs. " alt="" coords="11,229,163,256"/>
+</map>

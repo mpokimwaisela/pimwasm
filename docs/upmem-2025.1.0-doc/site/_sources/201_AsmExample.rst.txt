@@ -1,0 +1,139 @@
+Examples of an assembly program
+===============================
+
+This section gives concrete examples of how to develop, build, and test pure assembly programs for the DPU.
+
+Saying hello to the world
+-------------------------
+
+This first illustration is similar to the "hello world" introductory program:
+
+  * Declare a string equal to "hello world"
+  * Compute the checksum of these characters and store the result into ``r0``
+
+The source code
+~~~~~~~~~~~~~~~
+
+The string declaration is achieved with the help of ``.string`` directive. The code hereafter defines
+a "global variable" ``hello`` equal to this string. This variable must reside in the ``data`` section of the
+program (which automatically places it in WRAM)::
+
+    .data
+    .global $hello
+    hello:
+        .string "hello world"
+
+The main function loops on each character of the string until finding zero. This main routine is in the ``text`` section
+of the program (which automatically places it in IRAM) and marked as ``global``, so that the RTE can bootstrap it.
+
+The hello world program (``helloworld.S``) is:
+
+.. literalinclude:: ../../../endtests/documentation/helloworldasm/helloworld.S
+    :language: c
+
+Building the program
+~~~~~~~~~~~~~~~~~~~~
+
+Let's assemble the program as usual using ``dpu-upmem-dpurte-clang``:
+
+.. literalinclude:: ../../../endtests/documentation/helloworldasm/helloworldasm.compile
+
+Notice that we compiled with ``-nostartfiles`` to define the entry point ourselves (``__bootstrap``).
+
+Running the program
+~~~~~~~~~~~~~~~~~~~
+
+Let's verify that the code above is correct, using ``dpu-lldb``:
+
+.. literalinclude:: ../../../endtests/documentation/helloworldasm/helloworldasm.lldb_script
+
+When the program has terminated, verify that the return register is equal to "hello world"'s checksum (i.e. ``45c`` hexa-decimal):
+
+.. literalinclude:: ../../../endtests/documentation/helloworldasm/helloworldasm.output_reference
+
+Placing numerical values in memory
+----------------------------------
+
+Many programs need some variables in memory (some *static* variables) to operate.
+
+The basic directives to do so are ``.byte``, ``.short``, ``.long`` and ``quad``. Such variables must be
+declared in a ``.data`` section of the code.
+
+The next program uses two variables 'a' and 'b', fetched from the WRAM, and stores the sum of 'a' and 'b' into memory:
+
+.. literalinclude:: ../../../endtests/documentation/trivial_add_example/trivial_add.S
+    :language: c
+
+Once the program is built:
+
+.. literalinclude:: ../../../endtests/documentation/trivial_add_example/trivial_add.compile
+
+The debugger easily allows to verify the result:
+
+.. literalinclude:: ../../../endtests/documentation/trivial_add_example/trivial_add.lldb_script
+
+The stored result is the sum of 'a' and 'b'.
+
+.. literalinclude:: ../../../endtests/documentation/trivial_add_example/trivial_add.output_reference
+
+Useful common linker directives
+-------------------------------
+
+The list of assembler directives, along with a comprehensive description can be found in
+:doc:`200_AsmSyntax`. The most commonly used are described hereafter.
+
+Creating a static buffer of data
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The "zero" directives allow creating a static buffer of data with an initial value. The
+DPU assembler repeats the specified value (zero by default) a certain number of times.
+
+The DPU assembler defines:
+
+  * ``.zero`` to create a buffer of bytes
+  * ``.fill`` to create a buffer of words
+
+The example below creates a static buffer of 7 bytes, equal to ``42`` hexa-decimal and returns
+puts the two words of this buffer into ``r0`` and ``r1``:
+
+.. literalinclude:: ../../../endtests/documentation/static_buffer_example/static_buffer.S
+    :language: c
+
+Build the program:
+
+.. literalinclude:: ../../../endtests/documentation/static_buffer_example/static_buffer.compile
+
+Now, execute the program and verify that the registers and the memory match the
+expectations. Notice that the host is a little-endian machine in this test, implying
+that the 8th null byte in the buffer goes to the most significant bits of ``r1``:
+
+.. literalinclude:: ../../../endtests/documentation/static_buffer_example/static_buffer.lldb_script
+
+As expected, ``dpu-upmem-dpurte-clang`` places exactly 7 bytes in memory:
+
+.. literalinclude:: ../../../endtests/documentation/static_buffer_example/static_buffer.output_reference
+
+.. literalinclude:: ../../../endtests/documentation/static_buffer_example/static_buffer.output_reference2
+
+Notice that the buffer is aligned on `4` (bytes), which is necessary to perform a load word from it. If the buffer would have been used for DMA purposes, it would have needed to be aligned on `8` (bytes).
+
+Useful tips and tricks
+----------------------
+
+dpuasmdoc
+~~~~~~~~~
+
+This utility is the fastest way to remind the assembly syntax.
+By typing, for example:
+
+.. literalinclude:: ../../../endtests/documentation/dpuasmdoc_example/dpuasmdoc_example.command
+
+One can get the syntax of all the DPU instructions containing the keyword ld:
+
+.. literalinclude:: ../../../endtests/documentation/dpuasmdoc_example/dpuasmdoc_example.output
+
+To get a help on a specific keyword (e.g. the ld instruction specifically), use:
+
+.. literalinclude:: ../../../endtests/documentation/dpuasmdoc_example/dpuasmdoc_example.command_match
+
+.. literalinclude:: ../../../endtests/documentation/dpuasmdoc_example/dpuasmdoc_example.output_match

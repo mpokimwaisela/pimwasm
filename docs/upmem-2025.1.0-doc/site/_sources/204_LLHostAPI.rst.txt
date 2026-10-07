@@ -1,0 +1,4 @@
+Low-level Host Library (to be used with caution)
+------------------------------------------------
+
+The detailed documentation of the Low Level API can be found in the `Reference to the C Low Level API <CAPILowLevel/index.html>`_.

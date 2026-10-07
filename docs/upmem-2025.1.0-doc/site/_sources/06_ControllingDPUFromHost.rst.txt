@@ -1,0 +1,92 @@
+Controlling the execution of DPUs from host applications
+========================================================
+
+The DPU host API facilitates interactions between host applications and DPUs by offering functions to:
+
+ * Dynamically obtain some DPUs to achieve its goal
+ * Load the DPUs with a program
+ * Start DPUs and get their execution status
+
+Obtaining DPUs
+--------------
+
+From a physical standpoint, DPUs are grouped by **ranks**. Within a rank, each operation can address one or several
+DPUs at a time. The size of a rank varies depending on the actual underneath implementation:
+
+  * UPMEM DIMMs provide ranks of 64 DPUs
+  * F1 on AWS provide ranks of 32 DPUs
+  * The UPMEM simulator provides ranks of 1 DPU only
+  * Etc.
+
+However, often one may want to apply the same action on all DPUs of all ranks. And sometimes, there is no performance drop
+in doing so, rather than applying the action at the rank level.
+
+As a consequence, the host API works on sets of DPUs, which may contain multiple DPU ranks. The provided C macro ``DPU_RANK_FOREACH``
+and ``DPU_FOREACH`` iterate over the ranks and DPUs respectively of a set. Here are some of the available C functions to manage a DPU set:
+
+  * ``dpu_alloc``: returns a set of DPUs, which contains exactly the specified number of DPUs, or an error if the given number of DPUs cannot be allocated. Unless ``DPU_ALLOCATE_ALL`` is used, which means that ``dpu_alloc`` will allocate all available DPUs.
+  * ``dpu_free``: frees a given set of DPUs. Only sets allocated with ``dpu_alloc`` can be freed.
+  * ``dpu_get_nr_ranks``: returns the number of ranks in a DPU set
+  * ``dpu_get_nr_dpus``: returns the number of DPUs in a DPU set
+
+The allocation functions get a string (called the profile) to describe the target:
+
+This string is a comma separated list of key and values::
+
+  "key1=value1,key2=value2,key3=value3,..."
+
+Here is a non-exhaustive list of keys with their associated values:
+
+  * ``backend``
+
+    * ``simulator``
+
+    * ``hw``
+
+  * ``cycleAccurate`` (only for FPGA)
+
+    * ``true``
+
+    * ``false``
+
+A ``NULL`` profile is equivalent to an empty profile.
+
+In C++, Java and Python the ``allocate`` method is used to obtain a set of DPUs or ranks, represented as a ``DpuSet`` or ``DpuSystem`` object. More information can be found in the documentation for the host APIs in :doc:`205_CppHostAPI`, :doc:`206_JavaAPI` and :doc:`PythonAPI/modules`. 
+
+
+Loading programs
+----------------
+
+This operation is achieved by ``dpu_load`` to program all the DPUs in a set.
+The function gets a binary file path as input and loads the enclosed program onto the specified DPUs.
+The program information that can be stored in a given pointer, or ignored if the pointer is ``NULL``.
+
+The program is persistent in the DPU memory, meaning that it can be rebooted as many times
+as the application wants and will always execute the same code.
+
+**Note: as explained in** :doc:`fff_CodingTips` **global constants are persistent amongst boot, even if static.**
+
+Applications may, however, reload DPUs with new programs, by invoking ``dpu_load`` at any moment.
+
+Note that the C host API also provides 2 functions similar to ``dpu_load`` to load program from memory:
+
+ - ``dpu_load_from_incbin`` loads a program stored in memory using the ``DPU_INCBIN`` macro.
+ - ``dpu_load_from_memory`` loads a program stored in memory.
+
+In C++, Java and Python the ``load`` method is available for this operation. Please check the Host API documentation of the corresponding language for more details.
+
+
+Executing programs
+------------------
+
+This goal is achieved by "booting" DPUs, via invocations to ``dpu_launch`` to boot all the DPUs of a given set
+
+Some resources, but not all of them, are reset before booting. More details about what is reset can be found in :doc:`fff_CodingTips`.
+
+Applications can execute DPUs *synchronously* or *asynchronously*:
+
+ * ``DPU_SYNCHRONOUS`` suspends the application until the requested DPUs complete their execution (or encounters an error)
+ * ``DPU_ASYNCHRONOUS`` immediately gives back the control to the application, which will be in charge of checking the DPU's status via
+   ``dpu_status`` or ``dpu_sync``
+
+In C++, Java and Python the ``exec`` method is used to boot the DPUs. Please check the Host API documentation of the corresponding language for more details.

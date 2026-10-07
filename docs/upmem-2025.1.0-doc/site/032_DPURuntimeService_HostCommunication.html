@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Communication with host applications &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/tabs.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/tabs.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Advanced Features of the Host API" href="033_AdvancedHostFeatures.html" />
+    <link rel="prev" title="Controlling the execution of DPUs from host applications" href="06_ControllingDPUFromHost.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Communication with host applications</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#memory-interface">Memory Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rank-transfer-interface">Rank Transfer Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Communication with host applications</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/032_DPURuntimeService_HostCommunication.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="communication-with-host-applications">
+<h1>Communication with host applications<a class="headerlink" href="#communication-with-host-applications" title="Permalink to this heading"></a></h1>
+<section id="memory-interface">
+<span id="dpu-memory-interface-label"></span><h2>Memory Interface<a class="headerlink" href="#memory-interface" title="Permalink to this heading"></a></h2>
+<p>The C host API provides functions to transfer data between the host memory and any of the DPU memory (<strong>IRAM</strong>, <strong>WRAM</strong> or <strong>MRAM</strong>):</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dpu_copy_from(struct</span> <span class="pre">dpu_set_t</span> <span class="pre">set,</span> <span class="pre">const</span> <span class="pre">char</span> <span class="pre">*symbol_name,</span> <span class="pre">uint32_t</span> <span class="pre">symbol_offset,</span> <span class="pre">void</span> <span class="pre">*dst,</span> <span class="pre">size_t</span> <span class="pre">length)</span></code> to copy a buffer from a single DPU</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dpu_broadcast_to(struct</span> <span class="pre">dpu_set_t</span> <span class="pre">set,</span> <span class="pre">const</span> <span class="pre">char</span> <span class="pre">*symbol_name,</span> <span class="pre">uint32_t</span> <span class="pre">symbol_offset,</span> <span class="pre">const</span> <span class="pre">void</span> <span class="pre">*src,</span> <span class="pre">size_t</span> <span class="pre">length,</span> <span class="pre">dpu_xfer_flags_t</span> <span class="pre">flags)</span></code> to broadcast a buffer to a set of DPUs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dpu_push_xfer(struct</span> <span class="pre">dpu_set_t</span> <span class="pre">set,</span> <span class="pre">dpu_xfer_t</span> <span class="pre">xfer,</span> <span class="pre">const</span> <span class="pre">char</span> <span class="pre">*symbol_name,</span> <span class="pre">uint32_t</span> <span class="pre">symbol_offset,</span> <span class="pre">size_t</span> <span class="pre">length,</span> <span class="pre">dpu_xfer_flags_t</span> <span class="pre">flags)</span></code> to push different buffers to a set of DPUs in one transfer.</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>There are some alignment limitations when using these functions, depending on the target DPU memory:</dt><dd><ul class="simple">
+<li><p><strong>IRAM</strong> address and length must be aligned on 8 bytes</p></li>
+<li><p><strong>WRAM</strong> address and length must be aligned on 4 bytes</p></li>
+<li><p><strong>MRAM</strong> address and length must be aligned on 8 bytes</p></li>
+</ul>
+</dd>
+</dl>
+<p>The functions will return an error if these constraints are not respected.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">symbol_name</span></code> argument consists of a name of a variable in the DPU code.
+It can be either a <strong>MRAM</strong> variable (with the <code class="docutils literal notranslate"><span class="pre">__mram</span></code> or <code class="docutils literal notranslate"><span class="pre">__mram_noinit</span></code> attribute) or a <strong>WRAM</strong> variable (with the <code class="docutils literal notranslate"><span class="pre">__host</span></code> attribute).
+Other variables are not visible to the host application. (<strong>Note:</strong> Before you use WRAM transfers, read the <a class="reference internal" href="fff_CodingTips.html#data-sharing-label"><span class="std std-ref">Data sharing</span></a> section.)</p>
+<p><strong>Note:</strong>
+The special <strong>MRAM</strong> variable <code class="docutils literal notranslate"><span class="pre">DPU_MRAM_HEAP_POINTER</span></code> (cf <a class="reference internal" href="031_DPURuntimeService_Memory.html#dpu-mram-heap-pointer-explanation-label"><span class="std std-ref">The DPU MRAM Heap Pointer</span></a>) can be accessed by specifying <code class="docutils literal notranslate"><span class="pre">DPU_MRAM_HEAP_POINTER_NAME</span></code> (defined in <code class="docutils literal notranslate"><span class="pre">dpu_types.h</span></code>) as the <code class="docutils literal notranslate"><span class="pre">symbol_name</span></code>.</p>
+<p>When the DPU set contains multiple DPUs:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dpu_broadcast_to</span></code> will copy the same buffer to all DPUs in the set</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dpu_copy_from</span></code> will return <code class="docutils literal notranslate"><span class="pre">DPU_ERR_INVALID_DPU_SET</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dpu_push_xfer</span></code>: see Section <a class="reference internal" href="#dpu-rank-transfer-interface-label"><span class="std std-ref">Rank Transfer Interface</span></a></p></li>
+</ul>
+</div></blockquote>
+<p>As an illustration, let’s implement a trivial checksum function in the DPU. The host application fills in the <strong>MRAM</strong>
+with a buffer of arbitrary size:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The first 4 bytes in <strong>MRAM</strong> represent the buffer size <code class="docutils literal notranslate"><span class="pre">N</span></code></p></li>
+<li><p>The subsequent <code class="docutils literal notranslate"><span class="pre">N</span></code> bytes in <strong>MRAM</strong> contain the data for which the application requests a checksum computation</p></li>
+</ul>
+</div></blockquote>
+<p>On the DPU side, the program uses a single tasklet to fetch <code class="docutils literal notranslate"><span class="pre">N</span></code> and compute the checksum of the supplied buffer. When
+done, the result is posted back into the first four bytes of the <strong>MRAM</strong>.</p>
+<p>Next is a very simple way of implementing the code on the DPU side, using a mix of <strong>MRAM</strong> variables and low level <strong>MRAM</strong>/<strong>WRAM</strong> access functions (in <code class="docutils literal notranslate"><span class="pre">trivial_checksum_example.c</span></code>):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mram.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdbool.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+
+<span class="cp">#define CACHE_SIZE 256</span>
+<span class="cp">#define BUFFER_SIZE (1 &lt;&lt; 16)</span>
+
+<span class="n">__mram_noinit</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">];</span>
+<span class="n">__host</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">checksum</span><span class="p">;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">__dma_aligned</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">local_cache</span><span class="p">[</span><span class="n">CACHE_SIZE</span><span class="p">];</span>
+<span class="w">  </span><span class="n">checksum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">bytes_read</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">bytes_read</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="p">;)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">mram_read</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buffer</span><span class="p">[</span><span class="n">bytes_read</span><span class="p">],</span><span class="w"> </span><span class="n">local_cache</span><span class="p">,</span><span class="w"> </span><span class="n">CACHE_SIZE</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">byte_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="p">(</span><span class="n">byte_index</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">CACHE_SIZE</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">bytes_read</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="p">);</span><span class="w"> </span><span class="n">byte_index</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">bytes_read</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">checksum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">local_cache</span><span class="p">[</span><span class="n">byte_index</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">checksum</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The code is built to be executed by a single tasklet:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-upmem-dpurte-clang trivial_checksum_example.c -o trivial_checksum_example
+</pre></div>
+</div>
+<p>Such a code can be tested with the <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code>, by loading a pre-defined <strong>MRAM</strong> image…</p>
+<p>Such an image is a binary file forged by the developers. For example, to load an MRAM image called <code class="docutils literal notranslate"><span class="pre">sample.bin</span></code> and run the checksum computation on it:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file trivial_checksum_example
+breakpoint set --source-pattern-regexp &quot;return checksum;&quot;
+process launch --stop-at-entry
+memory write -i sample.bin &#39;&amp;buffer[0]&#39;
+process continue
+frame variable/x checksum
+exit
+</pre></div>
+</div>
+<p>As usual, the print of the <code class="docutils literal notranslate"><span class="pre">checksum</span></code> variable allows to verify that the returned value is correct:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(uint32_t) checksum = 0x007f8000
+</pre></div>
+</div>
+<p>A host application can trigger the checksum computation by filling the <strong>MRAM</strong> with the data, as illustrated here-after:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-Qw==" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-Qw==" name="Qw==" role="tab" tabindex="0">C</button><button aria-controls="panel-0-Qysr" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-Qysr" name="Qysr" role="tab" tabindex="-1">C++</button><button aria-controls="panel-0-SmF2YQ==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-SmF2YQ==" name="SmF2YQ==" role="tab" tabindex="-1">Java</button><button aria-controls="panel-0-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-0-Qw==" class="sphinx-tabs-panel group-tab" id="panel-0-Qw==" name="Qw==" role="tabpanel" tabindex="0"><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Communication with a DPU via the MRAM. */</span>
+<span class="cm">/* Populate the MRAM with a collection of bytes and request the DPU to */</span>
+<span class="cm">/* compute the checksum. */</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;dpu.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;assert.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="cp">#ifndef DPU_BINARY</span>
+<span class="cp">#define DPU_BINARY &quot;trivial_checksum_example&quot;</span>
+<span class="cp">#endif</span>
+
+<span class="cm">/* Size of the buffer for which we compute the checksum: 64KBytes. */</span>
+<span class="cp">#define BUFFER_SIZE (1 &lt;&lt; 16)</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">populate_mram</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">dpu_set_t</span><span class="w"> </span><span class="n">set</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">];</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">byte_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">byte_index</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="p">;</span><span class="w"> </span><span class="n">byte_index</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">buffer</span><span class="p">[</span><span class="n">byte_index</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">byte_index</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_broadcast_to</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;buffer&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_XFER_DEFAULT</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">dpu_set_t</span><span class="w"> </span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">dpu</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">checksum</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_alloc</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">set</span><span class="p">));</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_load</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_BINARY</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">));</span>
+<span class="w">  </span><span class="n">populate_mram</span><span class="p">(</span><span class="n">set</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_launch</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_SYNCHRONOUS</span><span class="p">));</span>
+<span class="w">  </span><span class="n">DPU_FOREACH</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">dpu</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_copy_from</span><span class="p">(</span><span class="n">dpu</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;checksum&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">checksum</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">checksum</span><span class="p">)));</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Computed checksum = 0x%08x</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">checksum</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_free</span><span class="p">(</span><span class="n">set</span><span class="p">));</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-Qysr" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-Qysr" name="Qysr" role="tabpanel" tabindex="0"><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;dpu&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iomanip&gt;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">dpu</span><span class="p">;</span>
+
+<span class="cm">/* Size of the buffer for which we compute the checksum: 64KBytes. */</span>
+<span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">populate_mram</span><span class="p">(</span><span class="n">DpuSetOps</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">dpu</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">buffer</span><span class="p">(</span><span class="n">BUFFER_SIZE</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">byte_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">buffer</span><span class="p">)</span><span class="w"> </span>
+<span class="w">    </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">byte_index</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">dpu</span><span class="p">.</span><span class="n">copy</span><span class="p">(</span><span class="s">&quot;buffer&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="o">&gt;</span><span class="p">(</span><span class="n">BUFFER_SIZE</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="n">argv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DpuSet</span><span class="o">::</span><span class="n">allocate</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">dpu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">system</span><span class="p">.</span><span class="n">dpus</span><span class="p">()[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">    </span><span class="n">dpu</span><span class="o">-&gt;</span><span class="n">load</span><span class="p">(</span><span class="s">&quot;trivial_checksum_example&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">populate_mram</span><span class="p">(</span><span class="o">*</span><span class="n">dpu</span><span class="p">);</span>
+<span class="w">    </span><span class="n">dpu</span><span class="o">-&gt;</span><span class="n">exec</span><span class="p">();</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">checksum</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="n">checksum</span><span class="p">.</span><span class="n">front</span><span class="p">().</span><span class="n">resize</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="n">dpu</span><span class="o">-&gt;</span><span class="n">copy</span><span class="p">(</span><span class="n">checksum</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;checksum&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Computed checksum = 0x&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">hex</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">setfill</span><span class="p">(</span><span class="sc">&#39;0&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">setw</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="w"> </span>
+<span class="w">      </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">checksum</span><span class="p">.</span><span class="n">front</span><span class="p">().</span><span class="n">front</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">DpuError</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-SmF2YQ==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-SmF2YQ==" name="SmF2YQ==" role="tabpanel" tabindex="0"><div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.nio.ByteBuffer</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.nio.ByteOrder</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">com.upmem.dpu.Dpu</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">com.upmem.dpu.DpuException</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">com.upmem.dpu.DpuSystem</span><span class="p">;</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">TrivialChecksumExample</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">populate_mram</span><span class="p">(</span><span class="n">Dpu</span><span class="w"> </span><span class="n">dpu</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">DpuException</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[</span><span class="n">BUFFER_SIZE</span><span class="o">]</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="w">      </span><span class="n">buffer</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">byte</span><span class="p">)</span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="n">dpu</span><span class="p">.</span><span class="na">copy</span><span class="p">(</span><span class="s">&quot;buffer&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">DpuException</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">try</span><span class="p">(</span><span class="n">DpuSystem</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DpuSystem</span><span class="p">.</span><span class="na">allocate</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">Dpu</span><span class="w"> </span><span class="n">dpu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">system</span><span class="p">.</span><span class="na">dpus</span><span class="p">().</span><span class="na">get</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+<span class="w">      </span><span class="n">dpu</span><span class="p">.</span><span class="na">load</span><span class="p">(</span><span class="s">&quot;trivial_checksum_example&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">populate_mram</span><span class="p">(</span><span class="n">dpu</span><span class="p">);</span>
+<span class="w">      </span><span class="n">dpu</span><span class="p">.</span><span class="na">exec</span><span class="p">();</span>
+
+<span class="w">      </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">checksum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[</span><span class="mi">4</span><span class="o">]</span><span class="p">;</span>
+<span class="w">      </span><span class="n">dpu</span><span class="p">.</span><span class="na">copy</span><span class="p">(</span><span class="n">checksum</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;checksum&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">ByteBuffer</span><span class="w"> </span><span class="n">wrapped</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ByteBuffer</span><span class="p">.</span><span class="na">wrap</span><span class="p">(</span><span class="n">checksum</span><span class="p">);</span>
+<span class="w">      </span><span class="n">wrapped</span><span class="p">.</span><span class="na">order</span><span class="p">(</span><span class="n">ByteOrder</span><span class="p">.</span><span class="na">LITTLE_ENDIAN</span><span class="p">);</span>
+
+<span class="w">      </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">String</span><span class="p">.</span><span class="na">format</span><span class="p">(</span><span class="s">&quot;Computed checksum = 0x%08x&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">wrapped</span><span class="p">.</span><span class="na">getInt</span><span class="p">()));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-UHl0aG9u" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="kn">from</span> <span class="nn">dpu</span> <span class="kn">import</span> <span class="n">DpuSet</span>
+<span class="kn">from</span> <span class="nn">dpu</span> <span class="kn">import</span> <span class="n">ALLOCATE_ALL</span>
+
+<span class="n">BUFFER_SIZE</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span>
+
+<span class="k">def</span> <span class="nf">populate_mram</span><span class="p">(</span><span class="n">dpus</span><span class="p">):</span>
+
+    <span class="n">buffer</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">BUFFER_SIZE</span><span class="p">)])</span>
+    <span class="n">dpus</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="s1">&#39;buffer&#39;</span><span class="p">,</span> <span class="n">buffer</span><span class="p">)</span>
+
+
+<span class="k">with</span> <span class="n">DpuSet</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">binary</span> <span class="o">=</span> <span class="s2">&quot;trivial_checksum_example&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dpus</span><span class="p">:</span>
+
+    <span class="n">populate_mram</span><span class="p">(</span><span class="n">dpus</span><span class="p">)</span>
+    <span class="n">dpus</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+
+    <span class="n">checksum</span> <span class="o">=</span> <span class="p">[</span><span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">dpus</span><span class="p">]</span>
+    <span class="n">dpus</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">checksum</span><span class="p">,</span> <span class="s1">&#39;checksum&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computed checksum = 0x</span><span class="si">%08x</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">checksum</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;little&#39;</span><span class="p">)))</span>
+
+
+</pre></div>
+</div>
+</div></div>
+<p><strong>Note:</strong> In C++, Java and Python, a <code class="docutils literal notranslate"><span class="pre">copy</span></code> method is used for the data transfers between the host and the DPU, instead of the <code class="docutils literal notranslate"><span class="pre">dpu_copy_from</span></code> and <code class="docutils literal notranslate"><span class="pre">dpu_broadcast_to</span></code> functions used in C.</p>
+<p>Compile the program, for example:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-Qw==" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-1-Qw==" name="Qw==" role="tab" tabindex="0">C</button><button aria-controls="panel-1-Qysr" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-Qysr" name="Qysr" role="tab" tabindex="-1">C++</button><button aria-controls="panel-1-SmF2YQ==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-SmF2YQ==" name="SmF2YQ==" role="tab" tabindex="-1">Java</button><button aria-controls="panel-1-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-1-Qw==" class="sphinx-tabs-panel group-tab" id="panel-1-Qw==" name="Qw==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>gcc<span class="w"> </span>-O3<span class="w"> </span>--std<span class="o">=</span>c99<span class="w"> </span>-o<span class="w"> </span>trivial_checksum_example_host<span class="w"> </span>trivial_checksum_example_host.c<span class="w"> </span>-g<span class="w"> </span><span class="sb">`</span>dpu-pkg-config<span class="w"> </span>--cflags<span class="w"> </span>--libs<span class="w"> </span>dpu<span class="sb">`</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-Qysr" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-Qysr" name="Qysr" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>g++<span class="w"> </span>--std<span class="o">=</span>c++11<span class="w"> </span>trivial_checksum_example_host.cpp<span class="w"> </span>-o<span class="w"> </span>trivial_checksum_example_host_cpp<span class="w"> </span><span class="sb">`</span>dpu-pkg-config<span class="w"> </span>--cflags<span class="w"> </span>--libs<span class="w"> </span>dpu<span class="sb">`</span><span class="w"> </span>-g
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-SmF2YQ==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-SmF2YQ==" name="SmF2YQ==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>javac<span class="w"> </span>-cp<span class="w"> </span><span class="k">$(</span>dpu-pkg-config<span class="w"> </span>--variable<span class="o">=</span>java<span class="w"> </span>dpu<span class="k">)</span><span class="w"> </span>TrivialChecksumExample.java
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-UHl0aG9u" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><p>N/A</p>
+</div></div>
+<p>The result printed by this program should be the checksum of 64Kbyte of counting bytes:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Computed checksum = 0x007f8000
+</pre></div>
+</div>
+</section>
+<section id="rank-transfer-interface">
+<span id="dpu-rank-transfer-interface-label"></span><h2>Rank Transfer Interface<a class="headerlink" href="#rank-transfer-interface" title="Permalink to this heading"></a></h2>
+<p>The previous functions do not provide the needed precision when trying to transfer different data from/to the DPUs while
+keeping the performance of transferring to a whole rank. To do so, one can use the following C functions:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dpu_prepare_xfer</span></code> attributes a buffer to a set of DPUs, which will be used as input or output when <code class="docutils literal notranslate"><span class="pre">dpu_push_xfer</span></code> is called</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dpu_push_xfer</span></code> executes the current transfer with the given direction, DPU symbol name, and DPU symbol length, using the buffers defined with <code class="docutils literal notranslate"><span class="pre">dpu_prepare_xfer</span></code>.
+No transfer is done for a DPU with no defined buffer.</p></li>
+</ul>
+</div></blockquote>
+<p>Here is an example doing the same computation as before, but using multiple DPUs:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-Qw==" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-2-Qw==" name="Qw==" role="tab" tabindex="0">C</button><button aria-controls="panel-2-Qysr" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-2-Qysr" name="Qysr" role="tab" tabindex="-1">C++</button><button aria-controls="panel-2-SmF2YQ==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-2-SmF2YQ==" name="SmF2YQ==" role="tab" tabindex="-1">Java</button><button aria-controls="panel-2-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-2-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-2-Qw==" class="sphinx-tabs-panel group-tab" id="panel-2-Qw==" name="Qw==" role="tabpanel" tabindex="0"><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Communication with a DPU via the MRAM. */</span>
+<span class="cm">/* Populate the MRAM with a collection of bytes and request the DPUs to */</span>
+<span class="cm">/* compute the checksums. */</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;dpu.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;assert.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="cp">#ifndef DPU_BINARY</span>
+<span class="cp">#define DPU_BINARY &quot;trivial_checksum_example&quot;</span>
+<span class="cp">#endif</span>
+
+<span class="cm">/* Size of the buffer for which we compute the checksum: 64KBytes. */</span>
+<span class="cp">#define BUFFER_SIZE (1 &lt;&lt; 16)</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">populate_mram</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">dpu_set_t</span><span class="w"> </span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">nr_dpus</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">dpu_set_t</span><span class="w"> </span><span class="n">dpu</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">each_dpu</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">malloc</span><span class="p">(</span><span class="n">BUFFER_SIZE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nr_dpus</span><span class="p">);</span>
+<span class="w">  </span><span class="n">DPU_FOREACH</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">dpu</span><span class="p">,</span><span class="w"> </span><span class="n">each_dpu</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">byte_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">byte_index</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="p">;</span><span class="w"> </span><span class="n">byte_index</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">buffer</span><span class="p">[</span><span class="n">each_dpu</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">byte_index</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">byte_index</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">buffer</span><span class="p">[</span><span class="n">each_dpu</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">each_dpu</span><span class="p">;</span><span class="w"> </span><span class="c1">// each dpu will compute a different checksum</span>
+<span class="w">    </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_prepare_xfer</span><span class="p">(</span><span class="n">dpu</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">buffer</span><span class="p">[</span><span class="n">each_dpu</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="p">]));</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_push_xfer</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_XFER_TO_DPU</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;buffer&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_XFER_DEFAULT</span><span class="p">));</span>
+<span class="w">  </span><span class="n">free</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">print_checksums</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">dpu_set_t</span><span class="w"> </span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">nr_dpus</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">dpu_set_t</span><span class="w"> </span><span class="n">dpu</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">each_dpu</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">checksums</span><span class="p">[</span><span class="n">nr_dpus</span><span class="p">];</span>
+<span class="w">  </span><span class="n">DPU_FOREACH</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">dpu</span><span class="p">,</span><span class="w"> </span><span class="n">each_dpu</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_prepare_xfer</span><span class="p">(</span><span class="n">dpu</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">checksums</span><span class="p">[</span><span class="n">each_dpu</span><span class="p">]));</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_push_xfer</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_XFER_FROM_DPU</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;checksum&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">),</span><span class="w"> </span><span class="n">DPU_XFER_DEFAULT</span><span class="p">));</span>
+
+<span class="w">  </span><span class="n">DPU_FOREACH</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">dpu</span><span class="p">,</span><span class="w"> </span><span class="n">each_dpu</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;[%u] computed checksum = 0x%08x</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">each_dpu</span><span class="p">,</span><span class="w"> </span><span class="n">checksums</span><span class="p">[</span><span class="n">each_dpu</span><span class="p">]);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">dpu_set_t</span><span class="w"> </span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">dpu</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">nr_dpus</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_alloc</span><span class="p">(</span><span class="n">DPU_ALLOCATE_ALL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">set</span><span class="p">));</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_load</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_BINARY</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">));</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_get_nr_dpus</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">nr_dpus</span><span class="p">));</span>
+<span class="w">  </span><span class="n">populate_mram</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">nr_dpus</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_launch</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_SYNCHRONOUS</span><span class="p">));</span>
+<span class="w">  </span><span class="n">print_checksums</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">nr_dpus</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_free</span><span class="p">(</span><span class="n">set</span><span class="p">));</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-2-Qysr" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-2-Qysr" name="Qysr" role="tabpanel" tabindex="0"><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;dpu&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iomanip&gt;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">dpu</span><span class="p">;</span>
+
+<span class="cm">/* Size of the buffer for which we compute the checksum: 64KBytes. */</span>
+<span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">populate_mram</span><span class="p">(</span><span class="n">DpuSet</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">system</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">buffer</span><span class="p">(</span><span class="n">system</span><span class="p">.</span><span class="n">dpus</span><span class="p">().</span><span class="n">size</span><span class="p">(),</span><span class="w"> </span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">BUFFER_SIZE</span><span class="p">));</span>
+<span class="w">  </span><span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">system</span><span class="p">.</span><span class="n">dpus</span><span class="p">().</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span>
+<span class="w">      </span><span class="n">buffer</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">j</span><span class="p">;</span>
+<span class="w">    </span><span class="n">buffer</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">system</span><span class="p">.</span><span class="n">copy</span><span class="p">(</span><span class="s">&quot;buffer&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">print_checksums</span><span class="p">(</span><span class="n">DpuSet</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">system</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">checksum</span><span class="p">(</span><span class="n">system</span><span class="p">.</span><span class="n">dpus</span><span class="p">().</span><span class="n">size</span><span class="p">(),</span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+<span class="w">  </span><span class="n">system</span><span class="p">.</span><span class="n">copy</span><span class="p">(</span><span class="n">checksum</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;checksum&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="k">for</span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">checksum</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">dec</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">setw</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span>
+<span class="w">      </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39;[&#39;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;] computed checksum = 0x&quot;</span><span class="w"> </span>
+<span class="w">      </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">hex</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">setfill</span><span class="p">(</span><span class="sc">&#39;0&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">setw</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="w"> </span>
+<span class="w">      </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">front</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="n">argv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DpuSet</span><span class="o">::</span><span class="n">allocate</span><span class="p">(</span><span class="n">ALLOCATE_ALL</span><span class="p">);</span>
+<span class="w">    </span><span class="n">system</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="s">&quot;trivial_checksum_example&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">populate_mram</span><span class="p">(</span><span class="n">system</span><span class="p">);</span>
+<span class="w">    </span><span class="n">system</span><span class="p">.</span><span class="n">exec</span><span class="p">();</span>
+<span class="w">    </span><span class="n">print_checksums</span><span class="p">(</span><span class="n">system</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">DpuError</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-2-SmF2YQ==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-2-SmF2YQ==" name="SmF2YQ==" role="tabpanel" tabindex="0"><div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.nio.ByteBuffer</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.nio.ByteOrder</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">com.upmem.dpu.Dpu</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">com.upmem.dpu.DpuException</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">com.upmem.dpu.DpuSystem</span><span class="p">;</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">TrivialChecksumExampleMultiRank</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">populate_mram</span><span class="p">(</span><span class="n">DpuSystem</span><span class="w"> </span><span class="n">system</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">DpuException</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="kt">byte</span><span class="o">[][]</span><span class="w"> </span><span class="n">buffers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[</span><span class="n">system</span><span class="p">.</span><span class="na">dpus</span><span class="p">().</span><span class="na">size</span><span class="p">()</span><span class="o">][</span><span class="n">BUFFER_SIZE</span><span class="o">]</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">system</span><span class="p">.</span><span class="na">dpus</span><span class="p">().</span><span class="na">size</span><span class="p">();</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span>
+<span class="w">        </span><span class="n">buffers</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">]=</span><span class="w"> </span><span class="p">(</span><span class="kt">byte</span><span class="p">)</span><span class="n">j</span><span class="p">;</span>
+<span class="w">      </span><span class="n">buffers</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">system</span><span class="p">.</span><span class="na">copy</span><span class="p">(</span><span class="s">&quot;buffer&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">buffers</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">print_checksums</span><span class="p">(</span><span class="n">DpuSystem</span><span class="w"> </span><span class="n">system</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">DpuException</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="kt">byte</span><span class="o">[][]</span><span class="w"> </span><span class="n">checksum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[</span><span class="n">system</span><span class="p">.</span><span class="na">dpus</span><span class="p">().</span><span class="na">size</span><span class="p">()</span><span class="o">][</span><span class="mi">4</span><span class="o">]</span><span class="p">;</span>
+<span class="w">    </span><span class="n">system</span><span class="p">.</span><span class="na">copy</span><span class="p">(</span><span class="n">checksum</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;checksum&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">dpu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">dpu</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">system</span><span class="p">.</span><span class="na">dpus</span><span class="p">().</span><span class="na">size</span><span class="p">();</span><span class="w"> </span><span class="o">++</span><span class="n">dpu</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">ByteBuffer</span><span class="w"> </span><span class="n">wrapped</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ByteBuffer</span><span class="p">.</span><span class="na">wrap</span><span class="p">(</span><span class="n">checksum</span><span class="o">[</span><span class="n">dpu</span><span class="o">]</span><span class="p">);</span>
+<span class="w">      </span><span class="n">wrapped</span><span class="p">.</span><span class="na">order</span><span class="p">(</span><span class="n">ByteOrder</span><span class="p">.</span><span class="na">LITTLE_ENDIAN</span><span class="p">);</span>
+<span class="w">      </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">String</span><span class="p">.</span><span class="na">format</span><span class="p">(</span><span class="s">&quot;[%d] computed checksum = 0x%08x&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">            </span><span class="n">dpu</span><span class="p">,</span><span class="w"> </span><span class="n">wrapped</span><span class="p">.</span><span class="na">getInt</span><span class="p">()));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">DpuException</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">try</span><span class="p">(</span><span class="n">DpuSystem</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DpuSystem</span><span class="p">.</span><span class="na">allocate</span><span class="p">(</span><span class="n">DpuSystem</span><span class="p">.</span><span class="na">ALLOCATE_ALL</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">      </span><span class="n">system</span><span class="p">.</span><span class="na">load</span><span class="p">(</span><span class="s">&quot;trivial_checksum_example&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">populate_mram</span><span class="p">(</span><span class="n">system</span><span class="p">);</span>
+<span class="w">      </span><span class="n">system</span><span class="p">.</span><span class="na">exec</span><span class="p">();</span>
+<span class="w">      </span><span class="n">print_checksums</span><span class="p">(</span><span class="n">system</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-2-UHl0aG9u" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-2-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="kn">from</span> <span class="nn">dpu</span> <span class="kn">import</span> <span class="n">DpuSet</span>
+<span class="kn">from</span> <span class="nn">dpu</span> <span class="kn">import</span> <span class="n">ALLOCATE_ALL</span>
+
+<span class="n">BUFFER_SIZE</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span>
+
+<span class="k">def</span> <span class="nf">populate_mram</span><span class="p">(</span><span class="n">dpus</span><span class="p">):</span>
+
+    <span class="n">buffers</span> <span class="o">=</span> <span class="p">[</span><span class="nb">bytearray</span><span class="p">([</span><span class="n">k</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> 
+        <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">BUFFER_SIZE</span><span class="p">)])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dpus</span><span class="p">))]</span>
+    <span class="n">dpus</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="s1">&#39;buffer&#39;</span><span class="p">,</span> <span class="n">buffers</span><span class="p">)</span>
+
+
+<span class="k">with</span> <span class="n">DpuSet</span><span class="p">(</span><span class="n">ALLOCATE_ALL</span><span class="p">,</span> <span class="n">binary</span> <span class="o">=</span> <span class="s2">&quot;trivial_checksum_example&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dpus</span><span class="p">:</span>
+
+    <span class="n">populate_mram</span><span class="p">(</span><span class="n">dpus</span><span class="p">)</span>
+    <span class="n">dpus</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+
+    <span class="n">checksum</span> <span class="o">=</span> <span class="p">[</span><span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">dpus</span><span class="p">]</span>
+    <span class="n">dpus</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">checksum</span><span class="p">,</span> <span class="s1">&#39;checksum&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dpus</span><span class="p">)):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">%d</span><span class="s2">] computed checksum = 0x</span><span class="si">%08x</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">checksum</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;little&#39;</span><span class="p">)))</span>
+
+
+</pre></div>
+</div>
+</div></div>
+<p><strong>Note:</strong> In C++, Java and Python, the same <code class="docutils literal notranslate"><span class="pre">copy</span></code> method is used for the data transfers between the host and a rank of DPUs. However this method is an overload of the <code class="docutils literal notranslate"><span class="pre">copy</span></code> method used in the single DPU example, as it takes a two dimensional vector as input. The first dimension of the vector corresponds to each DPU in the rank.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="06_ControllingDPUFromHost.html" class="btn btn-neutral float-left" title="Controlling the execution of DPUs from host applications" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="033_AdvancedHostFeatures.html" class="btn btn-neutral float-right" title="Advanced Features of the Host API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

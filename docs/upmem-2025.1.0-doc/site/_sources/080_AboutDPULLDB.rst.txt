@@ -1,0 +1,67 @@
+==============
+About dpu-lldb
+==============
+
+`LLDB <https://lldb.llvm.org/>`_ `is a next generation, high-performance debugger. It is built as a set of reusable components which highly leverage existing libraries in the larger LLVM Project, such as the Clang expression parser and LLVM disassembler.`
+
+For GDB users, here is a document to easily find the corresponding LLDB command from a GDB one: `GDB to LLDB command map <https://lldb.llvm.org/use/map.html>`_
+
+As seen in the :doc:`PROGRAMMING section<03_ProgrammingWithUpmemDpu>`, ``dpu-lldb`` can be used to execute DPU binaries.
+
+To be able to debug with as much information as possible, debug symbols are enabled by default in ``dpu-upmem-dpurte-clang``. Make sure not to disabled them when debugging (using ``-g0`` by example).
+
+Also, note that debugging a program compiled in high optimization level can sometimes be tricky because:
+
+ * Some variables may not be available because of the compiler optimizations
+ * Stepping through the code can feel random because the compiler has reorganized the code for better efficiency.
+
+For VSCode users, we distribute the ``lldb-vscode`` binary. It is a wrapper around lldb that implements the Visual Studio Code Debug Adapter Protocol.
+``dpu-lldb-vscode`` and ``dpu-lldb-attach-dpu-vscode`` are also provided to debug DPU programs.
+
+dpu-lldb supported commands
+===========================
+
+Here is a non-exhaustive list of lldb commands supported for a DPU program:
+
+ * ``process launch``: Start a DPU program
+ * ``process continue``: Resume a DPU program
+ * ``process interrupt``: Stop a DPU program
+ * ``thread list``: List all the threads of a DPU and where each thread is at
+ * ``thread select``: Select a thread as the currently active thread
+ * ``thread step-in``: Source level single step in current thread
+ * ``thread step-over``: Source level single step in current thread, stepping over calls
+ * ``thread step-inst``: Single step one instruction in current thread
+ * ``thread step-inst-over``: Single step one instruction in current thread, stepping over calls
+ * ``thread step-out``: Finish executing the function of the currently selected frame and return to its call site
+ * ``thread until``: Run the current or specified thread until it reaches a given line number or address or leaves the current function
+ * ``thread backtrace``: Show the stack of the current thread
+ * ``frame select``: Select a frame by index from within the current thread and make it the current frame
+ * ``frame info``: List information about the currently selected frame in the current thread
+ * ``frame select --relative=<n>`` or ``up <n>``: Go up "n" frames in the stack (1 frame by default)
+ * ``frame select --relative=-<n>`` or ``down <n>``: Go down "n" frames in the stack (1 frame by default)
+ * ``frame variable``: Show frame variables
+ * ``target variable``: Read global variables for the DPU program
+ * ``breakpoint set|list|delete``: Manage breakpoint in the DPU program
+ * ``register read``: Dump the contents of one or more register values from the current frame
+ * ``register write``: Modify a single register value
+ * ``memory read``: Read from the memory of the DPU program
+ * ``memory write``: Write to the memory of the DPU program
+ * ``disassemble``: Disassemble specified instructions of the DPU program
+
+Note that for every command, a help is available in ``dpu-lldb`` by running your command preceding by ``help``, for example:
+
+``help process launch``
+
+Memory mapping
+==============
+
+All the memories of the DPU are mapped in a single address space for ``dpu-lldb``:
+
+ * WRAM: ``0x00000000`` - ``0x00010000``
+ * MRAM: ``0x08000000`` - ``0x0c000000``
+ * IRAM: ``0x80000000`` - ``0x80008000``
+
+To read or write in the WRAM or the MRAM, use the ``memory read|write`` command.
+
+To read the IRAM, use the ``disassemble`` command.
+``memory read|write`` can also by used to read or write the IRAM but it will be in a binary format (not instruction format).

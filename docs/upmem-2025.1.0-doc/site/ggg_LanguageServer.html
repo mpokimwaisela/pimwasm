@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Clangd Language Server &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction" href="08_DebuggingWithUpmemDpu.html" />
+    <link rel="prev" title="Coding tips and recommended practices" href="fff_CodingTips.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The Clangd Language Server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#about-clangd">About Clangd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-clangd">Installing Clangd</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#deb-rpm-install">DEB/RPM install</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tarball-install">Tarball install</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#checking-clangd-version">Checking Clangd version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#making-clangd-aware-of-the-dpu-target">Making Clangd aware of the DPU target</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-a-compilation-database-recommended">Using a compilation database (recommended)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-a-configuration-file">Using a configuration file</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#enabling-additional-linting">Enabling additional linting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-clangd-in-your-editor">Using Clangd in your editor</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#vscode">VSCode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vim">Vim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emacs">Emacs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">The Clangd Language Server</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/ggg_LanguageServer.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="the-clangd-language-server">
+<h1>The Clangd Language Server<a class="headerlink" href="#the-clangd-language-server" title="Permalink to this heading"></a></h1>
+<section id="about-clangd">
+<h2>About Clangd<a class="headerlink" href="#about-clangd" title="Permalink to this heading"></a></h2>
+<p><a class="reference external" href="https://clangd.llvm.org/">Clangd</a> is a C/C++ language server, providing IDE-like features such as code completion, diagnostics, and refactoring.</p>
+<p>Clangd can be used to develop DPU code. But for that it needs to know about the <code class="docutils literal notranslate"><span class="pre">dpu-upmem-dpurte</span></code> triplet.
+The clangd binary we distribute is built with support for the <code class="docutils literal notranslate"><span class="pre">dpu-upmem-dpurte</span></code> triplet. It is available as part of the upmem toolchain.</p>
+</section>
+<section id="installing-clangd">
+<h2>Installing Clangd<a class="headerlink" href="#installing-clangd" title="Permalink to this heading"></a></h2>
+<section id="deb-rpm-install">
+<h3>DEB/RPM install<a class="headerlink" href="#deb-rpm-install" title="Permalink to this heading"></a></h3>
+<p>If you installed the upmem SDK with a debian or rpm package, UPMEM Clangd is already installed on your system.</p>
+</section>
+<section id="tarball-install">
+<h3>Tarball install<a class="headerlink" href="#tarball-install" title="Permalink to this heading"></a></h3>
+<p>If you’re using the tarball, the clangd binary is available in the <code class="docutils literal notranslate"><span class="pre">bin</span></code> directory of the SDK.
+It will be in your PATH if you sourced the <code class="docutils literal notranslate"><span class="pre">upmem_env.sh</span></code> script.</p>
+</section>
+</section>
+<section id="checking-clangd-version">
+<h2>Checking Clangd version<a class="headerlink" href="#checking-clangd-version" title="Permalink to this heading"></a></h2>
+<p>To check the version of clangd, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>clangd<span class="w"> </span>--version
+</pre></div>
+</div>
+<p>The output should be similar to: <code class="docutils literal notranslate"><span class="pre">clangd</span> <span class="pre">version</span> <span class="pre">12.0.0</span> <span class="pre">(https://github.com/upmem/llvm-project.git</span> <span class="pre">&lt;hash&gt;)</span></code></p>
+</section>
+<section id="making-clangd-aware-of-the-dpu-target">
+<h2>Making Clangd aware of the DPU target<a class="headerlink" href="#making-clangd-aware-of-the-dpu-target" title="Permalink to this heading"></a></h2>
+<p>By default, Clangd assumes that the target is the host machine. In your project, you probably have some source files for the host and some for the DPU.
+There are two ways to inform Clangd about which is which.</p>
+<section id="using-a-compilation-database-recommended">
+<h3>Using a compilation database (recommended)<a class="headerlink" href="#using-a-compilation-database-recommended" title="Permalink to this heading"></a></h3>
+<p>The compilation database is a <code class="docutils literal notranslate"><span class="pre">compile_commands.json</span></code> file that describes the compilation of your project. It is usually generated by the build system.
+For example, with CMake, you can generate it by adding the <code class="docutils literal notranslate"><span class="pre">-DCMAKE_EXPORT_COMPILE_COMMANDS=ON</span></code> option to the <code class="docutils literal notranslate"><span class="pre">cmake</span></code> command, or adding</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_EXPORT_COMPILE_COMMANDS</span><span class="w"> </span><span class="s">ON</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>in your <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> file.</p>
+<p>Make this file visible at the top-level folder of your project with a symbolic link (in this case, we assume you’re building in a <code class="docutils literal notranslate"><span class="pre">build</span></code> folder):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ln<span class="w"> </span>-s<span class="w"> </span>build/compile_commands.json<span class="w"> </span>.
+</pre></div>
+</div>
+<p>Then, when you run Clangd, it will use this file to know which files are compiled for the host and which are compiled for the DPU.</p>
+</section>
+<section id="using-a-configuration-file">
+<h3>Using a configuration file<a class="headerlink" href="#using-a-configuration-file" title="Permalink to this heading"></a></h3>
+<p>In the absence of a compilation database, Clangd can use a configuration file to know which compilation options to use for each source file.
+The configuration file is a YAML file named <code class="docutils literal notranslate"><span class="pre">.clangd</span></code>. It should be placed at the top-level folder of your project.</p>
+<p>Here is an example <code class="docutils literal notranslate"><span class="pre">.clangd</span></code> file for an UPMEM DPU project:</p>
+<div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="nt">If</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">PathMatch</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">.*host.*.c</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">.*host.*.cpp</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">.*host.*.h</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># Configuration for host binaries</span>
+<span class="nt">CompileFlags</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Add</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-I/usr/include/dpu</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-ldpu</span><span class="p p-Indicator">]</span>
+<span class="nn">---</span>
+<span class="nt">If</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">PathExclude</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">.*host.*.c</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">.*host.*.cpp</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">.*host.*.h</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># Configuration for dpu binaries</span>
+<span class="nt">CompileFlags</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Add</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">--target=dpu-upmem-dpurte</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>The first part of the file describes the configuration for the host binaries. It matches all files whose name or path contains <code class="docutils literal notranslate"><span class="pre">host</span></code> and ends with <code class="docutils literal notranslate"><span class="pre">.c</span></code> or <code class="docutils literal notranslate"><span class="pre">.cpp</span></code>.
+The compile flags are the output of <code class="docutils literal notranslate"><span class="pre">dpu-pkg-config</span> <span class="pre">--cflags</span> <span class="pre">--libs</span> <span class="pre">dpu</span></code>, in a comma-separated list.</p>
+<p>The second part of the file describes the configuration for the DPU binaries. It matches all files whose name or path does not contain <code class="docutils literal notranslate"><span class="pre">host</span></code> and ends with <code class="docutils literal notranslate"><span class="pre">.c</span></code> or <code class="docutils literal notranslate"><span class="pre">.cpp</span></code>.</p>
+</section>
+</section>
+<section id="enabling-additional-linting">
+<h2>Enabling additional linting<a class="headerlink" href="#enabling-additional-linting" title="Permalink to this heading"></a></h2>
+<p>Clangd embeds <a class="reference external" href="https://clang.llvm.org/extra/clang-tidy/">clang-tidy</a>, a tool that can perform additional linting on your code.
+To configure it, create a <code class="docutils literal notranslate"><span class="pre">.clang-tidy</span></code> file at the top-level folder of your project and enable/disable the checks you want.</p>
+<p>Example <code class="docutils literal notranslate"><span class="pre">.clang-tidy</span></code> file:</p>
+<div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="nt">Checks</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
+<span class="w">  </span><span class="no">bugprone-*,</span>
+<span class="w">  </span><span class="no">google-*,</span>
+<span class="w">  </span><span class="no">misc-*,</span>
+<span class="w">  </span><span class="no">modernize-*,</span>
+<span class="w">  </span><span class="no">performance-*,</span>
+<span class="w">  </span><span class="no">portability-*,</span>
+<span class="w">  </span><span class="no">readability-*,</span>
+
+<span class="nt">WarningsAsErrors</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;*&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="using-clangd-in-your-editor">
+<h2>Using Clangd in your editor<a class="headerlink" href="#using-clangd-in-your-editor" title="Permalink to this heading"></a></h2>
+<p>Clangd is a language server. It communicates with your editor through the Language Server Protocol (LSP). Virtually all modern editors support LSPs.
+Here are some examples of how to use Clangd with some popular editors.</p>
+<section id="vscode">
+<h3>VSCode<a class="headerlink" href="#vscode" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>Install the <a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=llvm-vs-code-extensions.vscode-clangd">clangd extension</a>.</p></li>
+</ul>
+</div></blockquote>
+<p>If you installed the upmem SDK with a debian or rpm package, you’re done.</p>
+<p>If you’re using the tarball, the recommended method is to use direnv to set all your environment variables:</p>
+<blockquote>
+<div><ul>
+<li><p>Install <a class="reference external" href="https://direnv.net/">direnv</a>.</p></li>
+<li><p>Install <a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=mkhl.direnv">VSCode direnv extension</a>.</p></li>
+<li><p>Create a <code class="docutils literal notranslate"><span class="pre">.envrc</span></code> file at the top-level folder of your project with the following content:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>&lt;path-to-upmem-sdk&gt;/upmem_env.sh
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>In VSCode, allow the file, and reload the environment.</p></li>
+<li><p>All your environment variables are now set in VSCode, including the PATH to the upmem clangd binary, as well as the PATH for clang, dpu-lldb and so on.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="vim">
+<h3>Vim<a class="headerlink" href="#vim" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>Install <a class="reference external" href="https://vimawesome.com/plugin/vim-clangd">vim-clangd</a>.</p></li>
+</ul>
+</div></blockquote>
+<p>If you installed the upmem SDK with a debian or rpm package, you’re done.</p>
+<p>If you’re using the tarball, source the <code class="docutils literal notranslate"><span class="pre">upmem_env.sh</span></code> script before starting vim.</p>
+<p>Alternatively:</p>
+<blockquote>
+<div><ul>
+<li><p>In your vimrc file, set</p>
+<blockquote>
+<div><div class="highlight-vim notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">g</span>:clangd_binary_path <span class="p">=</span> <span class="s1">&#39;&lt;path-to-upmem-sdk&gt;/bin/clangd&#39;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</section>
+<section id="emacs">
+<h3>Emacs<a class="headerlink" href="#emacs" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>Install <a class="reference external" href="https://emacs-lsp.github.io/lsp-mode/page/lsp-clangd/">lsp-mode</a>.</p></li>
+</ul>
+</div></blockquote>
+<p>If you installed the upmem SDK with a debian or rpm package, you’re done.</p>
+<p>If you’re using the tarball, source the <code class="docutils literal notranslate"><span class="pre">upmem_env.sh</span></code> script before starting emacs.</p>
+<p>Alternatively, set <code class="docutils literal notranslate"><span class="pre">lsp-clangd-binary-path</span></code> to <code class="docutils literal notranslate"><span class="pre">&lt;path-to-upmem-sdk&gt;/bin/clangd</span></code>.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="fff_CodingTips.html" class="btn btn-neutral float-left" title="Coding tips and recommended practices" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="08_DebuggingWithUpmemDpu.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

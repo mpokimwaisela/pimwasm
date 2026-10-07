@@ -1,0 +1,504 @@
+Assembler syntax
+================
+
+LLVM for DPU can assemble files to produce objects or immediate executables. By convention, assembly files shall end
+with '.S' extension.
+
+A concrete coding example is given in section :doc:`201_AsmExample`.
+
+Overview of an assembler program structure
+------------------------------------------
+
+Source code in assembler consists of the following types of lines:
+  * Comments: a line of comment starts with ``//``
+  * Pre-processor directives, such as ``#define``
+  * Assembly instructions
+  * Linker directives, such as ``.global``
+
+Pre-processor directives
+------------------------
+
+The assembler is fully compliant with the **C Preprocessor** standards.
+
+In particular, it supports (not exhaustive):
+  * ``#include``, given that the path to included files can be specified with ``clang`` option ``-I``
+  * ``#define`` and ``#undef``, to set and unset constants and macros
+  * ``#if``, ``#else``, ``#ifdef``, ``#endif``: to check constant values
+
+The preprocessor macros can be defined internally or be provided upon the invocation of ``clang``, using the ``-D`` option.
+
+Assembly instructions
+---------------------
+
+An assembly instruction is defined on a single line of source code, following the standard format::
+
+    keyword arguments...
+
+Where ``keyword`` identifies the instruction and ``arguments`` is the list of instruction arguments, separated by commas.
+
+The list of keywords, along with a description of the arguments can be found:
+  * Either by invoking ``dpuasmdoc`` from the command line
+
+    * ``dpuasmdoc key`` searches for all the instructions with a keyword containing ``key``
+    * ``dpuasmdoc -match key`` searches for all the instructions with a keyword exactly equal to ``key``
+    * ``dpuasmdoc -help`` gives a list of additional options
+
+  * Or in the instruction set reference section of this documentation
+
+Each assembly instruction argument can be:
+
+  * A register_
+  * An immediate_ value
+  * A label_
+  * A `condition <condition_argument_>`_
+  * An endianness_ specification
+
+.. _register:
+
+Registers
++++++++++
+
+The next table gives the list of DPU registers, as understood by the assembler:
+
+
+   +------------+----------------------------------------------------------------------------------------------------+
+   | Name       | Description                                                                                        |
+   +------------+----------------------------------------------------------------------------------------------------+
+   | ``rX``     | 32-bits read/write register, X being in the range [0..23]                                          |
+   +------------+----------------------------------------------------------------------------------------------------+
+   | ``sX``     | 32-bits read/write *safe* register, X being in the range [0..23]                                   |
+   +------------+----------------------------------------------------------------------------------------------------+
+   | ``dX``     | 64-bits read/write register, X being an even value in the range [0..22]                            |
+   +            +                                                                                                    +
+   |            | Register ``dx`` is the combination of ``r(X/2)`` (most significant bits) and ``r(X/2+1)``          |
+   +------------+----------------------------------------------------------------------------------------------------+
+   | ``id``     | Special read-only register equal to the invoking thread's number                                   |
+   +------------+----------------------------------------------------------------------------------------------------+
+   | ``idX``    | Special read-only register equal to X times the invoking thread's number. X is equal to 2, 4 or 8. |
+   +------------+----------------------------------------------------------------------------------------------------+
+   | ``zero``   |                                                                                                    |
+   +            +                                                                                                    +
+   | ``one``    | Special read-only registers returning system constants, respectively equal to ``0``, ``1``         |
+   +            +                                                                                                    +
+   | ``lneg``   | ``0xffffffff`` and ``0x80000000``.                                                                 |
+   +            +                                                                                                    +
+   | ``mneg``   |                                                                                                    |
+   +------------+----------------------------------------------------------------------------------------------------+
+
+.. _immediate:
+
+Immediate values
+++++++++++++++++
+
+Immediate values are expressed as numerical values:
+
+  * In hexadecimal unsigned (prefixed with ``0x``)
+  * In binary unsigned (prefixed with ``0b``)
+  * With ASCII value (enclosed by ``'``, example: ``'a'`` for the numerical value ``97``)
+  * Or as signed decimal values
+
+Allowed values depend on the type of expected immediate (signedness and number of encoding bits) and the expression.
+
+**Expected operand is unsigned**
+
+Allowed values must be unsigned and fit in the number of encoding bits. For example, the *logical shift left*
+instruction, defined as::
+
+  // Shift register 'ra' by 'shift' positions to the left
+  // Store the result into register 'rc'
+  // 'shift' is a 5 bits immediate value
+  lsl rc ra shift:u5
+
+Allows the following expressions::
+
+  // Shift by 31 positions to the left
+  lsl r1, r0, 31
+  // Ditto
+  lsl r1, r0, 0x1f
+
+But not::
+
+  // Shift by 32 positions to the left => not allowed
+  lsl r1, r0, 32
+  // Shift by a negative number of positions to the left => not allowed
+  lsl r1, r0, -3
+
+**Expected operand is signed**
+
+Given that an expected immediate operand is encoded on N bits, corresponding immediate values must (2^X meaning *2 power X*):
+
+  * Either be unsigned (i.e. hexadecimal expressions) in the range [0x0, (2^(N-1))-1]
+  * Or be signed (i.e. decimal expressions) in the range [-(2^(N-1)), (2^(N-1))-1]
+
+Let consider, for example, the *subtract* instruction, defined as::
+
+  // register 'rc' is equal to 'imm' minus 'ra'
+  // condition 'cc' must be equal to 'false'
+  sub rc imm:s24 ra false_cc:cc
+
+Then, the following expressions are legal::
+
+  sub r1, 8388607,  r0, false   // r1 = (2^(24-1) - 1) - r0
+  sub r1, 0x7fffff, r0, false   // Same with hexa-decimal expression
+  sub r1, -8388608, r0, false   // r1 = -2^(24-1) - r0
+
+But not::
+
+	sub r1, 8388608,  r0, false    // 8388608 = 2^23 > 2^(24-1) - 1
+	sub r1, 0x800000, r0, false    // 0x800000 = 2^23
+
+.. _label:
+
+Labels
+++++++
+
+Labels keep track of specific positions in the source code, which can then be referred by any
+instruction as immediate values. Typically, labels are used by the instructions ``jump`` and ``call``
+to change the program counter value, moving to the labeled location.
+
+A label is expressed on an individual line, followed by a colon.
+
+For example, the following program iterates 10000000 times on the same loop (in C: ``for (i=10000000-1; i>=0; i--)``)::
+
+  #define ITERATIONS 9999999
+  move r0, ITERATIONS
+  loop:
+          // DO SOMETHING...
+          add r0, r0, -1, pl, loop     // Decrement r0 and iterate if positive.
+  stop
+
+A label may also reference a forward position from the current PC value, using the syntax ``. + offset``. The DPU assembler
+restricts the offset value to a positive integer lower than 8. **Other values may lead to unpredictable behaviors**.
+
+.. _condition_argument:
+
+Conditions
+++++++++++
+
+Conditions are used in specific DPU instructions:
+
+  * Either to perform **combo operations**, i.e. compute, test, and jump in a row
+  * Or to perform **test operations**, i.e. compute and check result
+
+**Combo operations**
+
+The general syntax of a combo operation is::
+
+  INSTRUCTION TARGET_REGISTER, OPERANDS, CONDITION, PC
+
+Which is interpreted as:
+
+  * Set ``TARGET_REGISTER`` value to the result of ``INSTRUCTION`` applied to ``OPERANDS``
+  * If the operation result verifies ``CONDITION`` then jump at the instruction specified by ``PC``
+
+We already saw an example of a combo operation in the previous paragraph, where the condition ``pl`` (ie. positive or null)
+was used to create a loop.
+
+Each instruction has its own set of allowed conditions, identified by *condition classes*.
+
+**Test operations**
+
+The general syntax of a test operation is::
+
+  INSTRUCTION TARGET_REGISTER, OPERANDS, CONDITION
+
+Which is interpreted as:
+
+  * Set ``TARGET_REGISTER`` to 1 if the result of ``INSTRUCTION`` applied to ``OPERANDS`` verified ``CONDITION``
+  * Otherwise set ``TARGET_REGISTER`` to 0
+
+For example ::
+
+  move r0, 255
+  move r1, 512
+  sub r2, r0, r1, ltu
+
+Will set ``r2`` to 1, as ``r0`` (which contains ``255``) is lower than ``r1`` (which contains ``512``)?
+
+**Available conditions and condition classes**
+
+The table below describes the available conditions:
+
++----------------+--------------------------------------------------------------------------------------+
+| ``true``       | Condition is always true, whatever the operation result is                           |
++----------------+--------------------------------------------------------------------------------------+
+| ``false``      | Condition is always false, whatever the operation result is                          |
++----------------+--------------------------------------------------------------------------------------+
+| ``z``          | The operation result equals zero                                                     |
++----------------+--------------------------------------------------------------------------------------+
+| ``nz``         | The operation result does not equal zero                                             |
++----------------+--------------------------------------------------------------------------------------+
+| ``e``          | The operation result is even                                                         |
++----------------+--------------------------------------------------------------------------------------+
+| ``o``          | The operation result is odd                                                          |
++----------------+--------------------------------------------------------------------------------------+
+| ``pl``         | The operation result is greater or equal to zero                                     |
++----------------+--------------------------------------------------------------------------------------+
+| ``mi``         | The operation result is strictly lower than zero                                     |
++----------------+--------------------------------------------------------------------------------------+
+| ``ov``         | The operation result has overflow set                                                |
++----------------+--------------------------------------------------------------------------------------+
+| ``nov``        | The operation result does not have overflow set                                      |
++----------------+--------------------------------------------------------------------------------------+
+| ``c``          | The operation result has carry set                                                   |
++----------------+--------------------------------------------------------------------------------------+
+| ``nc``         | The operation result does not have carry set                                         |
++----------------+--------------------------------------------------------------------------------------+
+| ``sz``         | The source register operand is equal to zero                                         |
++----------------+--------------------------------------------------------------------------------------+
+| ``snz``        | The source register operand is not equal to zero                                     |
++----------------+--------------------------------------------------------------------------------------+
+| ``spl``        | The source register operand is positive or null                                      |
++----------------+--------------------------------------------------------------------------------------+
+| ``smi``        | The source register operand is strictly negative                                     |
++----------------+--------------------------------------------------------------------------------------+
+| ``so``         | The source register operand is odd                                                   |
++----------------+--------------------------------------------------------------------------------------+
+| ``se``         | The source register operand is even                                                  |
++----------------+--------------------------------------------------------------------------------------+
+| ``nc5``        | Operation result set the carry flag number 5,6,7,8,9,10,11,12,13 or 14 respectively. |
++                +                                                                                      +
+| ``nc6``        | These conditions may come in handy to quickly detect buffer overflows.               |
++                +                                                                                      +
+| ``nc7``        |                                                                                      |
++                +                                                                                      +
+| ``nc8``        |                                                                                      |
++                +                                                                                      +
+| ``nc9``        |                                                                                      |
++                +                                                                                      +
+| ``nc10``       |                                                                                      |
++                +                                                                                      +
+| ``nc11``       |                                                                                      |
++                +                                                                                      +
+| ``nc12``       |                                                                                      |
++                +                                                                                      +
+| ``nc13``       |                                                                                      |
++                +                                                                                      +
+| ``nc14``       |                                                                                      |
++----------------+--------------------------------------------------------------------------------------+
+| ``max``        | Operation is a bit count and the result is the maximum count value                   |
++----------------+--------------------------------------------------------------------------------------+
+| ``nmax``       | Operation is a bit count and the result is not the maximum count value               |
++----------------+--------------------------------------------------------------------------------------+
+| ``sh32``       | The second operand is a register with a value having bit number 5 equal to one       |
++----------------+--------------------------------------------------------------------------------------+
+| ``nsh32``      | The second operand is a register with a value having bit number 5 equal to zero      |
++----------------+--------------------------------------------------------------------------------------+
+| ``eq``         | The first operand is equal to the second operand                                     |
++----------------+--------------------------------------------------------------------------------------+
+| ``neq``        | The first operand is different from the second operand                               |
++----------------+--------------------------------------------------------------------------------------+
+| ``ltu``        |                                                                                      |
++                +                                                                                      +
+| ``leu``        | The first operand is respectively lower than, lower or equal to, greater than,       |
++                +                                                                                      +
+| ``gtu``        | greater or equal to the second operand when performing an unsigned comparison        |
++                +                                                                                      +
+| ``geu``        |                                                                                      |
++----------------+--------------------------------------------------------------------------------------+
+| ``lts``        |                                                                                      |
++                +                                                                                      +
+| ``les``        | First operand of is respectively lower than, lower or equal to, greater than,        |
++                +                                                                                      +
+| ``gts``        | greater or equal to the second operand when performing a signed comparison           |
++                +                                                                                      +
+| ``ges``        |                                                                                      |
++----------------+--------------------------------------------------------------------------------------+
+| ``xz``         | Operation result is null and ZeroFlag_ is set                                        |
++----------------+--------------------------------------------------------------------------------------+
+| ``xnz``        | Operation result is not null or ZeroFlag_ is not set                                 |
++----------------+--------------------------------------------------------------------------------------+
+| ``xleu``       | Either operation result holds carry flag or ZeroFlag_ is set                         |
++----------------+--------------------------------------------------------------------------------------+
+| ``xgtu``       | Operation result holds carry flag and ZeroFlag_ is not set                           |
++----------------+--------------------------------------------------------------------------------------+
+| ``xles``       | ZeroFLag_ is set and either operation result is negative or overflows                |
++----------------+--------------------------------------------------------------------------------------+
+| ``xgts``       | ZeroFlag_ is not set and either operation result is positive or null or overflows    |
++----------------+--------------------------------------------------------------------------------------+
+| ``small``      | Operation is an 8x8 multiplication and the result is a less than 256                 |
++----------------+--------------------------------------------------------------------------------------+
+| ``large``      | Operation is an 8x8 multiplication and the result is greater than 255                |
++----------------+--------------------------------------------------------------------------------------+
+
+The list of condition classes can be found in :doc:`200_AsmConditions`.
+
+.. _endianness:
+
+Endianness specification
+++++++++++++++++++++++++
+
+Load and store operations can be achieved either with the DPU native endianness (little-endian) or in big-endian. This specification is given by an *endian* instruction argument either ``!little`` or ``!big``.
+
+Implicit operands
++++++++++++++++++
+
+Implicit operands are used by instructions and conditions to behave according to a previous operation result. These are
+particularly useful to emulate 64-bits operations.
+
+Previous operation results are maintained by *flags*, presented here-after.
+
+.. _ZeroFlag:
+
+**Zero Flag**
+
+This flag is set when an operation result is equal to zero.
+
+.. _CarryFlag:
+
+**Carry flag**
+
+This flag is set when an operation result holds a carry.
+
+Linker directives
+-----------------
+
+Linker directives are forwarded to the linker process, so that it properly manages various aspects of the program, such as:
+  * Fetching the label names when referenced from outer part of the assembly file
+  * Initializing the static memory at boot time
+
+Directives are represented by a dot, followed by the directive name, followed by specific arguments depending on the
+directive itself.
+
+For example, to re-align a pointer to 32 bits boundary in memory, one may use the align directive as follows::
+
+    .align 4
+
+LLVM understands most of the Gnu Assembler directives. Next is a non-exhaustive list of the most relevant directives.
+
+text
+++++
+
+The text directive declares a segment of text. All the subsequent information must be in assembly instructions, so that
+the linker puts those instructions into the program.
+
+Syntax: ``.text``
+
+data
+++++
+
+Declares segments of memory. All the subsequent information must define memory contents, using the
+directives described later in this section.
+
+Syntax: ``.data``
+
+bss
++++
+
+Declares segments of memory. Notice that the DPU does not make any distinction between bss segment and common data:
+the linker puts all the data contents into an initial WRAM, enclosed in the program along with the code itself.
+
+Syntax: ``.bss``
+
+align
++++++
+
+The align directive inserts padding values into the current memory segment to ensure that the next declared variable
+will be aligned on the required boundary.
+
+Syntax: ``.align x, fill, max``
+
+Where:
+    * ``x`` is the alignment boundary, expressed in number of bytes (e.g. 2 for 16-bits boundary, 4 for 32-bits...)
+    * ``fill`` is an **optional** argument specifying the padding value. By default, the padding value is 0
+    * ``max`` is an **optional** argument specifying a maximum padding length... If ever the padding requires more bytes
+      than *max* to reach the requested boundary, then the linker stops after having written *max* bytes
+
+ascii
++++++
+
+The ascii directive puts a string into the current memory segment.
+
+Syntax: ``.ascii string...``
+
+Where:
+    * ``string`` is one string, complying with the `directive string format`_
+    * there may be one or more strings
+
+Notice that a synonym for this directive is ``.string``.
+
+asciz
++++++
+
+The asciz directive declares a null-terminated string into the current memory segment.
+It is equivalent to ``.ascii``, but the assembler automatically adds a 0 at the end of each declared string.
+
+Syntax: ``.asciz string...``
+
+byte
+++++
+
+Puts one byte into the current memory segment.
+
+Syntax: ``.byte value``
+
+Where ``value`` is an immediate 8-bit value.
+
+short
+++++++++
+
+Puts a 16-bits word into the current memory segment.
+
+Syntax: ``.half value``, ``.hword value`` or ``.short value``
+
+Where ``value`` is an immediate 16-bit value.
+
+long
+++++
+
+Puts a 32-bits word into the current memory segment.
+
+Syntax: ``.word value`` or ``.long value``
+
+Where ``value`` is a 32-bit value.
+
+quad
+++++
+
+Puts a 64-bits word into the current memory segment.
+
+Syntax: ``.dword value`` or ``.quad value``
+
+Where ``value`` is a 64-bit value.
+
+zero
+++++
+
+Puts some bytes into the current memory segment.
+
+Syntax: ``.zero n, value``
+
+Where:
+  * ``n`` is the number of bytes set to the specified value
+  * ``value`` is an **optional** byte value (by default, the directive creates a series of 0s).
+
+global
+++++++
+
+The global (also called globl) directive "exports" the specified symbol, so that it can be referenced from
+another source.
+
+From a C perspective, this means that non-global symbols are seen as static items.
+
+Syntax: ``.global symbol``
+
+Where ``symbol`` is the exported symbol.
+
+.. _directive string format:
+
+String format
++++++++++++++
+
+Strings for directives such as ascii are written between double-quotes and may contain ASCII characters, interpreted
+as it is, or special characters represented with an escape sequence marked by the backslash character, followed by the
+escape special character definition.
+
+Possible definitions for special characters are:
+  * b: backspace (ASCII octal code 010)
+  * f: form feed (ASCII octal code 014)
+  * n: new line  (ASCII octal code 012)
+  * r: carriage return (ASCII octal code 015)
+  * t: tabulation (ASCII octal code 011
+  * a backslash: so that ``\\`` stands for the backslash character
+  * double quotes
+  * A suite of digits representing the character value in octal (for example ``\010`` stands for backspace)

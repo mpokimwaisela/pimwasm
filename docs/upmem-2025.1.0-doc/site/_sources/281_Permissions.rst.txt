@@ -1,0 +1,67 @@
+Permissions Requirements
+========================
+
+Running DPU programs
+--------------------
+
+The following permissions are required to run DPU applications:
+
+ * Read/write access on ``/dev/dpu_rank0``, ``/dev/dpu_rank1``, etc.
+ * Read/write access on ``/dev/dax0.0``, ``/dev/dax1.1``, etc.
+
+Suggested setup
+~~~~~~~~~~~~~~~
+
+Please refer to your system administrator to set the permissions.
+In the following, we provide a suggested setup.
+
+#. Add the users to the ``plugdev`` group (if on Debian/Ubuntu ; otherwise, create one).
+#. Add the following udev rules:
+
+    .. code-block:: bash
+
+        # /etc/udev/rules.d/10-dpu-dax.rules
+        # Set permission access to dpu_rank devices
+        SUBSYSTEM=="dpu_rank", KERNELS=="dpu_rank*", TAG+="uaccess", GROUP="plugdev"
+
+        # Set permission access to dax device
+        KERNEL=="dax*", KERNELS=="dpu_region*", TAG+="uaccess", GROUP="plugdev"
+
+.. _profiling-permissions-label:
+
+Profiling DPU programs
+----------------------
+
+The following permissions are required to profile DPU applications:
+
+ * Read access on ``/sys/kernel/debug`` and ``/sys/kernel/debug/tracing``.
+ * Write access on ``/sys/kernel/debug/tracing/uprobe_events`` and ``/sys/kernel/debug/tracing/kprobe_events``.
+ * ``/proc/sys/kernel/perf_event_paranoid`` must be set to ``-1``.
+
+Suggested setup
+~~~~~~~~~~~~~~~
+
+As above, please consult your system administrator to set the permissions.
+Our suggested setup is the following:
+
+#. Open the rights to debugfs:
+
+        ::
+
+                $ sudo mount -o remount,gid=46,mode=770 /sys/kernel/debug
+                $ sudo mount -o remount,gid=46,mode=770 /sys/kernel/debug/tracing
+
+    **Note:** ``gid=46`` is the ``plugdev`` group ID. If you are not on Debian/Ubuntu, you may need to change it.
+
+#. Allow to write into ``uprobe_events`` and ``kprobe_events``:
+
+        ::
+
+                $ sudo chmod a+w /sys/kernel/debug/tracing/uprobe_events
+                $ sudo chmod a+w /sys/kernel/debug/tracing/kprobe_events
+
+#. Allow the tracing:
+
+        ::
+
+                $ sudo bash -c "echo -1 > /proc/sys/kernel/perf_event_paranoid"

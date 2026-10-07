@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Features of the Host API &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Logging" href="07_Logging.html" />
+    <link rel="prev" title="Communication with host applications" href="032_DPURuntimeService_HostCommunication.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced Features of the Host API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#multiple-ranks-transfer">Multiple Ranks Transfer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#asynchronism">Asynchronism</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#callbacks">Callbacks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Advanced Features of the Host API</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/033_AdvancedHostFeatures.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="advanced-features-of-the-host-api">
+<h1>Advanced Features of the Host API<a class="headerlink" href="#advanced-features-of-the-host-api" title="Permalink to this heading"></a></h1>
+<section id="multiple-ranks-transfer">
+<h2>Multiple Ranks Transfer<a class="headerlink" href="#multiple-ranks-transfer" title="Permalink to this heading"></a></h2>
+<p>Let’s consider a <em>set</em> of DPUs of several DPU ranks.
+Using copy functions on such a <em>set</em> will always be more efficient than iterating over the <em>set</em> to call the function on each DPU rank or DPU.
+This is because the toolchain uses threads to perform such operations in parallel.</p>
+<p>If you never perform multi-ranks operation and do not want to have those threads created by your application, you can pass the following properties in the profile during the allocation of the dpu_set:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">dpu_alloc</span><span class="p">(</span><span class="n">DPU_ALLOCATE_ALL</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;nrThreadsPerRank=0&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">dpu_set</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="asynchronism">
+<span id="id1"></span><h2>Asynchronism<a class="headerlink" href="#asynchronism" title="Permalink to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">dpu_broadcast_to</span></code> and <code class="docutils literal notranslate"><span class="pre">dpu_push_xfer</span></code> can behave asynchronously using the <code class="docutils literal notranslate"><span class="pre">DPU_XFER_ASYNC</span></code> flag in their flag argument.
+This can bring an important improvement in performance in your application as ranks can perform transfer independently.
+While in the synchronous mode the API will wait for every rank of the set to complete an operation before starting another, the asynchronous mode will manage each rank independently enabling to start an operation on a rank even if other ranks have not completed the previous operation.</p>
+<p>Here is a timeline example considering 2 transfers on a DPU set of 2 ranks, in both synchronous and asynchronous behavior:</p>
+<img alt="_images/multiple_ranks_async_xfer.png" src="_images/multiple_ranks_async_xfer.png" />
+<p>Use <code class="docutils literal notranslate"><span class="pre">dpu_sync</span></code> to wait for every asynchronous operation to have been performed by all the ranks of a DPU set.</p>
+</section>
+<section id="callbacks">
+<h2>Callbacks<a class="headerlink" href="#callbacks" title="Permalink to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">dpu_callback</span></code> function allows the user to schedule a call to a function between some asynchronous jobs (copy, launch).</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">dpu_error_t</span><span class="w"> </span><span class="nf">dpu_callback</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">dpu_set_t</span><span class="w"> </span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">dpu_error_t</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">fct</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">dpu_set_t</span><span class="w"> </span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">rank_id</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">arg</span><span class="p">),</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">arg</span><span class="p">,</span><span class="w"> </span><span class="n">dpu_callback_flags_t</span><span class="w"> </span><span class="n">flags</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The function can be used in many ways.
+The different behaviors are chosen with the flags argument.
+Let’s enumerate all the possibilities:</p>
+<blockquote>
+<div><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">DPU_CALLBACK_DEFAULT</span></code></p>
+<p>By default, the callback function will be called once per rank of the set given as an argument.
+All the calls will run in parallel.
+<code class="docutils literal notranslate"><span class="pre">dpu_callback</span></code> will wait for each callback to end to give back the control to the application.</p>
+<p>Here is a timeline example considering 2 <code class="docutils literal notranslate"><span class="pre">dpu_callback</span></code> calls on a DPU set of 2 ranks:</p>
+<img alt="_images/callback_default.png" src="_images/callback_default.png" />
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DPU_CALLBACK_ASYNC</span></code></p>
+<p>The asynchronous behavior is the same as the one for the copy functions. The callbacks will be enqueued and each rank will be run independently from one another.</p>
+<p>Here is a timeline example considering 2 <code class="docutils literal notranslate"><span class="pre">dpu_callback</span></code> calls on a DPU set of 2 ranks:</p>
+<img alt="_images/callback_async.png" src="_images/callback_async.png" />
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DPU_CALLBACK_ASYNC</span> <span class="pre">|</span> <span class="pre">DPU_CALLBACK_NONBLOCKING</span></code></p>
+<p>The non-blocking behavior enables us to start a callback at a precise point, but which will be independent of every other dpu job (copy, launch, or other callback) that will be called after it.</p>
+<p>Here is a timeline example considering a <code class="docutils literal notranslate"><span class="pre">dpu_callback</span></code> call in a non-blocking asynchronous behavior between two calls of <code class="docutils literal notranslate"><span class="pre">dpu_callback</span></code> in asynchronous only behavior:</p>
+<img alt="_images/callback_async_nonblocking.png" src="_images/callback_async_nonblocking.png" />
+<p>Note that <code class="docutils literal notranslate"><span class="pre">dpu_sync</span></code> is not waiting for the non-blocking callback to end. It is the user’s responsibility to make sure that their non-blocking callbacks finish.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DPU_CALLBACK_ASYNC</span> <span class="pre">|</span> <span class="pre">DPU_CALLBACK_SINGLE_CALL</span></code></p>
+<p>The single-call async behavior is the same as the asynchronous behavior except that it will only run one callback with the same DPU set the <code class="docutils literal notranslate"><span class="pre">dpu_callback</span></code> has been called with.</p>
+<p>Here is a timeline example considering a <code class="docutils literal notranslate"><span class="pre">dpu_callback</span></code> call in a single-call async behavior between two calls of <code class="docutils literal notranslate"><span class="pre">dpu_callback</span></code> in asynchronous behavior:</p>
+<img alt="_images/callback_async_singlecall.png" src="_images/callback_async_singlecall.png" />
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DPU_CALLBACK_ASYNC</span> <span class="pre">|</span> <span class="pre">DPU_CALLBACK_SINGLE_CALL</span> <span class="pre">|</span> <span class="pre">DPU_CALLBACK_NONBLOCKING</span></code></p>
+<p>This behavior is a merge of the two precedent behaviors. Here is a timeline example considering a <code class="docutils literal notranslate"><span class="pre">dpu_callback</span></code> call in a single-call non-blocking async behavior between 2 calls of <code class="docutils literal notranslate"><span class="pre">dpu_callback</span></code> in asynchronous behavior:</p>
+<img alt="_images/callback_async_singlecall_nonblocking.png" src="_images/callback_async_singlecall_nonblocking.png" />
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DPU_CALLBACK_SINGLE_CALL</span></code></p>
+<p>Using the single-call behavior without the asynchronous one does not make a lot of sense but is still allowed. It is the same as just calling the callback directly.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DPU_CALLBACK_NONBLOCKING</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">DPU_CALLBACK_NONBLOCKING</span> <span class="pre">|</span> <span class="pre">DPU_CALLBACK_SINGLE_CALL</span></code></p>
+<p>Non-blocking callbacks are only allowed in asynchronous mode.
+Those two configurations are invalid, and the <code class="docutils literal notranslate"><span class="pre">dpu_callback</span></code> function will return a <code class="docutils literal notranslate"><span class="pre">DPU_ERR_NONBLOCKING_SYNC_CALLBACK</span></code> error.</p>
+</li>
+</ul>
+</div></blockquote>
+<p>Note that multiple ranks operations inside callback have undefined behavior and should not be used.</p>
+<p>When using <code class="docutils literal notranslate"><span class="pre">DPU_CALLBACK_NONBLOCKING</span></code> behavior, you might need the Host API to allocate more thread resources to deal with all the callbacks running at the same time.
+To do that, use the <code class="docutils literal notranslate"><span class="pre">nrThreadsPerRank</span></code> property in the <code class="docutils literal notranslate"><span class="pre">dpu_alloc</span></code> profile argument.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="032_DPURuntimeService_HostCommunication.html" class="btn btn-neutral float-left" title="Communication with host applications" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="07_Logging.html" class="btn btn-neutral float-right" title="Logging" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

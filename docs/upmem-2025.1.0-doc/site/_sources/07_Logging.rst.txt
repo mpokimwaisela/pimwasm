@@ -1,0 +1,119 @@
+=======
+Logging
+=======
+
+Logging is available on DPU by using any of these functions:
+
+  * ``void printf(const char *format, ...)`` writes a formatted string to the stdout buffer
+  * ``void puts(const char *str)`` writes a simple string to the stdout buffer, with an added ``\n`` at the end.
+  * ``void putchar(int x)`` writes a character to the stdout buffer
+
+To use them, do not forget to include the *stdio* header (``#include <stdio.h>``).
+
+Examples
+========
+
+Logging from dpu-lldb
+---------------------
+
+**Example**
+
+The next example illustrates how logging works. The DPU is going to perform some operations and will give some information
+at different points in its execution.
+
+Next is the code achieving this task (in ``printf_example.c``):
+
+.. literalinclude:: ../../../endtests/documentation/printf_example/printf_example.c
+  :language: c
+
+The code is built to be executed by a single tasklet:
+
+.. literalinclude:: ../../../endtests/documentation/printf_example/printf_example.compile_dpu
+
+To validate that everything works, let's launch the program with ``dpu-lldb``:
+
+.. literalinclude:: ../../../endtests/documentation/printf_example/printf_example.lldb_script
+
+The displayed traces:
+
+.. literalinclude:: ../../../endtests/documentation/printf_example/printf_example.output_reference
+
+Logging from Host
+-----------------
+
+It is also possible to log the DPU program execution from the Host API.
+But contrary to the execution with ``dpu-lldb`` the log will not be printed in the console during the execution.
+
+The **C Host Library** provides a function to print the log after the execution of the DPU into a ``FILE *`` (``stdout`` for example):
+
+  * ``dpu_log_read(struct dpu_set_t set, FILE *stream)``
+
+However, only a set obtained from ``DPU_FOREACH`` can be used by this function. Trying to obtain the log from a set of multiple
+DPUs will result in the function returning ``DPU_ERR_INVALID_DPU_SET``.
+
+In C++, Java and Python, the Host library provides a ``log`` method which writes to an input stream the messages logged during the DPUs execution.  
+
+In the next example, a host application displays the log produced by a DPU program:
+
+.. tabs::
+    .. group-tab:: C
+
+       .. literalinclude:: ../../../endtests/documentation/printf_example/printf_example_host.c
+           :language: c
+
+    .. group-tab:: C++
+
+       .. literalinclude:: ../../../endtests/documentation/printf_example/printf_example_host.cpp
+           :language: c++
+
+    .. group-tab:: Java
+
+       .. literalinclude:: ../../../endtests/documentation/printf_example/PrintfExampleHost.java
+           :language: java
+
+    .. group-tab:: Python
+
+       .. literalinclude:: ../../../endtests/documentation/printf_example/printf_example.py
+           :language: python
+
+
+Compile the program with ``gcc``, for example:
+
+.. tabs::
+    .. group-tab:: C
+
+       .. literalinclude:: ../../../endtests/documentation/printf_example/printf_example.compile_host
+           :language: bash
+
+    .. group-tab:: C++
+
+       .. literalinclude:: ../../../endtests/documentation/printf_example/printf_example.compile_host_cpp
+           :language: bash
+
+    .. group-tab:: Java
+
+       .. literalinclude:: ../../../endtests/documentation/printf_example/printf_example.compile_host_java
+           :language: bash
+
+    .. group-tab:: Python
+        
+        N/A
+
+
+An execution of the host program produces the following output:
+
+.. literalinclude:: ../../../endtests/documentation/printf_example/printf_example.output_reference2
+
+Limitations
+===========
+
+These functions write the messages and the value(s) in a circular buffer in the **MRAM**, using the specified representation for the value(s).
+
+
+If an overflow occurs, i.e. if the number of bytes written is greater than the buffer size, the DPU will fault with the fault id ``5``.
+
+The circular buffer allows ``dpu-lldb`` to always print the messages as long as they do not overflow, but with the **Host Library**, the behavior is not the same.
+If the full log of the application is bigger than the buffer size, the call to ``dpu_log_read`` will return ``DPU_ERR_LOG_BUFFER_TOO_SMALL``.
+
+The buffer size can be changed by using the macro ``STDOUT_BUFFER_INIT(size)``.
+``size`` will determine the size of the stdout buffer in bytes, and it must be a strictly positive multiple of 8.

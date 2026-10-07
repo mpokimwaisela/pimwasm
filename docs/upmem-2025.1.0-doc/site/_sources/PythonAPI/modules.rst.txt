@@ -1,0 +1,52 @@
+Python Library
+==============
+
+The UPMEM DPU toolchain contains a Python Host library to manage DPUs.
+It is based on the C Host library and provides a subset of its features, which should cover the main use cases. Knowing the C API should not be necessary to understand the Python API.
+
+Contents
+--------
+
+.. toctree::
+   :maxdepth: 4
+
+   dpu
+
+Overview
+--------
+
+The following code is an example of a Python application with a simple DPU program with no real use case.
+The goal here is to present some of the main features of the Python API.
+
+.. literalinclude:: ../../../../endtests/documentation/python_example/python_example.py
+   :language: python
+
+Creating a :py:class:`~dpu.driver.DpuSet` will allocate a number of DPUs (which can be changed with the ``nr_dpus`` and defaults to the ``ALLOCATE_ALL`` value).
+It can be used as a context manager: the allocated DPUs will be freed at the end of the ``with`` block.
+Multiple parameters can be applied to the :py:class:`~dpu.driver.DpuSet` constructor. Here ``c_source`` is used to compile and load the DPU program based on the Python string. ``binary`` could have been used instead to directly provide an existing file path for the DPU binary program.
+See the :py:mod:`dpu.driver` module for a complete documentation of the :py:class:`~dpu.driver.DpuSet` methods.
+
+All public DPU variables (using the ``__host`` or ``__mram`` attributes) are accessible in the :py:class:`~dpu.driver.DpuSet` as attributes.
+Setting/Fetching one of these attributes will copy the provided data to/from the DPUs.
+For more options, the :py:meth:`~dpu.driver.DpuSet.copy` method can be used.
+
+The :py:meth:`~dpu.driver.DpuSet.exec` method will boot the DPUs and wait until the program completion. Here the ``log`` parameter is also specified, to print the DPU logs on the host standard output.
+
+When fetching a DPU attribute, the raw byte data can be retrieved with the :py:meth:`~dpu.driver.DpuVariable.data` method, but other methods, like :py:meth:`~dpu.driver.DpuVariable.uint64`, can be used to get directly an inter.
+
+The program can be run with:
+
+.. literalinclude:: ../../../../endtests/documentation/python_example/python_example.execute
+
+And will give the output:
+
+.. literalinclude:: ../../../../endtests/documentation/python_example/python_example.reference
+
+Debugging
+---------
+
+Some rudimentary debugging features are available when using the Python API.
+It is possible to use ``dpu-lldb`` to observe and attach to running DPUs.
+Notably, as described in :doc:`../082_DPUDebugHost`, the ``dpu_attach_on_boot`` command will be useful to debug a DPU program.
+
+Currently, the same features are not available while using ``Pdb``.

@@ -1,0 +1,150 @@
+Communication with host applications
+------------------------------------
+
+.. _dpu-memory-interface-label:
+
+Memory Interface
+~~~~~~~~~~~~~~~~
+
+The C host API provides functions to transfer data between the host memory and any of the DPU memory (**IRAM**, **WRAM** or **MRAM**):
+
+  * ``dpu_copy_from(struct dpu_set_t set, const char *symbol_name, uint32_t symbol_offset, void *dst, size_t length)`` to copy a buffer from a single DPU
+  * ``dpu_broadcast_to(struct dpu_set_t set, const char *symbol_name, uint32_t symbol_offset, const void *src, size_t length, dpu_xfer_flags_t flags)`` to broadcast a buffer to a set of DPUs
+  * ``dpu_push_xfer(struct dpu_set_t set, dpu_xfer_t xfer, const char *symbol_name, uint32_t symbol_offset, size_t length, dpu_xfer_flags_t flags)`` to push different buffers to a set of DPUs in one transfer.
+
+There are some alignment limitations when using these functions, depending on the target DPU memory:
+  * **IRAM** address and length must be aligned on 8 bytes
+  * **WRAM** address and length must be aligned on 4 bytes
+  * **MRAM** address and length must be aligned on 8 bytes
+
+The functions will return an error if these constraints are not respected.
+
+The ``symbol_name`` argument consists of a name of a variable in the DPU code.
+It can be either a **MRAM** variable (with the ``__mram`` or ``__mram_noinit`` attribute) or a **WRAM** variable (with the ``__host`` attribute).
+Other variables are not visible to the host application. (**Note:** Before you use WRAM transfers, read the :ref:`data-sharing-label` section.)
+
+**Note:**
+The special **MRAM** variable ``DPU_MRAM_HEAP_POINTER`` (cf :ref:`dpu-mram-heap-pointer-explanation-label`) can be accessed by specifying ``DPU_MRAM_HEAP_POINTER_NAME`` (defined in ``dpu_types.h``) as the ``symbol_name``.
+
+When the DPU set contains multiple DPUs:
+
+  * ``dpu_broadcast_to`` will copy the same buffer to all DPUs in the set
+  * ``dpu_copy_from`` will return ``DPU_ERR_INVALID_DPU_SET``
+  * ``dpu_push_xfer``: see Section :ref:`dpu-rank-transfer-interface-label`
+
+As an illustration, let's implement a trivial checksum function in the DPU. The host application fills in the **MRAM**
+with a buffer of arbitrary size:
+
+  * The first 4 bytes in **MRAM** represent the buffer size ``N``
+  * The subsequent ``N`` bytes in **MRAM** contain the data for which the application requests a checksum computation
+
+On the DPU side, the program uses a single tasklet to fetch ``N`` and compute the checksum of the supplied buffer. When
+done, the result is posted back into the first four bytes of the **MRAM**.
+
+Next is a very simple way of implementing the code on the DPU side, using a mix of **MRAM** variables and low level **MRAM**/**WRAM** access functions (in ``trivial_checksum_example.c``):
+
+.. literalinclude:: ../../../endtests/documentation/trivial_checksum_example/trivial_checksum_example.c
+    :language: c
+
+The code is built to be executed by a single tasklet:
+
+.. literalinclude:: ../../../endtests/documentation/trivial_checksum_example/trivial_checksum_example.compile_dpu
+
+Such a code can be tested with the ``dpu-lldb``, by loading a pre-defined **MRAM** image...
+
+Such an image is a binary file forged by the developers. For example, to load an MRAM image called ``sample.bin`` and run the checksum computation on it:
+
+.. literalinclude:: ../../../endtests/documentation/trivial_checksum_example/trivial_checksum_example.lldb_script
+
+As usual, the print of the ``checksum`` variable allows to verify that the returned value is correct:
+
+.. literalinclude:: ../../../endtests/documentation/trivial_checksum_example/trivial_checksum_example.output_reference
+
+A host application can trigger the checksum computation by filling the **MRAM** with the data, as illustrated here-after:
+
+.. tabs::
+    .. group-tab:: C
+
+       .. literalinclude:: ../../../endtests/documentation/trivial_checksum_example/trivial_checksum_example_host.c
+           :language: c
+
+    .. group-tab:: C++
+
+       .. literalinclude:: ../../../endtests/documentation/trivial_checksum_example/trivial_checksum_example_host.cpp
+           :language: c++
+
+    .. group-tab:: Java
+
+       .. literalinclude:: ../../../endtests/documentation/trivial_checksum_example/TrivialChecksumExample.java
+           :language: java
+
+    .. group-tab:: Python
+
+       .. literalinclude:: ../../../endtests/documentation/trivial_checksum_example/trivial_checksum_example_host.py
+           :language: python
+
+**Note:** In C++, Java and Python, a ``copy`` method is used for the data transfers between the host and the DPU, instead of the ``dpu_copy_from`` and ``dpu_broadcast_to`` functions used in C.
+
+Compile the program, for example:
+
+.. tabs::
+    .. group-tab:: C
+
+       .. literalinclude:: ../../../endtests/documentation/trivial_checksum_example/trivial_checksum_example.compile_host
+           :language: bash
+
+    .. group-tab:: C++
+
+       .. literalinclude:: ../../../endtests/documentation/trivial_checksum_example/trivial_checksum_example.compile_host_cpp
+           :language: bash
+
+    .. group-tab:: Java
+
+       .. literalinclude:: ../../../endtests/documentation/trivial_checksum_example/trivial_checksum_example.compile_host_java
+           :language: bash
+
+    .. group-tab:: Python
+
+        N/A
+
+
+The result printed by this program should be the checksum of 64Kbyte of counting bytes:
+
+.. literalinclude:: ../../../endtests/documentation/trivial_checksum_example/trivial_checksum_example_host.output_reference
+
+.. _dpu-rank-transfer-interface-label:
+
+Rank Transfer Interface
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The previous functions do not provide the needed precision when trying to transfer different data from/to the DPUs while
+keeping the performance of transferring to a whole rank. To do so, one can use the following C functions:
+
+  * ``dpu_prepare_xfer`` attributes a buffer to a set of DPUs, which will be used as input or output when ``dpu_push_xfer`` is called
+  * ``dpu_push_xfer`` executes the current transfer with the given direction, DPU symbol name, and DPU symbol length, using the buffers defined with ``dpu_prepare_xfer``.
+    No transfer is done for a DPU with no defined buffer.
+
+Here is an example doing the same computation as before, but using multiple DPUs:
+
+.. tabs::
+    .. group-tab:: C
+
+       .. literalinclude:: ../../../endtests/documentation/trivial_checksum_example/trivial_checksum_example_host_multirank.c
+           :language: c
+
+    .. group-tab:: C++
+
+       .. literalinclude:: ../../../endtests/documentation/trivial_checksum_example/trivial_checksum_example_host_multirank.cpp
+           :language: c++
+
+    .. group-tab:: Java
+
+       .. literalinclude:: ../../../endtests/documentation/trivial_checksum_example/TrivialChecksumExampleMultiRank.java
+           :language: java
+
+    .. group-tab:: Python
+
+       .. literalinclude:: ../../../endtests/documentation/trivial_checksum_example/trivial_checksum_example_host_multirank.py
+           :language: python
+
+**Note:** In C++, Java and Python, the same ``copy`` method is used for the data transfers between the host and a rank of DPUs. However this method is an overload of the ``copy`` method used in the single DPU example, as it takes a two dimensional vector as input. The first dimension of the vector corresponds to each DPU in the rank.

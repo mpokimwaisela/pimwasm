@@ -1,0 +1,7 @@
+dpu.vpd.dimm module
+===================
+
+.. automodule:: dpu.vpd.dimm
+   :members:
+   :undoc-members:
+   :show-inheritance:

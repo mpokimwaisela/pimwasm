@@ -1,0 +1,97 @@
+Integrating assembly code with C programs
+=========================================
+
+Integrating assembler code into applications is usually motivated by the need for performance, which can be solved at different levels of the program:
+
+  * Taking benefits of peculiar DPU instructions to optimize specific operations within the C code. This is achieved by using `builtins`_
+  * Inlining assembly code, to integrate a sequence of assembly instructions within the flow. This can be done, thanks to `inline assembly`_
+  * Creating a dedicated assembly module, to optimize a feature in the program. In this case, one has to create and integrate a `specific assembly module`_
+
+.. _builtins:
+
+Built-in instructions
+---------------------
+
+Every single DPU instruction is associated with a C function, defined in `built_ins.h`. Function names follow a strict format:
+
+  * The name starts with `__builtin_`
+  * It is followed by the assembly instruction name
+  * And completed by an "argument" profile
+
+The argument profile summarizes the instruction parameters, `r` standing for a register, `s` for a safe register, `i` for an immediate, `k` for a constant register, `z` for the constant register ``zero``, `e` for an endianness, `c` for a condition and `f` for the ``false`` condition.
+For example, the function `add rc ra value` is represented by built-in function `__builtin_add_rri`.
+
+Notice that the built-in function name for a given instruction can be found in :doc:`200_AsmSyntax`, or by `dpuasmdoc` with the `-details` option.
+
+Parameters to the built-in functions are either:
+
+  * Variables, when the instruction parameter is a register
+  * Strings representing values when the instruction parameter is an immediate (e.g., ``"0x12"`` for an operand equal to 18)
+
+Example
+~~~~~~~
+
+Let's illustrate this type of usage with a DPU specific instruction:
+
+.. literalinclude:: ../../../endtests/documentation/builtin_cmpb4_example/builtin_cmpb4.cmpb4_asmdoc
+
+.. literalinclude:: ../../../endtests/documentation/builtin_cmpb4_example/builtin_cmpb4.c
+    :language: c
+
+When running this program with ``dpu-lldb``:
+
+.. literalinclude:: ../../../endtests/documentation/builtin_cmpb4_example/builtin_cmpb4.lldb_script
+
+One may observe that the value returned by ``main`` is ``0x00010001``, equal to the bytes mask of equal bytes between ``a`` and ``b``:
+
+.. literalinclude:: ../../../endtests/documentation/builtin_cmpb4_example/builtin_cmpb4.output_reference
+
+.. _inline assembly:
+
+Compiler inline assembly
+------------------------
+
+``dpu-upmem-dpurte-clang`` is compliant with inline assembly directives (``__asm__``) as well as ``clang`` (described in `this document <https://clang.llvm.org/compatibility.html#inline-asm>`_).
+
+.. _specific assembly module:
+
+Specific modules in assembler
+-----------------------------
+
+Assembly codes larger than few lines are way clearer when isolated in dedicated modules, defining functions that can be invoked from the C part of the program.
+
+In this case, the code must comply with the :doc:`201_DPU_ABI`.
+
+The invoked function must be declared as global, using the `.global` assembly directive.
+
+On the C part of the program, this function must be declared as extern and can be invoked like standard C functions.
+
+Example
+~~~~~~~
+
+In this example, an assembly function `ror_buffer` rotates every 32-bits word of a buffer to 8 positions on the
+right and stores the result into a target buffer:
+
+.. literalinclude:: ../../../endtests/documentation/assembly_module_example/assemblyFunc.S
+    :language: c
+
+The main program, in C, creates a buffer and invokes this rotation routine:
+
+.. literalinclude:: ../../../endtests/documentation/assembly_module_example/cFunc.c
+    :language: c
+
+Compile and link the files together to produce the executable:
+
+.. literalinclude:: ../../../endtests/documentation/assembly_module_example/assemblyFunc.compile
+
+We can use ``dpu-lldb`` to validate the execution:
+
+.. literalinclude:: ../../../endtests/documentation/assembly_module_example/assemblyFunc.lldb_script
+
+As expected, the output buffer is equal to `0, 1, 2, 3...` rotated by 8 positions to the right:
+
+.. literalinclude:: ../../../endtests/documentation/assembly_module_example/assemblyFunc.output_reference2
+
+And the returned value is the last output:
+
+.. literalinclude:: ../../../endtests/documentation/assembly_module_example/assemblyFunc.output_reference

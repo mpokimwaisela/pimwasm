@@ -1,0 +1,70 @@
+Java Library
+============
+
+The UPMEM DPU toolchain contains a Java Host library to manage DPUs.
+It is based on the C Host library and provides a subset of its features, which should cover the main use cases. Knowing the C API should not be necessary to understand the Java API.
+
+Contents
+--------
+
+The detailed documentation of the API can be found in the `Reference to the Java API <JavaAPI/index.html>`_.
+
+JDK prerequisite
+----------------
+
+This API relies on a JDK 8 or higher.
+
+Jar location
+------------
+
+The DPU Java host API jar file can be found by running the command ``dpu-pkg-config --variable=java dpu``.
+This is notably useful to add the jar to the classpath of the application.
+
+Maven installation
+------------------
+
+To add the jar in ``Maven`` local repository, simply run::
+
+    mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file -Dfile="$(dpu-pkg-config --variable=java dpu)"
+
+You can then add the API as a dependency in the ``pom.xml`` file.
+
+Overview
+--------
+
+The following code is an example of a Java application with a simple DPU program with no real use case.
+The goal here is to present some of the main features of the Java API.
+
+.. literalinclude:: ../../../endtests/documentation/java_example/JavaExample.java
+   :language: java
+
+Here is the DPU program, written in C:
+
+.. literalinclude:: ../../../endtests/documentation/java_example/java_example.c
+   :language: c
+
+Calling the static method ``DpuSystem.allocate`` will allocate a number of DPUs. In the example, we are allocating a single DPU with the default profile.
+It can be used in a try-with-resources statement: the allocated DPUs will be freed at the end of the block.
+
+The DPU program is loaded with the ``DpuSet.load`` method. It is then executed with the ``DpuSet.exec`` method. Here ``System.out`` is provided as a log stream, to print the DPU logs on the host standard output.
+
+The ``DpuSet.copy`` methods can be used to read and write the DPU memory, using the symbols defined with the attributes ``__mram`` or ``__host`` in the DPU program. Here we are using the ``Dpu.copy`` method which provides a simpler prototype.
+
+For a real application, the ``load``, ``copy`` and ``exec`` methods would be used on the whole ``system``, or at least on each rank of the ``system`` (the rank list can be fetched with the ``DpuSet.ranks`` method).
+
+The program can be run with:
+
+.. literalinclude:: ../../../endtests/documentation/java_example/java_example.execute
+
+And will give the output:
+
+.. literalinclude:: ../../../endtests/documentation/java_example/java_example.reference
+
+Debugging
+---------
+
+Some rudimentary debugging features are available when using the Java API.
+It is possible to use ``dpu-lldb`` to observe and attach to running DPUs.
+Notably, as described in :doc:`../082_DPUDebugHost`, the ``dpu_attach_on_boot`` command will be useful to debug a DPU program.
+
+Currently, the same features are not available while using ``jdb``.

@@ -1,0 +1,3 @@
+<map id="barrier_wait" name="barrier_wait">
+<area shape="rect" id="node2" href="$wramfifo_8h.html#af111d5981c5f7d601affd735c36d0bae" title="handler to continously process inputs from an input fifo and store results in an output fifo..." alt="" coords="153,5,296,47"/>
+</map>

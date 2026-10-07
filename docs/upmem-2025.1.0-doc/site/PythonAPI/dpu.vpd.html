@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dpu.vpd package &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/dark_mode_js/default_dark.js"></script>
+        <script src="../_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="dpu.vpd.db module" href="dpu.vpd.db.html" />
+    <link rel="prev" title="dpu package" href="dpu.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Python Library</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="modules.html#contents">Contents</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="dpu.html">dpu package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="dpu.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dpu.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dpu.html#module-dpu">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#debugging">Debugging</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Python Library</a></li>
+          <li class="breadcrumb-item"><a href="dpu.html">dpu package</a></li>
+      <li class="breadcrumb-item active">dpu.vpd package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/PythonAPI/dpu.vpd.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dpu-vpd-package">
+<h1>dpu.vpd package<a class="headerlink" href="#dpu-vpd-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dpu.vpd.db.html">dpu.vpd.db module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.db.html#dpu.vpd.db.DPUVpdDatabase"><code class="docutils literal notranslate"><span class="pre">DPUVpdDatabase</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.db.html#dpu.vpd.db.DPUVpdDatabase.add_byte"><code class="docutils literal notranslate"><span class="pre">DPUVpdDatabase.add_byte()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.db.html#dpu.vpd.db.DPUVpdDatabase.add_bytearray"><code class="docutils literal notranslate"><span class="pre">DPUVpdDatabase.add_bytearray()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.db.html#dpu.vpd.db.DPUVpdDatabase.add_int"><code class="docutils literal notranslate"><span class="pre">DPUVpdDatabase.add_int()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.db.html#dpu.vpd.db.DPUVpdDatabase.add_long"><code class="docutils literal notranslate"><span class="pre">DPUVpdDatabase.add_long()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.db.html#dpu.vpd.db.DPUVpdDatabase.add_numeric"><code class="docutils literal notranslate"><span class="pre">DPUVpdDatabase.add_numeric()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.db.html#dpu.vpd.db.DPUVpdDatabase.add_short"><code class="docutils literal notranslate"><span class="pre">DPUVpdDatabase.add_short()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.db.html#dpu.vpd.db.DPUVpdDatabase.add_string"><code class="docutils literal notranslate"><span class="pre">DPUVpdDatabase.add_string()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.db.html#dpu.vpd.db.DPUVpdDatabase.dump"><code class="docutils literal notranslate"><span class="pre">DPUVpdDatabase.dump()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.db.html#dpu.vpd.db.DPUVpdDatabase.write_to_device"><code class="docutils literal notranslate"><span class="pre">DPUVpdDatabase.write_to_device()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.db.html#dpu.vpd.db.DPUVpdDatabase.write_to_file"><code class="docutils literal notranslate"><span class="pre">DPUVpdDatabase.write_to_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.db.html#dpu.vpd.db.DPUVpdError"><code class="docutils literal notranslate"><span class="pre">DPUVpdError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dpu.vpd.dimm.html">dpu.vpd.dimm module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.dimm.html#dpu.vpd.dimm.DPUVpd"><code class="docutils literal notranslate"><span class="pre">DPUVpd</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.dimm.html#dpu.vpd.dimm.DPUVpd.disable_dpu"><code class="docutils literal notranslate"><span class="pre">DPUVpd.disable_dpu()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.dimm.html#dpu.vpd.dimm.DPUVpd.enable_dpu"><code class="docutils literal notranslate"><span class="pre">DPUVpd.enable_dpu()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.dimm.html#dpu.vpd.dimm.DPUVpdError"><code class="docutils literal notranslate"><span class="pre">DPUVpdError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dpu.vpd.vpd.html">dpu.vpd.vpd module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.DarwinLibraryLoader"><code class="docutils literal notranslate"><span class="pre">DarwinLibraryLoader</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.DarwinLibraryLoader.Lookup"><code class="docutils literal notranslate"><span class="pre">DarwinLibraryLoader.Lookup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.DarwinLibraryLoader.Lookup.mode"><code class="docutils literal notranslate"><span class="pre">DarwinLibraryLoader.Lookup.mode</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.DarwinLibraryLoader.getdirs"><code class="docutils literal notranslate"><span class="pre">DarwinLibraryLoader.getdirs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.DarwinLibraryLoader.getplatformpaths"><code class="docutils literal notranslate"><span class="pre">DarwinLibraryLoader.getplatformpaths()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.DarwinLibraryLoader.name_formats"><code class="docutils literal notranslate"><span class="pre">DarwinLibraryLoader.name_formats</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.LibraryLoader"><code class="docutils literal notranslate"><span class="pre">LibraryLoader</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.LibraryLoader.Lookup"><code class="docutils literal notranslate"><span class="pre">LibraryLoader.Lookup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.LibraryLoader.Lookup.get"><code class="docutils literal notranslate"><span class="pre">LibraryLoader.Lookup.get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.LibraryLoader.Lookup.has"><code class="docutils literal notranslate"><span class="pre">LibraryLoader.Lookup.has()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.LibraryLoader.Lookup.mode"><code class="docutils literal notranslate"><span class="pre">LibraryLoader.Lookup.mode</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.LibraryLoader.getpaths"><code class="docutils literal notranslate"><span class="pre">LibraryLoader.getpaths()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.LibraryLoader.getplatformpaths"><code class="docutils literal notranslate"><span class="pre">LibraryLoader.getplatformpaths()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.LibraryLoader.name_formats"><code class="docutils literal notranslate"><span class="pre">LibraryLoader.name_formats</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.MutableString"><code class="docutils literal notranslate"><span class="pre">MutableString</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.MutableString.immutable"><code class="docutils literal notranslate"><span class="pre">MutableString.immutable()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.PosixLibraryLoader"><code class="docutils literal notranslate"><span class="pre">PosixLibraryLoader</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.PosixLibraryLoader.getplatformpaths"><code class="docutils literal notranslate"><span class="pre">PosixLibraryLoader.getplatformpaths()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.PosixLibraryLoader.name_formats"><code class="docutils literal notranslate"><span class="pre">PosixLibraryLoader.name_formats</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.ReturnString"><code class="docutils literal notranslate"><span class="pre">ReturnString()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.String"><code class="docutils literal notranslate"><span class="pre">String</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.String.data"><code class="docutils literal notranslate"><span class="pre">String.data</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.String.from_param"><code class="docutils literal notranslate"><span class="pre">String.from_param()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.String.raw"><code class="docutils literal notranslate"><span class="pre">String.raw</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UNCHECKED"><code class="docutils literal notranslate"><span class="pre">UNCHECKED()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString"><code class="docutils literal notranslate"><span class="pre">UserString</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.capitalize"><code class="docutils literal notranslate"><span class="pre">UserString.capitalize()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.center"><code class="docutils literal notranslate"><span class="pre">UserString.center()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.count"><code class="docutils literal notranslate"><span class="pre">UserString.count()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.decode"><code class="docutils literal notranslate"><span class="pre">UserString.decode()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.encode"><code class="docutils literal notranslate"><span class="pre">UserString.encode()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.endswith"><code class="docutils literal notranslate"><span class="pre">UserString.endswith()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.expandtabs"><code class="docutils literal notranslate"><span class="pre">UserString.expandtabs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.find"><code class="docutils literal notranslate"><span class="pre">UserString.find()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.index"><code class="docutils literal notranslate"><span class="pre">UserString.index()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.isalnum"><code class="docutils literal notranslate"><span class="pre">UserString.isalnum()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.isalpha"><code class="docutils literal notranslate"><span class="pre">UserString.isalpha()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.isdecimal"><code class="docutils literal notranslate"><span class="pre">UserString.isdecimal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.isdigit"><code class="docutils literal notranslate"><span class="pre">UserString.isdigit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.islower"><code class="docutils literal notranslate"><span class="pre">UserString.islower()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.isnumeric"><code class="docutils literal notranslate"><span class="pre">UserString.isnumeric()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.isspace"><code class="docutils literal notranslate"><span class="pre">UserString.isspace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.istitle"><code class="docutils literal notranslate"><span class="pre">UserString.istitle()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.isupper"><code class="docutils literal notranslate"><span class="pre">UserString.isupper()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.join"><code class="docutils literal notranslate"><span class="pre">UserString.join()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.ljust"><code class="docutils literal notranslate"><span class="pre">UserString.ljust()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.lower"><code class="docutils literal notranslate"><span class="pre">UserString.lower()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.lstrip"><code class="docutils literal notranslate"><span class="pre">UserString.lstrip()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.partition"><code class="docutils literal notranslate"><span class="pre">UserString.partition()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.replace"><code class="docutils literal notranslate"><span class="pre">UserString.replace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.rfind"><code class="docutils literal notranslate"><span class="pre">UserString.rfind()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.rindex"><code class="docutils literal notranslate"><span class="pre">UserString.rindex()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.rjust"><code class="docutils literal notranslate"><span class="pre">UserString.rjust()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.rpartition"><code class="docutils literal notranslate"><span class="pre">UserString.rpartition()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.rsplit"><code class="docutils literal notranslate"><span class="pre">UserString.rsplit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.rstrip"><code class="docutils literal notranslate"><span class="pre">UserString.rstrip()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.split"><code class="docutils literal notranslate"><span class="pre">UserString.split()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.splitlines"><code class="docutils literal notranslate"><span class="pre">UserString.splitlines()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.startswith"><code class="docutils literal notranslate"><span class="pre">UserString.startswith()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.strip"><code class="docutils literal notranslate"><span class="pre">UserString.strip()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.swapcase"><code class="docutils literal notranslate"><span class="pre">UserString.swapcase()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.title"><code class="docutils literal notranslate"><span class="pre">UserString.title()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.translate"><code class="docutils literal notranslate"><span class="pre">UserString.translate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.upper"><code class="docutils literal notranslate"><span class="pre">UserString.upper()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.UserString.zfill"><code class="docutils literal notranslate"><span class="pre">UserString.zfill()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.WindowsLibraryLoader"><code class="docutils literal notranslate"><span class="pre">WindowsLibraryLoader</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.WindowsLibraryLoader.Lookup"><code class="docutils literal notranslate"><span class="pre">WindowsLibraryLoader.Lookup</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.WindowsLibraryLoader.name_formats"><code class="docutils literal notranslate"><span class="pre">WindowsLibraryLoader.name_formats</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.add_library_search_dirs"><code class="docutils literal notranslate"><span class="pre">add_library_search_dirs()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.dpu_vpd"><code class="docutils literal notranslate"><span class="pre">dpu_vpd</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.dpu_vpd_database"><code class="docutils literal notranslate"><span class="pre">dpu_vpd_database</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.dpu_vpd_header"><code class="docutils literal notranslate"><span class="pre">dpu_vpd_header</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.dpu_vpd_rank_data"><code class="docutils literal notranslate"><span class="pre">dpu_vpd_rank_data</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.dpu_vpd_repair_entry"><code class="docutils literal notranslate"><span class="pre">dpu_vpd_repair_entry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.dpu_vpd_string_pair"><code class="docutils literal notranslate"><span class="pre">dpu_vpd_string_pair</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.ord_if_char"><code class="docutils literal notranslate"><span class="pre">ord_if_char()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd.repair_entries"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd.repair_entries</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd.vpd_header"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd.vpd_header</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_database"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_database</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_database.first"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_database.first</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_header"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_header</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_header.rank_count"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_header.rank_count</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_header.ranks"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_header.ranks</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_header.repair_count"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_header.repair_count</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_header.struct_id"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_header.struct_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_header.struct_size"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_header.struct_size</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_header.struct_ver"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_header.struct_ver</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_rank_data"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_rank_data</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_rank_data.dpu_disabled"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_rank_data.dpu_disabled</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_rank_data.iram_repair"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_rank_data.iram_repair</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_rank_data.wram_repair"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_rank_data.wram_repair</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_repair_entry"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_repair_entry</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_repair_entry.address"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_repair_entry.address</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_repair_entry.bank"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_repair_entry.bank</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_repair_entry.bits"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_repair_entry.bits</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_repair_entry.ci"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_repair_entry.ci</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_repair_entry.dpu"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_repair_entry.dpu</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_repair_entry.iram_wram"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_repair_entry.iram_wram</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_repair_entry.rank"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_repair_entry.rank</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_string_pair"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_string_pair</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_string_pair.key"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_string_pair.key</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_string_pair.next"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_string_pair.next</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_string_pair.value"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_string_pair.value</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_string_pair.value_len"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_string_pair.value_len</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.vpd.html#dpu.vpd.vpd.struct_dpu_vpd_string_pair.value_type"><code class="docutils literal notranslate"><span class="pre">struct_dpu_vpd_string_pair.value_type</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="module-dpu.vpd">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-dpu.vpd" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dpu.html" class="btn btn-neutral float-left" title="dpu package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dpu.vpd.db.html" class="btn btn-neutral float-right" title="dpu.vpd.db module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

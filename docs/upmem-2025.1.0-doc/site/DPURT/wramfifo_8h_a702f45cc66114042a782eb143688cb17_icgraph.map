@@ -1,0 +1,4 @@
+<map id="output_fifo_push" name="output_fifo_push">
+<area shape="rect" id="node2" href="$wramfifo_8h.html#af111d5981c5f7d601affd735c36d0bae" title="handler to continously process inputs from an input fifo and store results in an output fifo..." alt="" coords="191,5,334,47"/>
+<area shape="rect" id="node3" href="$wramfifo_8h.html#a10027e18ced7e05798423c2c4d338b08" title="handler to continously process inputs from an input fifo and store results in an output fifo..." alt="" coords="184,71,341,112"/>
+</map>

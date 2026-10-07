@@ -1,0 +1,169 @@
+Hello World! Example
+====================
+
+Purpose
+-------
+
+This tutorial demonstrates how to write and test a "hello world" program for a DPU, including:
+ * Building a program that executes the "hello world" function
+ * Simulating this program and check the results
+
+We assume that you have the UPMEM DPU toolchain properly installed on your computer (if not: :doc:`01_Install`).
+
+Writing and building the program
+--------------------------------
+
+The program prints "Hello World!":
+
+.. literalinclude:: ../../../endtests/documentation/helloworld/helloworld.c
+   :language: c
+
+Let's save this code into ``helloworld.c``.
+To compile and build the program executing this routine, invoke ``dpu-upmem-dpurte-clang`` as follows:
+
+.. literalinclude:: ../../../endtests/documentation/helloworld/helloworld.compile_dpu
+
+To ease the use of debugging tools, ``dpu-upmem-dpurte-clang`` enables debug symbols by default.
+It can be disabled by adding ``-g0`` as an argument in the compiler command line.
+For more information about ``dpu-upmem-dpurte-clang`` arguments, please refer to `CLANG COMPILER USER'S MANUAL <https://releases.llvm.org/12.0.0/tools/clang/docs/UsersManual.html>`_.
+
+Running and testing hello world
+-------------------------------
+
+To execute the program, we will use ``dpu-lldb``.
+Once launched the ``help`` command gives a list of available commands.
+In our example, we will simply load the "hello world" program and execute it with the following commands:
+
+.. literalinclude:: ../../../endtests/documentation/helloworld/helloworld.lldb_script
+
+You will see the "Hello World!", and a message on the console indicating that the program ended successfully:
+
+.. literalinclude:: ../../../endtests/documentation/helloworld/helloworld.output_reference
+
+The exit status is the 8 least significant bits (LSB) of the value return by the thread 0 (first thread use to execute the DPU program).
+In our case, we returned ``0x0``.
+A more robust way for the DPU to notice that the execution was not successful is to trigger a fault or put some information in memory.
+
+**Note:** ``dpu-lldb`` can be used to run a program, but it is first of all a debugger.
+For more information on ``dpu-lldb``, see the section on :doc:`Debugging <08_DebuggingWithUpmemDpu>`.
+
+Creating a host application to drive the program
+------------------------------------------------
+
+Running a DPU program with ``dpu-lldb`` is mainly here to facilitate the development of programs running on DPUs.
+Your final product, however, will consist of a host application able to load and execute the "hello world" program onto a DPU.
+
+The host APIs are available for C, C++, Java and Python languages.
+This tutorial focuses on the C language, but equivalent codes for C++, Java and Python are provided where applicable.
+
+Let's see how to write such a host application to get a fully operational environment.
+First, you must write the host application itself (in ``helloworld_host.c``, for example): 
+
+
+.. tabs::
+    .. group-tab:: C
+
+       .. literalinclude:: ../../../endtests/documentation/helloworld/helloworld_host.c
+           :language: c
+
+    .. group-tab:: C++
+
+       .. literalinclude:: ../../../endtests/documentation/helloworld/helloworld_host.cpp
+           :language: c++
+
+    .. group-tab:: Java
+
+       .. literalinclude:: ../../../endtests/documentation/helloworld/HelloWorldHost.java
+           :language: java
+
+    .. group-tab:: Python
+
+       .. literalinclude:: ../../../endtests/documentation/helloworld/helloworld.py
+           :language: python
+
+Briefly:
+
+ * ``DPU_ASSERT`` handles errors in the DPU API and exits in case of an error.
+ * ``dpu_alloc`` allocates a *set* of UPMEM DPU ranks. One set contains several DPU ranks and each rank contains several
+   DPUs, the number depending on the target:
+
+   * with the simulator, the rank contains 1 DPU.
+   * with other targets it can vary, even between 2 ranks of the same target.
+ * ``dpu_load`` reads and loads the binary executable into the allocated DPU set
+ * ``dpu_launch`` starts the execution of the program. The host application remains suspended until the program is finished (``DPU_SYNCHRONOUS``)
+ * ``DPU_FOREACH`` iterates over the individual DPUs from the allocated set
+ * ``dpu_log_read`` fetches the DPU stdout buffer and display it on the host stdout
+ * When the execution completes, the allocated DPU set must be free, using ``dpu_free``
+
+**Note:** As seen in the corresponding codes, APIs are also available in C++, Java and Python to load the binary executable, allocate and launch the DPU (etc.). More information can be found in the documentation for the host APIs in :doc:`205_CppHostAPI`, :doc:`206_JavaAPI` and :doc:`PythonAPI/modules`. 
+
+This is a simple example using only 1 DPU.
+In most use cases, the host application will use far more than 1 DPU at a time, but the API functions stay generally the
+same: the DPU set parameter determines the scope of the action, and thus the overall performance (see section :doc:`06_ControllingDPUFromHost` for more details).
+
+This program does not check the execution result, but different methods exist to gather such results, including:
+
+ * Sharing small data through the **WRAM**
+ * Sharing buffers through the **MRAM**
+
+These techniques will be described later in this documentation.
+
+To compile and link this application, you can use any standard compiler install on your machine (``gcc`` for example) and ``dpu-pkg-config``:
+
+.. tabs::
+    .. group-tab:: C
+
+       .. literalinclude:: ../../../endtests/documentation/helloworld/helloworld.compile_host
+           :language: bash
+
+    .. group-tab:: C++
+
+       .. literalinclude:: ../../../endtests/documentation/helloworld/helloworld.compile_host_cpp
+           :language: bash
+
+    .. group-tab:: Java
+
+       .. literalinclude:: ../../../endtests/documentation/helloworld/helloworld.compile_host_java
+           :language: bash
+
+    .. group-tab:: Python
+
+        N/A
+
+
+
+And then run the application:
+
+.. tabs::
+    .. group-tab:: C
+
+       .. literalinclude:: ../../../endtests/documentation/helloworld/helloworld.run_host
+           :language: bash
+
+    .. group-tab:: C++
+
+       .. literalinclude:: ../../../endtests/documentation/helloworld/helloworld.run_host_cpp
+           :language: bash
+
+    .. group-tab:: Java
+
+       .. literalinclude:: ../../../endtests/documentation/helloworld/helloworld.run_host_java
+           :language: bash
+
+    .. group-tab:: Python
+
+       .. literalinclude:: ../../../endtests/documentation/helloworld/helloworld.run_host_py
+           :language: bash
+
+
+About ``dpu-pkg-config``
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+``dpu-pkg-config`` is a tool based on ``pkg-config`` that will add the path to the DPU include directory (``-I<path_to_DPU_include_directory>``) with ``--cflags`` and/or the path to the DPU libraries and the link directive (``-L<path_to_DPU_libraries> -ldpu``) with ``--libs``.
+
+While paths can change from one release to another, ``dpu-pkg-config`` will ensure that the needed compilation directives are always the good ones.
+
+Conclusion
+----------
+With this introduction, you should now be familiar with the main components of the UPMEM DPU toolchain.
+The rest of the documentation will introduce you to the details of each of them.

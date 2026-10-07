@@ -1,0 +1,19 @@
+var searchData=
+[
+  ['patch_5firam',['patch_iram',['../struct__dpu__loader__context__t.html#aec9af54321dc1a609e5503c243119828',1,'_dpu_loader_context_t']]],
+  ['patch_5fmram',['patch_mram',['../struct__dpu__loader__context__t.html#a73ace42607d5101c9f715db328934018',1,'_dpu_loader_context_t']]],
+  ['patch_5fwram',['patch_wram',['../struct__dpu__loader__context__t.html#a52546ffa30930cca4571b36d541459e8',1,'_dpu_loader_context_t']]],
+  ['pcb_5ftransformation',['pcb_transformation',['../structdpu__hw__description__t.html#a04b5905eb46572d3b9d47f0d19d557ce',1,'dpu_hw_description_t']]],
+  ['perfcounter_5fend_5fvalue',['perfcounter_end_value',['../struct__dpu__elf__runtime__info.html#afca0738799146fea9e60153e0bb8312a',1,'_dpu_elf_runtime_info']]],
+  ['perfcounter_5fend_5fvalue_5faddress',['perfcounter_end_value_address',['../struct__dpu__profiling__context__t.html#a3468a9aa70ab7fa5052ace33ffed20bc',1,'_dpu_profiling_context_t::perfcounter_end_value_address()'],['../structdpu__program__t.html#a997acf873f3db1033743601730d240d8',1,'dpu_program_t::perfcounter_end_value_address()']]],
+  ['poll_5fstatus',['poll_status',['../struct__dpu__run__context__t.html#a0ae0171009fdaeae7a543ff0f86908c5',1,'_dpu_run_context_t']]],
+  ['printf_5fbuffer',['printf_buffer',['../struct__dpu__elf__runtime__info.html#a2763941fa4ea2d99adfe517624d313a3',1,'_dpu_elf_runtime_info']]],
+  ['printf_5fbuffer_5faddress',['printf_buffer_address',['../structdpu__program__t.html#aecd6de88c1a107f7b7baa2abae03f00b',1,'dpu_program_t']]],
+  ['printf_5fbuffer_5fhas_5fwrapped_5faddress',['printf_buffer_has_wrapped_address',['../structdpu__program__t.html#adf06e926faee3dfd257594a9c9b024f1',1,'dpu_program_t']]],
+  ['printf_5fbuffer_5fsize',['printf_buffer_size',['../structdpu__program__t.html#a01c55fb5188736274f3cc80442dba5a6',1,'dpu_program_t']]],
+  ['printf_5fstate',['printf_state',['../struct__dpu__elf__runtime__info.html#a78179d35531b05a6467cde88eb9b84be',1,'_dpu_elf_runtime_info']]],
+  ['printf_5fwrite_5fpointer_5faddress',['printf_write_pointer_address',['../structdpu__program__t.html#ad7b224fee836ec38d81544317f80d28b',1,'dpu_program_t']]],
+  ['profiling_5fsymbols',['profiling_symbols',['../struct__dpu__profiling__context__t.html#a64c746a77530797560f9211576e80e9a',1,'_dpu_profiling_context_t::profiling_symbols()'],['../structdpu__program__t.html#a64c746a77530797560f9211576e80e9a',1,'dpu_program_t::profiling_symbols()']]],
+  ['program_5fpath',['program_path',['../structdpu__program__t.html#a95a55540bd862d06bae61891ce2916e5',1,'dpu_program_t']]],
+  ['ptr',['ptr',['../structdpu__transfer__matrix.html#a286ea6b2dbf6e177d08aeec278f2a805',1,'dpu_transfer_matrix']]]
+];

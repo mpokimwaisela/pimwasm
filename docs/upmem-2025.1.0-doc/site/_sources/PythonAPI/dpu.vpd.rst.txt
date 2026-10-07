@@ -1,0 +1,20 @@
+dpu.vpd package
+===============
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   dpu.vpd.db
+   dpu.vpd.dimm
+   dpu.vpd.vpd
+
+Module contents
+---------------
+
+.. automodule:: dpu.vpd
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logging &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/tabs.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/tabs.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Coding tips and recommended practices" href="fff_CodingTips.html" />
+    <link rel="prev" title="Advanced Features of the Host API" href="033_AdvancedHostFeatures.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Logging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#logging-from-dpu-lldb">Logging from dpu-lldb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#logging-from-host">Logging from Host</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#limitations">Limitations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Logging</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/07_Logging.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="logging">
+<h1>Logging<a class="headerlink" href="#logging" title="Permalink to this heading"></a></h1>
+<p>Logging is available on DPU by using any of these functions:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">printf(const</span> <span class="pre">char</span> <span class="pre">*format,</span> <span class="pre">...)</span></code> writes a formatted string to the stdout buffer</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">puts(const</span> <span class="pre">char</span> <span class="pre">*str)</span></code> writes a simple string to the stdout buffer, with an added <code class="docutils literal notranslate"><span class="pre">\n</span></code> at the end.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">putchar(int</span> <span class="pre">x)</span></code> writes a character to the stdout buffer</p></li>
+</ul>
+</div></blockquote>
+<p>To use them, do not forget to include the <em>stdio</em> header (<code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;stdio.h&gt;</span></code>).</p>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h2>
+<section id="logging-from-dpu-lldb">
+<h3>Logging from dpu-lldb<a class="headerlink" href="#logging-from-dpu-lldb" title="Permalink to this heading"></a></h3>
+<p><strong>Example</strong></p>
+<p>The next example illustrates how logging works. The DPU is going to perform some operations and will give some information
+at different points in its execution.</p>
+<p>Next is the code achieving this task (in <code class="docutils literal notranslate"><span class="pre">printf_example.c</span></code>):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">32</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;hello %02d=0x%02x times</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The code is built to be executed by a single tasklet:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-upmem-dpurte-clang printf_example.c -o printf_example
+</pre></div>
+</div>
+<p>To validate that everything works, let’s launch the program with <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file printf_example
+process launch
+exit
+</pre></div>
+</div>
+<p>The displayed traces:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>hello 00=0x00 times
+hello 01=0x01 times
+hello 02=0x02 times
+hello 03=0x03 times
+hello 04=0x04 times
+hello 05=0x05 times
+hello 06=0x06 times
+hello 07=0x07 times
+hello 08=0x08 times
+hello 09=0x09 times
+hello 10=0x0a times
+hello 11=0x0b times
+hello 12=0x0c times
+hello 13=0x0d times
+hello 14=0x0e times
+hello 15=0x0f times
+hello 16=0x10 times
+hello 17=0x11 times
+hello 18=0x12 times
+hello 19=0x13 times
+hello 20=0x14 times
+hello 21=0x15 times
+hello 22=0x16 times
+hello 23=0x17 times
+hello 24=0x18 times
+hello 25=0x19 times
+hello 26=0x1a times
+hello 27=0x1b times
+hello 28=0x1c times
+hello 29=0x1d times
+hello 30=0x1e times
+hello 31=0x1f times
+</pre></div>
+</div>
+</section>
+<section id="logging-from-host">
+<h3>Logging from Host<a class="headerlink" href="#logging-from-host" title="Permalink to this heading"></a></h3>
+<p>It is also possible to log the DPU program execution from the Host API.
+But contrary to the execution with <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code> the log will not be printed in the console during the execution.</p>
+<p>The <strong>C Host Library</strong> provides a function to print the log after the execution of the DPU into a <code class="docutils literal notranslate"><span class="pre">FILE</span> <span class="pre">*</span></code> (<code class="docutils literal notranslate"><span class="pre">stdout</span></code> for example):</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dpu_log_read(struct</span> <span class="pre">dpu_set_t</span> <span class="pre">set,</span> <span class="pre">FILE</span> <span class="pre">*stream)</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>However, only a set obtained from <code class="docutils literal notranslate"><span class="pre">DPU_FOREACH</span></code> can be used by this function. Trying to obtain the log from a set of multiple
+DPUs will result in the function returning <code class="docutils literal notranslate"><span class="pre">DPU_ERR_INVALID_DPU_SET</span></code>.</p>
+<p>In C++, Java and Python, the Host library provides a <code class="docutils literal notranslate"><span class="pre">log</span></code> method which writes to an input stream the messages logged during the DPUs execution.</p>
+<p>In the next example, a host application displays the log produced by a DPU program:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-Qw==" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-Qw==" name="Qw==" role="tab" tabindex="0">C</button><button aria-controls="panel-0-Qysr" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-Qysr" name="Qysr" role="tab" tabindex="-1">C++</button><button aria-controls="panel-0-SmF2YQ==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-SmF2YQ==" name="SmF2YQ==" role="tab" tabindex="-1">Java</button><button aria-controls="panel-0-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-0-Qw==" class="sphinx-tabs-panel group-tab" id="panel-0-Qw==" name="Qw==" role="tabpanel" tabindex="0"><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;dpu.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;assert.h&gt;</span>
+
+<span class="cp">#ifndef DPU_BINARY</span>
+<span class="cp">#define DPU_BINARY &quot;./printf_example&quot;</span>
+<span class="cp">#endif</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">dpu_set_t</span><span class="w"> </span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">dpu</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_alloc</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">set</span><span class="p">));</span>
+<span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;DPU allocated</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_load</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_BINARY</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">));</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_launch</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_SYNCHRONOUS</span><span class="p">));</span>
+
+<span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;printing log for dpu:</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">DPU_FOREACH</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">dpu</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_log_read</span><span class="p">(</span><span class="n">dpu</span><span class="p">,</span><span class="w"> </span><span class="n">stdout</span><span class="p">));</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_free</span><span class="p">(</span><span class="n">set</span><span class="p">));</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-Qysr" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-Qysr" name="Qysr" role="tabpanel" tabindex="0"><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;dpu&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+
+<span class="cp">#ifndef DPU_BINARY</span>
+<span class="cp">#define DPU_BINARY &quot;./printf_example&quot;</span>
+<span class="cp">#endif</span>
+
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">dpu</span><span class="p">;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">dpu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DpuSet</span><span class="o">::</span><span class="n">allocate</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;DPU allocated&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="n">dpu</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">DPU_BINARY</span><span class="p">);</span>
+<span class="w">    </span><span class="n">dpu</span><span class="p">.</span><span class="n">exec</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;printing log for dpu:&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="n">dpu</span><span class="p">.</span><span class="n">log</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">DpuError</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-SmF2YQ==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-SmF2YQ==" name="SmF2YQ==" role="tabpanel" tabindex="0"><div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.upmem.dpu.Dpu</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">com.upmem.dpu.DpuException</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">com.upmem.dpu.DpuSystem</span><span class="p">;</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">PrintfExampleHost</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">DpuException</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">try</span><span class="p">(</span><span class="n">DpuSystem</span><span class="w"> </span><span class="n">dpu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DpuSystem</span><span class="p">.</span><span class="na">allocate</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;DPU allocated&quot;</span><span class="p">);</span>
+
+<span class="w">            </span><span class="n">dpu</span><span class="p">.</span><span class="na">load</span><span class="p">(</span><span class="s">&quot;printf_example&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="n">dpu</span><span class="p">.</span><span class="na">exec</span><span class="p">();</span>
+
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;printing log for dpu:&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="n">dpu</span><span class="p">.</span><span class="na">log</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-UHl0aG9u" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/env python3</span>
+
+<span class="kn">from</span> <span class="nn">dpu</span> <span class="kn">import</span> <span class="n">DpuSet</span>
+<span class="kn">from</span> <span class="nn">sys</span> <span class="kn">import</span> <span class="n">stdout</span>
+
+<span class="k">with</span> <span class="n">DpuSet</span><span class="p">(</span><span class="n">nr_dpus</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">binary</span><span class="o">=</span><span class="s2">&quot;printf_example&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dpu</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DPU allocated&quot;</span><span class="p">)</span>
+    <span class="n">dpu</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;printing log for dpu:&quot;</span><span class="p">)</span>
+    <span class="n">dpu</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">stdout</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</div></div>
+<p>Compile the program with <code class="docutils literal notranslate"><span class="pre">gcc</span></code>, for example:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-Qw==" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-1-Qw==" name="Qw==" role="tab" tabindex="0">C</button><button aria-controls="panel-1-Qysr" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-Qysr" name="Qysr" role="tab" tabindex="-1">C++</button><button aria-controls="panel-1-SmF2YQ==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-SmF2YQ==" name="SmF2YQ==" role="tab" tabindex="-1">Java</button><button aria-controls="panel-1-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-1-Qw==" class="sphinx-tabs-panel group-tab" id="panel-1-Qw==" name="Qw==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>gcc<span class="w"> </span>--std<span class="o">=</span>c99<span class="w"> </span>-o<span class="w"> </span>printf_example_host<span class="w"> </span>printf_example_host.c<span class="w"> </span><span class="sb">`</span>dpu-pkg-config<span class="w"> </span>--libs<span class="w"> </span>--cflags<span class="w"> </span>dpu<span class="sb">`</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-Qysr" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-Qysr" name="Qysr" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>g++<span class="w"> </span>--std<span class="o">=</span>c++11<span class="w"> </span>printf_example_host.cpp<span class="w"> </span>-o<span class="w"> </span>printf_example_host_cpp<span class="w"> </span><span class="sb">`</span>dpu-pkg-config<span class="w"> </span>--cflags<span class="w"> </span>--libs<span class="w"> </span>dpu<span class="sb">`</span><span class="w"> </span>-g
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-SmF2YQ==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-SmF2YQ==" name="SmF2YQ==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>javac<span class="w"> </span>-cp<span class="w"> </span><span class="k">$(</span>dpu-pkg-config<span class="w"> </span>--variable<span class="o">=</span>java<span class="w"> </span>dpu<span class="k">)</span><span class="w"> </span>PrintfExampleHost.java
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-UHl0aG9u" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><p>N/A</p>
+</div></div>
+<p>An execution of the host program produces the following output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>DPU allocated
+printing log for dpu:
+=== DPU#0x0 ===
+hello 00=0x00 times
+hello 01=0x01 times
+hello 02=0x02 times
+hello 03=0x03 times
+hello 04=0x04 times
+hello 05=0x05 times
+hello 06=0x06 times
+hello 07=0x07 times
+hello 08=0x08 times
+hello 09=0x09 times
+hello 10=0x0a times
+hello 11=0x0b times
+hello 12=0x0c times
+hello 13=0x0d times
+hello 14=0x0e times
+hello 15=0x0f times
+hello 16=0x10 times
+hello 17=0x11 times
+hello 18=0x12 times
+hello 19=0x13 times
+hello 20=0x14 times
+hello 21=0x15 times
+hello 22=0x16 times
+hello 23=0x17 times
+hello 24=0x18 times
+hello 25=0x19 times
+hello 26=0x1a times
+hello 27=0x1b times
+hello 28=0x1c times
+hello 29=0x1d times
+hello 30=0x1e times
+hello 31=0x1f times
+</pre></div>
+</div>
+</section>
+</section>
+<section id="limitations">
+<h2>Limitations<a class="headerlink" href="#limitations" title="Permalink to this heading"></a></h2>
+<p>These functions write the messages and the value(s) in a circular buffer in the <strong>MRAM</strong>, using the specified representation for the value(s).</p>
+<p>If an overflow occurs, i.e. if the number of bytes written is greater than the buffer size, the DPU will fault with the fault id <code class="docutils literal notranslate"><span class="pre">5</span></code>.</p>
+<p>The circular buffer allows <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code> to always print the messages as long as they do not overflow, but with the <strong>Host Library</strong>, the behavior is not the same.
+If the full log of the application is bigger than the buffer size, the call to <code class="docutils literal notranslate"><span class="pre">dpu_log_read</span></code> will return <code class="docutils literal notranslate"><span class="pre">DPU_ERR_LOG_BUFFER_TOO_SMALL</span></code>.</p>
+<p>The buffer size can be changed by using the macro <code class="docutils literal notranslate"><span class="pre">STDOUT_BUFFER_INIT(size)</span></code>.
+<code class="docutils literal notranslate"><span class="pre">size</span></code> will determine the size of the stdout buffer in bytes, and it must be a strictly positive multiple of 8.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="033_AdvancedHostFeatures.html" class="btn btn-neutral float-left" title="Advanced Features of the Host API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="fff_CodingTips.html" class="btn btn-neutral float-right" title="Coding tips and recommended practices" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

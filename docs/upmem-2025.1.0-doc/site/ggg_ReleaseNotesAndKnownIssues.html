@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Release notes &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Reporting errors" href="ggg_ReportingErrors.html" />
+    <link rel="prev" title="Verifying memory accesses with dpugrind" href="088_DPUMemcheck.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Release notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#latest">Latest</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#version-2025-1-0">Version 2025.1.0</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#previous">Previous</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#version-2024-2-0">Version 2024.2.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2024-1-0">Version 2024.1.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2023-2-0">Version 2023.2.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2023-1-0">Version 2023.1.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2021-4-0">Version 2021.4.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2021-3-0">Version 2021.3.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2021-2-0">Version 2021.2.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2021-1-0">Version 2021.1.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2020-5-0">Version 2020.5.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2020-4-0">Version 2020.4.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2020-3-0">Version 2020.3.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2020-2-0">Version 2020.2.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2020-1-0">Version 2020.1.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2019-4-0">Version 2019.4.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2019-3-0">Version 2019.3.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2019-2-0">Version 2019.2.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2019-1-0">Version 2019.1.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2018-2-0">Version 2018.2.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2018-1-0-eap-january-2018">Version 2018.1.0-EAP (January 2018)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2017-1-5-eap">Version 2017.1.5-EAP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2017-1-4-eap">Version 2017.1.4-EAP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2017-1-3-eap">Version 2017.1.3-EAP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2017-1-2-eap">Version 2017.1.2-EAP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2017-1-1-eap">Version 2017.1.1-EAP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-0-7-5-eap">Version 0.7.5-EAP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-0-7-4-eap">Version 0.7.4-EAP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-0-7-3-eap">Version 0.7.3-EAP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-0-7-2-eap">Version 0.7.2-EAP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-0-7-1-eap">Version 0.7.1-EAP</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Release notes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/ggg_ReleaseNotesAndKnownIssues.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="release-notes">
+<h1>Release notes<a class="headerlink" href="#release-notes" title="Permalink to this heading"></a></h1>
+<section id="latest">
+<h2>Latest<a class="headerlink" href="#latest" title="Permalink to this heading"></a></h2>
+<section id="version-2025-1-0">
+<h3>Version 2025.1.0<a class="headerlink" href="#version-2025-1-0" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Additions and improvements:</dt><dd><ul>
+<li><p>Implement udev cache (improves DPU allocation performance)</p></li>
+<li><p>LLDB: reduce amount of memory transfer when transferring unaligned data
+during a debug session</p></li>
+<li><p>dpu-diag: Add option to also disable DPUs which have IRAM or WRAM defects</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Bug fixes:</dt><dd><ul>
+<li><p>Fix some conditions in which a subset of valid DPUs would become unusable
+(avoid resetting faulty DPUs, do not allocate DPUs related to a
+non-functional Control Interface)</p></li>
+<li><p>Fix memory leaks in corner cases</p></li>
+<li><p>upmem_utilities: Add pyelftools as a dependency since it is needed for
+dpu_sections and dpu_statistics</p></li>
+<li><p>Fix DPU toolchain file for CMake</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Documentation:</dt><dd><ul>
+<li><p>Improve documentation style</p></li>
+<li><p>Clarify various comments in code</p></li>
+<li><p>Clarify installation instructions</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Operating system / DPU support matrix:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Operating system</p></th>
+<th class="head"><p>V1A DPUs</p></th>
+<th class="head"><p>V1B DPUs</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Debian 10 (1)</p></td>
+<td><p>Supported</p></td>
+<td><p>Supported</p></td>
+</tr>
+<tr class="row-odd"><td><p>Ubuntu 20.04 LTS (1)</p></td>
+<td><p>Supported</p></td>
+<td><p>Not Supported</p></td>
+</tr>
+<tr class="row-even"><td><p>Ubuntu 22.04 LTS (2)</p></td>
+<td><p>Supported</p></td>
+<td><p>Supported</p></td>
+</tr>
+<tr class="row-odd"><td><p>Rocky 8 (1)</p></td>
+<td><p>Supported</p></td>
+<td><p>Supported</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>(1) In future releases, all systems with a Linux kernel older than version
+6.8 will be deprecated.</p></li>
+<li><p>(2) In future releases, Ubuntu 22.04 LTS will only be supported with the
+Hardware enablement stack (HWE) and the kernel 6.8.</p></li>
+</ul>
+</section>
+</section>
+<section id="previous">
+<h2>Previous<a class="headerlink" href="#previous" title="Permalink to this heading"></a></h2>
+<section id="version-2024-2-0">
+<h3>Version 2024.2.0<a class="headerlink" href="#version-2024-2-0" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Additions and improvements:</dt><dd><ul>
+<li><p>Implement WRAM access in parallel of the DPU execution</p></li>
+<li><p>Add DPU v1B performance counters</p></li>
+<li><p>Add chip versioning tags to DPU binaries</p></li>
+<li><p>Fix lowlevel header files includes</p></li>
+<li><p><em>IWYU users:</em> dpu.h now exports most of the DPU API</p></li>
+<li><p>Rely on dpu_types.h to get C standard integer types</p></li>
+<li><dl class="simple">
+<dt>Utilities / dpu-diag:</dt><dd><ul>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">--no-update-vpd</span></code> option</p></li>
+<li><p>Improved frequency measurement stability</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Utilities / upmem-dimm-configure:</dt><dd><ul>
+<li><p>Update MCU DB fields</p></li>
+<li><p>General improvements</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Functional simulator: remove broken nrDpusPerCi option</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Bug fixes:</dt><dd><ul>
+<li><p>Fix rare Control Interface issue on V1B</p></li>
+<li><p>LLVM/Clang: minor bug fixes</p></li>
+<li><dl class="simple">
+<dt>Run-time libraries:</dt><dd><ul>
+<li><p>sequential reader: fix correctness issue</p></li>
+<li><p>Improvements to div32 and udiv32</p></li>
+<li><p>mem-alloc: early clobber output variable</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>MCU firmware: fix utils alignment issue</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Documentation:</dt><dd><ul>
+<li><dl class="simple">
+<dt>Run-time library documentation now in doxygen format</dt><dd><ul>
+<li><p>Remove redundant dpurtldoc CLI tool</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Use modern theme for doxygen sites</p></li>
+<li><p>Support dark mode for documentation</p></li>
+<li><p>Document Upmem PPA</p></li>
+<li><p>Document UPMEM_PROFILE</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Operating system / DPU support matrix:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Operating system</p></th>
+<th class="head"><p>V1A DPUs</p></th>
+<th class="head"><p>V1B DPUs</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Debian 10</p></td>
+<td><p>Supported</p></td>
+<td><p>Supported</p></td>
+</tr>
+<tr class="row-odd"><td><p>Ubuntu 20.04 LTS</p></td>
+<td><p>Supported</p></td>
+<td><p>Not Supported</p></td>
+</tr>
+<tr class="row-even"><td><p>Ubuntu 22.04 LTS</p></td>
+<td><p>Supported</p></td>
+<td><p>Supported</p></td>
+</tr>
+<tr class="row-odd"><td><p>Rocky 8</p></td>
+<td><p>Supported</p></td>
+<td><p>Supported</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="version-2024-1-0">
+<h3>Version 2024.1.0<a class="headerlink" href="#version-2024-1-0" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Add support for V1B UPMEM DIMMs on Ubuntu 22.04 and Debian 10</p></li>
+<li><p>Fix performance degradation caused by
+<a class="reference external" href="https://docs.kernel.org/admin-guide/hw-vuln/gather_data_sampling.html">Gather Data Sampling microcode mitigation</a>
+Courtesy of Manuel Penschuck from Goethe University Frankfurt.
+For further performance improvements, check out his awesome work on
+<a class="reference external" href="https://github.com/manpen/upmem-libdpu">his fork of the UPMEM backend</a>
+(<a class="reference external" href="https://github.com/manpen/dpu-communication-bench">benchmarks</a>)</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">dpu_attach_first</span></code> command to the debugger</p></li>
+<li><p>Drop support for Ubuntu 18.04</p></li>
+<li><p>Drop support for CentOS 7</p></li>
+<li><dl class="simple">
+<dt>Add documentation for:</dt><dd><ul>
+<li><p>DPU chips characteristics</p></li>
+<li><p>Choosing the UPMEM chip version when compiling and running on simulator (cf. <a class="reference internal" href="240_Dpu_Versionning.html"><span class="doc">DPU Version Selection</span></a>)</p></li>
+<li><p>Configuring the UPMEM debugger port</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Bugfixes:</dt><dd><ul>
+<li><p>Memory leak in scatter-gather transfers</p></li>
+<li><p>Memory leaks and sanitization in LLVM tools</p></li>
+<li><p>Pyelftools version conflict in dpu_profiling</p></li>
+<li><p>Wrong python libraries path on rocky8</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Operating system / DPU support matrix:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Operating system</p></th>
+<th class="head"><p>V1A DPUs</p></th>
+<th class="head"><p>V1B DPUs</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Debian 10</p></td>
+<td><p>Supported</p></td>
+<td><p>Supported</p></td>
+</tr>
+<tr class="row-odd"><td><p>Ubuntu 20.04 LTS</p></td>
+<td><p>Supported</p></td>
+<td><p>Not Supported</p></td>
+</tr>
+<tr class="row-even"><td><p>Ubuntu 22.04 LTS</p></td>
+<td><p>Supported</p></td>
+<td><p>Supported</p></td>
+</tr>
+<tr class="row-odd"><td><p>Rocky 8</p></td>
+<td><p>Supported</p></td>
+<td><p>Supported</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="version-2023-2-0">
+<h3>Version 2023.2.0<a class="headerlink" href="#version-2023-2-0" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Scatter-gather transfers update:</dt><dd><ul>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">get_block_t</span></code> struct now needs an additional <code class="docutils literal notranslate"><span class="pre">args_size</span></code> parameter to store the size of the function context</p></li>
+<li><p>The SDK now copies and manages the lifetime of the <code class="docutils literal notranslate"><span class="pre">args</span></code> context used by the <code class="docutils literal notranslate"><span class="pre">get_block_func_t</span></code> function</p></li>
+<li><p>Add C++ API for scatter-gather transfers</p></li>
+<li><p>C++ API for scatter-gather transfers also accepts capturing lambdas</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Add support for Ubuntu 22.04</p></li>
+<li><p>Add support for Rocky 8</p></li>
+<li><dl class="simple">
+<dt>Add documentation for:</dt><dd><ul>
+<li><p>Setting up permissions for users access UPMEM hardware and for profiling</p></li>
+<li><p>Valid values for <code class="docutils literal notranslate"><span class="pre">nrDpusPerCi</span></code> with the functional simulator</p></li>
+<li><p>Using the clangd language server with the SDK</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Fix for scatter-gather transfers in the functional simulator</p></li>
+<li><p>Fix a bug in UFI config when counting faulty bits</p></li>
+<li><p>Fix an edge-case compiler crash when using <code class="docutils literal notranslate"><span class="pre">-O1</span></code> or higher with <code class="docutils literal notranslate"><span class="pre">mram_read</span></code> or <code class="docutils literal notranslate"><span class="pre">mram_write</span></code>.</p></li>
+</ul>
+</section>
+<section id="version-2023-1-0">
+<h3>Version 2023.1.0<a class="headerlink" href="#version-2023-1-0" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>New APIs for scatter-gather memory transfers between host CPU and DPUs</p></li>
+<li><p>Mutual exclusions extension : virtual mutexes and mutex pools</p></li>
+<li><p>New APIs for partial support of unaligned MRAM accesses</p></li>
+<li><p>Remove the dependency of dpu_profiling functions on UPMEM’s modified Linux perf package</p></li>
+<li><p>Add compatibility of dpu_profiling functions with Perfetto UI</p></li>
+<li><p>Add static assert to prevent usage of perfcounter_config with -pg option</p></li>
+<li><p>Update the UPMEM driver to support Linux kernel 5.15</p></li>
+<li><p>Firmware support for PCB P21F</p></li>
+</ul>
+</section>
+<section id="version-2021-4-0">
+<h3>Version 2021.4.0<a class="headerlink" href="#version-2021-4-0" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Fix bug in calling convention when a DPU function has a large number of parameters</p></li>
+<li><p>Fix bug with mux switch for sparse matrix MRAM transfer</p></li>
+<li><p>Fix for putting DIMMs in power-saving mode</p></li>
+<li><p>Static assertion when perfcounter_config is used with -pg option</p></li>
+<li><p>Firmware support for PCB P21E</p></li>
+</ul>
+</section>
+<section id="version-2021-3-0">
+<h3>Version 2021.3.0<a class="headerlink" href="#version-2021-3-0" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>Upgrade compiler to LLVM-12.0.0</p></li>
+<li><p>Add support for new P21D PCB</p></li>
+<li><p>Update BIOS flashing procedure based on new flasher kit</p></li>
+<li><p>Document functional simulator</p></li>
+<li><p>Fix a corner case bug with Host &lt;-&gt; DPU MRAM transfer</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="version-2021-2-0">
+<h3>Version 2021.2.0<a class="headerlink" href="#version-2021-2-0" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>New DPU profiling framework based on perfcounters</p></li>
+<li><p>Fix Functional Simulator MRAM management when using multiple DPUs</p></li>
+<li><p>Enhance Function Simulator instructions tracing</p></li>
+<li><p>Enhance DPU 8-bit multiplication</p></li>
+<li><p>Fix DPU 64-bit rotation</p></li>
+<li><p>Fix MCU firmware bug</p></li>
+<li><p>Update server installation documentation</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="version-2021-1-0">
+<h3>Version 2021.1.0<a class="headerlink" href="#version-2021-1-0" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>Small improvements in Java host API (cf <a class="reference internal" href="206_JavaAPI.html"><span class="doc">Java Library</span></a>)</p></li>
+<li><p>Upgrade compiler to LLVM-11.0.0</p></li>
+<li><p>Fix various bugs in LLDB</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">CLOCKS_PER_SEC</span></code> constant in DPU library</p></li>
+<li><p>Fix bugs in host API</p></li>
+<li><p>Improve DPU program loading performance for multi-rank call</p></li>
+<li><p>Fix bug in <code class="docutils literal notranslate"><span class="pre">dpugrind</span></code></p></li>
+<li><p>Add documentation about C++/Java/Python APIs</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="version-2020-5-0">
+<h3>Version 2020.5.0<a class="headerlink" href="#version-2020-5-0" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>Adding support for dual-socket servers</p></li>
+<li><p>Adding an host Java API (cf <a class="reference internal" href="206_JavaAPI.html"><span class="doc">Java Library</span></a>)</p></li>
+<li><p>Adding an host C++ API (cf <a class="reference internal" href="205_CppHostAPI.html"><span class="doc">C++ Host API</span></a>)</p></li>
+<li><p>Improving the performance of the Functional Simulator</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="version-2020-4-0">
+<h3>Version 2020.4.0<a class="headerlink" href="#version-2020-4-0" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>Remove dependency on the JDK</p></li>
+<li><p>DPU Runtime Library: <code class="docutils literal notranslate"><span class="pre">memcpy</span></code>/<code class="docutils literal notranslate"><span class="pre">memmove</span></code>/<code class="docutils literal notranslate"><span class="pre">memset</span></code> can now be used with <strong>MRAM</strong> pointers as arguments</p></li>
+<li><p>Adding asynchronism in the Host API:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">dpu_push_xfer</span></code> now has a <code class="docutils literal notranslate"><span class="pre">DPU_XFER_ASYNC</span></code> flag to copy asynchronously</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dpu_broadcast_to</span></code>, a new function with the same behavior as <code class="docutils literal notranslate"><span class="pre">dpu_copy_to</span></code>, but contrary to its predecessor, can be used asynchronously</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dpu_callback</span></code>, a new function to insert callback that will be called asynchronously during the execution flow of the DPUs.</p></li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+</section>
+<section id="version-2020-3-0">
+<h3>Version 2020.3.0<a class="headerlink" href="#version-2020-3-0" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul>
+<li><p>Upgrade compiler to LLVM-10.0.0</p></li>
+<li><p>Remove dependency on Python 2: only Python 3 is needed</p></li>
+<li><p>Add Python host API (cf <a class="reference internal" href="PythonAPI/modules.html"><span class="doc">Python Library</span></a>)</p></li>
+<li><p>Add support for ubuntu 20.4</p></li>
+<li><p>Remove support for debian 9</p></li>
+<li><p>Update driver ABI (and version):</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Gather sysfs attributes in a single directory</p></li>
+<li><p>Remove region index from device nodes’ name</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Host API improvement (parallelize transfer when using dpu_set_t of multiple ranks)</p></li>
+<li><p>Add tool <code class="docutils literal notranslate"><span class="pre">dpu-profiling</span></code> to unify all profiling features</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="version-2020-2-0">
+<h3>Version 2020.2.0<a class="headerlink" href="#version-2020-2-0" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>New transparent management of the DPU SRAM repairs</p></li>
+<li><p>Improved implementation of the <code class="docutils literal notranslate"><span class="pre">MRAM</span></code> sequential reader</p></li>
+<li><p>Core dump binaries now contain all the debug sections</p></li>
+<li><p>Both <code class="docutils literal notranslate"><span class="pre">-flto=full</span></code> and <code class="docutils literal notranslate"><span class="pre">-flto=thin</span></code> are supported for the DPU Runtime Library</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="version-2020-1-0">
+<h3>Version 2020.1.0<a class="headerlink" href="#version-2020-1-0" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>Improve significantly communications performance including copy to/from MRAM</p></li>
+<li><p>Add support for the <code class="docutils literal notranslate"><span class="pre">centos8</span></code> Linux distribution</p></li>
+<li><p>Add the <code class="docutils literal notranslate"><span class="pre">dpu-diag</span></code> self-diagnostic tool to dump information &amp; check the SDK installation</p></li>
+<li><p>Update the functions to access <strong>MRAM</strong> from the DPU (only use <code class="docutils literal notranslate"><span class="pre">mram_read</span></code> and <code class="docutils literal notranslate"><span class="pre">mram_write</span></code>)</p></li>
+<li><p>Macros to get <code class="docutils literal notranslate"><span class="pre">barriers</span></code>, <code class="docutils literal notranslate"><span class="pre">mutex</span></code> and <code class="docutils literal notranslate"><span class="pre">semaphore</span></code> (<code class="docutils literal notranslate"><span class="pre">&lt;OBJECT&gt;_GET</span></code>) are no longer necessary</p></li>
+<li><p>Interrogate the DIMM hardware to get the DPU clock frequency rather than declaring it through <code class="docutils literal notranslate"><span class="pre">UPMEM_PROFILE</span></code></p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="version-2019-4-0">
+<h3>Version 2019.4.0<a class="headerlink" href="#version-2019-4-0" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>Upgrade compiler to LLVM-9.0.1</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code> is now the default debugger</p></li>
+<li><p>Add tool <code class="docutils literal notranslate"><span class="pre">dputrace</span></code> for low level execution tracing (cf <a class="reference internal" href="087_DPUTrace.html"><span class="doc">Using dputrace tool</span></a>)</p></li>
+<li><p>Add tool <code class="docutils literal notranslate"><span class="pre">dpu_stack_analyzer</span></code> for static analysis of the DPU threads stack size (cf <a class="reference internal" href="270_StackAnalyzer.html"><span class="doc">Stack Analyzer</span></a>)</p></li>
+<li><p>Remove tasklet mailbox concept</p></li>
+<li><p>Refactor the Host API to be based on DPU sets</p></li>
+<li><p><em>Experimental tool</em>: <code class="docutils literal notranslate"><span class="pre">dpugrind</span></code> is now available (cf <a class="reference internal" href="088_DPUMemcheck.html"><span class="doc">Verifying memory accesses with dpugrind</span></a>)</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="version-2019-3-0">
+<h3>Version 2019.3.0<a class="headerlink" href="#version-2019-3-0" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>Unification of the DPU Host libraries <code class="docutils literal notranslate"><span class="pre">libdpu</span></code> and <code class="docutils literal notranslate"><span class="pre">libdpucni</span></code></p></li>
+<li><p>Upgrade compiler to LLVM-8.0.1</p></li>
+<li><p>Clang is now able to compile x86 code, the default target is x86</p></li>
+<li><p>Add tool <code class="docutils literal notranslate"><span class="pre">dpu-upmem-dpurte-clang</span></code> which uses clang to target dpu backend by default</p></li>
+<li><p>The DPU runtime library is now compiled with debug information</p></li>
+<li><p><em>Experimental tool</em>: LLDB is now available for dpu</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="version-2019-2-0">
+<h3>Version 2019.2.0<a class="headerlink" href="#version-2019-2-0" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul>
+<li><p>Adding DPU logging module based on MRAM buffer (cf <code class="docutils literal notranslate"><span class="pre">printf</span></code> in <code class="docutils literal notranslate"><span class="pre">stdio.h</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">KTRACE</span></code> and <code class="docutils literal notranslate"><span class="pre">printf</span></code> support print of 64-bit integers/floats.</p></li>
+<li><p>The Assembler syntax changed:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">%</span></code> before a register is now optional and not print by <code class="docutils literal notranslate"><span class="pre">llvm-objdump</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">?</span></code> and <code class="docutils literal notranslate"><span class="pre">!</span></code> before a condition is now optional and not print by <code class="docutils literal notranslate"><span class="pre">llvm-objdump</span></code>.</p></li>
+<li><p>Condition <code class="docutils literal notranslate"><span class="pre">in_buffX</span></code> has been replaced by <code class="docutils literal notranslate"><span class="pre">ncX</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Stabilization of MRAM variables</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="version-2019-1-0">
+<h3>Version 2019.1.0<a class="headerlink" href="#version-2019-1-0" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>DPU program binaries are entirely built by <code class="docutils literal notranslate"><span class="pre">clang</span></code>, <code class="docutils literal notranslate"><span class="pre">dpucc</span></code> has been removed</p></li>
+<li><p>the runtime library is pure C, there is no longer assembly generated by a configuration file and <code class="docutils literal notranslate"><span class="pre">dpukconfig</span></code> has been removed</p></li>
+<li><p>the tasklets configuration is done by declaring <code class="docutils literal notranslate"><span class="pre">TASKLETS_INITIALIZER</span></code> and including <code class="docutils literal notranslate"><span class="pre">rt.h</span></code> header (cf <a class="reference internal" href="030_DPURuntimeService_Tasklets.html"><span class="doc">Tasklet management and synchronization</span></a>)</p></li>
+<li><p>updated runtime API in <a class="reference external" href="DPURT/html/barrier_8h.html">barrier.h</a>, <a class="reference external" href="DPURT/html/mutex_8h.html">mutex.h</a>, <a class="reference external" href="DPURT/html/sem_8h.html">sem.h</a></p></li>
+<li><p>the default optimization level for <code class="docutils literal notranslate"><span class="pre">clang</span></code> is <code class="docutils literal notranslate"><span class="pre">-O0</span></code>, the developer must pass explicitly <code class="docutils literal notranslate"><span class="pre">-O2</span></code></p></li>
+<li><p>the compiler handles functions with variable arguments properly</p></li>
+<li><p>Changes in the assembly syntax</p></li>
+<li><p><em>Experimental feature</em>: add variables stored in MRAM</p></li>
+<li><p><em>Experimental feature</em>: a profiler for DPU binaries (cf <a class="reference internal" href="260_Profiling.html"><span class="doc">Profiling DPU binary</span></a>)</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="version-2018-2-0">
+<h3>Version 2018.2.0<a class="headerlink" href="#version-2018-2-0" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>Upgrade compiler to LLVM-7.0</p></li>
+<li><p><em>Experimental feature</em>: DPUGrind tool</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="version-2018-1-0-eap-january-2018">
+<h3>Version 2018.1.0-EAP (January 2018)<a class="headerlink" href="#version-2018-1-0-eap-january-2018" title="Permalink to this heading"></a></h3>
+</section>
+<section id="version-2017-1-5-eap">
+<h3>Version 2017.1.5-EAP<a class="headerlink" href="#version-2017-1-5-eap" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>Support for <code class="docutils literal notranslate"><span class="pre">klog</span></code> logging source in the host API</p></li>
+<li><p>Finely tune the profiling parameters to select the instrumented data and the output file</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="version-2017-1-4-eap">
+<h3>Version 2017.1.4-EAP<a class="headerlink" href="#version-2017-1-4-eap" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>DPU program binary format is now standard ELF</p></li>
+<li><p>DPU programs built with an older toolchain version need to be rebuilt</p></li>
+<li><p>Optimized procedures in the compiler for 8x8 and 16x16 multiplications</p></li>
+<li><p>Optimized procedures in the compiler for variable initialization</p></li>
+<li><p>Enriching and optimizing <code class="docutils literal notranslate"><span class="pre">string.h</span></code> (cf <a class="reference internal" href="04_Stdlib.html"><span class="doc">Standard library functions</span></a>)</p></li>
+<li><p>Adding dynamic allocation with the implementation of a buddy allocator (cf <a class="reference internal" href="031_DPURuntimeService_Memory.html"><span class="doc">Memory management</span></a>)</p></li>
+<li><p><em>Experimental feature</em>: adding a Link Time Optimizer in <code class="docutils literal notranslate"><span class="pre">dpucc</span></code> (enabled when building with <code class="docutils literal notranslate"><span class="pre">-flto</span></code>)</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="version-2017-1-3-eap">
+<h3>Version 2017.1.3-EAP<a class="headerlink" href="#version-2017-1-3-eap" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>Bug fixes, including KI0284</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ktrace</span></code> correctly handles <code class="docutils literal notranslate"><span class="pre">%u</span></code> format specifier</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="version-2017-1-2-eap">
+<h3>Version 2017.1.2-EAP<a class="headerlink" href="#version-2017-1-2-eap" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>64-bits types and operators support in the toolchain</p></li>
+<li><p>Fixed-Size Block Allocator (available in <code class="docutils literal notranslate"><span class="pre">fsb_allocator.h</span></code> or directly from <code class="docutils literal notranslate"><span class="pre">alloc.h</span></code>)</p></li>
+<li><p>Make the DPU-side API of <code class="docutils literal notranslate"><span class="pre">ktrace</span></code> mimic printf</p></li>
+<li><p>Build host APIs for <code class="docutils literal notranslate"><span class="pre">ktrace</span></code>, so that a x86 program can collect DPU traces programmatically</p></li>
+<li><p>IRAM and WRAM sizes when using the simulator are now configurable</p></li>
+<li><p>Software caches library functions optimized with 64-bits DMA instructions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dpucc</span></code> accepts static libraries as inputs</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="version-2017-1-1-eap">
+<h3>Version 2017.1.1-EAP<a class="headerlink" href="#version-2017-1-1-eap" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>DMA instructions granularity and alignment on 64 bits</p></li>
+<li><p>-Os support for code optimization in size</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ktrace</span></code> service infrastructure to print execution string and variables values in <code class="docutils literal notranslate"><span class="pre">dpushell</span></code> without using processor resources (cf <a class="reference internal" href="07_Logging.html"><span class="doc">Logging</span></a>)</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="version-0-7-5-eap">
+<h3>Version 0.7.5-EAP<a class="headerlink" href="#version-0-7-5-eap" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>-O2 is now the default optimization of dpucc</p></li>
+<li><p>Command-line profiling tool</p></li>
+<li><p>Host API now accepts an “unlimited” number of simulators</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dpukconfig</span></code> has the ‘-s’ option to run scripts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dpugeni</span></code> available to create native interfaces to DPUs</p></li>
+<li><p>Assembler anonymous labels to easy asm code inlining</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="version-0-7-4-eap">
+<h3>Version 0.7.4-EAP<a class="headerlink" href="#version-0-7-4-eap" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>Host API allows callback parameters to tune DPU allocation on the fly</p></li>
+<li><p>Many optimizations and bug fixes of the C compiler</p></li>
+<li><p>Actor programming model available (deprecated)</p></li>
+<li><p>Software caches available to simplify prototyping</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="version-0-7-3-eap">
+<h3>Version 0.7.3-EAP<a class="headerlink" href="#version-0-7-3-eap" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>Integrated debugger with dpushell (cf <a class="reference internal" href="08_DebuggingWithUpmemDpu.html"><span class="doc">Introduction</span></a>)</p></li>
+<li><p>Sequential reader API</p></li>
+<li><p>Built-in assembler functions and syscalls available (cf <a class="reference internal" href="201_AsmAndC.html"><span class="doc">Integrating assembly code with C programs</span></a>)</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="version-0-7-2-eap">
+<h3>Version 0.7.2-EAP<a class="headerlink" href="#version-0-7-2-eap" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>-O1 is now the default optimization of <code class="docutils literal notranslate"><span class="pre">dpucc</span></code></p></li>
+<li><p>Many bug fixes and improvements</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="version-0-7-1-eap">
+<h3>Version 0.7.1-EAP<a class="headerlink" href="#version-0-7-1-eap" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>First complete toolchain including: assembler, compiler, shell, kconfig and APIs. (cf <a class="reference internal" href="00_ToolchainAtAGlance.html"><span class="doc">The UPMEM DPU toolchain</span></a>)</p></li>
+<li><p>First programming model defined via tasklets</p></li>
+<li><p>Host API (cf <a class="reference internal" href="06_ControllingDPUFromHost.html"><span class="doc">Controlling the execution of DPUs from host applications</span></a>)</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="088_DPUMemcheck.html" class="btn btn-neutral float-left" title="Verifying memory accesses with dpugrind" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ggg_ReportingErrors.html" class="btn btn-neutral float-right" title="Reporting errors" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

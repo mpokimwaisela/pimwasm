@@ -1,0 +1,28 @@
+dpu package
+===========
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   dpu.vpd
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   dpu.compiler
+   dpu.disasm
+   dpu.driver
+
+Module contents
+---------------
+
+.. automodule:: dpu
+   :members:
+   :undoc-members:
+   :show-inheritance:

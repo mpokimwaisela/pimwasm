@@ -1,0 +1,79 @@
+SDK Configuration
+=================
+
+The SDK is configured using the ``UPMEM_PROFILE`` environment variable.
+In normal operation, setting this variable is not necessary,
+as the SDK will automatically detect the hardware and use the appropriate backend.
+However, in some advanced use cases, it may be necessary to set this variable.
+
+It is a comma separated list of key=value pairs.
+Example usage:
+
+.. code-block:: console
+
+  $ export UPMEM_PROFILE="sgXferEnable=true,nrThreadPerPool=8"
+  $ ./my_program
+  runs an application that uses Scatter/Gather transfers and 8 threads per rank
+
+or
+
+.. code-block:: console
+
+  $ UPMEM_PROFILE="backend=simulator,chipId=0x42" ./my_program
+  runs an application on the v1B simulator backend
+
+The following keys are supported:
+
+``backend``
+  the backend to use.
+  Possible values are:
+
+  ``simulator``
+    use the simulator
+  ``hw``
+    use the hardware
+
+  By default, the hardware is used if available, otherwise the simulator is used.
+
+``chipId``
+  the chip ID to use.
+  This is only useful for setting the simulator backend.
+  Possible values are:
+
+  ``0x2`` (default)
+    the v1A simulator backend
+  ``0x42``
+    the v1B simulator backend
+
+``nrThreadPerPool`` (default: ``4``)
+  the number of host threads performing memory transfer operations on each PIMM rank.
+  This is only relevant for the hardware backend.
+
+  In some cases, it may be beneficial to increase this value to ``8`` to improve performance.
+  On the other hand, if you are oversubscribing the host with other running applications, you may want to decrease this value to ``2``.
+
+``rankPath``
+  forces the SDK to use a specific rank.
+  This is mostly useful for debugging purposes.
+  Valid values are of the form ``/dev/dpu_rankX`` where ``X`` is the rank number.
+
+``regionMode``
+  the way the driver handles memory regions.
+  There are three modes:
+  
+  ``perf`` (default)
+    the DPU memory and control interface are mapped to user space.
+  ``safe``
+    the DPU memory and control interface are accessed through the driver.
+  ``hybrid`` (experimental)
+    the DPU memory is mapped to user space, and the control interface is accessed through the driver.
+
+  See :doc:`250_Driver` for more details.
+
+``sgXferEnable`` (default: ``false``)
+  enable or disable the use of scatter-gather transfers (see :doc:`265_ScatterGatherXfer`).
+  Possible values are ``true`` and ``false``.
+
+``sgXferMaxBlocksPerDpu``
+  the maximum number of blocks that can be transferred in a single scatter-gather transfer.
+  More details in :ref:`enabling-sgxfer-label`.

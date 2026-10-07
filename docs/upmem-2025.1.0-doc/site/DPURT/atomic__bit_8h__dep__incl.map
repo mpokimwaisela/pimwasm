@@ -1,0 +1,9 @@
+<map id="atomic_bit.h" name="atomic_bit.h">
+<area shape="rect" id="node2" href="$barrier_8h.html" title="Synchronization with barriers. " alt="" coords="16,80,92,107"/>
+<area shape="rect" id="node4" href="$mutex_8h.html" title="Mutual exclusions. " alt="" coords="121,80,197,107"/>
+<area shape="rect" id="node8" href="$sem_8h.html" title="Synchronization with semaphores. " alt="" coords="221,80,284,107"/>
+<area shape="rect" id="node3" href="$wramfifo_8h.html" title="WRAM input/output fifo for host/DPU communication. " alt="" coords="5,155,97,181"/>
+<area shape="rect" id="node5" href="$vmutex_8h.html" title="Mutual exclusions extension (virtual mutexes). " alt="" coords="121,155,205,181"/>
+<area shape="rect" id="node7" href="$mutex__pool_8h.html" title="Mutual exclusions extension (hardware mutex pool). " alt="" coords="229,155,340,181"/>
+<area shape="rect" id="node6" href="$mram__unaligned_8h.html" title="APIs for unaligned MRAM access (address/size) and tasklet&#45;safe write/update of less than 8&#45;byte value..." alt="" coords="91,229,235,256"/>
+</map>

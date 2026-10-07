@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DPU ABI &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Instruction Set Architecture" href="201_IS.html" />
+    <link rel="prev" title="Integrating assembly code with C programs" href="201_AsmAndC.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">DPU ABI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#knowledge-requirements">Knowledge requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#procedure-call-standard">Procedure Call Standard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#registers">Registers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-types">Data types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#endianness">Endianness</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#composite-types">Composite Types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#aggregates-c-struct">Aggregates (C “struct”)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unions">Unions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#arrays">Arrays</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#calling-convention">Calling convention</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#argument-passing">Argument passing</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#return-value">Return value</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#variable-argument">Variable Argument</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#stack-management">Stack management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stack-organization">Stack organization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#function-prologue-epilogue">Function Prologue &amp; Epilogue</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#other-abi-details">Other ABI details</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#binary-file-format">Binary file format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#general-relocations">General relocations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#data-relocations">Data relocations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#instruction-relocations">Instruction relocations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#instruction-size">Instruction size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#virtual-address-offset">Virtual address offset</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">DPU ABI</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/201_DPU_ABI.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dpu-abi">
+<h1>DPU ABI<a class="headerlink" href="#dpu-abi" title="Permalink to this heading"></a></h1>
+<section id="knowledge-requirements">
+<h2>Knowledge requirements<a class="headerlink" href="#knowledge-requirements" title="Permalink to this heading"></a></h2>
+<p>This documentation assumes that the reader has a global understanding of what the UPMEM DPU is and of its
+architecture. It also considers that the reader knows the C programming language.</p>
+</section>
+<section id="procedure-call-standard">
+<h2>Procedure Call Standard<a class="headerlink" href="#procedure-call-standard" title="Permalink to this heading"></a></h2>
+<section id="registers">
+<h3>Registers<a class="headerlink" href="#registers" title="Permalink to this heading"></a></h3>
+<p>Each thread of the DPU has 24 32-bit registers, labeled <code class="docutils literal notranslate"><span class="pre">r0-r23</span></code>, and 8 read-only registers:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>Name</p></td>
+<td><p>Permission</p></td>
+<td><p>Information</p></td>
+</tr>
+<tr class="row-even"><td><p>r0</p></td>
+<td><p>R/W</p></td>
+<td><p>Argument 1 register (caller saved) / Return register for 32bits value / MSB of 64bits return value</p></td>
+</tr>
+<tr class="row-odd"><td><p>r1</p></td>
+<td><p>R/W</p></td>
+<td><p>Argument 2 register (caller saved) / LSB of 64bits return value</p></td>
+</tr>
+<tr class="row-even"><td><p>r2</p></td>
+<td><p>R/W</p></td>
+<td><p>Argument 3 register (caller saved)</p></td>
+</tr>
+<tr class="row-odd"><td><p>r3</p></td>
+<td><p>R/W</p></td>
+<td><p>Argument 4 register (caller saved)</p></td>
+</tr>
+<tr class="row-even"><td><p>r4</p></td>
+<td><p>R/W</p></td>
+<td><p>Argument 5 register (caller saved)</p></td>
+</tr>
+<tr class="row-odd"><td><p>r5</p></td>
+<td><p>R/W</p></td>
+<td><p>Argument 6 register (caller saved)</p></td>
+</tr>
+<tr class="row-even"><td><p>r6</p></td>
+<td><p>R/W</p></td>
+<td><p>Argument 7 register (caller saved)</p></td>
+</tr>
+<tr class="row-odd"><td><p>r7</p></td>
+<td><p>R/W</p></td>
+<td><p>Argument 8 register (caller saved)</p></td>
+</tr>
+<tr class="row-even"><td><p>r8</p></td>
+<td><p>R/W</p></td>
+<td><p>Scratch register (caller saved)</p></td>
+</tr>
+<tr class="row-odd"><td><p>r9</p></td>
+<td><p>R/W</p></td>
+<td><p>Scratch register (caller saved)</p></td>
+</tr>
+<tr class="row-even"><td><p>r10</p></td>
+<td><p>R/W</p></td>
+<td><p>Scratch register (caller saved)</p></td>
+</tr>
+<tr class="row-odd"><td><p>r11</p></td>
+<td><p>R/W</p></td>
+<td><p>Scratch register (caller saved)</p></td>
+</tr>
+<tr class="row-even"><td><p>r12</p></td>
+<td><p>R/W</p></td>
+<td><p>Scratch register (caller saved)</p></td>
+</tr>
+<tr class="row-odd"><td><p>r13</p></td>
+<td><p>R/W</p></td>
+<td><p>Scratch register (caller saved)</p></td>
+</tr>
+<tr class="row-even"><td><p>r14</p></td>
+<td><p>R/W</p></td>
+<td><p>Callee saved register</p></td>
+</tr>
+<tr class="row-odd"><td><p>r15</p></td>
+<td><p>R/W</p></td>
+<td><p>Callee saved register</p></td>
+</tr>
+<tr class="row-even"><td><p>r16</p></td>
+<td><p>R/W</p></td>
+<td><p>Callee saved register</p></td>
+</tr>
+<tr class="row-odd"><td><p>r17</p></td>
+<td><p>R/W</p></td>
+<td><p>Callee saved register</p></td>
+</tr>
+<tr class="row-even"><td><p>r18</p></td>
+<td><p>R/W</p></td>
+<td><p>Callee saved register</p></td>
+</tr>
+<tr class="row-odd"><td><p>r19</p></td>
+<td><p>R/W</p></td>
+<td><p>Callee saved register</p></td>
+</tr>
+<tr class="row-even"><td><p>r20</p></td>
+<td><p>R/W</p></td>
+<td><p>Callee saved register</p></td>
+</tr>
+<tr class="row-odd"><td><p>r21</p></td>
+<td><p>R/W</p></td>
+<td><p>Callee saved register</p></td>
+</tr>
+<tr class="row-even"><td><p>r22</p></td>
+<td><p>R/W</p></td>
+<td><p>Stack pointer</p></td>
+</tr>
+<tr class="row-odd"><td><p>r23</p></td>
+<td><p>R/W</p></td>
+<td><p>Return address</p></td>
+</tr>
+<tr class="row-even"><td><p>zero</p></td>
+<td><p>Read-only</p></td>
+<td><p>= 0</p></td>
+</tr>
+<tr class="row-odd"><td><p>one</p></td>
+<td><p>Read-only</p></td>
+<td><p>= 1</p></td>
+</tr>
+<tr class="row-even"><td><p>lneg</p></td>
+<td><p>Read-only</p></td>
+<td><p>= 0xffffffff (-1)</p></td>
+</tr>
+<tr class="row-odd"><td><p>mneg</p></td>
+<td><p>Read-only</p></td>
+<td><p>= 0x80000000</p></td>
+</tr>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>Read-only</p></td>
+<td><p>= thread_id</p></td>
+</tr>
+<tr class="row-odd"><td><p>id2</p></td>
+<td><p>Read-only</p></td>
+<td><p>= 2 x thread_id</p></td>
+</tr>
+<tr class="row-even"><td><p>id4</p></td>
+<td><p>Read-only</p></td>
+<td><p>= 4 x thread_id</p></td>
+</tr>
+<tr class="row-odd"><td><p>id8</p></td>
+<td><p>Read-only</p></td>
+<td><p>= 8 x thread_id</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>Each consecutive pair of registers can be used as a 64-bit register, which makes 12 64-bit registers: <code class="docutils literal notranslate"><span class="pre">d0(r0&amp;r1)</span></code>, <code class="docutils literal notranslate"><span class="pre">d2(r2&amp;r3)</span></code>, …, <code class="docutils literal notranslate"><span class="pre">d22(r22&amp;r23)</span></code>.
+The MSBs are in the even register (<code class="docutils literal notranslate"><span class="pre">r0</span></code>, <code class="docutils literal notranslate"><span class="pre">r2</span></code>, …) and the LSB are in the odd register (<code class="docutils literal notranslate"><span class="pre">r1</span></code>, <code class="docutils literal notranslate"><span class="pre">r3</span></code>, …). Note that <code class="docutils literal notranslate"><span class="pre">d1</span></code>, <code class="docutils literal notranslate"><span class="pre">d3</span></code>, …, <code class="docutils literal notranslate"><span class="pre">d21</span></code> do not exist.
+Also, read-only registers cannot be seen as 64-bit registers.</p>
+</section>
+<section id="data-types">
+<h3>Data types<a class="headerlink" href="#data-types" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>Machine Type</p></td>
+<td><p>C Type</p></td>
+<td><p>Byte size</p></td>
+<td><p>Byte alignment</p></td>
+<td><p>Prefered byte alignment</p></td>
+<td><p>Note</p></td>
+</tr>
+<tr class="row-even"><td><p>Unsigned byte</p></td>
+<td><p>unsigned char</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>4</p></td>
+<td><p>Store into a 32-bits register</p></td>
+</tr>
+<tr class="row-odd"><td><p>Signed byte</p></td>
+<td><p>char</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>4</p></td>
+<td><p>Store into a 32-bits register</p></td>
+</tr>
+<tr class="row-even"><td><p>Unsigned half-word</p></td>
+<td><p>unsigned short</p></td>
+<td><p>2</p></td>
+<td><p>2</p></td>
+<td><p>4</p></td>
+<td><p>Store into a 32-bits register</p></td>
+</tr>
+<tr class="row-odd"><td><p>Signed half-word</p></td>
+<td><p>short</p></td>
+<td><p>2</p></td>
+<td><p>2</p></td>
+<td><p>4</p></td>
+<td><p>Store into a 32-bits register</p></td>
+</tr>
+<tr class="row-even"><td><p>Unsigned word</p></td>
+<td><p>unsigned int</p></td>
+<td><p>4</p></td>
+<td><p>4</p></td>
+<td><p>4</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Signed word</p></td>
+<td><p>int</p></td>
+<td><p>4</p></td>
+<td><p>4</p></td>
+<td><p>4</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Unsigned double-word</p></td>
+<td><p>unsigned long / unsigned long long</p></td>
+<td><p>8</p></td>
+<td><p>8</p></td>
+<td><p>8</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Signed double-word</p></td>
+<td><p>long / long long</p></td>
+<td><p>8</p></td>
+<td><p>8</p></td>
+<td><p>8</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Single precision floating point (IEEE 754)</p></td>
+<td><p>float</p></td>
+<td><p>4</p></td>
+<td><p>4</p></td>
+<td><p>4</p></td>
+<td><p>No native operation, only software emulation</p></td>
+</tr>
+<tr class="row-odd"><td><p>Double precision floating point (IEEE 754)</p></td>
+<td><p>double</p></td>
+<td><p>8</p></td>
+<td><p>8</p></td>
+<td><p>8</p></td>
+<td><p>No native operation, only software emulation</p></td>
+</tr>
+<tr class="row-even"><td><p>Data pointer</p></td>
+<td><p>T *</p></td>
+<td><p>4</p></td>
+<td><p>4</p></td>
+<td><p>4</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Code pointer</p></td>
+<td><p>T (*F) ()</p></td>
+<td><p>4</p></td>
+<td><p>4</p></td>
+<td><p>4</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="endianness">
+<h3>Endianness<a class="headerlink" href="#endianness" title="Permalink to this heading"></a></h3>
+<p>The DPU is a little-endian architecture.</p>
+<p>But the DPU can perform load/store from the WRAM in big-endian, which is not the default behavior of the load/store operations.</p>
+</section>
+<section id="composite-types">
+<h3>Composite Types<a class="headerlink" href="#composite-types" title="Permalink to this heading"></a></h3>
+<section id="aggregates-c-struct">
+<h4>Aggregates (C “struct”)<a class="headerlink" href="#aggregates-c-struct" title="Permalink to this heading"></a></h4>
+<p>An aggregate is aligned on the most-aligned component of the aggregate. The size of an aggregate is the smallest multiple of its alignment that is sufficient to hold all of its members.</p>
+<dl class="simple">
+<dt>These rules can be overriden by passing struct attributes to the compiler such as:</dt><dd><ul class="simple">
+<li><p>“<em>__attribute__((packed))</em>”</p></li>
+<li><p>“<em>__attribute__((aligned(x)))</em>”</p></li>
+<li><p>…</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="unions">
+<h4>Unions<a class="headerlink" href="#unions" title="Permalink to this heading"></a></h4>
+<p>A union is aligned on the most-aligned component of the union. The size of a union is the smallest multiple of its alignment that is sufficient to hold its largest members.</p>
+</section>
+<section id="arrays">
+<h4>Arrays<a class="headerlink" href="#arrays" title="Permalink to this heading"></a></h4>
+<p>An array is aligned on the alignment of its base type. Its size is the size of its base type multiplied by the number of elements in the array.</p>
+</section>
+</section>
+<section id="calling-convention">
+<h3>Calling convention<a class="headerlink" href="#calling-convention" title="Permalink to this heading"></a></h3>
+<section id="argument-passing">
+<h4>Argument passing<a class="headerlink" href="#argument-passing" title="Permalink to this heading"></a></h4>
+<p><em>Byte</em> and <em>half-word</em> arguments are promoted to <em>word</em> arguments.</p>
+<p><em>Word</em> arguments are assigned into one of the 8 32-bit registers used for argument passing (<code class="docutils literal notranslate"><span class="pre">r0</span></code> to <code class="docutils literal notranslate"><span class="pre">r7</span></code> included).</p>
+<p><em>Double-word</em> arguments are assigned into one of the 4 64-bit registers used for argument passing (<code class="docutils literal notranslate"><span class="pre">d0</span></code> to <code class="docutils literal notranslate"><span class="pre">d6</span></code> included).</p>
+<p>Composite-types arguments are always passed by reference.</p>
+</section>
+</section>
+<section id="return-value">
+<h3>Return value<a class="headerlink" href="#return-value" title="Permalink to this heading"></a></h3>
+<p><em>Byte</em> and <em>half-word</em> return values are promoted to <em>word</em> return value.</p>
+<p><em>Word</em> return values are assigned into <cite>r0</cite>.</p>
+<p><em>Double-word</em> return values are assigned into <code class="docutils literal notranslate"><span class="pre">d0</span></code> (<code class="docutils literal notranslate"><span class="pre">r0&amp;r1</span></code>).</p>
+<p>Composite-types arguments are always transformed to become an argument passed by reference.</p>
+<section id="variable-argument">
+<h4>Variable Argument<a class="headerlink" href="#variable-argument" title="Permalink to this heading"></a></h4>
+<p><em>Byte</em> and <em>half-word</em> argument are promoted to <em>word</em> argument.</p>
+<p><em>Word</em>, <em>double-word</em> and composite type argument are assigned to stack respecting their sizes and alignments.</p>
+</section>
+</section>
+<section id="stack-management">
+<h3>Stack management<a class="headerlink" href="#stack-management" title="Permalink to this heading"></a></h3>
+<p>Each thread has its own stack, which is a contiguous area of memory used for storage of local variables and for passing additional arguments to subroutines when these are insufficient argument registers available.</p>
+<p>The stack pointer is held in the register <code class="docutils literal notranslate"><span class="pre">r22</span></code>.</p>
+<p>The allocation of memory on the stack is done by adding a positive value to the current stack pointer (full-ascending implementation). The stack pointer is always 8-byte aligned.</p>
+<p>The size of the stack is statically defined. Writing into a stack of another thread results in undefined behavior (which can happen when using more memory than initially defined).</p>
+</section>
+<section id="stack-organization">
+<h3>Stack organization<a class="headerlink" href="#stack-organization" title="Permalink to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>         0 |
+           |
+           ...
+           |
+           | ^
+           | | Local variables of the current function
+           | v
+           | ^
+           | | Arguments passed through the stack for the next functions
+           | v
+r22 - 8 -&gt; | ^
+           | | stack pointer (r23) of the previous function
+           | v
+r22 - 4 -&gt; |^
+           | | return adress (r22) of the current function
+           | v
+r22     -&gt; | ^
+           | | Local variables of the next functions
+           | v
+           |
+           v
+</pre></div>
+</div>
+</section>
+<section id="function-prologue-epilogue">
+<h3>Function Prologue &amp; Epilogue<a class="headerlink" href="#function-prologue-epilogue" title="Permalink to this heading"></a></h3>
+<p>If the function is not a leaf function, the return address is saved into the stack, as it will be modified when calling sub-function.</p>
+<p>The function should return with the same stack pointer it had when being called. For a non-leaf function, this means that the stack pointer should also be saved into the stack.</p>
+<p>The easiest way of doing it is to save the return address (<code class="docutils literal notranslate"><span class="pre">r23</span></code>) and the stack pointer (<code class="docutils literal notranslate"><span class="pre">r22</span></code>) at the same time using the instruction <code class="docutils literal notranslate"><span class="pre">sd</span> <span class="pre">r22,</span> <span class="pre">&lt;somewhere_in_the_stack&gt;,</span> <span class="pre">d22</span></code>.</p>
+<p>Then the stack pointer can be modified and will be restored in the epilogue with the return address using the instruction <code class="docutils literal notranslate"><span class="pre">ld</span> <span class="pre">d22,</span> <span class="pre">r22,</span> <span class="pre">&lt;where_d22_was_stored_in_the_prologue&gt;</span></code>.</p>
+<p>For a leaf function that does not modify the stack pointer, neither of these operations is necessary.</p>
+</section>
+</section>
+<section id="other-abi-details">
+<h2>Other ABI details<a class="headerlink" href="#other-abi-details" title="Permalink to this heading"></a></h2>
+<section id="binary-file-format">
+<h3>Binary file format<a class="headerlink" href="#binary-file-format" title="Permalink to this heading"></a></h3>
+<p>DPU Binary files follow the standard 32-bit ELF format.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">EI_OSABI</span></code> identification index is set to <code class="docutils literal notranslate"><span class="pre">ELFOSABI_NONE</span></code> (= <code class="docutils literal notranslate"><span class="pre">0</span></code>).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">e_machine</span></code> header field is set to <code class="docutils literal notranslate"><span class="pre">EM_DPU</span></code> (= <code class="docutils literal notranslate"><span class="pre">0xf5</span></code>).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">e_flags</span></code> header field is used to check the abi version.
+The bit 23 is set to indicate that the bits 24 to 31 are used to encode the abi version.
+Files need to have the same abi version to be linked together.</p>
+<p>The current ABI version is <code class="docutils literal notranslate"><span class="pre">2</span></code>.</p>
+<p>The following relocations can be used in a DPU binary:</p>
+<section id="general-relocations">
+<h4>General relocations<a class="headerlink" href="#general-relocations" title="Permalink to this heading"></a></h4>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>Name</p></td>
+<td><p>Value</p></td>
+<td><p>Use</p></td>
+</tr>
+<tr class="row-even"><td><p>R_DPU_NONE</p></td>
+<td><p>0</p></td>
+<td><p>No relocation</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="data-relocations">
+<h4>Data relocations<a class="headerlink" href="#data-relocations" title="Permalink to this heading"></a></h4>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>Name</p></td>
+<td><p>Value</p></td>
+<td><p>Use</p></td>
+</tr>
+<tr class="row-even"><td><p>R_DPU_32</p></td>
+<td><p>1</p></td>
+<td><p>32-bit data</p></td>
+</tr>
+<tr class="row-odd"><td><p>R_DPU_8</p></td>
+<td><p>2</p></td>
+<td><p>8-bit data</p></td>
+</tr>
+<tr class="row-even"><td><p>R_DPU_16</p></td>
+<td><p>3</p></td>
+<td><p>16-bit data</p></td>
+</tr>
+<tr class="row-odd"><td><p>R_DPU_64</p></td>
+<td><p>4</p></td>
+<td><p>64-bit data</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="instruction-relocations">
+<h4>Instruction relocations<a class="headerlink" href="#instruction-relocations" title="Permalink to this heading"></a></h4>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>Name</p></td>
+<td><p>Value</p></td>
+<td><p>Use</p></td>
+</tr>
+<tr class="row-even"><td><p>R_DPU_PC</p></td>
+<td><p>128</p></td>
+<td><p>16-bit PC value as an instruction offset</p></td>
+</tr>
+<tr class="row-odd"><td><p>R_DPU_IMM5</p></td>
+<td><p>129</p></td>
+<td><p>5-bit Shift/rotation immediate</p></td>
+</tr>
+<tr class="row-even"><td><p>R_DPU_IMM8_DMA</p></td>
+<td><p>130</p></td>
+<td><p>8-bit DMA transfer length</p></td>
+</tr>
+<tr class="row-odd"><td><p>R_DPU_IMM24_PC</p></td>
+<td><p>131</p></td>
+<td><p>8-bit immediate when the instruction already has a PC argument</p></td>
+</tr>
+<tr class="row-even"><td><p>R_DPU_IMM27_PC</p></td>
+<td><p>132</p></td>
+<td><p>11-bit immediate when the <code class="docutils literal notranslate"><span class="pre">OPCX</span></code> instruction already has a PC argument and no destination</p></td>
+</tr>
+<tr class="row-odd"><td><p>R_DPU_IMM28_PC_OPC8</p></td>
+<td><p>133</p></td>
+<td><p>12-bit immediate when the <code class="docutils literal notranslate"><span class="pre">OPC8</span></code> instruction already has a PC argument and no destination</p></td>
+</tr>
+<tr class="row-even"><td><p>R_DPU_IMM8_STR</p></td>
+<td><p>134</p></td>
+<td><p>8-bit immediate to store in <code class="docutils literal notranslate"><span class="pre">Store</span> <span class="pre">Immediate</span> <span class="pre">Byte</span></code> instructions</p></td>
+</tr>
+<tr class="row-odd"><td><p>R_DPU_IMM12_STR</p></td>
+<td><p>135</p></td>
+<td><p>12-bit address offset in <code class="docutils literal notranslate"><span class="pre">Store</span> <span class="pre">Immediate</span></code> instructions</p></td>
+</tr>
+<tr class="row-even"><td><p>R_DPU_IMM16_STR</p></td>
+<td><p>136</p></td>
+<td><p>16-bit immediate to store in <code class="docutils literal notranslate"><span class="pre">Store</span> <span class="pre">Immediate</span> <span class="pre">Half/Word/Double</span></code> instructions</p></td>
+</tr>
+<tr class="row-odd"><td><p>R_DPU_IMM16_ATM</p></td>
+<td><p>137</p></td>
+<td><p>16-bit lock offset in <code class="docutils literal notranslate"><span class="pre">Acquire/Release</span></code> instructions</p></td>
+</tr>
+<tr class="row-even"><td><p>R_DPU_IMM24</p></td>
+<td><p>138</p></td>
+<td><p>24-bit immediate</p></td>
+</tr>
+<tr class="row-odd"><td><p>R_DPU_IMM24_RB</p></td>
+<td><p>139</p></td>
+<td><p>24-bit address offset in <code class="docutils literal notranslate"><span class="pre">Store</span> <span class="pre">Register</span></code> instructions</p></td>
+</tr>
+<tr class="row-even"><td><p>R_DPU_IMM27</p></td>
+<td><p>140</p></td>
+<td><p>27-bit immediate for <code class="docutils literal notranslate"><span class="pre">OPCX</span></code> instructions with a <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Boolean</span></code> condition</p></td>
+</tr>
+<tr class="row-odd"><td><p>R_DPU_IMM28</p></td>
+<td><p>141</p></td>
+<td><p>28-bit immediate for <code class="docutils literal notranslate"><span class="pre">OPC8</span></code> instructions with a <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Boolean</span></code> condition</p></td>
+</tr>
+<tr class="row-even"><td><p>R_DPU_IMM32</p></td>
+<td><p>142</p></td>
+<td><p>32-bit immediate</p></td>
+</tr>
+<tr class="row-odd"><td><p>R_DPU_IMM32_ZERO_RB</p></td>
+<td><p>143</p></td>
+<td><p>32-bit immediate when the instruction has no destination</p></td>
+</tr>
+<tr class="row-even"><td><p>R_DPU_IMM17_24</p></td>
+<td><p>144</p></td>
+<td><p>17-bit immediate sign-extended to 24-bit used in <code class="docutils literal notranslate"><span class="pre">Safe</span> <span class="pre">Add/Sub</span></code> instructions</p></td>
+</tr>
+<tr class="row-odd"><td><p>R_DPU_IMM32_DUS_RB</p></td>
+<td><p>145</p></td>
+<td><p>32-bit immediate in 64-bit extended instructions (except <code class="docutils literal notranslate"><span class="pre">Constant</span> <span class="pre">And</span></code> extended instructions which use R_DPU_IMM32)</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="instruction-size">
+<h4>Instruction size<a class="headerlink" href="#instruction-size" title="Permalink to this heading"></a></h4>
+<p>The <strong>IRAM</strong> can store up to 4096 instructions on the v1A DPU, or 3968 on he v1B DPU. In the <strong>IRAM</strong>, each instruction takes 6 bytes.
+But for the binary format, each instruction is viewed as an 8-byte word.</p>
+<p>When copying instructions from the <strong>MRAM</strong> to the <strong>IRAM</strong>, the DMA instruction expect a buffer where each instruction
+is encoded on 8 bytes.</p>
+</section>
+<section id="virtual-address-offset">
+<h4>Virtual address offset<a class="headerlink" href="#virtual-address-offset" title="Permalink to this heading"></a></h4>
+<p>The different memories have different virtual address offset added to their symbols value:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>Memory</p></td>
+<td><p>Virtual address offset</p></td>
+</tr>
+<tr class="row-even"><td><p>WRAM</p></td>
+<td><p>0x00000000</p></td>
+</tr>
+<tr class="row-odd"><td><p>IRAM</p></td>
+<td><p>0x80000000</p></td>
+</tr>
+<tr class="row-even"><td><p>MRAM</p></td>
+<td><p>0x08000000</p></td>
+</tr>
+<tr class="row-odd"><td><p>Atomic</p></td>
+<td><p>0xF0000000</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="201_AsmAndC.html" class="btn btn-neutral float-left" title="Integrating assembly code with C programs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="201_IS.html" class="btn btn-neutral float-right" title="Instruction Set Architecture" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

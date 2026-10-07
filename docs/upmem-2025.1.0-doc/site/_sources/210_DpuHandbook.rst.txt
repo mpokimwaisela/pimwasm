@@ -1,0 +1,1421 @@
+
+==============
+ DPU Handbook
+==============
+
+1)  Introduction
+================
+
+The DPU is a multithreaded 32-bit processor that has several hardware threads available, depending on the version of the DPU:
+
+ * On a v1A DPU, there are 24 threads, indexed from 0 through 23.
+ * On a v1B DPU, there are 16 threads, indexed from 0 through 15.
+
+A thread can be running or stopped. The state of the thread *i* is reflected in the 24-lsb
+of a 64-bit register named RUN (the 40-msb being used for other purposes, described later):
+
+* RUN[ *i* ] = 0 -> the thread *i* is stopped (not executing),
+* RUN[ *i* ] = 1 -> the thread *i* is running (executing).
+
+The full performance of the DPU is achieved when enough hardware threads are 
+running so that the DPU pipeline remains filled (this number being > 10).
+Note that 'overfilling' the pipeline is recommended to palliate the fact that
+threads issuing DMA instructions are temporarily removed from the pipeline.
+
+2)  DPU state
+=============
+
+2.1)  Threads 32-bit registers
+------------------------------
+
+A thread knows 32 x 32 bit registers:
+
+* 24 general purpose 32-bit registers, private to the thread: **R0 - R23**
+* 4 fixed 32-bit registers, common to all threads:
+
+  * **ZERO** : fixed to the value 0,
+  * **ONE**  : fixed to the value 1,
+  * **LNEG** : fixed to the value 0xFFFFFFFF (Least NEGative),
+  * **MNEG** : fixed to the value 0x80000000 (Most NEGative).
+
+* 4 fixed 32-bit registers, private to the thread:
+
+  * **ID**   : fixed to the thread index.
+  * **ID2**  : fixed to the thread index **x 2**.
+  * **ID4**  : fixed to the thread index **x 4**.
+  * **ID8**  : fixed to the thread index **x 8**.
+
+2.1.1)  R0 - R23 seen as Stack Registers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The 24 general-purpose 32-bit registers can be seen
+as well as 24 x 32-bit stack registers: S0 - S23.
+
+Some instructions support the specification of an **Sn** register instead of
+an **Rn** register. While the register value is unchanged the way this value
+is used is changed, as described in the **the stack exceptions chapter**.
+
+2.1.2)  R0 - R23 register pair seen as 64-bit registers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The 24 general-purpose 32-bit registers can be seen as well as 12 x 64-bit registers:
+
+* **D0**  = { **R0**  , **R1**  }
+* **D2**  = { **R2**  , **R3**  }
+* **D4**  = { **R4**  , **R5**  }
+* **D6**  = { **R6**  , **R7**  }
+* **D8**  = { **R8**  , **R9**  }
+* **D10** = { **R10** , **R11** }
+* **D12** = { **R12** , **R13** }
+* **D14** = { **R14** , **R15** }
+* **D16** = { **R16** , **R17** }
+* **D18** = { **R18** , **R19** }
+* **D20** = { **R20** , **R21** }
+* **D22** = { **R22** , **R23** }
+
+The Dn 32-msb are held by the even Rn register, the 32-lsb being held by the odd Rn+1 register.
+
+2.3)  Threads PC register
+-------------------------
+
+A thread comprises a **PC** register, whose width is implementation dependant:
+
+* the PC width is in the range 12-16 bits,
+* the first DPU implementation has a 12-bit PC.
+
+**Note:** the PC contains an **instruction address**, not **a byte address**.
+
+2.4)  Naming Conventions
+-------------------------
+
+To specify which operands are allowed for each instruction, the following naming conventions are used:
+
+* **#32**                : a 32-bit immediate value.
+* **#28**                : a 28-bit immediate value, sign extended to 32-bit.
+* **#27**                : a 27-bit immediate value, sign extended to 32-bit.
+* **#24**                : a 24-bit immediate value, sign extended to 32-bit.
+* **#16**                : a 16-bit immediate value, that is, according to the instruction considered, either:
+
+  * not extended,
+  * sign extended to 32-bit,
+  * sign extended to 64-bit.
+
+* **#8**                 : a 8-bit immediate value.
+* **#WRAM**              : an immediate signed value whose width is *p* + 1 when the WRAM size is 2 ^ *p*.
+* **disp24**             : a 24-bit immediate value.
+* **disp12**             : a 12-bit immediate value, sign extended to 24-bit.
+* **#28-PC**             : an immediate value whose width is 28 minus the width of PC, sign-extended to 32-bit.
+* **#27-PC**             : an immediate value whose width is 27 minus the width of PC, sign-extended to 32-bit.
+* **#24-PC**             : an immediate value whose width is 24 minus the width of PC, sign-extended to 32-bit.
+* **#PC**                : an immediate value whose width is the width of PC.
+* **#6**                 : a 6-bit immediate value.
+* **#5**                 : a 5-bit immediate value.
+* **Rm**, **Rn**, **Rp** : one of the register R0-R23.
+* **Rnx**                : one of the register R0-R23 or one of the fiXed register: ZERO, ONE, LNEG, MNEG, ID, ID2, ID4 or ID8.
+* **Rmz**                : one of the register R0-R23 or the ZERO register
+* **Dm**, **Dp**         : one of the register D0-D22.
+* **Dmz**                : one of the register D0-D22 or the ZERO register.
+* **Xm**                 : one of the register R0-R23 or D0-D22.
+* **Xmz**                : one of the register R0-R23, D0-D22 or the ZERO register.
+
+2.5)  Threads ZF and CF flags
+-----------------------------
+
+To help the execution of 64-bit arithmetic, each thread has 2 x 1-bit flags:
+
+* **ZF** : Zero Flag,
+* **CF** : Carry Flag.
+
+2.6)  The TIME register
+-----------------------
+
+This 36-bit register is common to all the threads. According to its configuration, TIME either:
+
+* stays unchanged,
+* increments at every cycle,
+* increments at every executed instruction.
+
+The TIME_CFG (TIME ConFiGure) instruction allows:
+
+* the optional setting of the TIME configuration
+* the optional clearing of TIME[35:0]
+
+The 32-msb of TIME can be obtained through the TIME and TIME_CFG instructions.
+
+2.6)  The IRAM
+--------------
+
+A DPU comprises an Instruction memory named **IRAM** holding
+2 ^ *p* 48-bit wide instructions, where *p* is the **PC** width.
+
+**PC_width and instruction encoding**
+
+* In many instructions, the width of the immediate value
+  that can be encoded varies counter wise to the PC width.
+* The current implementation has a 12-bit PC but supports (through the configuration
+  by the **HCPU** of the **PC_MODE** control register) the execution of binaries
+  generated for DPU with larger PC width, as long these binaries fit into the **IRAM**.
+
+The **IRAM** can be accessed:
+
+* by the **HCPU** through the control interface,
+
+  * The HCPU can read/write the **IRAM** even when threads are running.
+
+* by the **DPU** through the execution of **ldmai** instructions,
+
+  * the **DPU** reads the **IRAM** only through the fetching of instructions.
+
+2.7)  The WRAM
+--------------
+
+The **WRAM** is a **64 KB** memory that is accessible:
+
+* by the **HCPU** through the control interface,
+* by the **DPU** through:
+
+  * 8-bit, 16-bit, 32-bit and 64-bit load/store instructions,
+  * **ldma**/**sdma** instructions.
+
+**Note 1:** The **WRAM** has a 24-bit wide address space, where currently only the range 0x000000 - 0x00FFFF is used.
+
+**Note 2:** On the v1B DPU, only 63488 bytes is usable.
+
+2.7.1)  Load/Store Memory Exception
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Load/Store generates a memory exception when:
+
+* the address is not aligned with respect of the access size,
+* the address is outside the range 0: (64 KB – 1),
+* the address is a stack address and cross its associated bound.
+
+**Note:** exception handling is performed by the **HCPU**.
+
+2.7.2)  Stack Overflow Exception
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Since up to 24 threads are running, up to 24 different stacks are present,
+thus the DPU comprises a hardware mechanism to detect stack overflow early on.
+
+2.7.2.1)  Stack Overflow Exception Caused By Load/Store
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Load/Store allows the specification of an **Sn** register instead of an **Rn** register as the base of the effective address calculation.
+While **Sn** and **Rn** contents are identical, specifying an **Sn** register changes the way this content is used.
+
+Considering a WRAM of size 2 ^ *p*, then:
+
+* **Sn** [31 : *p*  ] contains the stack bound address (or its MSB),
+* **Sn** [ *p* -1:0 ] contains the current stack address.
+
+The stack bound address encoding adapted to the WRAM size as follow:
+
+* **64  KB** : stack bound [15:0] is   Rn[31:16]
+* **128 KB** : stack bound [16:0] is { Rn[31:17], 00 }
+* **256 KB** : stack bound [17:0] is { Rn[31:18], 0000 }
+* **512 KB** : stack bound [18:0] is { Rn[31:19], 000000 }
+* **1   MB** : stack bound [19:0] is { Rn[31:20], 00000000 }
+
+The STACK_UP control register (configurable by the **HCPU**) specifies the progression direction for all the stacks.
+
+* **STACK_UP set** ... **upward progressing stacks**: an Sn-based load/store at
+  an address bigger or equal to the stack bound address generates a memory exception.
+
+* **STACK_UP cleared** ... **downward progressing stacks**: an Sn-based load/store at
+  an address strictly smaller than the stack bound address generates a memory exception.
+
+2.7.2.1)  Stack Overflow Exception Caused by Addition/Subtraction
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+An addition/subtraction to a stack pointer must keep the msb of this stack pointer unchanged
+as these MSB specify the stack bound. Thus **add**/**addc**/**sub**/**subc**/**rsub**/**rsubc**
+instructions with an **Sn** register specified as first source operand will generate
+an exception if the result [31: *p* ] differs from **Sn** [31: *p* ].
+
+**Note:** when an addition/subtraction has an **Sn** register as the first source operand, then the assembler
+allows, for naming coherency/cosmetic purpose, to use an **Sm** register as the destination register.
+
+2.8)  The MRAM
+--------------
+
+The **MRAM** is a **64 MB** memory accessible:
+
+* by the **HCPU** through the DDR4 legacy interface,
+* by the **DPU**  through **ldma** instructions,
+* by the **DPU**  through **sdma** instructions.
+
+2.9)  The ATOMIC memory
+-----------------------
+
+This 256-bit memory is used for thread synchronization.
+
+* A bit of the **ATOMIC** memory can be set by a thread through the **ACQUIRE** instruction,
+
+  * the thread conditionally jumping according to the bit initial value.
+
+* A bit of the **ATOMIC** memory can be cleared by a thread through the **RELEASE** instruction,
+
+  * the thread conditionnally jumping according to the bit initial value.
+
+* A bit of the **ATOMIC** memory can be set or cleared by the **HCPU** through the control interface,
+
+  * the **HCPU** obtaining in return the bit initial value.
+
+2.10)  The RUN memory
+---------------------
+
+The **RUN** memory is a 64-bit memory used to manage threads and HCPU synchronization:
+
+* The bits [0] through [23] reflect the status of the 24 threads:
+
+  * **RUN** [ *i* ] set means the thread *i* is running,
+
+  * **RUN** [ *i* ] cleared means the thread *i* is stopped (not running).
+
+* The bits **[24]** through **[63]** are used for **DPU** / **HCPU** synchronization.
+
+  * the **DPU** can set/clr these bits through the **CLR_RUN** and **BOOT** instructions,
+
+    * the thread conditionally jumping according to the bit initial value.
+
+  * the **HCPU** can set/clr these bits through the control interface,
+
+    * the **HCPU** obtaining in return the bit initial value.
+
+3)  Result Destination
+======================
+
+3.1)  **ZERO** as destination register
+--------------------------------------
+
+When the specified destination register is the **ZERO** register, then the instruction 32-bit or 64-bit result is discarded, the remaining functionality of the instruction being performed as usual.
+
+3.2)  The '.u' and '.s' instruction modifiers
+---------------------------------------------
+
+Instructions generating 32-bit results can be modified:
+
+* by adding to the mnemonic the postfix **\".u\"**: the instruction now generate
+  a 64-bit result made by the **zero-extension** of the initial 32-bit result,
+
+  * now the destination register must be a Dm 64-bit register.
+  * a 32-bit result that is made by the sign extension of a smaller result cannot be zero-extended to 64-bit.
+  
+    * For example LBS.u is illegal.
+
+* by adding to the mnemonic the postfix **\'.s\'**: the instruction now generate
+  a 64-bit result made by the **sign-extension** of the initial 32-bit result,
+
+  * now the destination register must be a Dm 64-bit register.
+  * a 32-bit result that is made by the zero extension of a smaller result cannot be sign-extended to 64-bit.  
+
+    * For example LBU.s is illegal.
+
+
+To cope with the multiple possible combinations, the instruction description uses:
+
+* Xm to refers to Rm or Dm, according to the fact that the instruction is used or not with the '.u' or '.s' modifier.
+* Xmz to refers to Xm or the **ZERO** register.
+
+4)  Jump & Boolean Conditions
+=============================
+
+4.1)  Introduction
+------------------
+
+Most DPU instructions know conditions based on their result or the properties of one of their source operands:
+
+* an instruction can include a condition, such that, after having performed its native functionality:
+ 
+  * the instruction execution continues at a specified address if the condition is true,
+  * the instruction execution continues sequentially otherwise.
+
+* an instruction can include a condition, such that, after having
+  performed its native functionality and generated a native result:
+
+  * the instruction, instead of writing its native result, replaces this result
+    with the Boolean value that corresponds to the trueness of the condition,
+  * the instruction execution continuing sequentially.
+
+The allowed conditions are specific to each instruction. They are specified as follow:
+
+* a conditional jump is specified by placing a condition identifier
+  and an IRAM address after the original operands.
+
+  * in the instruction description the term **Jcc** means a Jump condition.
+
+* a Boolean Replacement is specified by placing only a condition identifier after the original operands.
+
+  * in the instruction description the term **Bcc** means a Boolean Replacement condition.
+
+**Examples:** ::
+
+  add R2, R3, R4                  //      R2 =   R3 + R4 ;
+  add R2, R3, R4, z, null_result  // if ((R2 =   R3 + R4 ) == 0) GOTO null_result;
+  add R2, R3, R4, z               //      R2 = ( R3 + R4 ) == 0;
+
+**Note:** the add instruction allows the same condition **z** as the Jump condition and as Boolean Replacement condition.
+
+4.2)  Condition Identifier
+--------------------------
+
+4.2.1)  Common Conditions
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* **t**   : true
+* **z**   : true when the native result is null (Zero)
+* **nz**  : true when the native result is not null (Not Zero)
+* **sz**  : true when the first Source operand is null (Zero)
+* **snz** : true when the first Source operand is not null (Not Zero)
+* **pl**  : true when the native result is positive (PLus)
+* **mi**  : true when the native result is negative (MInus)
+* **spl** : true when the first Source operand is positive (PLus)
+* **smi** : true when the first Source operand is negative (MInus)
+
+4.2.2)  Specific Conditions Common To Addition and Subtraction 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**Notations**
+
+* **op1** : means the first operand
+* **op2** : means the second operand
+
+**carry numbering**
+
+carry *p* is the carry generated by: ::
+
+  for         addition    :  op1[ *p* : 0 ] +  op2[ *p* : 0 ]
+  for         subtraction :  op1[ *p* : 0 ] + ~op2[ *p* : 0 ] + 1
+  for reverse subtraction : ~op1[ *p* : 0 ] +  op2[ *p* : 0 ] + 1
+
+**The v/nv/c/nc Conditions**
+
+* **v**  : true when an oVerflow has been generated by an addition or subtraction
+* **nv** : true when No oVerflow has been generated by an addition or subtraction
+* **c**  : true when:
+
+  * a Carry 31 is generated by an addition,
+  * no carry 31 is generated by a subtraction.
+
+* **nc** (No Carry) condition is the opposite of **c**.
+
+4.2.3)  Addition Specific Conditions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+  nc4  : true when no carry 4  is generated
+  nc5  : true when no carry 5  is generated
+  nc6  : true when no carry 6  is generated
+  nc7  : true when no carry 7  is generated
+  nc8  : true when no carry 8  is generated
+  nc9  : true when no carry 9  is generated
+  nc10 : true when no carry 10 is generated
+  nc11 : true when no carry 11 is generated
+  nc12 : true when no carry 12 is generated
+  nc13 : true when no carry 13 is generated
+
+**Why So Many No Carry Conditions ?**
+
+Because considering:
+
+* a memory buffer of size 2 ^ *s*, aligned onto its own size,
+* a pointer initially pointing inside this memory buffer, this pointer being used to read/write data from/to this buffer,
+* the addition or subtraction performed onto this pointer after each access to this buffer,
+* THEN:
+
+  * nc *s* true  means the new pointer value is still inside this buffer,
+  * nc *s* false means the new pointer value is now outside this buffer.
+
+**Note:** these conditions work even though the added value is positive
+or negative, as long its absolute value is strictly smaller than the buffer size.
+
+4.2.4)  Comparison specific Conditions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+These conditions are available only for instruction based on subtraction
+but the **lsl_sub** instruction (that performs a shift then a subtraction): ::
+
+  ltu : op1  < op2  // unsigned comparison
+  geu : op1 >= op2  // unsigned comparison
+  leu : op1 <= op2  // unsigned comparison
+  gtu : op1  > op2  // unsigned comparison
+  lts : op1  < op2  //   signed comparison
+  ges : op1 >= op2  //   signed comparison
+  les : op1 <= op2  //   signed comparison
+  gts : op1 >  op2  //   signed comparison
+
+4.2.5)  Extended Z Conditions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When an instruction supports the z/nz conditions, then sequentially:
+
+* it generates internally a z property based on the instruction native result,
+* it generates internally an **extended z property**: **z && ZF**.
+
+An Extended conditions use the **extended z** where the non extended condition use **z**: ::
+
+   xz  : true when the extended z is true
+  nxz  : true when the extended z is false
+  xleu : op1 <= op2  // unsigned comparison using extended z instead of z
+  xgtu : op1 >  op2  // unsigned comparison using extended z instead of z
+  xles : op1 <= op2  //   signed comparison using extended z instead of z
+  xgts : op1 >  op2  //   signed comparison using extended z instead of z
+
+Extended conditions ease the construction of conditions on 64-bit results.
+
+**ZF update**
+
+The **ZF** flag is let unchanged by the following instructions: ::
+
+  ldma, ldmai, sdma                             (DMA   )
+  sb, sh, sw, sd, sb_id, sh_id, sw_id, sd_id    (Stores)
+  lbu, lbs, lhu, lhs, lw, ld                    (Loads )
+  acquire, release, stop, clr_run, boot, resume (ATOMIC)
+  nop, bkp, call
+
+**The others instructions update the ZF flag with the z property (BEWARE: not with the extended z property).**
+
+4.2.6)  Shift specific Conditions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+   se   : true when op1[0] == 0  // Source Even
+   so   : true when op1[0] == 1  // Source Odd
+  nsh32 : true when op2[5] == 0  // Not Shift 32
+   sh32 : true when op2[5] == 1  //     Shift 32
+
+The **sh32**/**nsh32** conditions can be used to speedup 64-bit shift operations where the shift amount is in the 6-lsb of a register, as they enable a quick differentiation of the following cases:
+
+* shift by 32 bits or more,
+* shift by strictly less than 32 bits.
+
+The **se**/**so** conditions can be used to speedup 64-bit right shift
+by 1-bit, as they enable a quick differentiation of the following cases:
+
+* a 1 will be shifted out by a 1-bit right shift,
+* a 0 will be shifted out by a 1-bit right shift.
+
+4.2.7)  Bit Count Specific Conditions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* **max** (MAXimal result) true when the result is equal to:
+
+  * 32 for the CAO instruction ( **Count All     Ones** )
+  * 32 for the CLO instruction ( **Count Leading ones** )
+  * 32 for the CLZ instruction ( **Count Leading Zero** )
+  * 31 for the CLS instruction ( **Count Leading Sign** )
+
+* **nmax** (Not MAXimal result) is the opposite of **max**
+
+These conditions allow the speeding-up of multi 32-bit words bit counting operations
+
+4.2.8)  8-bit Multiply Specific Conditions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* **small** : (op1[15:8] == 0) && (op2[15:8] == 0)
+* **large** : opposite of small
+
+These conditions detect the case where a 16 x 16 multiply can be reduced to a single 8 x 8 multiply.
+
+5)  LDMA / LDMAI / SDMA (DMA)
+=============================
+
+5.1)  Generalities
+------------------
+
+A thread requests a DMA transfer through a DMA instruction.
+
+* DMA transfers are 64-bit aligned,
+* transfers sizes are *n* x 64-bit, where *n* ranges from 1 to 256,
+* When executing a DMA instruction, the thread is suspended for the duration of the transfer,
+
+  * the thread is temporarily absent from the pipeline,
+
+    * it is useful to have more than 11 threads running, to palliate for the ones that
+      temporarily leave the pipeline as they wait for the completion of a DMA instruction.
+
+  * the thread **RUN** bit remaining set during this suspension.
+
+The DMA is capable of:
+
+* Moving **MRAM** data to **IRAM**
+
+  * Only the 48-lsb of the 64-bit words are written into the **IRAM**, the 16-msb being discarded.
+
+* Moving **MRAM** data to **WRAM**
+* Moving **WRAM** data to **MRAM**
+
+**Note: MRAM**, **WRAM**, and **IRAM** have separate address spaces.
+
+**Note:** the **HCPU** is not capable of performing DMA operations.
+
+5.2)  Behaviours
+----------------
+
+::
+
+  ldma  #8, Rnx, Rp  // Load  WRAM (Rnx address) with MRAM (Rp address)
+  ldmai #8, Rnx, Rp  // Load  IRAM (Rnx address) with MRAM (Rp address)
+  sdma  #8, Rnx, Rp  // Store WRAM (Rnx address) into MRAM (Rp address)
+
+Transfer size is: 1 + ((Rnx[30:24] + #8) & 0xFF), allowing transfers from 1 - 256 word of 64-bits.
+
+Source and destination addresses are specified as follow: ::
+
+  ldma, ldmai, sdma: the 32-bit MRAM byte address is {Rp [31 :3], 0b000}
+  ldma, sdma       : the 24-bit WRAM byte address is {Rnx[23 :3], 0b000}
+  ldmai            : the IRAM instruction address is  Rnx[p+2:3] where p is the PC width
+
+For all DMA instructions, if the MRAM byte address is bigger than the implemented MRAM then the
+instruction fails and generates a memory exception. MRAM size in first DPU implementation is **64 MB**.
+
+For ldma and sdma, if the WRAM byte address is bigger than the implemented WRAM then the instruction
+fails and generates a memory exception. WRAM size is **64 KB** in v1A, and **63488 B** in v1B.
+
+For ldmai, if the IRAM instruction address is bigger than the implemented IRAM then the instruction
+fails and generates a memory exception. IRAM size is **4K instructions** in v1A, and **3968 instructions** in v1B.
+
+**Additional characteristics:**
+
+* DMA instructions support no jump nor Boolean Replacement.
+* DMA instructions affect no registers.
+
+1)  Loads / Stores
+==================
+
+6.1)  Common Properties
+-----------------------
+
+* The 24-bit effective address is given by the sum of a
+  24-bit displacement and the 24-lsb of base Rnx register
+
+  * Rnx[31:24] are ignored,
+  * for most instruction the displacement is a 24-bit immediate value,
+  * for some store the 24-bit displacement is the sign extension of a 12-bit immediate value.
+
+* The access effective address must be aligned according to the access width,
+* ZF and CF flags are left unchanged,
+* no condition is supported.
+
+6.2)  Loads
+-----------
+
+::
+
+  lbu    Xm, Rnx, disp24  // Xm is loaded with the Unsigned Byte @ Rnx + disp24   .s and .sb modifiers illegal
+  lbs    Xm, Rnx, disp24  // Xm is loaded with the   signed Byte @ Rnx + disp24   .u and .ub modifiers illegal
+  lhu    Xm, Rnx, disp24  // Xm is loaded with the Unsigned Half @ Rnx + disp24   .s and .sb modifiers illegal
+  lhs    Xm, Rnx, disp24  // Xm is loaded with the   signed Half @ Rnx + disp24   .u and .ub modifiers illegal
+  lw     Xm, Rnx, disp24  // Xm is loaded with the          Word @ Rnx + disp24
+  ld     Dm, Rnx, disp24  // Dm is loaded with the Double   word @ Rnx + disp24
+
+6.3)  Stores Register
+---------------------
+
+::
+
+  sb     Rnx, disp24, Rp  // Rp[ 7:0] is stored @ Rnx + disp24
+  sh     Rnx, disp24, Rp  // Rp[15:0] is stored @ Rnx + disp24
+  sw     Rnx, disp24, Rp  // Rp       is stored @ Rnx + disp24
+  sd     Rnx, disp24, Dp  // Dp       is stored @ Rnx + disp24
+
+6.4)  Stores Immediate Value
+----------------------------
+
+::
+
+  sb     Rnx, disp12, #8   // store                     #8    @ Rnx + sign_extend24( disp12 )
+  sh     Rnx, disp12, #16  // store                     #16   @ Rnx + sign_extend24( disp12 )
+  sw     Rnx, disp12, #16  // store      sign_extend32( #16 ) @ Rnx + sign_extend24( disp12 )
+  sd     Rnx, disp12, #16  // store      sign_extend64( #16 ) @ Rnx + sign_extend24( disp12 )
+
+6.5)  Stores ID ORed With Immediate Value
+-----------------------------------------
+
+::
+
+  sb_id  Rnx, disp12, #8   // store ID |                #8    @ Rnx + sign_extend24( disp12 )
+  sh_id  Rnx, disp12, #16  // store ID |                #16   @ Rnx + sign_extend24( disp12 )
+  sw_id  Rnx, disp12, #16  // store ID | sign_extend32( #16 ) @ Rnx + sign_extend24( disp12 )
+  sd_id  Rnx, disp12, #16  // store ID | sign_extend64( #16 ) @ Rnx + sign_extend24( disp12 )
+
+6.6)  Endianness Modifiers
+--------------------------
+
+By default, the load/store instruction uses the little-endian memory organization. Load/store
+instructions operating on 16-bit, 32-bit, or 64-bit data, may have the '.b' modifier added
+to their mnemonic, forcing these instructions to use the big-endian memory organization.
+
+For lhu, lhs and lw, use the .ub/.sb modifier to cummulate the .u/.s and .b modifiers.
+
+7)  Additions and Subtractions
+==============================
+
+**Addition, result = op1 + op2** ::
+
+  add    Xmz,  Sn ,  Rp
+  add    Xmz,  Rnx,  Rp
+  add    Xmz,  Rnx,  Rp   , Bcc
+  add    Xmz,  Rnx,  Rp   , Jcc, IRAM_address
+  -----------------------------------------------
+  add    Xmz,  Sn ,  #WRAM
+  add    ZERO, Rn ,  #32
+  add    Rm,   Rnx,  #32
+  add    Dm,   Rn ,  #32
+  add    ZERO, Rnx,  #27
+  add    Xm,   Rnx,  #24
+  -----------------------------------------------
+  add    Xm,   Rnx,  #24  , Bcc
+  add    ZERO, Rnx,  #27PC, Jcc, IRAM_address
+  add    Xm,   Rnx,  #24PC, Jcc, IRAM_address
+
+**Addition with Carry, result = op1 + op2 + CF** ::
+
+  addc   Xmz,  Sn ,  Rp
+  addc   Xmz,  Rnx,  Rp
+  addc   Xmz,  Rnx,  Rp   , Bcc
+  addc   Xmz,  Rnx,  Rp   , Jcc, IRAM_address
+  -----------------------------------------------
+  addc   Xmz,  Sn ,  #WRAM
+  addc   ZERO, Rn ,  #32
+  addc   Rm,   Rnx,  #32
+  addc   ZERO, Rnx,  #27
+  addc   Xm,   Rnx,  #24
+  -----------------------------------------------
+  addc   Xm,   Rnx,  #24  , Bcc
+  addc   ZERO, Rnx,  #27PC, Jcc, IRAM_address
+  addc   Xm,   Rnx,  #24PC, Jcc, IRAM_address
+
+**Reverse subtraction, result = op1 + ~op2 + 1** ::
+
+  rsub   Xmz,  Sn ,  Rp
+  rsub   Xmz,  Rnx,  Rp
+  rsub   Xmz,  Rnx,  Rp   , Bcc
+  rsub   Xmz,  Rnx,  Rp   , Jcc, IRAM_address
+  -----------------------------------------------
+  rsub   Xmz,  Sn ,  #WRAM
+  rsub   ZERO, Rn ,  #32
+  rsub   Rm,   Rnx,  #32
+  rsub   ZERO, Rnx,  #27
+  rsub   Xm,   Rnx,  #24
+  -----------------------------------------------
+  rsub   Xm,   Rnx,  #24  , Bcc
+  rsub   ZERO, Rnx,  #27PC, Jcc, IRAM_address
+  rsub   Xm,   Rnx,  #24PC, Jcc, IRAM_address
+
+**Reverse subtraction with Carry, result = op1 + ~op2 + CF** ::
+
+  rsubc  Xmz,  Sn ,  Rp
+  rsubc  Xmz,  Rnx,  Rp
+  rsubc  Xmz,  Rnx,  Rp   , Bcc
+  rsubc  Xmz,  Rnx,  Rp   , Jcc, IRAM_address
+  -----------------------------------------------
+  rsubc  Xmz,  Sn ,  #WRAM
+  rsubc  ZERO, Rn ,  #32
+  rsubc  Rm,   Rnx,  #32
+  rsubc  ZERO, Rnx,  #27
+  rsubc  Xm,   Rnx,  #24 
+  -----------------------------------------------
+  rsubc  Xm,   Rnx,  #24  , Bcc
+  rsubc  ZERO, Rnx,  #27PC, Jcc, target_address
+  rsubc  Xm,   Rnx,  #24PC, Jcc, target_address
+
+**Subtraction, result = opa + ~opB + 1** ::
+
+  sub    Xmz,  Sn ,  Rp
+  sub    Xmz,  Rnx,  Rp
+  sub    Xmz,  Rnx,  Rp   , Bcc
+  sub    Xmz,  Rnx,  Rp   , Jcc, IRAM_address
+  -------------------------------------------------------------------
+  sub    Xmz,  Sn ,  #WRAM
+  sub    Dmz , Rn ,  #32    // replaced with add instructions
+  sub    Rm  , Rnx,  #32    // ...
+  sub    ZERO, Rnx,  #27
+  sub    Xm,   Rnx,  #24
+  -------------------------------------------------------------------
+  sub    Xm,   Rnx,  #24  , Bcc
+  sub    ZERO, Rnx,  #27PC, Jcc, target_address
+  sub    Xm,   Rnx,  #24PC, Jcc, target_address
+
+**Subtraction with carry, result = op1 + ~op2 + CF** ::
+
+  subc   Xmz,  Sn ,  Rp
+  subc   Xmz,  Rnx,  Rp
+  subc   Xmz,  Rnx,  Rp   , Bcc
+  subc   Xmz,  Rnx,  Rp   , Jcc, IRAM_address
+  -------------------------------------------------------------------
+  subc   Xmz,  Sn ,  #WRAM
+  subc   ZERO, Rn ,  #32    // replaced with addc instructions
+  subc   Rm  , Rnx,  #32    // ...
+  subc   ZERO, Rnx,  #27
+  subc   Xm,   Rnx,  #24
+  -------------------------------------------------------------------
+  subc   Xm,   Rnx,  #24  , Bcc
+  subc   ZERO, Rnx,  #27PC, Jcc, target_address
+  subc   Xm,   Rnx,  #24PC, Jcc, target_address
+
+7.1) CF update
+--------------
+
+As shown in the descriptions above, add/addc/sub/subc/rsub/rsubc use a **32-bit adder**.
+These instructions update CF with is the native carry 31 of this **32-bit adder**.
+Another way of expressing the new CF value is: ::
+
+  when executing a             ADD or  ADDC, CF is set to the c   condition,
+  when executing a SUB, SUBC, RSUB, or RSUBC, CF is set to the geu condition.
+
+7.2)  Why sub #32 is replaced with an add?
+-------------------------------------------
+
+There is no encoding for the sub instruction with #32 because the two instructions: ::
+
+  sub Rm, Rn,  #32
+  add Rm, Rn, ~#32 + 1
+
+would be equivalent in terms of 32-bit result generated. Concerning the CF flag update setting: ::
+
+  if #32 <> 0 then ~#32+1 generates no carry, thus sub #32 is entirely equivalent to add -#32,
+  if #32 == 0 then the sub Rm, Rn, #0 instruction is encoded.
+
+7.3)  Why subc #32 is replaced with an addc?
+---------------------------------------------
+
+There is no encoding for subc #32 as it is entirely equivalent to addc Rm, Rn, ~#32.
+
+7.4)  Supported Conditions
+--------------------------
+
+**add and addc** ::
+
+  Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi, v, nv, c, nc, nc4, nc5, nc6, nc7, nc8, nc9, nc10, nc11, nc12, nc13.
+  Bcc:    z, nz, xz, nxz.
+
+**sub and subc** ::
+
+  Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi, v, nv, ltu, geu, lts, ges, les, gts, leu, gtu, xles, xgts, xleu, xgtu.
+  Bcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi, v, nv, ltu, geu, lts, ges, les, gts, leu, gtu, xles, xgts, xleu, xgtu.
+
+**rsub and rsubc** ::
+
+  Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi, v, nv, ltu, geu, lts, ges, les, gts, leu, gtu, xles, xgts, xleu, xgtu.
+  Bcc:    z, nz, xz, nxz.
+
+8)  Logical instructions
+========================
+
+**AND, result = op1 & op2** ::
+
+  AND   Xmz , Rnx, Rp
+  AND   Xmz , Rnx, Rp   , Bcc
+  AND   Xmz , Rnx, Rp   , Jcc, IRAM_address
+  -----------------------------------------------
+  AND   Rmz , Rn , #32
+  AND   Dm  , Rnx, #32
+  AND   ZERO, Rnx, #28
+  AND   Xm  , Rnx, #24
+  -----------------------------------------------
+  AND   Xm  , Rnx, #24  , Bcc
+  AND   ZERO, Rnx, #28PC, Jcc, IRAM_address
+  AND   Xm  , Rnx, #24PC, Jcc, IRAM_address
+
+**NAND, result = ~(op1 & op2)** ::
+
+  NAND  Xmz , Rnx, Rp
+  NAND  Xmz , Rnx, Rp   , Bcc
+  NAND  Xmz , Rnx, Rp   , Jcc, IRAM_address
+  -----------------------------------------------
+  NAND  ZERO, Rnx, #28
+  NAND  Xm  , Rnx, #24
+  -----------------------------------------------
+  NAND  Xm  , Rnx, #24  , Bcc
+  NAND  ZERO, Rnx, #28PC, Jcc, IRAM_address
+  NAND  Xm  , Rnx, #24PC, Jcc, IRAM_address
+
+**ANDN, result = (~op1) & op2** ::
+
+  ANDN  Xmz , Rnx, Rp
+  ANDN  Xmz , Rnx, Rp   , Bcc
+  ANDN  Xmz , Rnx, Rp   , Jcc, IRAM_address
+  -----------------------------------------------
+  ANDN  ZERO, Rnx, #28
+  ANDN  Xm  , Rnx, #24
+  -----------------------------------------------
+  ANDN  Xm  , Rnx, #24  , Bcc
+  ANDN  ZERO, Rnx, #28PC, Jcc, IRAM_address
+  ANDN  Xm  , Rnx, #24PC, Jcc, IRAM_address
+
+**OR, result = op1 | op2** ::
+
+  OR    Xmz , Rnx, Rp
+  OR    Xmz , Rnx, Rp   , Bcc
+  OR    Xmz , Rnx, Rp   , Jcc, IRAM_address
+  -----------------------------------------------
+  OR    Dmz , Rn , #32
+  OR    Rm  , Rnx, #32
+  OR    ZERO, Rnx, #28
+  OR    Xm  , Rnx, #24
+  -----------------------------------------------
+  OR    Xm  , Rnx, #24  , Bcc
+  OR    ZERO, Rnx, #28PC, Jcc, IRAM_address
+  OR    Xm  , Rnx, #24PC, Jcc, IRAM_address
+
+**NOR, result = ~(op1 | op2)** ::
+
+  NOR   Xmz , Rnx, Rp
+  NOR   Xmz , Rnx, Rp   , Bcc
+  NOR   Xmz , Rnx, Rp   , Jcc, IRAM_address
+  -----------------------------------------------
+  NOR   ZERO, Rnx, #28
+  NOR   Xm  , Rnx, #24
+  -----------------------------------------------
+  NOR   Xm  , Rnx, #24  , Bcc
+  NOR   ZERO, Rnx, #28PC, Jcc, IRAM_address
+  NOR   Xm  , Rnx, #24PC, Jcc, IRAM_address
+
+**ORN, result = (~op1) | op2** ::
+
+  ORN   Xmz , Rnx, Rp
+  ORN   Xmz , Rnx, Rp   , Bcc
+  ORN   Xmz , Rnx, Rp   , Jcc, IRAM_address
+  -----------------------------------------------
+  ORN   ZERO, Rnx, #28
+  ORN   Xm  , Rnx, #24
+  -----------------------------------------------
+  ORN   Xm  , Rnx, #24  , Bcc
+  ORN   ZERO, Rnx, #28PC, Jcc, IRAM_address
+  ORN   Xm  , Rnx, #24PC, Jcc, IRAM_address
+
+**XOR, result = op1 ^ op2** ::
+
+  XOR   Xmz , Rnx, Rp
+  XOR   Xmz , Rnx, Rp   , Bcc
+  XOR   Xmz , Rnx, Rp   , Jcc, IRAM_address
+  ---------------------------------------------
+  XOR   ZERO, Rn , #32
+  XOR   Rm  , Rnx, #32
+  XOR   ZERO, Rnx, #28
+  XOR   Xm  , Rnx, #24
+  -----------------------------------------------
+  XOR   Xm  , Rnx, #24  , Bcc
+  XOR   ZERO, Rnx, #28PC, Jcc, IRAM_address
+  XOR   Xm  , Rnx, #24PC, Jcc, IRAM_address
+
+**NXOR, result = ~(op1 ^ op2)** ::
+
+  NXOR  Xmz , Rnx, Rp
+  NXOR  Xmz , Rnx, Rp   , Bcc
+  NXOR  Xmz , Rnx, Rp   , Jcc, IRAM_address
+  -------------------------------------------------------------------
+  NXOR  ZERO, Rn , #32  // replaced with XOR instructions
+  NXOR  Rm  , Rnx, #32  // ...
+  NXOR  ZERO, Rnx, #28
+  NXOR  Xm  , Rnx, #24
+  -------------------------------------------------------------------
+  NXOR  Xm  , Rnx, #24  , Bcc
+  NXOR  ZERO, Rnx, #28PC, Jcc, IRAM_address
+  NXOR  Xm  , Rnx, #24PC, Jcc, IRAM_address
+
+**Supported Conditions** ::
+
+  Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi
+  Bcc:    z, nz, xz, nxz
+
+**Note:** Logical instructions updates ZF but let CF unchanged.
+
+9)  EXTUB / EXTSB / EXTUH / EXTSH (Zero/Sign Extensions)
+========================================================
+
+The following instructions don't support the .s modifier: ::
+
+  Extub  Xmz, Rn                     // 8-bit (Byte) to 32-bit zero (Unsigned) extension
+  Extub  Xmz, Rn, Bcc                // ...
+  Extub  Xmz, Rn, Jcc, IRAM_address  // ...
+  ---------------------------------------------------------------------------------------
+  Extub  Xmz, Rn                     // 16-bit (Half) to 32-bit zero (Unsigned) extension
+  Extub  Xmz, Rn, Bcc                // ...
+  Extub  Xmz, Rn, Jcc, IRAM_address  // ...
+  
+The following instructions don't support the .u modifier: ::
+  
+  Extsb  Xmz, Rn                     // 8-bit (Byte) to 32-bit Signed extension
+  Extsb  Xmz, Rn, Bcc                // ...
+  Extsb  Xmz, Rn, Jcc, IRAM_address  // ...
+  ---------------------------------------------------------------------------------------
+  Extsh  Xmz, Rn                     // 16-bit (Half) to 32-bit Signed extension
+  Extsh  Xmz, Rn, Bcc                // ...
+  Extsh  Xmz, Rn, Jcc, IRAM_address  // ...
+
+**Supported Conditions** ::
+
+  Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi
+  Bcc:    z, nz, xz, nxz
+
+10)  HASH
+=========
+
+These instructions don't support the .s modifier. ::
+
+  hash Xmz, Rnx, Rp
+  hash Xmz, Rnx, Rp   , Bcc
+  hash Xmz, Rnx, Rp   , Jcc, IRAM_address
+  -----------------------------------------------
+  hash Xmz, Rnx, #24
+  hash Xmz, Rnx, #24  , Bcc
+  hash Xmz, Rnx, #24PC, Jcc, IRAM_address
+
+10.1)  Hash operation
+---------------------
+
+The instruction result is given by the following table:
+
++------------+---------+------------------------------------+
+| op2[18:17] | op2[16] |  Result                            |
++============+=========+====================================+
+|     00     |    0    | Op1[6:0] ^ Op1[13: 7]              |
++            +---------+------------------------------------+
+|            |    1    | Op1[6:0] ^ Op1[13: 7] ^ Op1[20:14] |
++------------+---------+------------------------------------+
+|     01     |    0    | Op1[7:0] ^ Op1[15: 8]              |
++            +---------+------------------------------------+
+|            |    1    | Op1[7:0] ^ Op1[15: 8] ^ Op1[23:16] |
++------------+---------+------------------------------------+
+|     10     |    0    | Op1[8:0] ^ Op1[17: 9]              |
++            +---------+------------------------------------+
+|            |    1    | Op1[8:0] ^ Op1[17: 9] ^ Op1[26:18] |
++------------+---------+------------------------------------+
+|     11     |    0    | Op1[9:0] ^ Op1[19:10]              |
++            +---------+------------------------------------+
+|            |    1    | Op1[9:0] ^ Op1[19:10] ^ Op1[29:20] |
++------------+---------+------------------------------------+
+
+**Supported Conditions** ::
+
+  Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi
+  Bcc:    z, nz, xz, nxz
+
+11)  SATS (SATuration, Signed)
+==============================
+
+::
+
+  sats  Xmz, Rnx
+  sats  Xmz, Rnx, Bcc
+  sats  Xmz, Rnx, Jcc, IRAM_address
+
+**result** = (Rx[31] == 1) ? 0x7FFFFFFF : 0x80000000
+
+**Supported Conditions** ::
+
+  Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi
+  Bcc:    z, nz, xz, nxz  
+  
+12)  Shift / Rotate
+===================
+
+The shift value is the 5-lsb of the second operand, thus the shift/rotate amount ranges
+from 0 through 31: it can be the 5-lsb of an Rp register or a 5-bit immediate value.
+
+The following table describes the Shift/Rotate instructions:
+
++-------+---------------------------+----------+-------+----------+
+|       |       Description         |           examples          |
+|       |                           +----------+-------+----------+
+|       |                           | initial  | shift |  result  |
++=======+===========================+==========+=======+==========+
+| ROL   | ROtate Left               | 12345678 |  4    | 23456781 |
++-------+---------------------------+----------+-------+----------+
+| ROR   | ROtate Right              | 12345678 |  4    | 81234567 |
++-------+---------------------------+----------+-------+----------+
+| LSL   | Logical Shift Left        | 12345678 |  4    | 23456780 |
++-------+---------------------------+----------+-------+----------+
+| LSL1  | Logical Shift Left        | 12345678 |  4    | 2345678F |
+|       | with 1 insertion          |          |       |          |
++-------+---------------------------+----------+-------+----------+
+| LSR   | Logical Shift Right       | 12345678 |  4    | 01234567 |
++-------+---------------------------+----------+-------+----------+
+| LSR1  | Logical Shift Right       | 12345678 |  4    | F1234567 |
+|       | with 1 insertion          |          |       |          |
++-------+---------------------------+----------+-------+----------+
+| ASR   | Arithmetic Shift Right    | 12345678 |  4    | 01234567 |
+|       |                           +----------+-------+----------+
+|       |                           | 89ABCDEF |  4    | F89ABCDE |
++-------+---------------------------+----------+-------+----------+
+| LSLX  | LSL  eXtended. The result | 12345678 |  0    | 00000000 |
+|       | is the part that would    +----------+-------+----------+
+|       | be shifted out by an LSL, | 12345678 |  4    | 00000001 |
+|       | its MSB being 0-filled.   +----------+-------+----------+
+|       |                           | 12345678 |  28   | 01234567 |
++-------+---------------------------+----------+-------+----------+
+| LSL1X | LSL1 eXtended. The result | 12345678 |  0    | FFFFFFFF |
+|       | is the part that would    +----------+-------+----------+
+|       | be shifted out by a LSL1, | 12345678 |  4    | FFFFFFF1 |
+|       | its MSB being 1-filled.   +----------+-------+----------+
+|       |                           | 12345678 |  28   | F1234567 |
++-------+---------------------------+----------+-------+----------+
+| LSRX  | LSR  eXtended. The result | 12345678 |  0    | 00000000 |
+|       | is the part that would    +----------+-------+----------+
+|       | be shifted out by an LSR, | 12345678 |  4    | 80000000 |
+|       | its LSB being 0-filled.   +----------+-------+----------+
+|       |                           | 12345678 |  28   | 23456780 |
++-------+---------------------------+----------+-------+----------+  
+| LSR1X | LSR1 eXtended. The result | 12345678 |  0    | FFFFFFFF |
+|       | is the part that would    +----------+-------+----------+
+|       | be shifted out by a LSR1, | 12345678 |  4    | 8FFFFFFF |
+|       | its LSB being 1-filled.   +----------+-------+----------+
+|       |                           | 12345678 |  28   | 2345678F |
++-------+---------------------------+----------+-------+----------+
+
+All shift/rotate instructions allow for the same operands combinations ::
+
+  LSL  Xmz, Rnx, Rp
+  LSL  Xmz, Rnx, Rp, Bcc
+  LSL  Xmz, Rnx, Rp, Jcc, IRAM_address
+  -------------------------------------
+  LSL  Xmz, Rnx, #5
+  LSL  Xmz, Rnx, #5, Bcc
+  LSL  Xmz, Rnx, #5, Jcc, IRAM_address
+
+**Supported Conditions** ::
+
+  Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi, nsh32, sh32, se, so
+  Bcc:    z, nz, xz, nxz
+
+13)  Shift/Rotate & add/sub
+===========================
+
+::
+
+  rol_add  Xmz, Rnx, Rp, #5                     // rotate left then addition 
+  rol_add  Xmz, Rnx, Rp, #5, Bcc                // ...
+  rol_add  Xmz, Rnx, Rp, #5, Jcc, IRAM_address  // ...
+  -----------------------------------------------------------------------------
+  lsr_add  Xmz, Rnx, Rp, #5                     // shift right then addition
+  lsr_add  Xmz, Rnx, Rp, #5, Bcc                // ...
+  lsr_add  Xmz, Rnx, Rp, #5, Jcc, IRAM_address  // ...
+  -----------------------------------------------------------------------------
+  lsl_add  Xmz, Rnx, Rp, #5                     // shift left then addition
+  lsl_add  Xmz, Rnx, Rp, #5, Bcc                // ...
+  lsl_add  Xmz, Rnx, Rp, #5, Jcc, IRAM_address  // ...
+  -----------------------------------------------------------------------------
+  lsl_sub  Xmz, Rnx, Rp, #5                     // shift left then subtraction
+  lsl_sub  Xmz, Rnx, Rp, #5, Bcc                // ...
+  lsl_sub  Xmz, Rnx, Rp, #5, Jcc, IRAM_address  // ...
+  
+For all these instructions the content of Rnx is shifted or rotated by
+the #5 immediate value, giving an intermediary result that is added
+or subtracted to the Rp value giving the instruction final result.
+
+**Supported Conditions** ::
+
+  Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi
+  Bcc:    z, nz, xz, nxz
+
+**NOTE: the z, nz, xz, nxz, pl and mi CONDITIONS ARE EVALUATED AGAINST THE INTERMEDIARY RESULT, NOT AGAINST THE FINAL RESULT**
+
+14)  CLZ / CLO / CLS / CAO (bit count)
+======================================
+
+These instructions don't support the .s modifier. ::
+
+  CLZ  Xmz, Rnx                     // Count Leading Zero
+  CLZ  Xmz, Rnx, Bcc                // ...
+  CLZ  Xmz, Rnx, Jcc, IRAM_address  // ...
+  -------------------------------------------------------------------------------------------------
+  CLO  Xmz, Rnx                     // Count Leading Ones
+  CLO  Xmz, Rnx, Bcc                // ...
+  CLO  Xmz, Rnx, Jcc, IRAM_address  // ...
+  -------------------------------------------------------------------------------------------------
+  CLS  Xmz, Rnx                     // Count Leading Sign: Indicates by how many bits the
+  CLS  Xmz, Rnx, Bcc                // source operand can be left-shifted without having
+  CLS  Xmz, Rnx, Jcc, IRAM_address  // its sign changed, the result being in the range 0-31.
+  -------------------------------------------------------------------------------------------------
+  CAO  Xmz, Rnx                     // Count All Ones: counts the number
+  CAO  Xmz, Rnx, Bcc                // of one in the source operand
+  CAO  Xmz, Rnx, Jcc, IRAM_address  // ...
+
+**Supported Conditions** ::
+
+  Jcc: t, z, nz, xz, nxz, max, nmax, sz, nsz, spl, smi
+  Bcc:    z, nz, xz, nxz
+
+For CLS, the **max** (MAXimum) condition is true when the result is 31, For CLZ, CLO and CAO, the **max**
+condition is true when the result is 32. The **nmax** condition is always the opposite of the **max** condition.
+
+15)  MUL_STEP / DIV_STEP / MOVD / SWAPD
+=======================================
+
+15.1)  mul_step
+---------------
+
+::
+
+  mul_step  Dmz, Rnx, Dp, #5
+  mul_step  Dmz, Rnx, Dp, #5, Bcc
+  mul_step  Dmz, Rnx, Dp, #5, Jcc, IRAM_address
+
+**Action performed** ::
+
+  if (Dp[32] & 1) Dm[31: 0] = Dp[31: 0] + (Rnx << #5)  // if the destination is the ZERO register,
+                  Dm[63:32] = Dp[63:32]        >> 1    // ... then no register is affected
+
+**Supported Conditions** ::
+
+  Jcc: t, z, nz, sz, nsz, spl, smi
+
+15.2)  div_step
+---------------
+
+::
+
+  div_step  Dmz, Rnx, Dp, #5
+  div_step  Dmz, Rnx, Dp, #5, Bcc
+  div_step  Dmz, Rnx, Dp, #5, Jcc, IRAM_address
+
+**Action performed** ::
+
+  if  (Dp[31: 0] >=              (Rnx << #5)){  // the comparison is unsigned
+       Dm[31: 0]  =  Dp[31: 0] - (Rnx << #5);   // if the destination is the ZERO register
+       Dm[63:32]  = (Dp[63:32] << 1)  | 1   ;   // ... then no register is affected
+  }                                             // ...
+  else Dm[63:32]  = (Dp[63:32] << 1)        ;   // ...
+
+**Supported Conditions** ::
+
+  Jcc: t, sz, nsz, spl, smi
+
+15.3)  movd
+-----------
+
+::
+
+  movd  Dmz, Dp
+  movd  Dmz, Dp, Bcc
+  movd  Dmz, Dp, Jcc, IRAM_address
+
+**result = Dp**
+
+**Supported Conditions** ::
+
+  Jcc:  t, sz, nsz, spl, smi
+
+15.3  swapd
+-----------
+
+::
+
+  swapd  Dmz, Dp
+  swapd  Dmz, Dp, Bcc
+  swapd  Dmz, Dp, Jcc, IRAM_address
+
+**result = { Dp[31:0], Dp[63:32] }**
+
+**Supported Conditions** ::
+
+  Jcc:  t, sz, nsz, spl, smi
+
+16)  8 x 8 Multiplications
+==========================
+
+The result of a 8 x 8 multiplication is initially 16-bit, then this 16-bit result is:
+
+* zero-extended to 32-bit for unsigned x unsigned multiplication,
+* sign-extended to 32-bit otherwise.
+
++-----------+-----------------------+--------------------------+--------------+
+| mnemonic  |     result[15:0]      |     multiply variant     | Comment      |
++===========+=======================+==========================+==============+
+| mul_ul_ul | op1[ 7:0] x op2[7: 0] |unsigned x unsigned       | .s forbidden |
++-----------+-----------------------+                          +              +
+| mul_ul_uh | op1[ 7:0] x op2[15:8] |(zero-extended to 32-bit) |              |
++-----------+-----------------------+                          +              +
+| mul_uh_ul | op1[15:8] x op2[ 7:0] |                          |              |
++-----------+-----------------------+                          +              +
+| mul_uh_uh | op1[15:8] x op2[15:8] |                          |              |
++-----------+-----------------------+--------------------------+--------------+
+| mul_sl_ul | op1[ 7:0] x op2[7: 0] |signed x unsigned         | .u forbidden |
++-----------+-----------------------+                          +              +
+| mul_sl_uh | op1[ 7:0] x op2[15:8] |(sign-extended to 32-bit) |              |
++-----------+-----------------------+                          +              +
+| mul_sh_ul | op1[15:8] x op2[ 7:0] |                          |              |
++-----------+-----------------------+                          +              +
+| mul_sh_uh | op1[15:8] x op2[15:8] |                          |              |
++-----------+-----------------------+--------------------------+              +
+| mul_sl_sl | op1[ 7:0] x op2[7: 0] |signed x signed           |              |
++-----------+-----------------------+                          +              +
+| mul_sl_sh | op1[ 7:0] x op2[15:8] |(sign-extended to 32-bit) |              |
++-----------+-----------------------+                          +              +
+| mul_sh_sl | op1[15:8] x op2[ 7:0] |                          |              |
++-----------+-----------------------+                          +              +
+| mul_sh_sh | op1[15:8] x op2[15:8] |                          |              |
++-----------+-----------------------+--------------------------+--------------+
+
+**syntax** ::
+
+  mul_ul_ul	Xmz, Rnx, Rp                     // similar syntax for the others
+  mul_ul_ul	Xmz, Rnx, Rp, Bcc                // 8 x 8 multiplications instructions
+  mul_ul_ul	Xmz, Rnx, Rp, Jcc, IRAM_address  // ...
+
+**Supported Conditions** ::
+
+  Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi, ms8, nms8, mu8, nmu8
+  Bcc:    z, nz, xz, nxz
+
+17)  CMPB4
+==========
+
+::
+
+  cmpb4  Xmz, Rnx, Rp
+
+**Functionality** ::
+
+  result[31:24] = (Rx[31:24] == Rp[31:24]) ? 0x01 : 0x00;
+  result[23:16] = (Rx[23:16] == Rp[23:16]) ? 0x01 : 0x00;
+  result[15: 8] = (Rx[15: 8] == Rp[15: 8]) ? 0x01 : 0x00;
+  result[ 7: 0] = (Rx[ 7: 0] == Rp[ 7: 0]) ? 0x01 : 0x00;
+
+**Supported Conditions** ::
+
+  Bcc:    z, nz, xz, nxz
+  Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi
+
+18)  CALL
+=========
+
+::
+
+  call  Xmz, Rnx, Rp
+  call  Xmz, Rnx, #PC  // #PC is an immediate whose width is the one of the PC
+
+**Functionality**
+
+* result = current PC + 1
+* The thread jump to the IRAM address given by Rnx + Rp or by Rnx + #PC
+
+**Note:** there is no RETURN instruction: a “CALL ZERO, Rnx” instruction is used
+instead, where Rnx is the register where the return address has been previously saved.
+
+19)  ACQUIRE / RELEASE
+======================
+
+::
+
+  acquire: Rnx, #16
+  acquire: Rnx, #16, Jcc, IRAM_address
+  release: Rnx, #16
+  release: Rnx, #16, Jcc, IRAM_address
+
+**Functionality**
+
+For both instruction an 8-bit index *i* is calculated as follows:
+
+* tmp[15:0] = Rnx + #16
+* *i* = tmp[15:8] ^ tmp[7:0]
+
+Then:
+
+* for ACQUIRE: ATOMIC[ *i* ] = 1,
+* for RELEASE: ATOMIC[ *i* ] = 0.
+
+In both cases, the z/nz conditions are evaluated using the initial value of the ATOMIC[ *i* ] bit.
+
+**Supported Jcc Conditions for ACQUIRE**: t, z, nz
+
+**Supported Jcc Conditions for RELEASE**:       nz
+
+**Note:** when ACQUIRE/RELEASE is used correctly, the nz condition is always true for RELEASE.
+
+20)  STOP
+=========
+
+::
+
+  stop
+  stop  t, IRAM_address  // only the t (True) condition is supported
+
+**Functionality**
+
+The RUN bit corresponding to the thread executing the STOP instruction is cleared,
+if a t condition is present, the thread PC is set to the specified jump address,
+independently of the presence of the t condition, the thread is non longer running.
+
+21)  BOOT / RESUME / CLR_RUN
+============================
+
+::
+
+  boot     Rnx, #6
+  boot     Rnx, #6, Jcc, IRAM_address
+  resume   Rnx, #6
+  resume   Rnx, #6, Jcc, IRAM_address
+  clr_run  Rnx, #6
+  clr_run  Rnx, #6, Jcc, IRAM_address
+
+**Functionality**
+
+Both instructions generate first a 6-bit unsigned index *i*:
+
+* tmp[13:0] = Rnx[13:0] + #6
+* *i*       = tmp[13:8] ^ tmp[5:0]
+
+21.1) CLR_RUN
+-------------
+
+clr_run just clears the bit RUN[ *i* ], the CLR_RUN instruction is now over.
+
+21.2) BOOT / RESUME
+-------------------
+
+If RUN[ *i* ] is initially set then the BOOT/RESUME instruction is over.
+
+Otherwise:
+
+* RUN[ *i* ] is set
+* if *i* < 24 then the execution of the thread *i* is resumed:
+
+  * for BOOT instructions: at the IRAM address 0
+  * for RESUME instructions: at the current value of PC[ *i* ] (the PC of the thread *i*).
+
+21.3) Supported conditions
+--------------------------
+
+The CLR_RUN, BOOT, and RESUME instructions support the same set of conditions ::
+   
+  Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi
+
+**Note:** the z, nz, xz, nxz conditions use the nullity/non-nullity of the initial value of the bit RUN[ *i* ].
+
+22)  TIME / TIME_CFG
+====================
+
+::
+
+  time      Xmz
+  time      Xmz,      t, IRAM_address  // only the t (True) condition is allowed
+  time_cfg  Xmz, Rnx
+  time_cfg  Xmz, Rnx, t, IRAM_address  // only the t (True) condition is allowed
+
+For both instructions: result = TIME[35:4] (the 32-msb of TIME)
+
+22.1) TIME Increment Configuration
+----------------------------------
+
+**This part concerns only the time_cfg instruction**
+
+To have Rnx[0] set clears the TIME[35:0] register, the field Rnx[2:1] being used as follow: ::
+
+  00: keep the current increment configuration
+  01: set the configuration such that TIME[35:0] is     incremented every DPU cycle
+  10: set the configuration such that TIME[35:0] is     incremented every executed instruction
+  11: set the configuration such that TIME[35:0] is not incremented
+
+23)  NOP / BKP
+==============
+
+::
+
+  NOP  // Does nothing
+  BKP  // Does nothing besides causing a BKP exception

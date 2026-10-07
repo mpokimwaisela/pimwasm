@@ -1,0 +1,27 @@
+var dpu__management_8h =
+[
+    [ "_STRUCT_DPU_FOREACH_I", "dpu__management_8h.html#aa77b786686f760e0a13601fec123c3ac", null ],
+    [ "_STRUCT_DPU_FOREACH_X", "dpu__management_8h.html#a04688b7ce29650b953ba6591df952623", null ],
+    [ "STRUCT_DPU_FOREACH", "dpu__management_8h.html#a9d32e5221347d776364e5ec906c3b33e", null ],
+    [ "dpu_free_rank", "dpu__management_8h.html#a3bfc8f4cbb6300189e6223502b4133fa", null ],
+    [ "dpu_from_set", "dpu__management_8h.html#a08f511a272050aadb67390a9e6bc16a0", null ],
+    [ "dpu_get", "dpu__management_8h.html#afe19bf00a71328c6a7fe65dc823ffeb8", null ],
+    [ "dpu_get_description", "dpu__management_8h.html#a19c1d404211dc649c4e032e3fff2d921", null ],
+    [ "dpu_get_id", "dpu__management_8h.html#a646316578e969b985a1c5f7f6556450e", null ],
+    [ "dpu_get_member_id", "dpu__management_8h.html#a55fadabbac9ad25eba230bbd3f7cd5be", null ],
+    [ "dpu_get_profile_description", "dpu__management_8h.html#a194f70fbd49adcf18d4313988226cafb", null ],
+    [ "dpu_get_rank", "dpu__management_8h.html#a17f74511ee122e18d94124b1503529b3", null ],
+    [ "dpu_get_rank_id", "dpu__management_8h.html#a83b635c7173278181a0508e54c1ba5f1", null ],
+    [ "dpu_get_rank_numa_node", "dpu__management_8h.html#a5dc53c1546ae01d50f1a9b0eb448acb2", null ],
+    [ "dpu_get_rank_of_type", "dpu__management_8h.html#a925e0c001d87275484622be9ca99f9fe", null ],
+    [ "dpu_get_slice_id", "dpu__management_8h.html#afdc51df2dabcc43a06b9a17a12aa008a", null ],
+    [ "dpu_is_enabled", "dpu__management_8h.html#a816ae9bb73eeb955a39969f27bb3d9b1", null ],
+    [ "dpu_iterator_from", "dpu__management_8h.html#a9838014ff7b5dcf33ae729623faee5a5", null ],
+    [ "dpu_iterator_next", "dpu__management_8h.html#a4e1ddeedcbeb0aeda9998b050c83d385", null ],
+    [ "dpu_lock_rank", "dpu__management_8h.html#a3d91319af2c88b75267fdf612d0173e4", null ],
+    [ "dpu_rank_from_set", "dpu__management_8h.html#a7b62807a6e1fe25161abe333ad6e5538", null ],
+    [ "dpu_set_from_dpu", "dpu__management_8h.html#a615a8ea76755e7a6a03d6b9a4b697c74", null ],
+    [ "dpu_set_from_rank", "dpu__management_8h.html#a57578f69ada34eaa71bc5f06a9356c8c", null ],
+    [ "dpu_trylock_rank", "dpu__management_8h.html#aff6b9508d871e666a8407151351ea6d1", null ],
+    [ "dpu_unlock_rank", "dpu__management_8h.html#abfe53860a9e694c69937ca4919231b71", null ]
+];

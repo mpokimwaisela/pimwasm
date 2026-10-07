@@ -1,0 +1,4 @@
+Runtime Library
+---------------
+
+The detailed documentation of the DPU Runtime Library can be found in the `Reference to the DPU RTL <DPURT/index.html>`_.

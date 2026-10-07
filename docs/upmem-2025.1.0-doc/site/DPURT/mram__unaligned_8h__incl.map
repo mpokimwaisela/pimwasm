@@ -1,0 +1,9 @@
+<map id="mram_unaligned.h" name="mram_unaligned.h">
+<area shape="rect" id="node3" href="$vmutex_8h.html" title="Mutual exclusions extension (virtual mutexes). " alt="" coords="525,80,609,107"/>
+<area shape="rect" id="node11" href="$mram_8h.html" title="MRAM Transfer Management. " alt="" coords="146,229,219,256"/>
+<area shape="rect" id="node4" href="$mutex_8h.html" title="Mutual exclusions. " alt="" coords="429,155,505,181"/>
+<area shape="rect" id="node5" href="$sysdef_8h.html" title="Provides useful system abstractions. " alt="" coords="370,229,446,256"/>
+<area shape="rect" id="node7" href="$atomic__bit_8h.html" title="Provides direct access to the atomic bits. " alt="" coords="243,229,346,256"/>
+<area shape="rect" id="node9" href="$attributes_8h.html" title="Provides common useful compiler attributes. " alt="" coords="190,304,287,331"/>
+<area shape="rect" id="node12" href="$dpu__characteristics_8h.html" title="Provides a few constants used internally. " alt="" coords="5,304,165,331"/>
+</map>

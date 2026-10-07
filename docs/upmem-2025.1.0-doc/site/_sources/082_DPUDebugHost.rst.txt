@@ -1,0 +1,26 @@
+============================
+Debugging a Host application
+============================
+
+It is possible to attach to a DPU:
+
+ * Before the start of an application (to explore the state of the DPU before the host sends the boot command)
+ * When the DPU is booting (to debug the application from its very beginning)
+ * When the DPU is running (to understand why the application never ends for example)
+ * After the application ended (to understand why the application failed or produced wrong results)
+
+To attach to a DPU, we first need to attach to the host application using the DPU:
+
+``dpu-lldb -n <host_application_name>`` or ``dpu-lldb -p <host_application_pid>``
+
+Then, ``dpu-lldb`` provides DPU specific commands that will help to list/attach/detach DPU(s):
+
+ * ``dpu_list``: list the DPUs allocated by the application and indicate their status and the program loaded.
+ * ``dpu_attach``: attach to a specific DPU. If the DPU was running, it stops it.
+ * ``dpu_attach_first``: attach to the allocated DPU. If the DPU was running, it stops it.
+ * ``dpu_attach_on_boot``: attach to a specific DPU when it will boot (stopping it at the very beginning of its execution with no instruction executed yet). If the specified DPU is running, it will wait for the DPU to finish and to be rebooted. If no DPU is specified, attach to the next booting DPU.
+ * ``dpu_detach``: detach from the currently attached DPU and go back to the host application target. It resumes the DPU program if it was not finished. It is mandatory to use this command to detach from a DPU after having attached to it using either ``dpu_attach`` or ``dpu_attach_on_boot`` to keep the system in a coherent state.
+
+During a debug session, an `lldb-server-dpu` is launched in order to manage DPUs. The communication link between host lldb instance and this subprocess is done via a socket with a specific port. The default port is `2066`. If this port is already taken, one could set the environment variable `SUB_LLDB_PROCESS_PORT` to set another port before launching a debug session. Also, initialization of `lldb-server-dpu` could be rather long depending on the number of installed DIMMs. By default, there are `10` connection attempts before bailing.
+If the `lldb-server-dpu` process fails during initialization, or the initialization is taking too long, an error is printed. One can set the number of attempted connections by setting the `SUB_LLDB_PROCESS_MAX_RETRY` environment variable.
+

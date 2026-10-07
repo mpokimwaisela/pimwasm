@@ -1,0 +1,5 @@
+<map id="_dpu_elf_runtime_info" name="_dpu_elf_runtime_info">
+<area shape="rect" id="node2" href="$struct__dpu__elf__runtime__info__item.html" title="One runtime information fetched (or not) from ELF file. " alt="" coords="5,95,209,121"/>
+<area shape="rect" id="node3" href="$structdpu__elf__symbols.html" title="A map of symbols. " alt="" coords="233,95,365,121"/>
+<area shape="rect" id="node4" href="$structdpu__elf__symbol.html" title="Description of one symbol in its section. " alt="" coords="237,5,362,32"/>
+</map>

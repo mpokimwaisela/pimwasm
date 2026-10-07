@@ -1,0 +1,25 @@
+var annotated_dup =
+[
+    [ "_dpu_description_t", "struct__dpu__description__t.html", "struct__dpu__description__t" ],
+    [ "_dpu_elf_runtime_info", "struct__dpu__elf__runtime__info.html", "struct__dpu__elf__runtime__info" ],
+    [ "_dpu_elf_runtime_info_item", "struct__dpu__elf__runtime__info__item.html", "struct__dpu__elf__runtime__info__item" ],
+    [ "_dpu_loader_context_t", "struct__dpu__loader__context__t.html", "struct__dpu__loader__context__t" ],
+    [ "_dpu_loader_env_t", "struct__dpu__loader__env__t.html", "struct__dpu__loader__env__t" ],
+    [ "_dpu_profiling_context_t", "struct__dpu__profiling__context__t.html", "struct__dpu__profiling__context__t" ],
+    [ "_dpu_run_context_t", "struct__dpu__run__context__t.html", "struct__dpu__run__context__t" ],
+    [ "bank_interface_pmc_config_t", "structbank__interface__pmc__config__t.html", "structbank__interface__pmc__config__t" ],
+    [ "bank_interface_pmc_result_t", "structbank__interface__pmc__result__t.html", "structbank__interface__pmc__result__t" ],
+    [ "dpu_elf_symbol", "structdpu__elf__symbol.html", "structdpu__elf__symbol" ],
+    [ "dpu_elf_symbols", "structdpu__elf__symbols.html", "structdpu__elf__symbols" ],
+    [ "dpu_fifo_link_t", "structdpu__fifo__link__t.html", "structdpu__fifo__link__t" ],
+    [ "dpu_fifo_rank_t", "structdpu__fifo__rank__t.html", "structdpu__fifo__rank__t" ],
+    [ "dpu_hw_description_t", "structdpu__hw__description__t.html", "structdpu__hw__description__t" ],
+    [ "dpu_program_t", "structdpu__program__t.html", "structdpu__program__t" ],
+    [ "dpu_transfer_matrix", "structdpu__transfer__matrix.html", "structdpu__transfer__matrix" ],
+    [ "dpu_vpd", "structdpu__vpd.html", "structdpu__vpd" ],
+    [ "dpu_vpd_database", "structdpu__vpd__database.html", "structdpu__vpd__database" ],
+    [ "dpu_vpd_header", "structdpu__vpd__header.html", "structdpu__vpd__header" ],
+    [ "dpu_vpd_rank_data", "structdpu__vpd__rank__data.html", "structdpu__vpd__rank__data" ],
+    [ "dpu_vpd_repair_entry", "structdpu__vpd__repair__entry.html", "structdpu__vpd__repair__entry" ],
+    [ "dpu_vpd_string_pair", "structdpu__vpd__string__pair.html", "structdpu__vpd__string__pair" ]
+];

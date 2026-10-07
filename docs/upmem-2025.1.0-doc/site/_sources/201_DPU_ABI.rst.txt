@@ -1,0 +1,347 @@
+=======
+DPU ABI
+=======
+
+Knowledge requirements
+======================
+
+This documentation assumes that the reader has a global understanding of what the UPMEM DPU is and of its
+architecture. It also considers that the reader knows the C programming language.
+
+Procedure Call Standard
+=======================
+
+Registers
+---------
+
+Each thread of the DPU has 24 32-bit registers, labeled ``r0-r23``, and 8 read-only registers:
+
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | Name | Permission | Information                                                                                        |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r0   | R/W        | Argument 1 register (caller saved) / Return register for 32bits value / MSB of 64bits return value |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r1   | R/W        | Argument 2 register (caller saved) / LSB of 64bits return value                                    |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r2   | R/W        | Argument 3 register (caller saved)                                                                 |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r3   | R/W        | Argument 4 register (caller saved)                                                                 |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r4   | R/W        | Argument 5 register (caller saved)                                                                 |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r5   | R/W        | Argument 6 register (caller saved)                                                                 |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r6   | R/W        | Argument 7 register (caller saved)                                                                 |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r7   | R/W        | Argument 8 register (caller saved)                                                                 |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r8   | R/W        | Scratch register (caller saved)                                                                    |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r9   | R/W        | Scratch register (caller saved)                                                                    |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r10  | R/W        | Scratch register (caller saved)                                                                    |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r11  | R/W        | Scratch register (caller saved)                                                                    |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r12  | R/W        | Scratch register (caller saved)                                                                    |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r13  | R/W        | Scratch register (caller saved)                                                                    |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r14  | R/W        | Callee saved register                                                                              |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r15  | R/W        | Callee saved register                                                                              |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r16  | R/W        | Callee saved register                                                                              |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r17  | R/W        | Callee saved register                                                                              |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r18  | R/W        | Callee saved register                                                                              |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r19  | R/W        | Callee saved register                                                                              |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r20  | R/W        | Callee saved register                                                                              |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r21  | R/W        | Callee saved register                                                                              |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r22  | R/W        | Stack pointer                                                                                      |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | r23  | R/W        | Return address                                                                                     |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | zero | Read-only  | = 0                                                                                                |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | one  | Read-only  | = 1                                                                                                |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | lneg | Read-only  | = 0xffffffff (-1)                                                                                  |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | mneg | Read-only  | = 0x80000000                                                                                       |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | id   | Read-only  | = thread_id                                                                                        |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | id2  | Read-only  | = 2 x thread_id                                                                                    |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | id4  | Read-only  | = 4 x thread_id                                                                                    |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+  | id8  | Read-only  | = 8 x thread_id                                                                                    |
+  +------+------------+----------------------------------------------------------------------------------------------------+
+
+Each consecutive pair of registers can be used as a 64-bit register, which makes 12 64-bit registers: ``d0(r0&r1)``, ``d2(r2&r3)``, ..., ``d22(r22&r23)``.
+The MSBs are in the even register (``r0``, ``r2``, ...) and the LSB are in the odd register (``r1``, ``r3``, ...). Note that ``d1``, ``d3``, ..., ``d21`` do not exist.
+Also, read-only registers cannot be seen as 64-bit registers.
+
+Data types
+----------
+
+  +--------------------------------------------+------------------------------------+-----------+----------------+-------------------------+----------------------------------------------+
+  | Machine Type                               | C Type                             | Byte size | Byte alignment | Prefered byte alignment | Note                                         |
+  +--------------------------------------------+------------------------------------+-----------+----------------+-------------------------+----------------------------------------------+
+  | Unsigned byte                              | unsigned char                      | 1         | 1              | 4                       | Store into a 32-bits register                |
+  +--------------------------------------------+------------------------------------+-----------+----------------+-------------------------+----------------------------------------------+
+  | Signed byte                                | char                               | 1         | 1              | 4                       | Store into a 32-bits register                |
+  +--------------------------------------------+------------------------------------+-----------+----------------+-------------------------+----------------------------------------------+
+  | Unsigned half-word                         | unsigned short                     | 2         | 2              | 4                       | Store into a 32-bits register                |
+  +--------------------------------------------+------------------------------------+-----------+----------------+-------------------------+----------------------------------------------+
+  | Signed half-word                           | short                              | 2         | 2              | 4                       | Store into a 32-bits register                |
+  +--------------------------------------------+------------------------------------+-----------+----------------+-------------------------+----------------------------------------------+
+  | Unsigned word                              | unsigned int                       | 4         | 4              | 4                       |                                              |
+  +--------------------------------------------+------------------------------------+-----------+----------------+-------------------------+----------------------------------------------+
+  | Signed word                                | int                                | 4         | 4              | 4                       |                                              |
+  +--------------------------------------------+------------------------------------+-----------+----------------+-------------------------+----------------------------------------------+
+  | Unsigned double-word                       | unsigned long / unsigned long long | 8         | 8              | 8                       |                                              |
+  +--------------------------------------------+------------------------------------+-----------+----------------+-------------------------+----------------------------------------------+
+  | Signed double-word                         | long / long long                   | 8         | 8              | 8                       |                                              |
+  +--------------------------------------------+------------------------------------+-----------+----------------+-------------------------+----------------------------------------------+
+  | Single precision floating point (IEEE 754) | float                              | 4         | 4              | 4                       | No native operation, only software emulation |
+  +--------------------------------------------+------------------------------------+-----------+----------------+-------------------------+----------------------------------------------+
+  | Double precision floating point (IEEE 754) | double                             | 8         | 8              | 8                       | No native operation, only software emulation |
+  +--------------------------------------------+------------------------------------+-----------+----------------+-------------------------+----------------------------------------------+
+  | Data pointer                               | T *                                | 4         | 4              | 4                       |                                              |
+  +--------------------------------------------+------------------------------------+-----------+----------------+-------------------------+----------------------------------------------+
+  | Code pointer                               | T (\*F) ()                         | 4         | 4              | 4                       |                                              |
+  +--------------------------------------------+------------------------------------+-----------+----------------+-------------------------+----------------------------------------------+
+
+Endianness
+----------
+
+The DPU is a little-endian architecture.
+
+But the DPU can perform load/store from the WRAM in big-endian, which is not the default behavior of the load/store operations.
+
+Composite Types
+---------------
+
+Aggregates (C "struct")
+~~~~~~~~~~~~~~~~~~~~~~~
+
+An aggregate is aligned on the most-aligned component of the aggregate. The size of an aggregate is the smallest multiple of its alignment that is sufficient to hold all of its members.
+
+These rules can be overriden by passing struct attributes to the compiler such as:
+ - "*\__attribute\__((packed))*"
+ - "*\__attribute\__((aligned(x)))*"
+ - ...
+
+Unions
+~~~~~~
+
+A union is aligned on the most-aligned component of the union. The size of a union is the smallest multiple of its alignment that is sufficient to hold its largest members.
+
+Arrays
+~~~~~~
+
+An array is aligned on the alignment of its base type. Its size is the size of its base type multiplied by the number of elements in the array.
+
+Calling convention
+------------------
+
+Argument passing
+~~~~~~~~~~~~~~~~
+
+*Byte* and *half-word* arguments are promoted to *word* arguments.
+
+*Word* arguments are assigned into one of the 8 32-bit registers used for argument passing (``r0`` to ``r7`` included).
+
+*Double-word* arguments are assigned into one of the 4 64-bit registers used for argument passing (``d0`` to ``d6`` included).
+
+Composite-types arguments are always passed by reference.
+
+Return value
+------------
+
+*Byte* and *half-word* return values are promoted to *word* return value.
+
+*Word* return values are assigned into `r0`.
+
+*Double-word* return values are assigned into ``d0`` (``r0&r1``).
+
+Composite-types arguments are always transformed to become an argument passed by reference.
+
+Variable Argument
+~~~~~~~~~~~~~~~~~
+
+*Byte* and *half-word* argument are promoted to *word* argument.
+
+*Word*, *double-word* and composite type argument are assigned to stack respecting their sizes and alignments.
+
+Stack management
+----------------
+
+Each thread has its own stack, which is a contiguous area of memory used for storage of local variables and for passing additional arguments to subroutines when these are insufficient argument registers available.
+
+The stack pointer is held in the register ``r22``.
+
+The allocation of memory on the stack is done by adding a positive value to the current stack pointer (full-ascending implementation). The stack pointer is always 8-byte aligned.
+
+The size of the stack is statically defined. Writing into a stack of another thread results in undefined behavior (which can happen when using more memory than initially defined).
+
+Stack organization
+------------------
+
+.. code-block:: text
+
+           0 |
+             |
+             ...
+             |
+             | ^
+             | | Local variables of the current function
+             | v
+             | ^
+             | | Arguments passed through the stack for the next functions
+             | v
+  r22 - 8 -> | ^
+             | | stack pointer (r23) of the previous function
+             | v
+  r22 - 4 -> |^
+             | | return adress (r22) of the current function
+             | v
+  r22     -> | ^
+             | | Local variables of the next functions
+             | v
+             |
+             v
+
+Function Prologue & Epilogue
+----------------------------
+
+If the function is not a leaf function, the return address is saved into the stack, as it will be modified when calling sub-function.
+
+The function should return with the same stack pointer it had when being called. For a non-leaf function, this means that the stack pointer should also be saved into the stack.
+
+The easiest way of doing it is to save the return address (``r23``) and the stack pointer (``r22``) at the same time using the instruction ``sd r22, <somewhere_in_the_stack>, d22``.
+
+Then the stack pointer can be modified and will be restored in the epilogue with the return address using the instruction ``ld d22, r22, <where_d22_was_stored_in_the_prologue>``.
+
+For a leaf function that does not modify the stack pointer, neither of these operations is necessary.
+
+Other ABI details
+=================
+
+Binary file format
+------------------
+
+DPU Binary files follow the standard 32-bit ELF format.
+
+The ``EI_OSABI`` identification index is set to ``ELFOSABI_NONE`` (= ``0``).
+
+The ``e_machine`` header field is set to ``EM_DPU`` (= ``0xf5``).
+
+The ``e_flags`` header field is used to check the abi version.
+The bit 23 is set to indicate that the bits 24 to 31 are used to encode the abi version.
+Files need to have the same abi version to be linked together.
+
+The current ABI version is ``2``.
+
+The following relocations can be used in a DPU binary:
+
+General relocations
+~~~~~~~~~~~~~~~~~~~
+
+  +--------------+-------+---------------+
+  | Name         | Value | Use           |
+  +--------------+-------+---------------+
+  | R_DPU_NONE   |   0   | No relocation |
+  +--------------+-------+---------------+
+
+Data relocations
+~~~~~~~~~~~~~~~~
+
+  +-----------------------+-------+-------------+
+  | Name                  | Value | Use         |
+  +-----------------------+-------+-------------+
+  | R_DPU_32              |   1   | 32-bit data |
+  +-----------------------+-------+-------------+
+  | R_DPU_8               |   2   |  8-bit data |
+  +-----------------------+-------+-------------+
+  | R_DPU_16              |   3   | 16-bit data |
+  +-----------------------+-------+-------------+
+  | R_DPU_64              |   4   | 64-bit data |
+  +-----------------------+-------+-------------+
+
+Instruction relocations
+~~~~~~~~~~~~~~~~~~~~~~~
+
+  +-----------------------+-------+--------------------------------------------------------------------------------------------------------------------------+
+  | Name                  | Value | Use                                                                                                                      |
+  +-----------------------+-------+--------------------------------------------------------------------------------------------------------------------------+
+  | R_DPU_PC              | 128   | 16-bit PC value as an instruction offset                                                                                 |
+  +-----------------------+-------+--------------------------------------------------------------------------------------------------------------------------+
+  | R_DPU_IMM5            | 129   | 5-bit Shift/rotation immediate                                                                                           |
+  +-----------------------+-------+--------------------------------------------------------------------------------------------------------------------------+
+  | R_DPU_IMM8_DMA        | 130   | 8-bit DMA transfer length                                                                                                |
+  +-----------------------+-------+--------------------------------------------------------------------------------------------------------------------------+
+  | R_DPU_IMM24_PC        | 131   | 8-bit immediate when the instruction already has a PC argument                                                           |
+  +-----------------------+-------+--------------------------------------------------------------------------------------------------------------------------+
+  | R_DPU_IMM27_PC        | 132   | 11-bit immediate when the ``OPCX`` instruction already has a PC argument and no destination                              |
+  +-----------------------+-------+--------------------------------------------------------------------------------------------------------------------------+
+  | R_DPU_IMM28_PC_OPC8   | 133   | 12-bit immediate when the ``OPC8`` instruction already has a PC argument and no destination                              |
+  +-----------------------+-------+--------------------------------------------------------------------------------------------------------------------------+
+  | R_DPU_IMM8_STR        | 134   | 8-bit immediate to store in ``Store Immediate Byte`` instructions                                                        |
+  +-----------------------+-------+--------------------------------------------------------------------------------------------------------------------------+
+  | R_DPU_IMM12_STR       | 135   | 12-bit address offset in ``Store Immediate`` instructions                                                                |
+  +-----------------------+-------+--------------------------------------------------------------------------------------------------------------------------+
+  | R_DPU_IMM16_STR       | 136   | 16-bit immediate to store in ``Store Immediate Half/Word/Double`` instructions                                           |
+  +-----------------------+-------+--------------------------------------------------------------------------------------------------------------------------+
+  | R_DPU_IMM16_ATM       | 137   | 16-bit lock offset in ``Acquire/Release`` instructions                                                                   |
+  +-----------------------+-------+--------------------------------------------------------------------------------------------------------------------------+
+  | R_DPU_IMM24           | 138   | 24-bit immediate                                                                                                         |
+  +-----------------------+-------+--------------------------------------------------------------------------------------------------------------------------+
+  | R_DPU_IMM24_RB        | 139   | 24-bit address offset in ``Store Register`` instructions                                                                 |
+  +-----------------------+-------+--------------------------------------------------------------------------------------------------------------------------+
+  | R_DPU_IMM27           | 140   | 27-bit immediate for ``OPCX`` instructions with a ``Set Boolean`` condition                                              |
+  +-----------------------+-------+--------------------------------------------------------------------------------------------------------------------------+
+  | R_DPU_IMM28           | 141   | 28-bit immediate for ``OPC8`` instructions with a ``Set Boolean`` condition                                              |
+  +-----------------------+-------+--------------------------------------------------------------------------------------------------------------------------+
+  | R_DPU_IMM32           | 142   | 32-bit immediate                                                                                                         |
+  +-----------------------+-------+--------------------------------------------------------------------------------------------------------------------------+
+  | R_DPU_IMM32_ZERO_RB   | 143   | 32-bit immediate when the instruction has no destination                                                                 |
+  +-----------------------+-------+--------------------------------------------------------------------------------------------------------------------------+
+  | R_DPU_IMM17_24        | 144   | 17-bit immediate sign-extended to 24-bit used in ``Safe Add/Sub`` instructions                                           |
+  +-----------------------+-------+--------------------------------------------------------------------------------------------------------------------------+
+  | R_DPU_IMM32_DUS_RB    | 145   | 32-bit immediate in 64-bit extended instructions (except ``Constant And`` extended instructions which use R_DPU_IMM32)   |
+  +-----------------------+-------+--------------------------------------------------------------------------------------------------------------------------+
+
+Instruction size
+~~~~~~~~~~~~~~~~
+
+The **IRAM** can store up to 4096 instructions on the v1A DPU, or 3968 on he v1B DPU. In the **IRAM**, each instruction takes 6 bytes.
+But for the binary format, each instruction is viewed as an 8-byte word.
+
+When copying instructions from the **MRAM** to the **IRAM**, the DMA instruction expect a buffer where each instruction
+is encoded on 8 bytes.
+
+Virtual address offset
+~~~~~~~~~~~~~~~~~~~~~~
+
+The different memories have different virtual address offset added to their symbols value:
+
+  +--------+------------------------+
+  | Memory | Virtual address offset |
+  +--------+------------------------+
+  | WRAM   | 0x00000000             |
+  +--------+------------------------+
+  | IRAM   | 0x80000000             |
+  +--------+------------------------+
+  | MRAM   | 0x08000000             |
+  +--------+------------------------+
+  | Atomic | 0xF0000000             |
+  +--------+------------------------+
+

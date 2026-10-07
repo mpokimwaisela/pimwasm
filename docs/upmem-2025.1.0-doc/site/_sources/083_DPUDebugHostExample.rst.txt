@@ -1,0 +1,76 @@
+==========================================================
+An example of debugging a DPU booted by a host application
+==========================================================
+
+Context
+=======
+
+The following example will show how to attach to a DPU booted by a host application on the several debug scenarios mentioned :doc:`before<082_DPUDebugHost>`.
+
+For all these examples we are going to use the following source files:
+
+The DPU program (in ``host_debug_example_dpu.c``):
+
+.. literalinclude:: ../../../endtests/documentation/host_debug_example/host_debug_example_dpu.c
+   :language: c
+
+It contains two bugs:
+
+ * it will loop forever if the host set the ``wait`` variable to 1
+
+ * it will generate a memory fault when trying to write at a forbidden address
+
+The host application (in ``host_debug_example_host.c``):
+
+.. literalinclude:: ../../../endtests/documentation/host_debug_example/host_debug_example_host.c
+   :language: c
+
+Let's compile both programs:
+
+.. literalinclude:: ../../../endtests/documentation/host_debug_example/host_debug_example.compile
+
+We are now ready for the scenario.
+
+Attaching before the start of an application
+============================================
+
+To attach before the start of an application, we need to use the ``dpu_attach`` command before the host's call to ``dpu_launch``. Then we will be able to check the MRAM content:
+
+.. literalinclude:: ../../../endtests/documentation/host_debug_example/host_debug_example.before_start.lldb_script
+
+.. literalinclude:: ../../../endtests/documentation/host_debug_example/host_debug_example.before_start.output
+
+Attaching when the DPU is booting
+=================================
+
+To attach when a DPU is booting, we need to use the ``dpu_attach_on_boot`` command. Then we will be able to check the content of the MRAM and let the DPU run until the main function:
+
+.. literalinclude:: ../../../endtests/documentation/host_debug_example/host_debug_example.on_boot.lldb_script
+
+.. literalinclude:: ../../../endtests/documentation/host_debug_example/host_debug_example.on_boot.output
+
+Attaching when the DPU is running
+=================================
+
+To attach when a DPU is running, we need to use the ``dpu_attach`` command. Then we will be able to check why the DPU program does not end and fix it on the fly:
+
+.. literalinclude:: ../../../endtests/documentation/host_debug_example/host_debug_example.running.lldb_script
+
+.. literalinclude:: ../../../endtests/documentation/host_debug_example/host_debug_example.running.output
+
+Attaching after the end of the DPU program
+==========================================
+
+To attach after the end of the DPU program, we need to use the ``dpu_attach`` command. Then we will be able to check the state of the threads and disassemble the instruction:
+
+.. literalinclude:: ../../../endtests/documentation/host_debug_example/host_debug_example.after.lldb_script
+
+.. literalinclude:: ../../../endtests/documentation/host_debug_example/host_debug_example.after.output
+
+Also, as mentionned when running:
+
+.. literalinclude:: ../../../endtests/documentation/host_debug_example/host_debug_example.run
+
+It is also possible to attach to the DPU after the execution of the host application by using ``dpu-lldb-attach-dpu`` to get the same information (see section :doc:`Attaching to a DPU without having a host application<084_DPUDebugAttachWithoutHost>` for more information on ``dpu-lldb-attach-dpu``):
+
+.. literalinclude:: ../../../endtests/documentation/host_debug_example/host_debug_example.dpu-lldb-attach-dpu.output

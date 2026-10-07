@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WRAM Parallel Access &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Unaligned MRAM Accesses" href="264_MRAMUnaligned.html" />
+    <link rel="prev" title="Application profiling" href="261_Application_profiling.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">WRAM Parallel Access</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#wram-fifos">WRAM FIFOs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#host-dpu-communication-through-fifos">Host/DPU Communication through FIFOs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#code-example">Code Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">WRAM Parallel Access</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/263_WramFifo.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="wram-parallel-access">
+<h1>WRAM Parallel Access<a class="headerlink" href="#wram-parallel-access" title="Permalink to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h2>
+<p>The standard API for data transfers between the host CPU and the DPUs cannot perform transfers in parallel of the DPUs’ execution.
+At any time, a DPU is either running a program or communicating with the host, but not both in parallel.</p>
+<p>For instance, when executing a <code class="docutils literal notranslate"><span class="pre">dpu_launch</span></code> followed by a <code class="docutils literal notranslate"><span class="pre">dpu_push_xfer</span></code>, the data transfer is started once the DPUs have finished their execution. If the asynchronous mode is used, both calls return immediately, but they are still executed sequentially for each rank in the background (see section <a class="reference internal" href="033_AdvancedHostFeatures.html#asynchronism"><span class="std std-ref">Asynchronism</span></a> for more details on the asynchronous mode of execution).
+This means that an asynchronous transfer to one rank can happen in parallel of another rank running a program, but there is no overlap of communication and program execution at the DPU level.</p>
+<p>Since the SDK release 2024.1, an API is available to perform access to the DPU’s WRAM in parallel of the program execution.
+This functionality relies on an extension available in the <strong>v1B version</strong> of UPMEM’s hardware only.
+It is suitable for small transfer sizes (in the order of few tens of bytes), since the access bandwitdh is limited, but it can be useful for applications where fine-grained communication is needed.</p>
+<p><strong>Important notes:</strong> this API cannot perform parallel access to the MRAM, only the WRAM can be accessed while the DPUs are running. It is only compatible with v1B hardware, please ensure you have the latest hardware otherwise this feature will not work properly.</p>
+<p>The flag <code class="docutils literal notranslate"><span class="pre">DPU_XFER_PARALLEL</span></code> can be used with function <code class="docutils literal notranslate"><span class="pre">dpu_push_xfer</span></code> to specify that the transfer should be scheduled in parallel of the DPU program execution.</p>
+<p>When executing a <code class="docutils literal notranslate"><span class="pre">dpu_launch</span></code> with flag <code class="docutils literal notranslate"><span class="pre">DPU_ASYNCHRONOUS</span></code> followed by a <code class="docutils literal notranslate"><span class="pre">dpu_push_xfer</span></code> with flag <code class="docutils literal notranslate"><span class="pre">DPU_XFER_PARALLEL</span></code>, the transfer will be scheduled immediately, without waiting for the DPU execution to finish. Note that if the variable or address targeted does not reference the WRAM, an error <code class="docutils literal notranslate"><span class="pre">DPU_ERR_INVALID_PARALLEL_MEMORY_TRANSFER</span></code> is triggered.</p>
+<p>The picture below shows the difference in execution when using asynchronous and parallel modes.</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/parallel_mode_schedule.png"><img alt="_images/parallel_mode_schedule.png" src="_images/parallel_mode_schedule.png" style="width: 768.0px; height: 432.0px;" /></a>
+</div></blockquote>
+<p>It is also possible to perform parallel callbacks using the flag <code class="docutils literal notranslate"><span class="pre">DPU_CALLBACK_PARALLEL</span></code>. Similarly, the callback is then executed in parallel of the DPU program.</p>
+<p>Parallel transfers or callbacks respect the FIFO order for execution. They cannot be scheduled before another job that was issued before, whether it is a regular or parallel job.</p>
+<p>A parallel job can be both synchronous or asynchronous. If it is synchronous, the call returns when all parallel jobs until the current parallel job are finished. This means, the call will synchronize all scheduled parallel jobs, but not non-parallel jobs.</p>
+</section>
+<section id="wram-fifos">
+<h2>WRAM FIFOs<a class="headerlink" href="#wram-fifos" title="Permalink to this heading"></a></h2>
+<p>A key point when using parallel transfers to the WRAM is the synchronization between the CPU and the DPUs.</p>
+<p>For instance, when the host starts a parallel transfer of data to the DPU WRAM, the DPU must be able to determine when this transfer is done and the data is ready. In order to facilitate the synchronizations, the SDK provides an API for parallel access based on FIFO data structures stored in the DPU’s WRAM. The FIFOs are used to synchronize data exchanges between the host and the DPUs, while ensuring a consistent view of the data at both ends.</p>
+<p>After the DPUs have been launched in asynchronous mode, the host program can push data into a DPU’s input FIFO and retrieve data from a DPU’s output FIFO in parallel of the DPU’s execution. The DPU program can get data from an input FIFO, process it, and push a result in an output FIFO. All these operations can be done by the programmer without taking care of the synchronizations which are managed by the API under the hood. The following picture illustrates the flow of execution when the host and the DPUs are synchronized through WRAM FIFOs.</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/wram_fifo_flow.png"><img alt="_images/wram_fifo_flow.png" src="_images/wram_fifo_flow.png" style="width: 768.0px; height: 432.0px;" /></a>
+</div></blockquote>
+<p>On the DPU side, the following macros are used to declare the FIFOs:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">INPUT_FIFO_INIT(fifo_name,</span> <span class="pre">fifo_ptr_size,</span> <span class="pre">data_size)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OUTPUT_FIFO_INIT(fifo_name,</span> <span class="pre">fifo_ptr_size,</span> <span class="pre">data_size)</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>The parameter <code class="docutils literal notranslate"><span class="pre">fifo_name</span></code> is the variable name, <code class="docutils literal notranslate"><span class="pre">fifo_ptr_size</span></code> is a strictly positive integer lower or equal to 10, which is equal to the log2 of the FIFO capacity (number of elements it can contain), and <code class="docutils literal notranslate"><span class="pre">data_size</span></code> (required to be a multiple of 8) is the byte size of one element in the FIFO.
+For instance, the call <code class="docutils literal notranslate"><span class="pre">INPUT_FIFO_INIT(q,</span> <span class="pre">5,</span> <span class="pre">8)</span></code> defines an input FIFO named <code class="docutils literal notranslate"><span class="pre">q</span></code> with size 2^5 = 32 elements of 8 bytes. The DPU program can perform three main operations on an input FIFO, check its emptiness, access the first element, remove the first element, and it can perform two main operations on an output FIFO, check if the FIFO is full and push data into it.</p>
+<p>Note that a WRAM FIFO is either an input FIFO or an output FIFO, but cannot be both at the same time. An input FIFO is filled by the host and emptied by the DPU while an output FIFO is emptied by the host and filled by the DPU.</p>
+<p>Two functions are provided to ease the process of repeteadly performing a task on all elements from an input FIFO.</p>
+<p>The first function, called <code class="docutils literal notranslate"><span class="pre">process_inputs_all_tasklets</span></code>, let the next input of the FIFO be handled by all tasklets in parallel. After each tasklet has generated its own result for this unique input, tasklet 0 performs a reduction operation and generates the result in the output FIFO.</p>
+<p>The second function, called <code class="docutils literal notranslate"><span class="pre">process_inputs_each_tasklet</span></code>, let each tasklet take the next input in the FIFO, perform an operation and generate a result in the output FIFO. In this second model, every tasklet work on a different input.</p>
+<p>Both functions take as parameter an input and output FIFO, and also function pointers defining the task to be executed.</p>
+<p>They also require a pointer to a flag set by the host when it has finished sending inputs. The DPU function keep waiting for new inputs and terminates only when the flag has been set by the host and the input FIFO is empty. The exact prototypes of these functions are found in the Runtime Library documentation <a class="reference external" href="202_RTL.html#process-inputs-all-tasklets">here</a>, and the usage of <code class="docutils literal notranslate"><span class="pre">process_inputs_all_tasklets</span></code> is illustrated in section <a class="reference internal" href="#example-wram-fifo"><span class="std std-ref">Code Example</span></a>.</p>
+</section>
+<section id="host-dpu-communication-through-fifos">
+<h2>Host/DPU Communication through FIFOs<a class="headerlink" href="#host-dpu-communication-through-fifos" title="Permalink to this heading"></a></h2>
+<p>The host can push data to an input FIFO and collect data from an output FIFO.</p>
+<p>In order to perform operations to a DPU FIFO, it must first create a link to the FIFO using one of the two functions:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dpu_error_t</span> <span class="pre">dpu_link_input_fifo(struct</span> <span class="pre">dpu_set_t</span> <span class="pre">dpu_set,</span> <span class="pre">struct</span> <span class="pre">dpu_fifo_link_t</span> <span class="pre">*link,</span> <span class="pre">char</span> <span class="pre">*fifo_name)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dpu_error_t</span> <span class="pre">dpu_link_output_fifo(struct</span> <span class="pre">dpu_set_t</span> <span class="pre">dpu_set,</span> <span class="pre">struct</span> <span class="pre">dpu_fifo_link_t</span> <span class="pre">*link,</span> <span class="pre">char</span> <span class="pre">*fifo_name)</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>where <code class="docutils literal notranslate"><span class="pre">dpu_set</span></code> is the set of DPUs for which the FIFO needs to be linked, <code class="docutils literal notranslate"><span class="pre">link</span></code> is a pointer to a <code class="docutils literal notranslate"><span class="pre">dpu_fifo_link_t</span></code> structure filled by these function, and <code class="docutils literal notranslate"><span class="pre">fifo_name</span></code> is the variable name in the DPU program.</p>
+<p>Once the link is established, the <code class="docutils literal notranslate"><span class="pre">fifo_link</span></code> variable can be used to perform transfers with the DPU FIFO.</p>
+<p>The host transfers are performed using the functions <code class="docutils literal notranslate"><span class="pre">dpu_fifo_prepare_xfer</span></code> and <code class="docutils literal notranslate"><span class="pre">dpu_fifo_push_xfer</span></code> which are comparable to the functions <code class="docutils literal notranslate"><span class="pre">dpu_prepare_xfer</span></code> and <code class="docutils literal notranslate"><span class="pre">dpu_push_xfer</span></code> for regular transfers. For pushing data to an input FIFO, the function <code class="docutils literal notranslate"><span class="pre">dpu_fifo_prepare_xfer</span></code> is used to specify the host buffer containing data to be pushed for each DPU, while for retrieving data from an output FIFO, the same function is used to specify where to store the data collected.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">dpu_fifo_push_xfer</span></code> is used to push data to an input FIFO, it pushes only one element at a time, and when it is used to collect data from an output FIFO to the host memory, it retrieves all elements from the output FIFO at a time. The prototypes for functions <code class="docutils literal notranslate"><span class="pre">dpu_fifo_prepare_xfer</span></code> and <code class="docutils literal notranslate"><span class="pre">dpu_fifo_push_xfer</span></code> are as follows:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dpu_error_t</span> <span class="pre">dpu_fifo_prepare_xfer(struct</span> <span class="pre">dpu_set_t</span> <span class="pre">dpu_set,</span> <span class="pre">struct</span> <span class="pre">dpu_fifo_link_t</span> <span class="pre">*fifo_link,</span> <span class="pre">void</span> <span class="pre">*buffer)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dpu_error_t</span> <span class="pre">dpu_fifo_push_xfer(struct</span> <span class="pre">dpu_set_t</span> <span class="pre">dpu_set,</span> <span class="pre">struct</span> <span class="pre">dpu_fifo_link_t</span> <span class="pre">*fifo_link,</span> <span class="pre">dpu_xfer_flags_t</span> <span class="pre">flags)</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>Where <code class="docutils literal notranslate"><span class="pre">dpu_set</span></code> is the set of DPUs to target, <code class="docutils literal notranslate"><span class="pre">fifo_link</span></code> is the link previously obtained with <code class="docutils literal notranslate"><span class="pre">dpu_link_input_fifo</span></code> or <code class="docutils literal notranslate"><span class="pre">dpu_link_output_fifo</span></code>, and <code class="docutils literal notranslate"><span class="pre">flags</span></code> contains the transfer options. As for a regular transfer and for parallel jobs, a call to <code class="docutils literal notranslate"><span class="pre">dpu_fifo_push_xfer</span></code> can be synchronous or asynchronous. It is triggered in parallel of the DPU execution by default.</p>
+<p>When pushing to an input FIFO, it can happen that one of the DPU’s FIFO is full. If this happens, the function retries to push the data after some time, in order to give slack to the DPU for handling elements in its input FIFO. If after a number of retries the FIFO is still full, an error <code class="docutils literal notranslate"><span class="pre">DPU_ERR_WRAM_FIFO_FULL</span></code> is triggered. The number of retries is 1000 by default and can be modified using function <code class="docutils literal notranslate"><span class="pre">dpu_fifo_set_max_push_retries</span></code>, and the time between retries is 10 microseconds by default and can be modified using function <code class="docutils literal notranslate"><span class="pre">dpu_fifo_set_time_for_push_retries</span></code>.</p>
+<p>There are different reasons for which the DPU could fail to make progress while its input FIFO is full, but in particular it can happen if the DPU’s output FIFO is also full, preventing it to handle any new element from the input FIFO because it has no space to push a new result. Therefore, it is important to collect elements from the output FIFO at a sufficient pace for the FIFO sizes.</p>
+</section>
+<section id="code-example">
+<span id="example-wram-fifo"></span><h2>Code Example<a class="headerlink" href="#code-example" title="Permalink to this heading"></a></h2>
+<p>This section illustrates the WRAM parallel transfers using FIFOs with a toy example.</p>
+<p>The DPU’s MRAM contains an array of key-value pairs as positive integers. The DPU program performs a scan of the array, and sum up the values associated to a given key specified by the host program.</p>
+<p>Two FIFOs are defined in the DPU program: an input FIFO containing the keys for which the values’ sum needs to be computed, and an output FIFO containing pairs (key, sum) to be returned to the host.</p>
+<p>Each DPU tasklet scans a different part of the array and the partial sums of each tasklet are later accumulated. This is achieved with the function <code class="docutils literal notranslate"><span class="pre">process_inputs_all_tasklets</span></code> which repeteadly take data from the input FIFO, let every tasklet perform an operation on the data, and let tasklet 0 perform a reduction of the partial results of all tasklets. The DPU code is provided below.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mram.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;defs.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;barrier.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;wramfifo.h&gt;</span>
+
+<span class="c1">// number of elements to scan</span>
+<span class="cp">#define NR_ELEMS (4 &lt;&lt; 10)</span>
+<span class="cp">#define NR_ELEM_PER_TASKLET (NR_ELEMS / NR_TASKLETS)</span>
+
+<span class="c1">// input and output FIFOs&#39; capacity and data size</span>
+<span class="cp">#define INPUT_FIFO_PTR_SIZE 5</span>
+<span class="cp">#define INPUT_FIFO_DATA_SIZE 8</span>
+<span class="cp">#define OUTPUT_FIFO_PTR_SIZE 6</span>
+<span class="cp">#define OUTPUT_FIFO_DATA_SIZE 16</span>
+
+<span class="c1">// flag set to false by the host when no more keys are sent</span>
+<span class="n">__host</span><span class="w"> </span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="c1">// a barrier used to synchronize tasklets</span>
+<span class="n">BARRIER_INIT</span><span class="p">(</span><span class="n">barrier</span><span class="p">,</span><span class="w"> </span><span class="n">NR_TASKLETS</span><span class="p">);</span>
+
+<span class="c1">// input FIFO of 32 elements of 8 bytes, containing keys sent by the host</span>
+<span class="n">INPUT_FIFO_INIT</span><span class="p">(</span><span class="n">input_fifo</span><span class="p">,</span><span class="w"> </span><span class="n">INPUT_FIFO_PTR_SIZE</span><span class="w"> </span><span class="cm">/*=5*/</span><span class="p">,</span><span class="w"> </span><span class="n">INPUT_FIFO_DATA_SIZE</span><span class="w"> </span><span class="cm">/*=8*/</span><span class="p">);</span>
+<span class="c1">// output FIFO of 32 elements of 16 bytes, containing pairs (key, sum) returned by the DPU</span>
+<span class="n">OUTPUT_FIFO_INIT</span><span class="p">(</span><span class="n">output_fifo</span><span class="p">,</span><span class="w"> </span><span class="n">OUTPUT_FIFO_PTR_SIZE</span><span class="w"> </span><span class="cm">/*=5*/</span><span class="p">,</span><span class="w"> </span><span class="n">OUTPUT_FIFO_DATA_SIZE</span><span class="w"> </span><span class="cm">/*=16*/</span><span class="p">);</span>
+
+
+<span class="c1">// keys and values stored in MRAM</span>
+<span class="n">__mram_noinit</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">keys</span><span class="p">[</span><span class="n">NR_ELEMS</span><span class="p">];</span>
+<span class="n">__mram_noinit</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">values</span><span class="p">[</span><span class="n">NR_ELEMS</span><span class="p">];</span>
+
+<span class="c1">// WRAM caches for each tasklet to read keys and values</span>
+<span class="cp">#define CACHE_SIZE 256</span>
+<span class="kt">uint32_t</span><span class="w"> </span><span class="n">cache_keys</span><span class="p">[</span><span class="n">NR_TASKLETS</span><span class="p">][</span><span class="n">CACHE_SIZE</span><span class="p">];</span>
+<span class="kt">uint32_t</span><span class="w"> </span><span class="n">cache_values</span><span class="p">[</span><span class="n">NR_TASKLETS</span><span class="p">][</span><span class="n">CACHE_SIZE</span><span class="p">];</span>
+
+<span class="c1">// partial sums computed by each tasklet</span>
+<span class="kt">uint64_t</span><span class="w"> </span><span class="n">sum_tasklets</span><span class="p">[</span><span class="n">NR_TASKLETS</span><span class="p">];</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * This function handles the sum of values with given key </span>
+<span class="cm"> **/</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">values_sum_compute</span><span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="n">input</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="o">*</span><span class="n">sum_tasklets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint64_t</span><span class="o">*</span><span class="p">)</span><span class="n">ctx</span><span class="p">;</span>
+<span class="w">  </span><span class="n">sum_tasklets</span><span class="p">[</span><span class="n">me</span><span class="p">()]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="k">for</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">NR_ELEM_PER_TASKLET</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">NR_ELEM_PER_TASKLET</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">CACHE_SIZE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">mram_read</span><span class="p">(</span><span class="n">keys</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">cache_keys</span><span class="p">[</span><span class="n">me</span><span class="p">()],</span><span class="w"> </span><span class="n">CACHE_SIZE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">));</span><span class="w">  </span>
+<span class="w">    </span><span class="n">mram_read</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">cache_values</span><span class="p">[</span><span class="n">me</span><span class="p">()],</span><span class="w"> </span><span class="n">CACHE_SIZE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">));</span><span class="w">  </span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">CACHE_SIZE</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">     </span><span class="k">if</span><span class="p">(</span><span class="n">cache_keys</span><span class="p">[</span><span class="n">me</span><span class="p">()][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">key</span><span class="p">)</span>
+<span class="w">       </span><span class="n">sum_tasklets</span><span class="p">[</span><span class="n">me</span><span class="p">()]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">cache_values</span><span class="p">[</span><span class="n">me</span><span class="p">()][</span><span class="n">j</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * This function is the reduction executed by tasklet 0 after all tasklets</span>
+<span class="cm"> * have finished handling the input key.</span>
+<span class="cm"> * It produces the final sum which is written in the output fifo.</span>
+<span class="cm"> **/</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">values_sum_reduce</span><span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">output</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="o">*</span><span class="n">sum_tasklets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint64_t</span><span class="o">*</span><span class="p">)</span><span class="n">ctx</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NR_TASKLETS</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="w">    </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">sum_tasklets</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="n">input</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="o">*</span><span class="n">outputVec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint64_t</span><span class="o">*</span><span class="p">)</span><span class="n">output</span><span class="p">;</span>
+<span class="w">  </span><span class="n">outputVec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">key</span><span class="p">;</span>
+<span class="w">  </span><span class="n">outputVec</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="c1">// Repeatedly takes a key from the input FIFO, process it </span>
+<span class="w">    </span><span class="c1">// and push the result in the output FIFO.</span>
+<span class="w">    </span><span class="c1">// Returns when the active flag has been set to false and the input FIFO is empty</span>
+<span class="w">    </span><span class="n">process_inputs_all_tasklets</span><span class="p">(</span><span class="o">&amp;</span><span class="n">input_fifo</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">output_fifo</span><span class="p">,</span><span class="w"> </span>
+<span class="w">        </span><span class="n">values_sum_compute</span><span class="p">,</span><span class="w"> </span><span class="n">values_sum_reduce</span><span class="p">,</span><span class="w"> </span><span class="n">sum_tasklets</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">barrier</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">active</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The host program allocates and launch a DPU in asynchronous mode and create links to the DPU FIFOs.</p>
+<p>Then it enters a loop to push 64 keys (values 0 to 63) to the DPU input FIFO.</p>
+<p>It retrieves the results every 32 loop iterations. When retrieving results from the output FIFO, a parallel callback is scheduled to read the key-sum pairs and compare them to the expected result as computed on the host CPU. The host code is provided below.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;dpu.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;assert.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;bits/types.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span>
+
+<span class="c1">// number of elements to scan</span>
+<span class="cp">#define NR_ELEMS (4 &lt;&lt; 10)</span>
+
+<span class="c1">// output FIFO&#39;s capacity and size</span>
+<span class="cp">#define OUTPUT_FIFO_PTR_SIZE 6</span>
+<span class="cp">#define OUTPUT_FIFO_DATA_SIZE 16</span>
+<span class="cp">#define OUTPUT_FIFO_SIZE ((1 &lt;&lt; OUTPUT_FIFO_PTR_SIZE) * OUTPUT_FIFO_DATA_SIZE)</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * generate random key-value pairs and send them to the DPU</span>
+<span class="cm"> **/</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">gen_and_send_key_values</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">dpu_set_t</span><span class="w"> </span><span class="n">dpu_set</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="o">*</span><span class="w"> </span><span class="n">keys</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="o">*</span><span class="w"> </span><span class="n">values</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NR_ELEMS</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">()</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">1024</span><span class="p">;</span>
+<span class="w">    </span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">()</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">1024</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_broadcast_to</span><span class="p">(</span><span class="n">dpu_set</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;keys&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">keys</span><span class="p">,</span><span class="w"> </span><span class="n">NR_ELEMS</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">),</span><span class="w"> </span><span class="n">DPU_XFER_DEFAULT</span><span class="p">));</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_broadcast_to</span><span class="p">(</span><span class="n">dpu_set</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;values&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">values</span><span class="p">,</span><span class="w"> </span><span class="n">NR_ELEMS</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">),</span><span class="w"> </span><span class="n">DPU_XFER_DEFAULT</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Structure to hold data used for the output FIFO flush callback</span>
+<span class="cm"> **/</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">flush_args_t</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">output_fifo_data</span><span class="p">;</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">dpu_fifo_link_t</span><span class="w"> </span><span class="o">*</span><span class="n">output_link</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="o">*</span><span class="w"> </span><span class="n">sums</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Read key-sum pairs retrieved from the DPU&#39;s output FIFO.</span>
+<span class="cm"> * Check the correctness by comparing with the sum computed on the CPU.</span>
+<span class="cm"> **/</span>
+<span class="k">static</span><span class="w"> </span><span class="n">dpu_error_t</span><span class="w"> </span><span class="nf">flush_output_fifos</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">dpu_set_t</span><span class="w"> </span><span class="n">rank</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                                      </span><span class="n">__attribute__</span><span class="p">((</span><span class="n">unused</span><span class="p">))</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">rank_id</span><span class="p">,</span>
+<span class="w">                                      </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">dpu_set_t</span><span class="w"> </span><span class="n">dpu</span><span class="p">;</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">flush_args_t</span><span class="w"> </span><span class="o">*</span><span class="n">flush_args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">output_fifo_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flush_args</span><span class="o">-&gt;</span><span class="n">output_fifo_data</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="o">*</span><span class="w"> </span><span class="n">sums</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flush_args</span><span class="o">-&gt;</span><span class="n">sums</span><span class="p">;</span>
+<span class="w">  </span><span class="n">DPU_FOREACH</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span><span class="w"> </span><span class="n">dpu</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">sz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_fifo_size</span><span class="p">(</span><span class="n">flush_args</span><span class="o">-&gt;</span><span class="n">output_link</span><span class="p">,</span><span class="w"> </span><span class="n">dpu</span><span class="p">);</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">fifo_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">fifo_index</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">sz</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">fifo_index</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">      </span><span class="kt">uint64_t</span><span class="w"> </span><span class="o">*</span><span class="n">recv_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint64_t</span><span class="o">*</span><span class="p">)</span><span class="n">get_fifo_elem</span><span class="p">(</span><span class="n">flush_args</span><span class="o">-&gt;</span><span class="n">output_link</span><span class="p">,</span><span class="w"> </span><span class="n">dpu</span><span class="p">,</span><span class="w"> </span>
+<span class="w">          </span><span class="n">output_fifo_data</span><span class="p">,</span><span class="w"> </span><span class="n">fifo_index</span><span class="p">);</span>
+<span class="w">      </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">recv_data</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">      </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">recv_data</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="w">      </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;key: %lu received sum=%lu (expected=%lu)</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">sum</span><span class="p">,</span><span class="w"> </span><span class="n">sums</span><span class="p">[</span><span class="n">key</span><span class="p">]);</span>
+<span class="w">      </span><span class="n">assert</span><span class="p">(</span><span class="n">sum</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sums</span><span class="p">[</span><span class="n">key</span><span class="p">]);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">DPU_OK</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="c1">// allocate one DPU and load the program</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">dpu_set_t</span><span class="w"> </span><span class="n">dpu_set</span><span class="p">,</span><span class="w"> </span><span class="n">dpu</span><span class="p">;</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_alloc</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">dpu_set</span><span class="p">));</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_load</span><span class="p">(</span><span class="n">dpu_set</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wram_fifo_example&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">));</span>
+
+<span class="w">  </span><span class="c1">// generate random key and value pairs and send them to the DPU</span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">keys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">malloc</span><span class="p">(</span><span class="n">NR_ELEMS</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">));</span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">malloc</span><span class="p">(</span><span class="n">NR_ELEMS</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">));</span>
+<span class="w">  </span><span class="n">gen_and_send_key_values</span><span class="p">(</span><span class="n">dpu_set</span><span class="p">,</span><span class="w"> </span><span class="n">keys</span><span class="p">,</span><span class="w"> </span><span class="n">values</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// compute expected sums for functional correctness verification</span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">sums</span><span class="p">[</span><span class="mi">64</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="w">  </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NR_ELEMS</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">64</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">sums</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">// create links to the input and output FIFOs of the DPU</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">dpu_fifo_link_t</span><span class="w"> </span><span class="n">input_link</span><span class="p">,</span><span class="w"> </span><span class="n">output_link</span><span class="p">;</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_link_input_fifo</span><span class="p">(</span><span class="n">dpu_set</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">input_link</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;input_fifo&quot;</span><span class="p">));</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_link_output_fifo</span><span class="p">(</span><span class="n">dpu_set</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">output_link</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;output_fifo&quot;</span><span class="p">));</span>
+
+<span class="w">  </span><span class="c1">// allocate an array to store the output fifo data read from the DPU</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">output_fifo_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">calloc</span><span class="p">(</span><span class="n">OUTPUT_FIFO_SIZE</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">  </span><span class="n">DPU_FOREACH</span><span class="p">(</span><span class="n">dpu_set</span><span class="p">,</span><span class="w"> </span><span class="n">dpu</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_fifo_prepare_xfer</span><span class="p">(</span><span class="n">dpu</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">output_link</span><span class="p">,</span><span class="w"> </span><span class="n">output_fifo_data</span><span class="p">));</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">// structure holding data for the callback to read the results from the output FIFO</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">flush_args_t</span><span class="w"> </span><span class="n">flush_args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">output_fifo_data</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">output_link</span><span class="p">,</span><span class="w"> </span><span class="n">sums</span><span class="p">};</span>
+
+<span class="w">  </span><span class="c1">// variable holding the key to be sent to the input FIFO</span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="n">DPU_FOREACH</span><span class="p">(</span><span class="n">dpu_set</span><span class="p">,</span><span class="w"> </span><span class="n">dpu</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_fifo_prepare_xfer</span><span class="p">(</span><span class="n">dpu</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">input_link</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)(</span><span class="o">&amp;</span><span class="n">key</span><span class="p">)));</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">// launch the DPU in asynchronous mode</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_launch</span><span class="p">(</span><span class="n">dpu_set</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_ASYNCHRONOUS</span><span class="p">));</span>
+
+<span class="w">  </span><span class="c1">// send key 0 to 63 to the DPU&#39;s input FIFO</span>
+<span class="w">  </span><span class="k">for</span><span class="p">(;</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">64</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">key</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="c1">// push new key into the DPU FIFO</span>
+<span class="w">    </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_fifo_push_xfer</span><span class="p">(</span><span class="n">dpu_set</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">input_link</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_XFER_NO_RESET</span><span class="p">));</span>
+
+<span class="w">    </span><span class="c1">// read output FIFO and callback</span>
+<span class="w">    </span><span class="c1">// since it is emptied at each read, do it after sending 32 inputs</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(((</span><span class="n">key</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">32</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">      </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_fifo_push_xfer</span><span class="p">(</span><span class="n">dpu_set</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">output_link</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_XFER_NO_RESET</span><span class="p">));</span>
+
+<span class="w">      </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_callback</span><span class="p">(</span><span class="n">dpu_set</span><span class="p">,</span><span class="w"> </span><span class="n">flush_output_fifos</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">flush_args</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_CALLBACK_PARALLEL</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">// Notify the DPU that no more keys will be sent</span>
+<span class="w">  </span><span class="c1">// The DPU will handle the remaining keys in the input FIFO and terminate</span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_prepare_xfer</span><span class="p">(</span><span class="n">dpu_set</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">active</span><span class="p">));</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_push_xfer</span><span class="p">(</span><span class="n">dpu_set</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_XFER_TO_DPU</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;active&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">                           </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">uint64_t</span><span class="p">),</span><span class="w"> </span><span class="n">DPU_XFER_PARALLEL</span><span class="p">));</span>
+
+<span class="w">  </span><span class="c1">// wait for the DPU to finish</span>
+<span class="w">  </span><span class="n">dpu_sync</span><span class="p">(</span><span class="n">dpu_set</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// retrieve last results from the output FIFO</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_fifo_push_xfer</span><span class="p">(</span><span class="n">dpu_set</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">output_link</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_XFER_DEFAULT</span><span class="p">));</span>
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_callback</span><span class="p">(</span><span class="n">dpu_set</span><span class="p">,</span><span class="w"> </span><span class="n">flush_output_fifos</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">flush_args</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_CALLBACK_DEFAULT</span><span class="p">));</span>
+
+<span class="w">  </span><span class="n">free</span><span class="p">(</span><span class="n">output_fifo_data</span><span class="p">);</span>
+<span class="w">  </span><span class="n">dpu_fifo_link_free</span><span class="p">(</span><span class="o">&amp;</span><span class="n">input_link</span><span class="p">);</span>
+<span class="w">  </span><span class="n">dpu_fifo_link_free</span><span class="p">(</span><span class="o">&amp;</span><span class="n">output_link</span><span class="p">);</span>
+<span class="w">  </span><span class="n">dpu_free</span><span class="p">(</span><span class="n">dpu_set</span><span class="p">);</span>
+<span class="w">  </span><span class="n">free</span><span class="p">(</span><span class="n">keys</span><span class="p">);</span>
+<span class="w">  </span><span class="n">free</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="261_Application_profiling.html" class="btn btn-neutral float-left" title="Application profiling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="264_MRAMUnaligned.html" class="btn btn-neutral float-right" title="Unaligned MRAM Accesses" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

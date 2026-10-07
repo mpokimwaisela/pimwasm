@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dpu.vpd.vpd module &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/dark_mode_js/default_dark.js"></script>
+        <script src="../_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="dpu.compiler module" href="dpu.compiler.html" />
+    <link rel="prev" title="dpu.vpd.dimm module" href="dpu.vpd.dimm.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Python Library</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="modules.html#contents">Contents</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="dpu.html">dpu package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="dpu.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dpu.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dpu.html#module-dpu">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#debugging">Debugging</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Python Library</a></li>
+          <li class="breadcrumb-item"><a href="dpu.html">dpu package</a></li>
+          <li class="breadcrumb-item"><a href="dpu.vpd.html">dpu.vpd package</a></li>
+      <li class="breadcrumb-item active">dpu.vpd.vpd module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/PythonAPI/dpu.vpd.vpd.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-dpu.vpd.vpd">
+<span id="dpu-vpd-vpd-module"></span><h1>dpu.vpd.vpd module<a class="headerlink" href="#module-dpu.vpd.vpd" title="Permalink to this heading"></a></h1>
+<p>Wrapper for dpu_vpd.h</p>
+<p>Do not modify this file.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.DarwinLibraryLoader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dpu.vpd.vpd.</span></span><span class="sig-name descname"><span class="pre">DarwinLibraryLoader</span></span><a class="headerlink" href="#dpu.vpd.vpd.DarwinLibraryLoader" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dpu.vpd.vpd.LibraryLoader" title="dpu.vpd.vpd.LibraryLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">LibraryLoader</span></code></a></p>
+<p>Library loader for MacOS</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.DarwinLibraryLoader.Lookup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Lookup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.DarwinLibraryLoader.Lookup" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dpu.vpd.vpd.LibraryLoader.Lookup" title="dpu.vpd.vpd.LibraryLoader.Lookup"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lookup</span></code></a></p>
+<p>Looking up library files for this platform (Darwin aka MacOS)</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.DarwinLibraryLoader.Lookup.mode">
+<span class="sig-name descname"><span class="pre">mode</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">256</span></em><a class="headerlink" href="#dpu.vpd.vpd.DarwinLibraryLoader.Lookup.mode" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.DarwinLibraryLoader.getdirs">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getdirs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">libname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.DarwinLibraryLoader.getdirs" title="Permalink to this definition"></a></dt>
+<dd><p>Implements the dylib search as specified in Apple documentation:</p>
+<dl class="simple">
+<dt><a class="reference external" href="http://developer.apple.com/documentation/DeveloperTools/Conceptual/">http://developer.apple.com/documentation/DeveloperTools/Conceptual/</a></dt><dd><p>DynamicLibraries/Articles/DynamicLibraryUsageGuidelines.html</p>
+</dd>
+</dl>
+<p>Before commencing the standard search, the method first checks
+the bundle’s <code class="docutils literal notranslate"><span class="pre">Frameworks</span></code> directory if the application is running
+within a bundle (OS X .app).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.DarwinLibraryLoader.getplatformpaths">
+<span class="sig-name descname"><span class="pre">getplatformpaths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">libname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.DarwinLibraryLoader.getplatformpaths" title="Permalink to this definition"></a></dt>
+<dd><p>Return all the library paths available in this platform</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.DarwinLibraryLoader.name_formats">
+<span class="sig-name descname"><span class="pre">name_formats</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['lib%s.dylib',</span> <span class="pre">'lib%s.so',</span> <span class="pre">'lib%s.bundle',</span> <span class="pre">'%s.dylib',</span> <span class="pre">'%s.so',</span> <span class="pre">'%s.bundle',</span> <span class="pre">'%s']</span></em><a class="headerlink" href="#dpu.vpd.vpd.DarwinLibraryLoader.name_formats" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.LibraryLoader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dpu.vpd.vpd.</span></span><span class="sig-name descname"><span class="pre">LibraryLoader</span></span><a class="headerlink" href="#dpu.vpd.vpd.LibraryLoader" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A base class For loading of libraries ;-)
+Subclasses load libraries for specific platforms.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.LibraryLoader.Lookup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Lookup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.LibraryLoader.Lookup" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Looking up calling conventions for a platform</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.LibraryLoader.Lookup.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calling_convention</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cdecl'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.LibraryLoader.Lookup.get" title="Permalink to this definition"></a></dt>
+<dd><p>Return the given name according to the selected calling convention</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.LibraryLoader.Lookup.has">
+<span class="sig-name descname"><span class="pre">has</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calling_convention</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cdecl'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.LibraryLoader.Lookup.has" title="Permalink to this definition"></a></dt>
+<dd><p>Return True if this given calling convention finds the given ‘name’</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.LibraryLoader.Lookup.mode">
+<span class="sig-name descname"><span class="pre">mode</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#dpu.vpd.vpd.LibraryLoader.Lookup.mode" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.LibraryLoader.getpaths">
+<span class="sig-name descname"><span class="pre">getpaths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">libname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.LibraryLoader.getpaths" title="Permalink to this definition"></a></dt>
+<dd><p>Return a list of paths where the library might be found.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.LibraryLoader.getplatformpaths">
+<span class="sig-name descname"><span class="pre">getplatformpaths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_libname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.LibraryLoader.getplatformpaths" title="Permalink to this definition"></a></dt>
+<dd><p>Return all the library paths available in this platform</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.LibraryLoader.name_formats">
+<span class="sig-name descname"><span class="pre">name_formats</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['%s']</span></em><a class="headerlink" href="#dpu.vpd.vpd.LibraryLoader.name_formats" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.MutableString">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dpu.vpd.vpd.</span></span><span class="sig-name descname"><span class="pre">MutableString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.MutableString" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dpu.vpd.vpd.UserString" title="dpu.vpd.vpd.UserString"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserString</span></code></a></p>
+<p>mutable string objects</p>
+<p>Python strings are immutable objects.  This has the advantage, that
+strings may be used as dictionary keys.  If this property isn’t needed
+and you insist on changing string values in place instead, you may cheat
+and use MutableString.</p>
+<p>But the purpose of this class is an educational one: to prevent
+people from inventing their own mutable string class derived
+from UserString and than forget thereby to remove (override) the
+__hash__ method inherited from UserString.  This would lead to
+errors that would be very hard to track down.</p>
+<p>A faster and better solution is to rewrite your program using lists.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.MutableString.immutable">
+<span class="sig-name descname"><span class="pre">immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.MutableString.immutable" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.PosixLibraryLoader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dpu.vpd.vpd.</span></span><span class="sig-name descname"><span class="pre">PosixLibraryLoader</span></span><a class="headerlink" href="#dpu.vpd.vpd.PosixLibraryLoader" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dpu.vpd.vpd.LibraryLoader" title="dpu.vpd.vpd.LibraryLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">LibraryLoader</span></code></a></p>
+<p>Library loader for POSIX-like systems (including Linux)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.PosixLibraryLoader.getplatformpaths">
+<span class="sig-name descname"><span class="pre">getplatformpaths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">libname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.PosixLibraryLoader.getplatformpaths" title="Permalink to this definition"></a></dt>
+<dd><p>Return all the library paths available in this platform</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.PosixLibraryLoader.name_formats">
+<span class="sig-name descname"><span class="pre">name_formats</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['lib%s.so',</span> <span class="pre">'%s.so',</span> <span class="pre">'%s']</span></em><a class="headerlink" href="#dpu.vpd.vpd.PosixLibraryLoader.name_formats" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.ReturnString">
+<span class="sig-prename descclassname"><span class="pre">dpu.vpd.vpd.</span></span><span class="sig-name descname"><span class="pre">ReturnString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arguments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.ReturnString" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.String">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dpu.vpd.vpd.</span></span><span class="sig-name descname"><span class="pre">String</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">b''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.String" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dpu.vpd.vpd.MutableString" title="dpu.vpd.vpd.MutableString"><code class="xref py py-class docutils literal notranslate"><span class="pre">MutableString</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Union</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.String.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#dpu.vpd.vpd.String.data" title="Permalink to this definition"></a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.String.from_param">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_param</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.String.from_param" title="Permalink to this definition"></a></dt>
+<dd><p>Convert a Python object into a function call parameter.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.String.raw">
+<span class="sig-name descname"><span class="pre">raw</span></span><a class="headerlink" href="#dpu.vpd.vpd.String.raw" title="Permalink to this definition"></a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UNCHECKED">
+<span class="sig-prename descclassname"><span class="pre">dpu.vpd.vpd.</span></span><span class="sig-name descname"><span class="pre">UNCHECKED</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UNCHECKED" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dpu.vpd.vpd.</span></span><span class="sig-name descname"><span class="pre">UserString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.capitalize">
+<span class="sig-name descname"><span class="pre">capitalize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.capitalize" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.center">
+<span class="sig-name descname"><span class="pre">center</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.center" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.count" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.decode">
+<span class="sig-name descname"><span class="pre">decode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.decode" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.encode">
+<span class="sig-name descname"><span class="pre">encode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.encode" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.endswith">
+<span class="sig-name descname"><span class="pre">endswith</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">suffix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.endswith" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.expandtabs">
+<span class="sig-name descname"><span class="pre">expandtabs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tabsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.expandtabs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.find">
+<span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.find" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.index">
+<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.index" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.isalnum">
+<span class="sig-name descname"><span class="pre">isalnum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.isalnum" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.isalpha">
+<span class="sig-name descname"><span class="pre">isalpha</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.isalpha" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.isdecimal">
+<span class="sig-name descname"><span class="pre">isdecimal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.isdecimal" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.isdigit">
+<span class="sig-name descname"><span class="pre">isdigit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.isdigit" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.islower">
+<span class="sig-name descname"><span class="pre">islower</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.islower" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.isnumeric">
+<span class="sig-name descname"><span class="pre">isnumeric</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.isnumeric" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.isspace">
+<span class="sig-name descname"><span class="pre">isspace</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.isspace" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.istitle">
+<span class="sig-name descname"><span class="pre">istitle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.istitle" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.isupper">
+<span class="sig-name descname"><span class="pre">isupper</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.isupper" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.join">
+<span class="sig-name descname"><span class="pre">join</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.join" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.ljust">
+<span class="sig-name descname"><span class="pre">ljust</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.ljust" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.lower">
+<span class="sig-name descname"><span class="pre">lower</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.lower" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.lstrip">
+<span class="sig-name descname"><span class="pre">lstrip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.lstrip" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.partition">
+<span class="sig-name descname"><span class="pre">partition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sep</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.partition" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.replace">
+<span class="sig-name descname"><span class="pre">replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">old</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxsplit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.replace" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.rfind">
+<span class="sig-name descname"><span class="pre">rfind</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.rfind" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.rindex">
+<span class="sig-name descname"><span class="pre">rindex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.rindex" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.rjust">
+<span class="sig-name descname"><span class="pre">rjust</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.rjust" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.rpartition">
+<span class="sig-name descname"><span class="pre">rpartition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sep</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.rpartition" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.rsplit">
+<span class="sig-name descname"><span class="pre">rsplit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxsplit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.rsplit" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.rstrip">
+<span class="sig-name descname"><span class="pre">rstrip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.rstrip" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.split">
+<span class="sig-name descname"><span class="pre">split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxsplit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.split" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.splitlines">
+<span class="sig-name descname"><span class="pre">splitlines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keepends</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.splitlines" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.startswith">
+<span class="sig-name descname"><span class="pre">startswith</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.startswith" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.strip">
+<span class="sig-name descname"><span class="pre">strip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.strip" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.swapcase">
+<span class="sig-name descname"><span class="pre">swapcase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.swapcase" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.title" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.translate">
+<span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.translate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.upper">
+<span class="sig-name descname"><span class="pre">upper</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.upper" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.UserString.zfill">
+<span class="sig-name descname"><span class="pre">zfill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.UserString.zfill" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.WindowsLibraryLoader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dpu.vpd.vpd.</span></span><span class="sig-name descname"><span class="pre">WindowsLibraryLoader</span></span><a class="headerlink" href="#dpu.vpd.vpd.WindowsLibraryLoader" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dpu.vpd.vpd.LibraryLoader" title="dpu.vpd.vpd.LibraryLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">LibraryLoader</span></code></a></p>
+<p>Library loader for Microsoft Windows</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.WindowsLibraryLoader.Lookup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Lookup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.WindowsLibraryLoader.Lookup" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dpu.vpd.vpd.LibraryLoader.Lookup" title="dpu.vpd.vpd.LibraryLoader.Lookup"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lookup</span></code></a></p>
+<p>Lookup class for Windows libraries…</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.WindowsLibraryLoader.name_formats">
+<span class="sig-name descname"><span class="pre">name_formats</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['%s.dll',</span> <span class="pre">'lib%s.dll',</span> <span class="pre">'%slib.dll',</span> <span class="pre">'%s']</span></em><a class="headerlink" href="#dpu.vpd.vpd.WindowsLibraryLoader.name_formats" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.add_library_search_dirs">
+<span class="sig-prename descclassname"><span class="pre">dpu.vpd.vpd.</span></span><span class="sig-name descname"><span class="pre">add_library_search_dirs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other_dirs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.add_library_search_dirs" title="Permalink to this definition"></a></dt>
+<dd><p>Add libraries to search paths.
+If library paths are relative, convert them to absolute with respect to this
+file’s directory</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.dpu_vpd">
+<span class="sig-prename descclassname"><span class="pre">dpu.vpd.vpd.</span></span><span class="sig-name descname"><span class="pre">dpu_vpd</span></span><a class="headerlink" href="#dpu.vpd.vpd.dpu_vpd" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#dpu.vpd.vpd.struct_dpu_vpd" title="dpu.vpd.vpd.struct_dpu_vpd"><code class="xref py py-class docutils literal notranslate"><span class="pre">struct_dpu_vpd</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.dpu_vpd_database">
+<span class="sig-prename descclassname"><span class="pre">dpu.vpd.vpd.</span></span><span class="sig-name descname"><span class="pre">dpu_vpd_database</span></span><a class="headerlink" href="#dpu.vpd.vpd.dpu_vpd_database" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#dpu.vpd.vpd.struct_dpu_vpd_database" title="dpu.vpd.vpd.struct_dpu_vpd_database"><code class="xref py py-class docutils literal notranslate"><span class="pre">struct_dpu_vpd_database</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.dpu_vpd_header">
+<span class="sig-prename descclassname"><span class="pre">dpu.vpd.vpd.</span></span><span class="sig-name descname"><span class="pre">dpu_vpd_header</span></span><a class="headerlink" href="#dpu.vpd.vpd.dpu_vpd_header" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#dpu.vpd.vpd.struct_dpu_vpd_header" title="dpu.vpd.vpd.struct_dpu_vpd_header"><code class="xref py py-class docutils literal notranslate"><span class="pre">struct_dpu_vpd_header</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.dpu_vpd_rank_data">
+<span class="sig-prename descclassname"><span class="pre">dpu.vpd.vpd.</span></span><span class="sig-name descname"><span class="pre">dpu_vpd_rank_data</span></span><a class="headerlink" href="#dpu.vpd.vpd.dpu_vpd_rank_data" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#dpu.vpd.vpd.struct_dpu_vpd_rank_data" title="dpu.vpd.vpd.struct_dpu_vpd_rank_data"><code class="xref py py-class docutils literal notranslate"><span class="pre">struct_dpu_vpd_rank_data</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.dpu_vpd_repair_entry">
+<span class="sig-prename descclassname"><span class="pre">dpu.vpd.vpd.</span></span><span class="sig-name descname"><span class="pre">dpu_vpd_repair_entry</span></span><a class="headerlink" href="#dpu.vpd.vpd.dpu_vpd_repair_entry" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#dpu.vpd.vpd.struct_dpu_vpd_repair_entry" title="dpu.vpd.vpd.struct_dpu_vpd_repair_entry"><code class="xref py py-class docutils literal notranslate"><span class="pre">struct_dpu_vpd_repair_entry</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.dpu_vpd_string_pair">
+<span class="sig-prename descclassname"><span class="pre">dpu.vpd.vpd.</span></span><span class="sig-name descname"><span class="pre">dpu_vpd_string_pair</span></span><a class="headerlink" href="#dpu.vpd.vpd.dpu_vpd_string_pair" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#dpu.vpd.vpd.struct_dpu_vpd_string_pair" title="dpu.vpd.vpd.struct_dpu_vpd_string_pair"><code class="xref py py-class docutils literal notranslate"><span class="pre">struct_dpu_vpd_string_pair</span></code></a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.ord_if_char">
+<span class="sig-prename descclassname"><span class="pre">dpu.vpd.vpd.</span></span><span class="sig-name descname"><span class="pre">ord_if_char</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dpu.vpd.vpd.ord_if_char" title="Permalink to this definition"></a></dt>
+<dd><p>Simple helper used for casts to simple builtin types:  if the argument is a
+string type, it will be converted to it’s ordinal value.</p>
+<p>This function will raise an exception if the argument is string with more
+than one characters.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dpu.vpd.vpd.</span></span><span class="sig-name descname"><span class="pre">struct_dpu_vpd</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Structure</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd.repair_entries">
+<span class="sig-name descname"><span class="pre">repair_entries</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd.repair_entries" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd.vpd_header">
+<span class="sig-name descname"><span class="pre">vpd_header</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd.vpd_header" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_database">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dpu.vpd.vpd.</span></span><span class="sig-name descname"><span class="pre">struct_dpu_vpd_database</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_database" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Structure</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_database.first">
+<span class="sig-name descname"><span class="pre">first</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_database.first" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_header">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dpu.vpd.vpd.</span></span><span class="sig-name descname"><span class="pre">struct_dpu_vpd_header</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_header" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Structure</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_header.rank_count">
+<span class="sig-name descname"><span class="pre">rank_count</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_header.rank_count" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_header.ranks">
+<span class="sig-name descname"><span class="pre">ranks</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_header.ranks" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_header.repair_count">
+<span class="sig-name descname"><span class="pre">repair_count</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_header.repair_count" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_header.struct_id">
+<span class="sig-name descname"><span class="pre">struct_id</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_header.struct_id" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_header.struct_size">
+<span class="sig-name descname"><span class="pre">struct_size</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_header.struct_size" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_header.struct_ver">
+<span class="sig-name descname"><span class="pre">struct_ver</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_header.struct_ver" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_rank_data">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dpu.vpd.vpd.</span></span><span class="sig-name descname"><span class="pre">struct_dpu_vpd_rank_data</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_rank_data" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Structure</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_rank_data.dpu_disabled">
+<span class="sig-name descname"><span class="pre">dpu_disabled</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_rank_data.dpu_disabled" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_rank_data.iram_repair">
+<span class="sig-name descname"><span class="pre">iram_repair</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_rank_data.iram_repair" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_rank_data.wram_repair">
+<span class="sig-name descname"><span class="pre">wram_repair</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_rank_data.wram_repair" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_repair_entry">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dpu.vpd.vpd.</span></span><span class="sig-name descname"><span class="pre">struct_dpu_vpd_repair_entry</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_repair_entry" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Structure</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_repair_entry.address">
+<span class="sig-name descname"><span class="pre">address</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_repair_entry.address" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_repair_entry.bank">
+<span class="sig-name descname"><span class="pre">bank</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_repair_entry.bank" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_repair_entry.bits">
+<span class="sig-name descname"><span class="pre">bits</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_repair_entry.bits" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_repair_entry.ci">
+<span class="sig-name descname"><span class="pre">ci</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_repair_entry.ci" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_repair_entry.dpu">
+<span class="sig-name descname"><span class="pre">dpu</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_repair_entry.dpu" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_repair_entry.iram_wram">
+<span class="sig-name descname"><span class="pre">iram_wram</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_repair_entry.iram_wram" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_repair_entry.rank">
+<span class="sig-name descname"><span class="pre">rank</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_repair_entry.rank" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_string_pair">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dpu.vpd.vpd.</span></span><span class="sig-name descname"><span class="pre">struct_dpu_vpd_string_pair</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_string_pair" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Structure</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_string_pair.key">
+<span class="sig-name descname"><span class="pre">key</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_string_pair.key" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_string_pair.next">
+<span class="sig-name descname"><span class="pre">next</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_string_pair.next" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_string_pair.value">
+<span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_string_pair.value" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_string_pair.value_len">
+<span class="sig-name descname"><span class="pre">value_len</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_string_pair.value_len" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dpu.vpd.vpd.struct_dpu_vpd_string_pair.value_type">
+<span class="sig-name descname"><span class="pre">value_type</span></span><a class="headerlink" href="#dpu.vpd.vpd.struct_dpu_vpd_string_pair.value_type" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dpu.vpd.dimm.html" class="btn btn-neutral float-left" title="dpu.vpd.dimm module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dpu.compiler.html" class="btn btn-neutral float-right" title="dpu.compiler module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

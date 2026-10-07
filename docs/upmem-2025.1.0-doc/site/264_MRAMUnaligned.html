@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unaligned MRAM Accesses &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Scatter Gather Memory Transfer" href="265_ScatterGatherXfer.html" />
+    <link rel="prev" title="WRAM Parallel Access" href="263_WramFifo.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Unaligned MRAM Accesses</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#changing-a-single-integer-byte-value-in-mram">Changing a single integer/byte value in MRAM</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Unaligned MRAM Accesses</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/264_MRAMUnaligned.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="unaligned-mram-accesses">
+<h1>Unaligned MRAM Accesses<a class="headerlink" href="#unaligned-mram-accesses" title="Permalink to this heading"></a></h1>
+<p>As explained in section <a class="reference internal" href="031_DPURuntimeService_Memory.html#mram"><span class="std std-ref">Direct access to the MRAM</span></a>, the MRAM access is constrained by strict rules:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The source or target address in <strong>WRAM</strong> must be aligned on 8 bytes.</p></li>
+<li><p>The source or target address in <strong>MRAM</strong> must be aligned on 8 bytes.</p></li>
+<li><p>The size of the transfer must be a multiple of 8, at least equal to 8 and not greater than 2048.</p></li>
+</ul>
+</div></blockquote>
+<p>However, in some situations, it may be needed to perform accesses with the MRAM address and/or the size of the transfer not aligned on 8 bytes.
+An example is when the application needs to read or write an odd number of 4-byte integers in MRAM.</p>
+<p>The <strong>Runtime Library</strong> thus defines two functions to perform unaligned copy:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>From the <strong>MRAM</strong> to the <strong>WRAM</strong> (<code class="docutils literal notranslate"><span class="pre">void*</span> <span class="pre">mram_read_unaligned(const</span> <span class="pre">__mram_ptr</span> <span class="pre">void</span> <span class="pre">*from,</span> <span class="pre">void</span> <span class="pre">*buffer,</span> <span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">nb_of_bytes)</span></code>)</p></li>
+<li><p>From the <strong>WRAM</strong> to the <strong>MRAM</strong> (<code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">mram_write_unaligned(const</span> <span class="pre">void</span> <span class="pre">*from,</span> <span class="pre">__mram_ptr</span> <span class="pre">void</span> <span class="pre">*to,</span> <span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">nb_of_bytes)</span></code>)</p></li>
+</ul>
+</div></blockquote>
+<p>These functions are extensions to the “low-level” functions <code class="docutils literal notranslate"><span class="pre">mram_read</span></code> and <code class="docutils literal notranslate"><span class="pre">mram_write</span></code>, with the additional support for arbitrary MRAM addresses and arbitrary transfer sizes not greater than 2048.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">mram_write_unaligned</span></code> function supports unaligned MRAM destination addresses, but <strong>still requires that the source WRAM address has the same alignment than the destination address</strong> (i.e., equal modulo 8). If the condition is not respected, a fault is generated (see <a class="reference internal" href="05_Exceptions.html#faults"><span class="std std-ref">Fault</span></a>).</p>
+<p><strong>Important note:</strong> this support comes with a performance cost, especially for the <code class="docutils literal notranslate"><span class="pre">mram_write_unaligned</span></code> function. Hence, it should always be preferred, if possible, to architecture the application with aligned MRAM accesses.</p>
+<p>Below is an example usage of these functions. The DPU program receives an array of daily data for a period of 64 years. Each daily data is a vector of five 4-bytes integers (it could be the sales count for different products for instance).
+The program’s task is to report, for each year, the maximum of each sales count on the first 35 days of the year. Each tasklet is processing the data for one year at a time, and it therefore has to make unaligned reads and writes from and to the MRAM (<code class="docutils literal notranslate"><span class="pre">mram_unaligned_copy_example.c</span></code>).</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;defs.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mram_unaligned.h&gt;</span>
+
+<span class="cp">#define NB_YEARS 64</span>
+<span class="cp">#define DIMENSION 5</span>
+<span class="cp">#define NB_ELEM_PER_YEAR (365 * DIMENSION)</span>
+<span class="cp">#define NB_DAYS 35</span>
+
+<span class="c1">// inputs</span>
+<span class="n">__mram</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">daily_data</span><span class="p">[</span><span class="n">NB_YEARS</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">NB_ELEM_PER_YEAR</span><span class="p">];</span>
+
+<span class="c1">// outputs</span>
+<span class="n">__mram</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">max_per_year</span><span class="p">[</span><span class="n">NB_YEARS</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">DIMENSION</span><span class="p">];</span>
+
+<span class="cp">#define NR_ELEMENTS_PER_TASKLET (NB_YEARS / NR_TASKLETS)</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="c1">// WRAM cache</span>
+<span class="w">  </span><span class="n">__dma_aligned</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">cache</span><span class="p">[</span><span class="n">NB_DAYS</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">DIMENSION</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">4</span><span class="p">];</span>
+<span class="w">  </span><span class="n">__dma_aligned</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">max</span><span class="p">[</span><span class="n">DIMENSION</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">NR_ELEMENTS_PER_TASKLET</span><span class="p">;</span>
+<span class="w">       </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">NR_ELEMENTS_PER_TASKLET</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">     * unaligned mram read of the first 35 days of the year</span>
+<span class="cm">     **/</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">mram_read_unaligned</span><span class="p">(</span><span class="o">&amp;</span><span class="n">daily_data</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">NB_ELEM_PER_YEAR</span><span class="p">],</span><span class="w"> </span><span class="n">cache</span><span class="p">,</span>
+<span class="w">                            </span><span class="n">NB_DAYS</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">DIMENSION</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">));</span>
+
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">     * Compute the max for each dimension</span>
+<span class="cm">     *</span>
+<span class="cm">     * A wram buffer offset is used to ensure that the data is stored</span>
+<span class="cm">     * in WRAM at an address with the same alignment than the MRAM address to</span>
+<span class="cm">     * which it is going to be copied (pre-condition of mram_write_unaligned</span>
+<span class="cm">     * function).</span>
+<span class="cm">     **/</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">wram_offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">DIMENSION</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wram_offset</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">DIMENSION</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">wram_offset</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">k</span><span class="p">)</span>
+<span class="w">      </span><span class="n">max</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NB_DAYS</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">DIMENSION</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">max</span><span class="p">[</span><span class="n">k</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">wram_offset</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">data</span><span class="p">[</span><span class="n">j</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">DIMENSION</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="p">])</span>
+<span class="w">          </span><span class="n">max</span><span class="p">[</span><span class="n">k</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">wram_offset</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">[</span><span class="n">j</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">DIMENSION</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="p">];</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">     * unaligned mram write of the max vector for this year</span>
+<span class="cm">     **/</span>
+<span class="w">    </span><span class="n">mram_write_unaligned</span><span class="p">(</span><span class="o">&amp;</span><span class="n">max</span><span class="p">[</span><span class="n">wram_offset</span><span class="p">],</span><span class="w"> </span><span class="o">&amp;</span><span class="n">max_per_year</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">DIMENSION</span><span class="p">],</span>
+<span class="w">                         </span><span class="n">DIMENSION</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">));</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For both <code class="docutils literal notranslate"><span class="pre">mram_read_unaligned</span></code> and <code class="docutils literal notranslate"><span class="pre">mram_write_unaligned</span></code>, when the address and size passed are aligned on 8 bytes, the <code class="docutils literal notranslate"><span class="pre">mram_read</span></code> or <code class="docutils literal notranslate"><span class="pre">mram_write</span></code> function is called instead, so there is little overhead.</p>
+<p>For unaligned reads, the <code class="docutils literal notranslate"><span class="pre">mram_read_unaligned</span></code> function performs an <code class="docutils literal notranslate"><span class="pre">mram_read</span></code> call while extending the address and size so that more data than needed is loaded into the WRAM.
+For example, if the MRAM address is 0x08000004, and the size is 4 bytes, the mram_read is done at address 0x8000000 with size 8.
+The function thus requires an input WRAM buffer that is at least <code class="docutils literal notranslate"><span class="pre">nb_of_bytes</span> <span class="pre">+</span> <span class="pre">16</span></code> bytes in size. Passing a smaller buffer can lead to undefined behavior.
+The return value is a WRAM pointer to where the value at MRAM address <code class="docutils literal notranslate"><span class="pre">from</span></code> is stored in WRAM (this may not be the address of the buffer passed to the function). In the previous example, the returned value would be <code class="docutils literal notranslate"><span class="pre">(char*)buffer</span> <span class="pre">+</span> <span class="pre">4</span></code>.</p>
+<p>For an unaligned write, the <code class="docutils literal notranslate"><span class="pre">mram_write_unaligned</span></code> function performs an aligned <code class="docutils literal notranslate"><span class="pre">mram_write</span></code> of a reduced part of the data that satisfies the alignment constraint. For the rest of the data (prolog/epilog), it needs to first read 8 bytes in WRAM, change the few bytes that need to be changed, and write the 8 bytes back. This operation needs to be atomic (i.e., the 8 bytes cannot be changed by another tasklet between the read and the write).
+The <code class="docutils literal notranslate"><span class="pre">mram_write_unaligned</span></code> function also requires the source WRAM buffer to have the same alignment than the destination MRAM address (i.e., <code class="docutils literal notranslate"><span class="pre">((uintptr_t)from</span> <span class="pre">&amp;</span> <span class="pre">7)</span> <span class="pre">==</span> <span class="pre">((uintptr_t)dest</span> <span class="pre">&amp;</span> <span class="pre">7)</span></code>). This is the reason of using the <code class="docutils literal notranslate"><span class="pre">wram_offset</span></code> variable in the above example.</p>
+<section id="changing-a-single-integer-byte-value-in-mram">
+<span id="mram-atomic"></span><h2>Changing a single integer/byte value in MRAM<a class="headerlink" href="#changing-a-single-integer-byte-value-in-mram" title="Permalink to this heading"></a></h2>
+<p>The <strong>Runtime Library</strong> also provides specific macros to write or update a single byte or 4-byte integer in MRAM:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mram_write_byte_atomic(dest,</span> <span class="pre">val)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mram_update_byte_atomic(dest,</span> <span class="pre">update_func,</span> <span class="pre">args)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mram_write_int_atomic(dest,</span> <span class="pre">val)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mram_update_int_atomic(dest,</span> <span class="pre">update_func,</span> <span class="pre">args)</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>Where the parameter <code class="docutils literal notranslate"><span class="pre">dest</span></code> is an address in MRAM, <code class="docutils literal notranslate"><span class="pre">val</span></code> is a 8-bit or 32-bit value to be written, and <code class="docutils literal notranslate"><span class="pre">update_func</span></code> is a function to provide a new value based on the current value and some arguments (<code class="docutils literal notranslate"><span class="pre">args</span></code>).
+For example, the following DPU program replaces each 4-byte values from an input table by its square, using the macro <code class="docutils literal notranslate"><span class="pre">mram_update_int_atomic</span></code> (<code class="docutils literal notranslate"><span class="pre">mram_update_int_example.c</span></code>):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;defs.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mram_unaligned.h&gt;</span>
+
+<span class="cp">#define BUFFER_SIZE (1024 * 1024)</span>
+<span class="cp">#define NR_ELEMENTS_PER_TASKLET (BUFFER_SIZE / NR_TASKLETS)</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * callback function for mram_update_int_atomic</span>
+<span class="cm"> * Update the input value with its square</span>
+<span class="cm"> **/</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">square</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">i</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+
+<span class="n">__mram_noinit</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">input_table</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">];</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">NR_ELEMENTS_PER_TASKLET</span><span class="p">;</span>
+<span class="w">       </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">NR_ELEMENTS_PER_TASKLET</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">     * atomic update of the histogram value</span>
+<span class="cm">     **/</span>
+<span class="w">    </span><span class="n">mram_update_int_atomic</span><span class="p">(</span><span class="o">&amp;</span><span class="n">input_table</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="w"> </span><span class="n">square</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">     * WARNING: an implicit MRAM access like the following</span>
+<span class="cm">     * would lead to undefined behavior:</span>
+<span class="cm">     *</span>
+<span class="cm">     * input_table[i] *= input_table[i]; // WRONG</span>
+<span class="cm">     *</span>
+<span class="cm">     * This is due to the fact that the implicit access to MRAM</span>
+<span class="cm">     * is not multi-tasklet safe for sizes smaller than 8 bytes.</span>
+<span class="cm">     **/</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>It is important to see that, because the input values are 4-byte integers, an implicit MRAM access is not multi-tasklet safe (see <a class="reference internal" href="031_DPURuntimeService_Memory.html#implicit-mram"><span class="std std-ref">Software cache</span></a>).</p>
+<p>This macro can also be used in the histogram example introduced in section <a class="reference internal" href="030_DPURuntimeService_Tasklets.html#mutexes"><span class="std std-ref">Mutual exclusions</span></a>, where the histogram is now declared using 4-bytes integers instead of 8-bytes integers (<code class="docutils literal notranslate"><span class="pre">mram_update_int_histogram_example.c</span></code>):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;defs.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mram_unaligned.h&gt;</span>
+
+<span class="cp">#define BUFFER_SIZE (1024 * 1024)</span>
+<span class="cp">#define NR_ELEMENTS_HIST (1 &lt;&lt; 8)</span>
+<span class="cp">#define NR_ELEMENTS_PER_TASKLET (BUFFER_SIZE / NR_TASKLETS)</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * callback function for mram_update_int_atomic</span>
+<span class="cm"> * Add +1 to the mram value</span>
+<span class="cm"> **/</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">adder</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">*</span><span class="n">i</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="n">__mram_noinit</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">input_table</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">];</span>
+<span class="n">__mram</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">histogram</span><span class="p">[</span><span class="n">NR_ELEMENTS_HIST</span><span class="p">];</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">NR_ELEMENTS_PER_TASKLET</span><span class="p">;</span>
+<span class="w">       </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">NR_ELEMENTS_PER_TASKLET</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">input_table</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">     * atomic update of the histogram value</span>
+<span class="cm">     **/</span>
+<span class="w">    </span><span class="n">mram_update_int_atomic</span><span class="p">(</span><span class="o">&amp;</span><span class="n">histogram</span><span class="p">[</span><span class="n">elem</span><span class="p">],</span><span class="w"> </span><span class="n">adder</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that in this code no mutex or virtual mutexes are used to protect the access to the histogram, since the integer update is atomic with respect to the other tasklets’ execution. The atomicity is achieved using virtual mutexes under the hood, so that any two tasklets cannot write within the same 8-byte memory location concurrently.
+Using the <code class="docutils literal notranslate"><span class="pre">mram_update_int_atomic</span></code> macro is faster than a <code class="docutils literal notranslate"><span class="pre">mram_read_unaligned</span></code> followed by a <code class="docutils literal notranslate"><span class="pre">mram_write_unaligned</span></code>, as in the second case an additional mram read is done by the <code class="docutils literal notranslate"><span class="pre">mram_write_unaligned</span></code> call. For the same reason, it is faster than an implicit MRAM access (e.g., <code class="docutils literal notranslate"><span class="pre">histogram[elem]++</span></code>) protected by virtual mutexes (the C increment statement will generate two reads of the 8-byte memory location where <code class="docutils literal notranslate"><span class="pre">histogram[elem]</span></code> is stored). Also, note that using an implicit MRAM access without synchronization would lead to undefined behavior, since the implicit MRAM access on 4 bytes is not multi-tasklet safe.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="263_WramFifo.html" class="btn btn-neutral float-left" title="WRAM Parallel Access" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="265_ScatterGatherXfer.html" class="btn btn-neutral float-right" title="Scatter Gather Memory Transfer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+C++ Host API
+============
+
+The UPMEM DPU toolchain contains a C++ header file that wraps the C DPU library for a more idiomatic interface.
+
+Contents
+---------
+
+The detailed documentation of the API can be found in the `Reference to the C++ API <CppAPI/index.html>`_.
+
+Compiler prerequisite
+---------------------
+
+This API relies on C++11 features and thus needs this standard or higher to work.
+
+Compiler options
+----------------
+
+As for the C API, using the command ``dpu-pkg-config --libs --cflags dpu`` will provide all the necessary options to compile and link an application with the C++ DPU library.
+
+Overview
+--------
+
+The following code is an example of a C++ application with a simple DPU program with no real use case.
+The goal here is to present some of the main features of the C++ API.
+
+.. literalinclude:: ../../../endtests/documentation/cpp_example/cpp_example.host.cpp
+   :language: cpp
+
+Here is the DPU program, written in C:
+
+.. literalinclude:: ../../../endtests/documentation/cpp_example/cpp_example.dpu.c
+   :language: c
+
+Calling the static method ``DpuSet::allocate`` will allocate a number of DPUs. In the example, we are allocating a single DPU with the default profile.
+The underlying DPU will be available until the ``DpuSet`` destructor is called. At that point, the DPU will be automatically freed.
+
+The DPU program is loaded with the ``load`` method. It is then executed with the ``exec`` method. We are then printing the DPU logs on the standard output with the ``log`` method.
+
+The ``copy`` methods can be used to read and write the DPU memory, using the symbols defined with the attributes ``__mram`` or ``__host`` in the DPU program.
+
+For a real application, the ``load``, ``copy`` and ``exec`` methods would be used on the whole ``system``, or at least on each rank of the ``system`` (the rank list can be fetched with the `ranks` method).
+
+The program can be run with:
+
+.. literalinclude:: ../../../endtests/documentation/cpp_example/cpp_example.execute
+
+And will give the output:
+
+.. literalinclude:: ../../../endtests/documentation/cpp_example/cpp_example.reference
+
+

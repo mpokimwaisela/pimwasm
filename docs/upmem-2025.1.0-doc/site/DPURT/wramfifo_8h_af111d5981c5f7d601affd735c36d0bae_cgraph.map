@@ -1,0 +1,9 @@
+<map id="process_inputs_all_tasklets" name="process_inputs_all_tasklets">
+<area shape="rect" id="node2" href="$wramfifo_8h.html#a5aabd3e2ba53f59956dbba4f5452f05f" title="is_input_fifo_empty" alt="" coords="196,5,347,32"/>
+<area shape="rect" id="node3" href="$wramfifo_8h.html#a770eca416292bb5145588aab17783d98" title="is_output_fifo_full" alt="" coords="202,56,341,83"/>
+<area shape="rect" id="node4" href="$barrier_8h.html#a5878dc265610918c268ddda00d94d35c" title="Decrements the counter associated to the barrier and suspends the invoking tasklet. " alt="" coords="221,107,321,133"/>
+<area shape="rect" id="node5" href="$defs_8h.html#a7606206081894244bb3c1893214ceb7e" title="Returns the current tasklet&#39;s sysname. " alt="" coords="395,132,437,159"/>
+<area shape="rect" id="node6" href="$wramfifo_8h.html#a85c00b2c84457af01183ffe325fe2dec" title="input_fifo_peek" alt="" coords="210,208,333,235"/>
+<area shape="rect" id="node7" href="$wramfifo_8h.html#a702f45cc66114042a782eb143688cb17" title="pushes a new element in the fifo " alt="" coords="206,259,337,285"/>
+<area shape="rect" id="node8" href="$wramfifo_8h.html#a02c3f71caeb9b881d857ed5a0bd814b9" title="pops the first element of the fifo " alt="" coords="214,309,329,336"/>
+</map>

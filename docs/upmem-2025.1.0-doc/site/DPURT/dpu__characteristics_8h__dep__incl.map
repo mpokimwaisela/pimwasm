@@ -1,0 +1,7 @@
+<map id="dpu_characteristics.h" name="dpu_characteristics.h">
+<area shape="rect" id="node2" href="$mram_8h.html" title="MRAM Transfer Management. " alt="" coords="167,80,241,107"/>
+<area shape="rect" id="node5" href="$profiling__internals_8h.html" title="Code section profiling internals. " alt="" coords="265,80,415,107"/>
+<area shape="rect" id="node3" href="$mram__unaligned_8h.html" title="APIs for unaligned MRAM access (address/size) and tasklet&#45;safe write/update of less than 8&#45;byte value..." alt="" coords="5,155,149,181"/>
+<area shape="rect" id="node4" href="$seqread_8h.html" title="Sequential reading of items in MRAM. " alt="" coords="174,155,261,181"/>
+<area shape="rect" id="node6" href="$profiling_8h.html" title="Code section profiling management. " alt="" coords="297,155,383,181"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="dpu_elf.h" name="dpu_elf.h">
+<area shape="rect" id="node2" href="$dpu__loader_8h.html" title="C API for ELF program loading on DPUs. " alt="" coords="5,80,111,107"/>
+<area shape="rect" id="node3" href="$dpu__profiler_8h.html" title="C API for DPU profiling operations. " alt="" coords="135,80,245,107"/>
+<area shape="rect" id="node4" href="$dpu__program_8h.html" title="C API for DPU program operations. " alt="" coords="270,80,390,107"/>
+</map>

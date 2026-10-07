@@ -1,0 +1,10 @@
+.wy-nav-content {
+    max-width: 100% !important;
+}
+
+/* For dark mode */
+@media (prefers-color-scheme: dark) {
+    img {
+        background-color: white;
+    }
+}

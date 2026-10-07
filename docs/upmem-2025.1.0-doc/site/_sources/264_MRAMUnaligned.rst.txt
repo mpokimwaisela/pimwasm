@@ -1,0 +1,67 @@
+Unaligned MRAM Accesses
+=======================
+
+As explained in section :ref:`mram`, the MRAM access is constrained by strict rules:
+
+  * The source or target address in **WRAM** must be aligned on 8 bytes.
+  * The source or target address in **MRAM** must be aligned on 8 bytes.
+  * The size of the transfer must be a multiple of 8, at least equal to 8 and not greater than 2048.
+
+However, in some situations, it may be needed to perform accesses with the MRAM address and/or the size of the transfer not aligned on 8 bytes.
+An example is when the application needs to read or write an odd number of 4-byte integers in MRAM.
+
+The **Runtime Library** thus defines two functions to perform unaligned copy:
+
+  * From the **MRAM** to the **WRAM** (``void* mram_read_unaligned(const __mram_ptr void *from, void *buffer, unsigned int nb_of_bytes)``)
+  * From the **WRAM** to the **MRAM** (``void mram_write_unaligned(const void *from, __mram_ptr void *to, unsigned int nb_of_bytes)``)
+
+These functions are extensions to the "low-level" functions ``mram_read`` and ``mram_write``, with the additional support for arbitrary MRAM addresses and arbitrary transfer sizes not greater than 2048.
+
+The ``mram_write_unaligned`` function supports unaligned MRAM destination addresses, but **still requires that the source WRAM address has the same alignment than the destination address** (i.e., equal modulo 8). If the condition is not respected, a fault is generated (see :ref:`faults`).
+
+**Important note:** this support comes with a performance cost, especially for the ``mram_write_unaligned`` function. Hence, it should always be preferred, if possible, to architecture the application with aligned MRAM accesses.
+
+Below is an example usage of these functions. The DPU program receives an array of daily data for a period of 64 years. Each daily data is a vector of five 4-bytes integers (it could be the sales count for different products for instance). 
+The program's task is to report, for each year, the maximum of each sales count on the first 35 days of the year. Each tasklet is processing the data for one year at a time, and it therefore has to make unaligned reads and writes from and to the MRAM (``mram_unaligned_copy_example.c``).
+
+.. literalinclude:: ../../../endtests/documentation/mram_unaligned_copy_example/mram_unaligned_copy_example.c
+    :language: c
+
+For both ``mram_read_unaligned`` and ``mram_write_unaligned``, when the address and size passed are aligned on 8 bytes, the ``mram_read`` or ``mram_write`` function is called instead, so there is little overhead.
+
+For unaligned reads, the ``mram_read_unaligned`` function performs an ``mram_read`` call while extending the address and size so that more data than needed is loaded into the WRAM.
+For example, if the MRAM address is 0x08000004, and the size is 4 bytes, the mram_read is done at address 0x8000000 with size 8.
+The function thus requires an input WRAM buffer that is at least ``nb_of_bytes + 16`` bytes in size. Passing a smaller buffer can lead to undefined behavior.
+The return value is a WRAM pointer to where the value at MRAM address ``from`` is stored in WRAM (this may not be the address of the buffer passed to the function). In the previous example, the returned value would be ``(char*)buffer + 4``.
+
+For an unaligned write, the ``mram_write_unaligned`` function performs an aligned ``mram_write`` of a reduced part of the data that satisfies the alignment constraint. For the rest of the data (prolog/epilog), it needs to first read 8 bytes in WRAM, change the few bytes that need to be changed, and write the 8 bytes back. This operation needs to be atomic (i.e., the 8 bytes cannot be changed by another tasklet between the read and the write). 
+The ``mram_write_unaligned`` function also requires the source WRAM buffer to have the same alignment than the destination MRAM address (i.e., ``((uintptr_t)from & 7) == ((uintptr_t)dest & 7)``). This is the reason of using the ``wram_offset`` variable in the above example. 
+
+.. _mram_atomic:
+
+Changing a single integer/byte value in MRAM
+--------------------------------------------
+
+The **Runtime Library** also provides specific macros to write or update a single byte or 4-byte integer in MRAM:
+
+  * ``mram_write_byte_atomic(dest, val)``
+  * ``mram_update_byte_atomic(dest, update_func, args)``
+  * ``mram_write_int_atomic(dest, val)``
+  * ``mram_update_int_atomic(dest, update_func, args)``
+
+Where the parameter ``dest`` is an address in MRAM, ``val`` is a 8-bit or 32-bit value to be written, and ``update_func`` is a function to provide a new value based on the current value and some arguments (``args``).
+For example, the following DPU program replaces each 4-byte values from an input table by its square, using the macro ``mram_update_int_atomic`` (``mram_update_int_example.c``):
+
+.. literalinclude:: ../../../endtests/documentation/mram_update_int_example/mram_update_int_example.c
+    :language: c
+
+It is important to see that, because the input values are 4-byte integers, an implicit MRAM access is not multi-tasklet safe (see :ref:`implicit_mram`).
+
+This macro can also be used in the histogram example introduced in section :ref:`mutexes`, where the histogram is now declared using 4-bytes integers instead of 8-bytes integers (``mram_update_int_histogram_example.c``):
+
+.. literalinclude:: ../../../endtests/documentation/mram_update_int_histogram_example/mram_update_int_histogram_example.c
+    :language: c
+
+Note that in this code no mutex or virtual mutexes are used to protect the access to the histogram, since the integer update is atomic with respect to the other tasklets' execution. The atomicity is achieved using virtual mutexes under the hood, so that any two tasklets cannot write within the same 8-byte memory location concurrently.
+Using the ``mram_update_int_atomic`` macro is faster than a ``mram_read_unaligned`` followed by a ``mram_write_unaligned``, as in the second case an additional mram read is done by the ``mram_write_unaligned`` call. For the same reason, it is faster than an implicit MRAM access (e.g., ``histogram[elem]++``) protected by virtual mutexes (the C increment statement will generate two reads of the 8-byte memory location where ``histogram[elem]`` is stored). Also, note that using an implicit MRAM access without synchronization would lead to undefined behavior, since the implicit MRAM access on 4 bytes is not multi-tasklet safe.
+

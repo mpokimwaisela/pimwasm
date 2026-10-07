@@ -1,0 +1,264 @@
+Tasklet management and synchronization
+======================================
+
+The **Runtime Library** provides an abstraction over the primitive threads, called tasklets.
+A thread is the hardware implementation of an execution thread, natively implemented by DPUs.
+A Tasklet is a software abstraction, providing the underlying associated hardware thread with some system abilities (like a stack).
+
+Based on tasklet capabilities, the runtime library offers various synchronization primitives: mutexes_, semaphores_, barriers_, and handshakes_.
+
+Tasklets
+--------
+
+Tasklets are reducing the scope of execution of threads with the following constraints:
+
+ * **Boot**: every tasklet is started at boot time to execute the ``main`` function
+ * **Synchronization**: it cannot be stopped, but may suspend its execution, via synchronization primitives, such as mutual exclusions
+ * **Memory**: it owns a specific space in the **WRAM** to store its execution stack
+
+Notice that the tasklets share the same memory space.
+This means, in particular, that **any global variable declared in the source code is accessible by any tasklet, whatever its scope is (static or not)**.
+In other words, the developer should use global variables with care, relying on synchronization primitives whenever potential concurrence occurs.
+
+Every tasklet has a system name, which can be fetched by the function ``me()``, defined in `defs.h <202_RTL.html#defs-h>`_, returning a unique system name (``sysname_t``).
+
+Let's consider the following code (in ``tasklet_stack_check.c``):
+
+.. literalinclude:: ../../../endtests/documentation/tasklet_and_stack/tasklet_stack_check.c
+   :language: c
+
+The ``check_stack`` function returns the remaining available size in the stack.
+
+To define the number of tasklets of a program and the size of each tasklets stack, the user needs to compile the program with specific options:
+
+ - ``NR_TASKLETS`` is used to define the number of tasklets.
+ - ``STACK_SIZE_DEFAULT`` is used to define the size of the stack for all the tasklets which stack is not specified.
+ - ``STACK_SIZE_TASKLET_<X>`` is used to define the size of the stack for a specific tasklet.
+
+.. literalinclude:: ../../../endtests/documentation/tasklet_and_stack/tasklet_stack_check.compile
+   :language: c
+
+**Note:** Make sure to put those options before the ``-o`` option, otherwise they won't be taken into account by the ``clang`` driver.
+
+Now let's execute this program with ``dpu-lldb``:
+
+.. literalinclude:: ../../../endtests/documentation/tasklet_and_stack/tasklet_stack_check.lldb_script
+
+We can now check that the right number of tasklets have been executed with their corresponding size of stack:
+
+.. literalinclude:: ../../../endtests/documentation/tasklet_and_stack/tasklet_stack_check.output_reference
+
+**Note:** The available stack size is less than the allocated value because of the memory space already taken by the main function.
+
+.. _mutexes:
+
+Mutual exclusions
+-----------------
+
+Mutual exclusions (*mutexes*) are the simplest and fastest way to define critical sections between the tasklets.
+
+The **Runtime Library** defines a collection of functions in `mutex.h <202_RTL.html#mutex-h>`_ to lock and unlock mutexes, first defined by the runtime configuration:
+
+  * ``mutex_lock`` and ``mutex_unlock`` request for a lock and an unlock of mutual exclusion, respectively.
+  * ``mutex_trylock`` which has the same behavior of ``mutex_lock`` except returns immediately if the lock is already taken
+
+The declaration of mutexes is done with the ``MUTEX_INIT(name)`` macro, also available in ``mutex.h``.
+``name`` must be a C standard identifier.
+
+Let's illustrate this with an example: given two tasklets running concurrently, the first tasklet entering a critical section records its system name into a global variable protected by a mutex.
+
+The C code is the following (in ``mutex_example.c``):
+
+.. literalinclude:: ../../../endtests/documentation/mutex_example/mutex_example.c
+    :language: c
+
+To create the program:
+
+.. literalinclude:: ../../../endtests/documentation/mutex_example/mutex_example.compile
+
+Now let's execute this program with ``dpu-lldb``:
+
+.. literalinclude:: ../../../endtests/documentation/mutex_example/mutex_example.lldb_script
+
+As a response you will get a message like:
+
+.. literalinclude:: ../../../endtests/documentation/mutex_example/mutex_example.output_reference
+
+From this information, we can see that the first tasklet that entered the critical section was tasklet number 0.
+
+The v1A DPU provides at most 56 hardware mutexes, while the v1B DPU provides at most 64.
+But the **Runtime Library** also provides a software abstraction for mutual exclusions in `vmutex.h <202_RTL.html#vmutex-h>`_.
+It enables to create a larger number of *virtual mutexes*. This can be used, for instance, to protect the access to a large array shared by a number of tasklets.
+This is illustrated in the following example where the tasklets are creating the histogram of an input array (``vmutex_example.c``):
+
+.. literalinclude:: ../../../endtests/documentation/vmutex_example/vmutex_example.c
+    :language: c
+
+Virtual mutexes are declared using the ``VMUTEX_INIT(name, nb_vmutexes, nb_mutexes)`` macro.
+It creates ``nb_vmutexes`` virtual mutexes, using ``nb_mutexes`` hardware mutexes.
+Internally, each virtual mutex is a state bit in WRAM. The hardware mutexes are used to protect the access to the state bits.
+Note that the cost of acquiring or releasing a virtual mutex is considerably higher than for a harware mutex (around 10 instructions compared to one). 
+However, it avoids any false conflicts in the critical section of the histogram example.
+In the same example, using one harware mutex to protect the histogram array is around 2 times slower, due to false conflicts in the critical section.
+For virtual mutexes, it is required that the number of hardware mutexes is a power of 2, and the number of virtual mutexes a multiple of 8.
+
+Another way to ensure mutual exclusion in the histogram example is to use a pool of hardware mutexes.
+For instance, with a pool of 8 hardware mutexes, each element in the histogram is protected using the hardware mutex corresponding to its position modulo 8 (i.e., hardware mutex 0 protects the elements 0, 8, 16 ... and hardware mutex 1 protects the elements 1, 9, 17 etc.).
+The **Runtime Library** also provides this implementation in `mutex_pool.h <202_RTL.html#mutex-pool-h>`_ as shown in the following code (``mutex_pool_example.c``):
+
+.. literalinclude:: ../../../endtests/documentation/mutex_pool_example/mutex_pool_example.c
+    :language: c
+
+Compared to using virtual mutexes, this solution requires more hardware mutexes and is also not free of false conflicts in the critical section. However, locking/unlocking is faster. Which solution will perform best depends on the length of the critical section and the probability of conflicts. 
+
+
+.. _semaphores:
+
+Semaphores
+----------
+
+The **Runtime Library** also offers **counting semaphore** primitives for more sophisticated synchronizations.
+Please refer to `Wikipedia <https://en.wikipedia.org/wiki/Semaphore_(programming)>`_ for a "standard" definition of counting semaphores.
+
+These are less efficient than mutexes and must be used if and only if the program needs a counter for the synchronization.
+
+The **Runtime Library** defines a collection of functions in `sem.h <202_RTL.html#sem-h>`_ to take and give semaphores, first defined in the runtime configuration:
+
+  * ``sem_take`` and ``sem_give`` decrement and increment the semaphore counter, respectively. If the counter is zero or less, ``sem_take`` suspends the invoking tasklet execution until another tasklet invokes ``sem_give``
+
+Semaphores are defined with the macro ``SEMAPHORE_INIT(name, counter)``, available in ``sem.h``.
+``name`` must be a C standard identifier.
+``counter`` is the initial counter for the semaphore, and must be an 8-bit value.
+
+A typical illustration of semaphore usage is the classical *rendez-vous*: uses a semaphore initialized to 0 to ensure that some *consumer* tasklets do not start before a *producer* tasklet performing some preliminary work.
+
+In the following example, the producer sets the global variable ``result`` to !10 (equal to ``0x375f00``).
+The consumers wait for this result to be computed, then return this result, along with their respective tasklet name (in ``rendezvous_example.c``):
+
+.. literalinclude:: ../../../endtests/documentation/semaphore_example/rendezvous_example.c
+    :language: c
+
+To create the program:
+
+.. literalinclude:: ../../../endtests/documentation/semaphore_example/rendezvous_example.compile
+
+Now let's execute this program with ``dpu-lldb``:
+
+.. literalinclude:: ../../../endtests/documentation/semaphore_example/rendezvous_example.lldb_script
+
+We set a breakpoint in the return line of the ``main`` and ``consumer`` functions.
+Each tasklet will stop on the return line, allowing us to have a look at the returned result and the ``factorial_result`` variable.
+To do that we have added a stop-hook that will print the content of the ``factorial_result`` variable each time ``dpu-lldb`` stops.
+
+.. literalinclude:: ../../../endtests/documentation/semaphore_example/rendezvous_example.factorial_result_reference
+
+And we used the command ``frame variable`` to print the returned result.
+Notice that ``frame variable`` is used to display local variables, and ``target variable`` is used to display global variables. Also ``/x`` is added to the command to print the value in hexadecimal.
+
+By checking the result of each tasklet, users will see that the functions return !10 appended with the tasklet names(``(me() << 24) | result``)
+
+.. literalinclude:: ../../../endtests/documentation/semaphore_example/rendezvous_example.consumer1_reference
+
+.. literalinclude:: ../../../endtests/documentation/semaphore_example/rendezvous_example.consumer2_reference
+
+.. literalinclude:: ../../../endtests/documentation/semaphore_example/rendezvous_example.producer_reference
+
+.. _barriers:
+
+Barriers
+--------
+
+Barriers are special synchronization primitives ensuring that a specific number of tasklets suspend on the same synchronization point before restarting.
+
+When a tasklet calls ``barrier_wait``, its execution is suspended until exactly N tasklets have called ``barrier_wait``, where N is the specific number of tasklets for the specified barrier.
+
+Barriers are defined with the macro ``BARRIER_INIT(name, counter)``, available in ``barrier.h``.
+``name`` must be a C standard identifier.
+``counter`` is the initial counter for the barrier, and must be an 8-bit value.
+
+The runtime service API defines the following functions in `barrier.h <202_RTL.html#barrier-h>`_ to access barriers:
+
+  * ``barrier_wait`` allows a tasklet to wait on a barrier
+
+A typical barrier use case is the initialization of a program implying:
+
+  * An initialization sequence
+  * Some tasklets that can't start until the initialization is complete
+
+For example, let's consider that the tasklet number 0 performs such an initialization sequence and the tasklets 1, 2, and 3 wait for this sequence to complete before running.
+
+Based on this configuration, the following program computes the checksum of portions of an array of bytes (``coefficients``):
+
+  * Every tasklet computes the sum of 32 consecutive bytes in ``coefficients``, starting at an index equal to 32 times the tasklet's name
+  * The table is initialized by the first tasklet, so that ``coefficients[i] = i``
+
+The expected results are:
+
+  +----------+---------------------------+
+  | Tasklet  | Expected result           |
+  +----------+---------------------------+
+  |    0     | 0+1+2+3+4+...+31 = 0x1f0  |
+  +----------+---------------------------+
+  |    1     | 32+33+34+...+63 = 0x5f0   |
+  +----------+---------------------------+
+  |    2     | 64+65+66+...+91 = 0x9f0   |
+  +----------+---------------------------+
+  |    3     | 92+93+94+..+127 = 0xdf0   |
+  +----------+---------------------------+
+
+The C code is the following (in ``barrier_example.c``):
+
+.. literalinclude:: ../../../endtests/documentation/barrier_example/barrier_example.c
+    :language: c
+
+To create the program:
+
+.. literalinclude:: ../../../endtests/documentation/barrier_example/barrier_example.compile
+
+Now let's execute this program with ``dpu-lldb``:
+
+.. literalinclude:: ../../../endtests/documentation/barrier_example/barrier_example.lldb_script
+
+As expected all the tasklets operated on a valid table of coefficients since they were properly synchronized on a common barrier.
+
+.. _handshakes:
+
+Handshakes
+----------
+
+Handshakes ease synchronization between two tasklets, usually to start one of them when the other has finished a specific task.
+
+When a tasklet calls ``handshake_wait_for(notifier)``, its execution is suspended until the notifier tasklet calls ``handshake_notify()``.
+If the notifier calls ``handshake_notify()`` before the other tasklet starts to wait, the notifier execution is suspended until a tasklet
+calls ``handshake_wait_for(notifier)``. If a tasklet calls ``handshake_wait_for(notifier)`` with an already waiting tasklet on this notifier,
+the second tasklet does not wait and an error is returned.
+
+Handshakes do not need additional configuration to be enabled.
+
+The runtime service API defines the following functions in `handshake.h <202_RTL.html#handshake-h>`_ to access handshakes:
+
+  * ``handshake_wait_for(sysname_t notifier)`` allows a tasklet to wait on another one and returns ``0`` in case of success
+  * ``handshake_notify(void)`` allows a tasklet to notify a waiting tasklet
+
+Let's see a simple example:
+
+We have three tasks: task0, task1, task2. The result of task2 should be returned to the host. task2 depends on the results of task0 and task1,
+which are independent. task0 and task2 will be executed by tasklet#0, while task1 will be executed by tasklet#1. A handshake
+will be used to synchronize task2 (tasklet#0) and task1 (tasklet#1).
+
+The C code is the following (in ``handshake_example.c``):
+
+.. literalinclude:: ../../../endtests/documentation/handshake_example/handshake_example.c
+    :language: c
+
+To create the program:
+
+.. literalinclude:: ../../../endtests/documentation/handshake_example/handshake_example.compile
+
+Now let's execute this program with ``dpu-lldb``:
+
+.. literalinclude:: ../../../endtests/documentation/handshake_example/handshake_example.lldb_script
+
+Now let's verify that ``task0`` compute the expected result (``(0x19 * 3) - (0x42 + 1) = 0x8``) by looking at the exit status. It should print:
+
+.. literalinclude:: ../../../endtests/documentation/handshake_example/handshake_example.output_reference

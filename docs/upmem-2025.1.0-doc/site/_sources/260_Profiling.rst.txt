@@ -1,0 +1,112 @@
+Profiling DPU binary
+====================
+
+dpu-statistics mode
+-------------------
+
+**How to use it**
+
+The UPMEM ``dpu-profiling`` tool allows profiling the DPU to know how much time is spent in each function of a DPU program.
+
+To use this feature the DPU program needs to be compiled with the ``-pg`` compilation option.
+Then you need to execute the program with ``dpu-profiling``.
+
+The program can either be a host application offloading the DPU program, or ``dpu-lldb`` can be used to run the DPU program:
+
+::
+
+   dpu-profiling dpu-statistics -- <host_program>
+   dpu-profiling dpu-statistics -- dpu-lldb --batch --one-line run -- <dpu_program>
+
+
+**Example**
+
+Considering the following DPU program (in ``dpu_statistics_profiling.c``):
+
+.. literalinclude:: ../../../endtests/documentation/dpu_statistics/dpu_statistics_profiling.c
+    :language: c
+
+Compile it with the ``-pg`` option:
+
+.. literalinclude:: ../../../endtests/documentation/dpu_statistics/dpu_statistics.compile_dpu
+
+The program can be executed with ``dpu-lldb``:
+
+.. literalinclude:: ../../../endtests/documentation/dpu_statistics/dpu_statistics.run
+
+And it will produce the following output:
+
+.. literalinclude:: ../../../endtests/documentation/dpu_statistics/dpu_statistics.reference_output
+
+dpu-sections mode
+-----------------
+
+**How to use it**
+
+The UPMEM ``dpu-profiling`` tool allows profiling the DPU to know how much time each thread spent in a specified code section, compared to the global duration of the program.
+This is especially useful when the DPU program is composed of a small number of functions, or when doing link time optimization (LTO), where the other function-based profiling methods do not provide as much information.
+
+To use this feature the DPU program needs to be compiled with the ``-pg`` compilation option.
+Then you need to execute the program with ``dpu-profiling``.
+
+The program can either be a host application offloading the DPU program, or ``dpu-lldb`` can be used to run the DPU program:
+
+::
+
+   dpu-profiling dpu-sections -- <host_program>
+   dpu-profiling dpu-sections -- dpu-lldb --batch --one-line run -- <dpu_program>
+
+
+Please note that the dpu-sections mode is only accurate when using UPMEM DIMMs.
+
+**Example**
+
+Considering the following DPU program (in ``dpu_sections_profiling.c``):
+
+.. literalinclude:: ../../../endtests/documentation/dpu_sections/dpu_sections_profiling.c
+    :language: c
+
+Compile it with the ``-pg`` option:
+
+.. literalinclude:: ../../../endtests/documentation/dpu_sections/dpu_sections.compile_dpu
+
+The program can be executed with ``dpu-lldb``:
+
+.. literalinclude:: ../../../endtests/documentation/dpu_sections/dpu_sections.run
+
+And it will produce the following output:
+
+.. literalinclude:: ../../../endtests/documentation/dpu_sections/dpu_sections.reference_output
+
+
+How does that work / Advance usage
+----------------------------------
+
+By using ``-pg`` clang option, the compiler will add a call to the ``mcount`` function at each function entry.
+
+There are 3 different profiling modes at the moment:
+
+* ``nop``:
+
+The `nop` mode patches the calls to the `mcount` function with a `nop` instruction.
+
+* ``statistics``:
+
+When using the `statistics` mode, the `mcount` function calls are patched with a `sh` instruction in order to write the thread PC in a dedicated WRAM area.
+This location is then regularly read from the host to compute how many times a thread was in a given function.
+
+* ``sections``:
+
+For a given DPU code section (defined by `profiling_start` and `profiling_stop` functions), we count for each thread the number of cyles spent in the section using the `performance counter`.
+We also register the DPU program duration time in order to compute the ratio of the time spent in the section.
+
+The mode can be selected using the ``enableProfiling`` property in the DPU profile (examples: ``“enableProfiling=statistics”`` or ``“enableProfiling=nop”``).
+
+The UPMEM ``dpu-profiling`` tool is using either the `statistics` or the `sections` mode depending on the specified parameter. The DPU profile is automatically set up.
+
+
+Notes
+-----
+
+- If a dpu function should not be profiled, use ``"__attribute__((no_instrument_function))"`` at the function definition.
+- Only one DPU can be profiled in a rank at once, but one can choose a specific DPU by using the following properties in the DPU profile: ``profilingDpuId`` and ``profilingSliceId`` (default values are ``0`` for both properties)

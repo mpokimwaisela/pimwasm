@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Integrating assembly code with C programs &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="DPU ABI" href="201_DPU_ABI.html" />
+    <link rel="prev" title="Examples of an assembly program" href="201_AsmExample.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Integrating assembly code with C programs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#built-in-instructions">Built-in instructions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#compiler-inline-assembly">Compiler inline assembly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#specific-modules-in-assembler">Specific modules in assembler</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Integrating assembly code with C programs</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/201_AsmAndC.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="integrating-assembly-code-with-c-programs">
+<h1>Integrating assembly code with C programs<a class="headerlink" href="#integrating-assembly-code-with-c-programs" title="Permalink to this heading"></a></h1>
+<p>Integrating assembler code into applications is usually motivated by the need for performance, which can be solved at different levels of the program:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Taking benefits of peculiar DPU instructions to optimize specific operations within the C code. This is achieved by using <a class="reference internal" href="#builtins">builtins</a></p></li>
+<li><p>Inlining assembly code, to integrate a sequence of assembly instructions within the flow. This can be done, thanks to <a class="reference internal" href="#inline-assembly">inline assembly</a></p></li>
+<li><p>Creating a dedicated assembly module, to optimize a feature in the program. In this case, one has to create and integrate a <a class="reference internal" href="#specific-assembly-module">specific assembly module</a></p></li>
+</ul>
+</div></blockquote>
+<section id="built-in-instructions">
+<span id="builtins"></span><h2>Built-in instructions<a class="headerlink" href="#built-in-instructions" title="Permalink to this heading"></a></h2>
+<p>Every single DPU instruction is associated with a C function, defined in <cite>built_ins.h</cite>. Function names follow a strict format:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The name starts with <cite>__builtin_</cite></p></li>
+<li><p>It is followed by the assembly instruction name</p></li>
+<li><p>And completed by an “argument” profile</p></li>
+</ul>
+</div></blockquote>
+<p>The argument profile summarizes the instruction parameters, <cite>r</cite> standing for a register, <cite>s</cite> for a safe register, <cite>i</cite> for an immediate, <cite>k</cite> for a constant register, <cite>z</cite> for the constant register <code class="docutils literal notranslate"><span class="pre">zero</span></code>, <cite>e</cite> for an endianness, <cite>c</cite> for a condition and <cite>f</cite> for the <code class="docutils literal notranslate"><span class="pre">false</span></code> condition.
+For example, the function <cite>add rc ra value</cite> is represented by built-in function <cite>__builtin_add_rri</cite>.</p>
+<p>Notice that the built-in function name for a given instruction can be found in <a class="reference internal" href="200_AsmSyntax.html"><span class="doc">Assembler syntax</span></a>, or by <cite>dpuasmdoc</cite> with the <cite>-details</cite> option.</p>
+<p>Parameters to the built-in functions are either:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Variables, when the instruction parameter is a register</p></li>
+<li><p>Strings representing values when the instruction parameter is an immediate (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;0x12&quot;</span></code> for an operand equal to 18)</p></li>
+</ul>
+</div></blockquote>
+<section id="example">
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this heading"></a></h3>
+<p>Let’s illustrate this type of usage with a DPU specific instruction:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cmpb4 rc ra rb
+	x = For i=[0..3] if byte ra[i] == byte rb[i] then byte i is set to 1, 0 otherwise
+	rc = x
+	ZF &lt;- x
+</pre></div>
+</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;built_ins.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x12345678</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xff34ff78</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">res</span><span class="p">;</span>
+<span class="w">  </span><span class="n">__builtin_cmpb4_rrr</span><span class="p">(</span><span class="n">res</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">res</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>When running this program with <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file builtin_cmpb4
+breakpoint set --source-pattern-regexp &quot;return&quot;
+process launch
+frame variable/x res
+exit
+</pre></div>
+</div>
+<p>One may observe that the value returned by <code class="docutils literal notranslate"><span class="pre">main</span></code> is <code class="docutils literal notranslate"><span class="pre">0x00010001</span></code>, equal to the bytes mask of equal bytes between <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(unsigned int) res = 0x00010001
+</pre></div>
+</div>
+</section>
+</section>
+<section id="compiler-inline-assembly">
+<span id="inline-assembly"></span><h2>Compiler inline assembly<a class="headerlink" href="#compiler-inline-assembly" title="Permalink to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">dpu-upmem-dpurte-clang</span></code> is compliant with inline assembly directives (<code class="docutils literal notranslate"><span class="pre">__asm__</span></code>) as well as <code class="docutils literal notranslate"><span class="pre">clang</span></code> (described in <a class="reference external" href="https://clang.llvm.org/compatibility.html#inline-asm">this document</a>).</p>
+</section>
+<section id="specific-modules-in-assembler">
+<span id="specific-assembly-module"></span><h2>Specific modules in assembler<a class="headerlink" href="#specific-modules-in-assembler" title="Permalink to this heading"></a></h2>
+<p>Assembly codes larger than few lines are way clearer when isolated in dedicated modules, defining functions that can be invoked from the C part of the program.</p>
+<p>In this case, the code must comply with the <a class="reference internal" href="201_DPU_ABI.html"><span class="doc">DPU ABI</span></a>.</p>
+<p>The invoked function must be declared as global, using the <cite>.global</cite> assembly directive.</p>
+<p>On the C part of the program, this function must be declared as extern and can be invoked like standard C functions.</p>
+<section id="id1">
+<h3>Example<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<p>In this example, an assembly function <cite>ror_buffer</cite> rotates every 32-bits word of a buffer to 8 positions on the
+right and stores the result into a target buffer:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Assembly code integrated to C program.</span>
+<span class="c1">// Illustrates the main constraints with such an approach.</span>
+
+<span class="c1">// Rotates all the longwords of a buffer to one</span>
+<span class="c1">// byte on the right.</span>
+<span class="c1">// Uses the &quot;ror&quot; DPU instruction to do this.</span>
+<span class="c1">//</span>
+<span class="c1">// r0 contains the buffer address in WRAM</span>
+<span class="c1">// r1 gives the buffer&#39;s length, in longwords.</span>
+<span class="c1">// r2 contains the destination buffer&#39;s address in WRAM</span>
+<span class="c1">//</span>
+<span class="c1">// The function returns the last rotate word&#39;s value.</span>
+<span class="c1">//</span>
+<span class="p">.</span><span class="n">globl</span><span class="w"> </span><span class="n">ror_buffer</span>
+<span class="nl">ror_buffer</span><span class="p">:</span>
+<span class="cp">#define inbuf r0</span>
+<span class="cp">#define nr_lw r1</span>
+<span class="cp">#define outbuf r2</span>
+<span class="cp">#define current_lw r3</span>
+
+<span class="w">  </span><span class="c1">// for (nr_lw = nr_lw - 1; nr_lw &gt;= 0; nr_lw--) ...</span>
+<span class="w">  </span><span class="n">add</span><span class="w"> </span><span class="n">nr_lw</span><span class="p">,</span><span class="w"> </span><span class="n">nr_lw</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span>
+<span class="nl">for_every_lw</span><span class="p">:</span>
+<span class="w">  </span><span class="n">lw</span><span class="w"> </span><span class="n">current_lw</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">inbuf</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">  </span><span class="n">ror</span><span class="w"> </span><span class="n">current_lw</span><span class="p">,</span><span class="w"> </span><span class="n">current_lw</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span>
+<span class="w">  </span><span class="n">sw</span><span class="w"> </span><span class="n">outbuf</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">current_lw</span>
+<span class="w">  </span><span class="c1">// Move the two pointers to the next position</span>
+<span class="w">  </span><span class="n">add</span><span class="w"> </span><span class="n">inbuf</span><span class="p">,</span><span class="w"> </span><span class="n">inbuf</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span>
+<span class="w">  </span><span class="n">add</span><span class="w"> </span><span class="n">outbuf</span><span class="p">,</span><span class="w"> </span><span class="n">outbuf</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span>
+<span class="w">  </span><span class="c1">// Loopback until the counter is less than 0</span>
+<span class="w">  </span><span class="n">add</span><span class="w"> </span><span class="n">nr_lw</span><span class="p">,</span><span class="w"> </span><span class="n">nr_lw</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="n">pl</span><span class="p">,</span><span class="w"> </span><span class="n">for_every_lw</span>
+
+<span class="w">  </span><span class="c1">// result is in r0</span>
+<span class="w">  </span><span class="n">move</span><span class="w"> </span><span class="n">r0</span><span class="p">,</span><span class="w"> </span><span class="n">current_lw</span>
+<span class="w">  </span><span class="n">jump</span><span class="w"> </span><span class="n">r23</span>
+</pre></div>
+</div>
+<p>The main program, in C, creates a buffer and invokes this rotation routine:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Integration of assembly code with C, using syscalls.</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+
+<span class="cm">/*</span>
+<span class="cm"> * An external assembly module provides a</span>
+<span class="cm"> * function that rotates every 32-bits word in a buffer</span>
+<span class="cm"> * by 8 positions to the right.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param inbuf  address of the input buffer</span>
+<span class="cm"> * @param len    the buffer&#39;s length, in longwords</span>
+<span class="cm"> * @param outbuf address of the output buffer</span>
+<span class="cm"> * @return The last rotate word&#39;s value</span>
+<span class="cm"> */</span>
+<span class="k">extern</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">ror_buffer</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">inbuf</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="p">,</span>
+<span class="w">                           </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">outbuf</span><span class="p">);</span>
+
+<span class="kt">uint32_t</span><span class="w"> </span><span class="n">inbuf</span><span class="p">[</span><span class="mi">32</span><span class="p">],</span><span class="w"> </span><span class="n">outbuf</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">32</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">inbuf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ror_buffer</span><span class="p">(</span><span class="n">inbuf</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="n">outbuf</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Compile and link the files together to produce the executable:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-upmem-dpurte-clang cFunc.c assemblyFunc.S -o ror_example
+</pre></div>
+</div>
+<p>We can use <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code> to validate the execution:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file ror_example
+breakpoint set --source-pattern-regexp &quot;return result;&quot;
+process launch
+frame variable/x result
+frame variable/x outbuf
+exit
+</pre></div>
+</div>
+<p>As expected, the output buffer is equal to <cite>0, 1, 2, 3…</cite> rotated by 8 positions to the right:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(uint32_t [32]) outbuf = {
+  [0] = 0x00000000
+  [1] = 0x01000000
+  [2] = 0x02000000
+  [3] = 0x03000000
+  [4] = 0x04000000
+  [5] = 0x05000000
+  [6] = 0x06000000
+  [7] = 0x07000000
+  [8] = 0x08000000
+  [9] = 0x09000000
+  [10] = 0x0a000000
+  [11] = 0x0b000000
+  [12] = 0x0c000000
+  [13] = 0x0d000000
+  [14] = 0x0e000000
+  [15] = 0x0f000000
+  [16] = 0x10000000
+  [17] = 0x11000000
+  [18] = 0x12000000
+  [19] = 0x13000000
+  [20] = 0x14000000
+  [21] = 0x15000000
+  [22] = 0x16000000
+  [23] = 0x17000000
+  [24] = 0x18000000
+  [25] = 0x19000000
+  [26] = 0x1a000000
+  [27] = 0x1b000000
+  [28] = 0x1c000000
+  [29] = 0x1d000000
+  [30] = 0x1e000000
+  [31] = 0x1f000000
+}
+</pre></div>
+</div>
+<p>And the returned value is the last output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(uint32_t) result = 0x1f000000
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="201_AsmExample.html" class="btn btn-neutral float-left" title="Examples of an assembly program" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="201_DPU_ABI.html" class="btn btn-neutral float-right" title="DPU ABI" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

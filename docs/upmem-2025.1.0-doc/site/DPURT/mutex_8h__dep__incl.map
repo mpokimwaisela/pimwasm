@@ -1,0 +1,6 @@
+<map id="mutex.h" name="mutex.h">
+<area shape="rect" id="node2" href="$vmutex_8h.html" title="Mutual exclusions extension (virtual mutexes). " alt="" coords="35,80,119,107"/>
+<area shape="rect" id="node4" href="$mutex__pool_8h.html" title="Mutual exclusions extension (hardware mutex pool). " alt="" coords="143,80,254,107"/>
+<area shape="rect" id="node5" href="$wramfifo_8h.html" title="WRAM input/output fifo for host/DPU communication. " alt="" coords="278,80,370,107"/>
+<area shape="rect" id="node3" href="$mram__unaligned_8h.html" title="APIs for unaligned MRAM access (address/size) and tasklet&#45;safe write/update of less than 8&#45;byte value..." alt="" coords="5,155,149,181"/>
+</map>

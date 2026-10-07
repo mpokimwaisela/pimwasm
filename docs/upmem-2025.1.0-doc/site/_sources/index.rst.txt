@@ -1,0 +1,108 @@
+.. UPMEM development tools documentation master file, created by
+   sphinx-quickstart on Thu Aug 27 17:27:53 2015.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+User Manual
+===========
+
+.. toctree::
+   :caption: Getting started
+   :maxdepth: 3
+
+   00_ToolchainAtAGlance
+   01_Install
+   02_HelloWorld
+
+.. toctree::
+   :caption: Programming
+   :maxdepth: 3
+
+   03_ProgrammingWithUpmemDpu
+   030_DPURuntimeService_Tasklets
+   031_DPURuntimeService_Memory
+   04_Stdlib
+   05_Exceptions
+   06_ControllingDPUFromHost
+   032_DPURuntimeService_HostCommunication
+   033_AdvancedHostFeatures
+   07_Logging
+   fff_CodingTips.rst
+   ggg_LanguageServer.rst
+
+.. toctree::
+   :caption: Debugging
+   :maxdepth: 3
+
+   08_DebuggingWithUpmemDpu
+   080_AboutDPULLDB
+   081_DPUDebugExample
+   082_DPUDebugHost
+   083_DPUDebugHostExample
+   084_DPUDebugAttachWithoutHost
+   085_DPUCoreDump
+   086_DPUDebugLimitations
+   087_DPUTrace
+   088_DPUMemcheck
+
+.. toctree::
+   :caption: Support
+   :maxdepth: 2
+
+   ggg_ReleaseNotesAndKnownIssues.rst
+   ggg_ReportingErrors.rst
+
+ISA Manual
+==========
+
+.. toctree::
+   :caption: Assembler and Instruction set
+   :maxdepth: 2
+
+   200_AsmSyntax.rst
+   200_AsmConditions.rst
+   201_AsmExample.rst
+   201_AsmAndC.rst
+   201_DPU_ABI.rst
+   201_IS.rst
+
+   210_DpuHandbook.rst
+
+Libraries reference
+===================
+
+.. toctree::
+   :caption: Libraries
+   :maxdepth: 2
+
+   202_RTL.rst
+   203_HostAPI.rst
+   204_LLHostAPI.rst
+   205_CppHostAPI.rst
+   206_JavaAPI.rst
+   PythonAPI/modules.rst
+
+Other topics
+============
+
+.. toctree::
+   :caption: Advanced
+   :maxdepth: 2
+
+   230_Configuration.rst
+   240_Dpu_Versionning.rst
+   250_Driver.rst
+   260_Profiling.rst
+   071_MeasuringPerformances
+   261_Application_profiling.rst
+   263_WramFifo.rst
+   264_MRAMUnaligned.rst
+   265_ScatterGatherXfer.rst
+   270_StackAnalyzer.rst
+   280_Server_configuration.rst
+   281_Permissions.rst
+
+Indices and tables
+==================
+
+* :ref:`search`

@@ -1,0 +1,7 @@
+<map id="wramfifo.h" name="wramfifo.h">
+<area shape="rect" id="node4" href="$barrier_8h.html" title="Synchronization with barriers. " alt="" coords="73,80,149,107"/>
+<area shape="rect" id="node8" href="$mutex_8h.html" title="Mutual exclusions. " alt="" coords="193,80,269,107"/>
+<area shape="rect" id="node5" href="$attributes_8h.html" title="Provides common useful compiler attributes. " alt="" coords="100,229,197,256"/>
+<area shape="rect" id="node6" href="$atomic__bit_8h.html" title="Provides direct access to the atomic bits. " alt="" coords="180,155,283,181"/>
+<area shape="rect" id="node9" href="$sysdef_8h.html" title="Provides useful system abstractions. " alt="" coords="307,155,383,181"/>
+</map>

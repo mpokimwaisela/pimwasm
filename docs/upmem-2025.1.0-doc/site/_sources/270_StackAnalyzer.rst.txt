@@ -1,0 +1,47 @@
+Stack Analyzer
+==============
+
+The UPMEM toolchain contains a static stack analyzer: ``dpu_stack_analyzer``.
+It provides the maximum size of the stack needed by the specified program.
+The tool details the call trace for which the maximum size is needed.
+
+How to use
+~~~~~~~~~~
+
+To obtain accurate results, one should compile the source files with the options ``-g`` and ``-fstack-size-section`` (which are enabled by default).
+
+Let's try on a simple example:
+
+.. literalinclude:: ../../../endtests/documentation/dpustackanalyzer_example/dpustackanalyzer_example.c
+    :language: c
+
+.. literalinclude:: ../../../endtests/documentation/dpustackanalyzer_example/dpustackanalyzer_example.compile
+
+We can now call ``dpu_stack_analyzer``:
+
+.. literalinclude:: ../../../endtests/documentation/dpustackanalyzer_example/dpustackanalyzer_example.command
+
+.. literalinclude:: ../../../endtests/documentation/dpustackanalyzer_example/dpustackanalyzer_example.output_reference
+
+The tool provides the maximum stack size needed, the actual stack size for each tasklet, and the sequence of function calls that requires the maximum stack size.
+
+By default, ``main`` is used as the entry function. One can use the ``--entry func`` option to set ``func`` as the entry point.
+
+Additional steps for assembly code
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When using an assembly source file, the program binary will not have information concerning the assembly "functions".
+The tool will treat calls to these functions as indirect calls, that cannot be analyzed.
+In most cases, this may not be an issue, but here are the steps to take to provide the needed information:
+
+ - make sure that all local symbols start with the prefix ``.L`` to hide them when building the program
+ - add a ``.size`` directive for each assembly function
+ - add a ``.type`` directive for each assembly function, to specify that a symbol is a function
+ - add a ``.stack_size.<FUNCTION>`` section for each assembly ``FUNCTION`` with contains:
+   - a ``.long`` directive storing the function start address
+   - a series of ``.byte`` directives storing the maximum stack size for the function, encoded in the `LEB128 format <https://en.wikipedia.org/wiki/LEB128>`_
+
+Limitations
+~~~~~~~~~~~
+
+The tool cannot follow indirect calls, which are the results of the use of function pointers or switch tables.

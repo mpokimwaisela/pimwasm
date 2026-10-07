@@ -1,0 +1,5 @@
+<map id="alloc.h" name="alloc.h">
+<area shape="rect" id="node3" href="$fsb__allocator_8h.html" title="Provides a fixed&#45;size block memory allocator. " alt="" coords="23,80,140,107"/>
+<area shape="rect" id="node4" href="$buddy__alloc_8h.html" title="Dynamic memory allocation and freeing. " alt="" coords="164,80,276,107"/>
+<area shape="rect" id="node5" href="$attributes_8h.html" title="Provides common useful compiler attributes. " alt="" coords="301,80,398,107"/>
+</map>

@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>An example of debugging &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Debugging a Host application" href="082_DPUDebugHost.html" />
+    <link rel="prev" title="About dpu-lldb" href="080_AboutDPULLDB.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">An example of debugging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#context">Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#initialization">Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#objectives">Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#start-of-the-debugging">Start of the debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-by-step-debugging">Step by step debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-of-conditional-breakpoints">Use of conditional breakpoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#finishing-off-debugging">Finishing off debugging</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">An example of debugging</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/081_DPUDebugExample.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="an-example-of-debugging">
+<h1>An example of debugging<a class="headerlink" href="#an-example-of-debugging" title="Permalink to this heading"></a></h1>
+<section id="context">
+<h2>Context<a class="headerlink" href="#context" title="Permalink to this heading"></a></h2>
+<p>The following example will try to reuse a maximum of the most used commands when debugging a <em>DPU</em> program. The content of
+the program is not important here: the program has no specific goal, and we are not debugging it to find some hidden bug
+(which would be a standard use for a debugger).</p>
+<p>The source files are <code class="docutils literal notranslate"><span class="pre">debug_example_main.c</span></code> and <code class="docutils literal notranslate"><span class="pre">debug_example_misc.c</span></code>:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;defs.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;debug_example_misc.h&quot;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">bar</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">var</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">my_var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">global_variable</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">misc_func</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="w"> </span><span class="n">my_var</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">foo</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">var</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">var</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">bar</span><span class="p">(</span><span class="n">var</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">bar</span><span class="p">(</span><span class="n">var</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">func</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">my_var</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">acc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">my_var</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">acc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">foo</span><span class="p">(</span><span class="n">acc</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">acc</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">my_var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">me</span><span class="p">();</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">func</span><span class="p">(</span><span class="n">my_var</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;debug_example_misc.h&quot;</span>
+
+<span class="kt">int32_t</span><span class="w"> </span><span class="n">global_variable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span><span class="p">;</span>
+
+<span class="kt">uint32_t</span><span class="w"> </span><span class="nf">misc_func</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">param1</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">param2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">global_variable</span><span class="o">++</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">param1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">param2</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">mult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">param1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">param2</span><span class="p">;</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">mult</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>One header file is also needed, <code class="docutils literal notranslate"><span class="pre">debug_example_misc.h</span></code>:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifndef __DEBUG_EXAMPLE_MISC_H__</span>
+<span class="cp">#define __DEBUG_EXAMPLE_MISC_H__</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+
+<span class="k">extern</span><span class="w"> </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">global_variable</span><span class="p">;</span>
+
+<span class="kt">uint32_t</span><span class="w"> </span><span class="nf">misc_func</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">param1</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">param2</span><span class="p">);</span>
+
+<span class="cp">#endif </span><span class="cm">/* __DEBUG_EXAMPLE_MISC_H__ */</span>
+</pre></div>
+</div>
+<p>We are building the program in debug mode with <code class="docutils literal notranslate"><span class="pre">dpu-upmem-dpurte-clang</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-upmem-dpurte-clang debug_example_main.c debug_example_misc.c -o debug_example
+</pre></div>
+</div>
+<p>This creates the binary <code class="docutils literal notranslate"><span class="pre">debug_example</span></code>.</p>
+</section>
+<section id="initialization">
+<h2>Initialization<a class="headerlink" href="#initialization" title="Permalink to this heading"></a></h2>
+<p>First we load the program and check that we have debug information:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file debug_example
+target modules dump symfile
+</pre></div>
+</div>
+<p>We can now see that <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code> manage to get debug information from the ELF DPU binary:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Index   UserID DSX Type            File Address/Value Load Address       Size               Flags      Name
+------- ------ --- --------------- ------------------ ------------------ ------------------ ---------- ----------------------------------
+[    0]      1     SourceFile      0x0000000000000000                    0x0000000000000000 0x00000004 debug_example_main.c
+[    1]      2     Code            0x0000000080000248                    0x0000000000000010 0x00000002 me
+[    2]      3     SourceFile      0x0000000000000000                    0x0000000000000000 0x00000004 debug_example_misc.c
+[    3]      4     SourceFile      0x0000000000000000                    0x0000000000000000 0x00000004 mul32.c
+[    4]      5     Code            0x0000000080000428                    0x0000000000000010 0x00000000 __mulsi3_exit
+[    5]      6     Code            0x0000000080000320                    0x0000000000000108 0x00000000 __mulsi3_start
+[    6]      7     Code            0x0000000080000310                    0x0000000000000010 0x00000000 __mulsi3_swap
+[    7]      8     SourceFile      0x0000000000000000                    0x0000000000000000 0x00000004 crt0.c
+[    8]      9     Code            0x0000000080000018                    0x0000000000000018 0x00000000 __sys_atomic_bit_clear
+[    9]     10     Code            0x0000000080000030                    0x0000000000000020 0x00000000 __sys_start_thread
+[   10]     11     SourceFile      0x0000000000000000                    0x0000000000000000 0x00000004 stdio.c
+[   11]     12     SourceFile      0x0000000000000000                    0x0000000000000000 0x00000004 memset.c
+[   12]     13     Data            0x0000000000000018                    0x00000000000000c0 0x00000200 __imm_mem_end
+[   13]     14   X Code            0x0000000080000058                    0x0000000000000050 0x00000012 bar
+[   14]     15   X Code            0x00000000800000a8                    0x0000000000000090 0x00000012 foo
+[   15]     16   X Code            0x0000000080000138                    0x00000000000000b8 0x00000012 func
+[   16]     17   X Data            0x00000000000000d8                    0x0000000000000004 0x00000011 global_variable
+[   17]     18   X Code            0x00000000800001f0                    0x0000000000000058 0x00000012 main
+[   18]     19   X Code            0x0000000080000258                    0x00000000000000a0 0x00000012 misc_func
+[   19]     20   X Code            0x00000000800002f8                    0x0000000000000140 0x00000012 __mulsi3
+</pre></div>
+</div>
+</section>
+<section id="objectives">
+<h2>Objectives<a class="headerlink" href="#objectives" title="Permalink to this heading"></a></h2>
+<p>Before starting the real debugging, let’s define some objectives. We want to:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>track the value of <code class="docutils literal notranslate"><span class="pre">global_variable</span></code> (defined in <code class="docutils literal notranslate"><span class="pre">debug_example_misc.h</span></code>)</p></li>
+<li><p>track the value of <code class="docutils literal notranslate"><span class="pre">my_var</span></code> (defined at multiple places in <code class="docutils literal notranslate"><span class="pre">debug_example_main.c</span></code>)</p></li>
+<li><p>check the parameters of <code class="docutils literal notranslate"><span class="pre">misc_func</span></code> (defined in <code class="docutils literal notranslate"><span class="pre">debug_example_misc.c</span></code>) when the function is called</p></li>
+<li><p>make some precise step by step debugging in the <code class="docutils literal notranslate"><span class="pre">func</span></code> function (defined in <code class="docutils literal notranslate"><span class="pre">debug_example_main.c</span></code>)</p></li>
+</ul>
+</div></blockquote>
+<p>At different points, we may add some auxiliary objectives to make use of other commands.</p>
+</section>
+<section id="start-of-the-debugging">
+<h2>Start of the debugging<a class="headerlink" href="#start-of-the-debugging" title="Permalink to this heading"></a></h2>
+<p>Let’s add the breakpoints and hooks to achieve our objectives:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(lldb) breakpoint set -n misc_func
+Breakpoint 1: where = debug_example`misc_func + 32 at debug_example_misc.c:6:18, address = 0x80000278
+(lldb) breakpoint set -n func
+Breakpoint 2: where = debug_example`func + 24 at debug_example_main.c:20:7, address = 0x80000150
+(lldb) breakpoint set -n main
+Breakpoint 3: where = debug_example`main + 24 at debug_example_main.c:30:21, address = 0x80000208
+(lldb) target stop-hook add -o &quot;target variable global_variable&quot;
+Stop hook #1 added.
+(lldb) target stop-hook add -o &quot;frame variable my_var&quot;
+Stop hook #2 added.
+(lldb) process launch
+
+- Hook 1 (target variable global_variable)
+(int32_t) global_variable = 42
+
+
+- Hook 2 (frame variable my_var)
+(int) my_var = 0
+
+Process 21312 stopped
+* thread #1, name = &#39;DPUthread0&#39;, stop reason = breakpoint 3.1
+    frame #0: 0x80000208 debug_example`main at debug_example_main.c:30:21
+   27  	}
+   28  	
+   29  	int main() {
+-&gt; 30  	  int my_var = 12 + me();
+    	                    ^
+   31  	  return func(my_var + 1);
+   32  	}
+</pre></div>
+</div>
+<p>When stopping at the start of a function, the local variables may not have been initialized yet.
+This explains the value of <code class="docutils literal notranslate"><span class="pre">my_var</span></code> as <code class="docutils literal notranslate"><span class="pre">0x00000000</span></code> being the default value for non-initialized stack (but it could be another value if the stack has already been used or after a reset).</p>
+</section>
+<section id="step-by-step-debugging">
+<h2>Step by step debugging<a class="headerlink" href="#step-by-step-debugging" title="Permalink to this heading"></a></h2>
+<p>Now, let’s continue until we hit the breakpoint on the <code class="docutils literal notranslate"><span class="pre">func</span></code> function, then step over until we hit the breakpoint on the <code class="docutils literal notranslate"><span class="pre">misc_func</span></code> function:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(lldb) process continue
+
+- Hook 1 (target variable global_variable)
+(int32_t) global_variable = 42
+
+
+- Hook 2 (frame variable my_var)
+(int) my_var = 13
+
+Process 21312 resuming
+Process 21312 stopped
+* thread #1, name = &#39;DPUthread0&#39;, stop reason = breakpoint 2.1
+    frame #0: 0x80000150 debug_example`func(my_var=13) at debug_example_main.c:20:7
+   17  	}
+   18  	
+   19  	int func(int my_var) {
+-&gt; 20  	  int acc = 0;
+    	      ^
+   21  	
+   22  	  for (int i = 0; i &lt; my_var; ++i) {
+   23  	    acc = foo(acc + i);
+
+(lldb) thread step-over
+
+- Hook 1 (target variable global_variable)
+(int32_t) global_variable = 42
+
+
+- Hook 2 (frame variable my_var)
+(int) my_var = 13
+
+Process 21312 stopped
+* thread #1, name = &#39;DPUthread0&#39;, stop reason = step over
+    frame #0: 0x80000158 debug_example`func(my_var=13) at debug_example_main.c:22:12
+   19  	int func(int my_var) {
+   20  	  int acc = 0;
+   21  	
+-&gt; 22  	  for (int i = 0; i &lt; my_var; ++i) {
+    	           ^
+   23  	    acc = foo(acc + i);
+   24  	  }
+   25  	
+
+(lldb) thread step-over
+
+- Hook 1 (target variable global_variable)
+(int32_t) global_variable = 42
+
+
+- Hook 2 (frame variable my_var)
+(int) my_var = 13
+
+Process 21312 stopped
+* thread #1, name = &#39;DPUthread0&#39;, stop reason = step over
+    frame #0: 0x80000188 debug_example`func(my_var=13) at debug_example_main.c:23:15
+   20  	  int acc = 0;
+   21  	
+   22  	  for (int i = 0; i &lt; my_var; ++i) {
+-&gt; 23  	    acc = foo(acc + i);
+    	              ^
+   24  	  }
+   25  	
+   26  	  return acc;
+
+(lldb) thread step-over
+
+- Hook 1 (target variable global_variable)
+(int32_t) global_variable = 42
+
+
+- Hook 2 (frame variable my_var)
+Process 21312 stopped
+* thread #1, name = &#39;DPUthread0&#39;, stop reason = breakpoint 1.1
+    frame #0: 0x80000278 debug_example`misc_func(param1=0, param2=42) at debug_example_misc.c:6:18
+   3   	int32_t global_variable = 42;
+   4   	
+   5   	uint32_t misc_func(uint32_t param1, uint32_t param2) {
+-&gt; 6   	  global_variable++;
+    	                 ^
+   7   	  uint32_t add = param1 + param2;
+   8   	  uint32_t mult = param1 * param2;
+   9   	  return add | mult;
+</pre></div>
+</div>
+<p>At each step, we can see the value of our tracked variables (the value of <code class="docutils literal notranslate"><span class="pre">my_var</span></code> is only printed if the variable exists).
+We can also check the parameters of the <code class="docutils literal notranslate"><span class="pre">misc_func</span></code> function.</p>
+<p>Let’s step to see the <code class="docutils literal notranslate"><span class="pre">global_variable</span></code> variable being incremented and then step-out until we are back into the <code class="docutils literal notranslate"><span class="pre">func</span></code> function:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(lldb) thread step-over
+
+- Hook 1 (target variable global_variable)
+(int32_t) global_variable = 43
+
+
+- Hook 2 (frame variable my_var)
+Process 21312 stopped
+* thread #1, name = &#39;DPUthread0&#39;, stop reason = step over
+    frame #0: 0x80000290 debug_example`misc_func(param1=0, param2=42) at debug_example_misc.c:7:18
+   4   	
+   5   	uint32_t misc_func(uint32_t param1, uint32_t param2) {
+   6   	  global_variable++;
+-&gt; 7   	  uint32_t add = param1 + param2;
+    	                 ^
+   8   	  uint32_t mult = param1 * param2;
+   9   	  return add | mult;
+   10  	}
+
+(lldb) target variable global_variable
+(int32_t) global_variable = 43
+(lldb) thread step-out
+
+- Hook 1 (target variable global_variable)
+(int32_t) global_variable = 43
+
+
+- Hook 2 (frame variable my_var)
+(int) my_var = 42
+
+Process 21312 stopped
+* thread #1, name = &#39;DPUthread0&#39;, stop reason = step out
+    frame #0: 0x80000098 debug_example`bar(var=0) at debug_example_main.c:9:3
+   6   	int bar(int var) {
+   7   	  int my_var = global_variable;
+   8   	
+-&gt; 9   	  return misc_func(var, my_var);
+    	  ^
+   10  	}
+   11  	
+   12  	int foo(int var) {
+
+(lldb) thread step-out
+
+- Hook 1 (target variable global_variable)
+(int32_t) global_variable = 43
+
+
+- Hook 2 (frame variable my_var)
+Process 21312 stopped
+* thread #1, name = &#39;DPUthread0&#39;, stop reason = step out
+    frame #0: 0x80000110 debug_example`foo(var=0) at debug_example_main.c:16:3
+   13  	  if (var &gt; 10)
+   14  	    return bar(var + 1);
+   15  	
+-&gt; 16  	  return bar(var);
+    	  ^
+   17  	}
+   18  	
+   19  	int func(int my_var) {
+
+(lldb) thread step-out
+
+- Hook 1 (target variable global_variable)
+(int32_t) global_variable = 43
+
+
+- Hook 2 (frame variable my_var)
+(int) my_var = 13
+
+Process 21312 stopped
+* thread #1, name = &#39;DPUthread0&#39;, stop reason = step out
+    frame #0: 0x800001a8 debug_example`func(my_var=13) at debug_example_main.c:23:9
+   20  	  int acc = 0;
+   21  	
+   22  	  for (int i = 0; i &lt; my_var; ++i) {
+-&gt; 23  	    acc = foo(acc + i);
+    	        ^
+   24  	  }
+   25  	
+   26  	  return acc;
+
+(lldb) thread step-over
+
+- Hook 1 (target variable global_variable)
+(int32_t) global_variable = 43
+
+
+- Hook 2 (frame variable my_var)
+(int) my_var = 13
+
+Process 21312 stopped
+* thread #1, name = &#39;DPUthread0&#39;, stop reason = step over
+    frame #0: 0x800001b0 debug_example`func(my_var=13) at debug_example_main.c:24:3
+   21  	
+   22  	  for (int i = 0; i &lt; my_var; ++i) {
+   23  	    acc = foo(acc + i);
+-&gt; 24  	  }
+    	  ^
+   25  	
+   26  	  return acc;
+   27  	}
+
+</pre></div>
+</div>
+</section>
+<section id="use-of-conditional-breakpoints">
+<h2>Use of conditional breakpoints<a class="headerlink" href="#use-of-conditional-breakpoints" title="Permalink to this heading"></a></h2>
+<p>In some cases, you may want to trigger a breakpoint only when some conditions are verified.
+Here, we want to break at the last iteration of the loop, where <code class="docutils literal notranslate"><span class="pre">i</span></code> is equal to <code class="docutils literal notranslate"><span class="pre">my_var-1</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(lldb) breakpoint set -l 23 -c &quot;i == (my_var - 1)&quot;
+Breakpoint 4: where = debug_example`func + 80 at debug_example_main.c:23:15, address = 0x80000188
+(lldb) breakpoint delete 1
+1 breakpoints deleted; 0 breakpoint locations disabled.
+(lldb) process continue
+
+- Hook 1 (target variable global_variable)
+(int32_t) global_variable = 54
+
+
+- Hook 2 (frame variable my_var)
+(int) my_var = 13
+
+Process 21312 resuming
+Process 21312 stopped
+* thread #1, name = &#39;DPUthread0&#39;, stop reason = breakpoint 4.1
+    frame #0: 0x80000188 debug_example`func(my_var=13) at debug_example_main.c:23:15
+   20  	  int acc = 0;
+   21  	
+   22  	  for (int i = 0; i &lt; my_var; ++i) {
+-&gt; 23  	    acc = foo(acc + i);
+    	              ^
+   24  	  }
+   25  	
+   26  	  return acc;
+
+(lldb) frame variable
+(int) my_var = 13
+(int) acc = 445
+(int) i = 12
+</pre></div>
+</div>
+<p>We can see that we stop at the last iteration of the loop where <code class="docutils literal notranslate"><span class="pre">i</span></code> is equal to <code class="docutils literal notranslate"><span class="pre">my_var-1</span></code>.</p>
+</section>
+<section id="finishing-off-debugging">
+<h2>Finishing off debugging<a class="headerlink" href="#finishing-off-debugging" title="Permalink to this heading"></a></h2>
+<p>Let’s continue to let the program finish and then exit <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(lldb) process continue
+Process 21312 resuming
+Process 21312 exited with status = 156 (0x0000009c) 
+
+(lldb) exit
+</pre></div>
+</div>
+<p>As explained in <a class="reference internal" href="02_HelloWorld.html"><span class="doc">the tutorial</span></a>, the exit status provided by <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code> is the 8 LSB of the return value the thread 0.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="080_AboutDPULLDB.html" class="btn btn-neutral float-left" title="About dpu-lldb" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="082_DPUDebugHost.html" class="btn btn-neutral float-right" title="Debugging a Host application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

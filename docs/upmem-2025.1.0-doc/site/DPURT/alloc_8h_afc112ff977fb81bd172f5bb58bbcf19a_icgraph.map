@@ -1,0 +1,4 @@
+<map id="mem_alloc" name="mem_alloc">
+<area shape="rect" id="node2" href="$buddy__alloc_8h.html#aaecac7c9785deee29c0cc058bc38e0b3" title="Allocates size_of_heap bytes for a heap that buddy_alloc can access to. " alt="" coords="148,5,239,32"/>
+<area shape="rect" id="node3" href="$fsb__allocator_8h.html#a0bc60e4c32b40e3e8a1c3ae03dccba7b" title="Allocate and initialize a fixed&#45;size block allocator. " alt="" coords="153,56,233,83"/>
+</map>

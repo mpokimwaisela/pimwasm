@@ -1,0 +1,4 @@
+<map id="is_input_fifo_empty" name="is_input_fifo_empty">
+<area shape="rect" id="node2" href="$wramfifo_8h.html#af111d5981c5f7d601affd735c36d0bae" title="handler to continously process inputs from an input fifo and store results in an output fifo..." alt="" coords="211,5,354,47"/>
+<area shape="rect" id="node3" href="$wramfifo_8h.html#a10027e18ced7e05798423c2c4d338b08" title="handler to continously process inputs from an input fifo and store results in an output fifo..." alt="" coords="204,71,361,112"/>
+</map>

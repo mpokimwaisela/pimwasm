@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>An example of debugging a DPU booted by a host application &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Attaching to a DPU without having a host application" href="084_DPUDebugAttachWithoutHost.html" />
+    <link rel="prev" title="Debugging a Host application" href="082_DPUDebugHost.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">An example of debugging a DPU booted by a host application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#context">Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#attaching-before-the-start-of-an-application">Attaching before the start of an application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#attaching-when-the-dpu-is-booting">Attaching when the DPU is booting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#attaching-when-the-dpu-is-running">Attaching when the DPU is running</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#attaching-after-the-end-of-the-dpu-program">Attaching after the end of the DPU program</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">An example of debugging a DPU booted by a host application</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/083_DPUDebugHostExample.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="an-example-of-debugging-a-dpu-booted-by-a-host-application">
+<h1>An example of debugging a DPU booted by a host application<a class="headerlink" href="#an-example-of-debugging-a-dpu-booted-by-a-host-application" title="Permalink to this heading"></a></h1>
+<section id="context">
+<h2>Context<a class="headerlink" href="#context" title="Permalink to this heading"></a></h2>
+<p>The following example will show how to attach to a DPU booted by a host application on the several debug scenarios mentioned <a class="reference internal" href="082_DPUDebugHost.html"><span class="doc">before</span></a>.</p>
+<p>For all these examples we are going to use the following source files:</p>
+<p>The DPU program (in <code class="docutils literal notranslate"><span class="pre">host_debug_example_dpu.c</span></code>):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mram.h&gt;</span>
+
+<span class="n">__mram</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">wait_value</span><span class="p">;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="n">__dma_aligned</span><span class="w"> </span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">wait</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wait_value</span><span class="p">;</span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">wait</span><span class="p">)</span><span class="w"> </span><span class="c1">// loops forever</span>
+<span class="w">    </span><span class="p">;</span>
+
+<span class="w">  </span><span class="o">*</span><span class="p">((</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="mh">0xffffffff</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// generates a memory fault</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>It contains two bugs:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>it will loop forever if the host set the <code class="docutils literal notranslate"><span class="pre">wait</span></code> variable to 1</p></li>
+<li><p>it will generate a memory fault when trying to write at a forbidden address</p></li>
+</ul>
+</div></blockquote>
+<p>The host application (in <code class="docutils literal notranslate"><span class="pre">host_debug_example_host.c</span></code>):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;assert.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;dpu.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+
+<span class="cp">#ifndef DPU_BINARY</span>
+<span class="cp">#define DPU_BINARY &quot;./host_debug_example_dpu&quot;</span>
+<span class="cp">#endif</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="n">argv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">dpu_set_t</span><span class="w"> </span><span class="n">set</span><span class="p">;</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">dpu_set_t</span><span class="w"> </span><span class="n">dpu</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">assert</span><span class="p">(</span><span class="n">argc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="s">&quot;usage: ./host_debug_example &lt;0|1&gt;&quot;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">wait</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_alloc</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">set</span><span class="p">));</span>
+
+<span class="w">  </span><span class="n">DPU_FOREACH</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="n">dpu</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_load</span><span class="p">(</span><span class="n">dpu</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_BINARY</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">));</span>
+<span class="w">    </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_copy_to</span><span class="p">(</span><span class="n">dpu</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wait_value&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">wait</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">wait</span><span class="p">)));</span>
+<span class="w">    </span><span class="n">dpu_launch</span><span class="p">(</span><span class="n">dpu</span><span class="p">,</span><span class="w"> </span><span class="n">DPU_SYNCHRONOUS</span><span class="p">);</span><span class="w"> </span><span class="c1">// No assert, because we don&#39;t want to stop the program when the DPU fails</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">DPU_ASSERT</span><span class="p">(</span><span class="n">dpu_free</span><span class="p">(</span><span class="n">set</span><span class="p">));</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Let’s compile both programs:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-upmem-dpurte-clang -O2 -o host_debug_example_dpu host_debug_example_dpu.c
+gcc --std=c99 -O2 -g -o host_debug_example_host host_debug_example_host.c `dpu-pkg-config --cflags --libs dpu`
+</pre></div>
+</div>
+<p>We are now ready for the scenario.</p>
+</section>
+<section id="attaching-before-the-start-of-an-application">
+<h2>Attaching before the start of an application<a class="headerlink" href="#attaching-before-the-start-of-an-application" title="Permalink to this heading"></a></h2>
+<p>To attach before the start of an application, we need to use the <code class="docutils literal notranslate"><span class="pre">dpu_attach</span></code> command before the host’s call to <code class="docutils literal notranslate"><span class="pre">dpu_launch</span></code>. Then we will be able to check the MRAM content:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file host_debug_example_host
+settings set target.run-args 1
+breakpoint set --source-pattern-regexp &quot;dpu_launch&quot;
+process launch
+dpu_list -v
+dpu_attach 0.0.0
+process status
+memory read 0x08000000 -c 4
+dpu_detach
+exit
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(lldb) memory read 0x08000000 -c 4
+0x08000000: 01 00 00 00                                      ....
+</pre></div>
+</div>
+</section>
+<section id="attaching-when-the-dpu-is-booting">
+<h2>Attaching when the DPU is booting<a class="headerlink" href="#attaching-when-the-dpu-is-booting" title="Permalink to this heading"></a></h2>
+<p>To attach when a DPU is booting, we need to use the <code class="docutils literal notranslate"><span class="pre">dpu_attach_on_boot</span></code> command. Then we will be able to check the content of the MRAM and let the DPU run until the main function:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file host_debug_example_host
+settings set target.run-args 1
+process launch --stop-at-entry
+dpu_attach_on_boot
+memory read 0x08000000 -c 4
+breakpoint set -n main
+process continue
+thread backtrace
+dpu_detach
+exit
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(lldb) memory read  -c 4
+0x08000000: 01 00 00 00                                      ....
+(lldb) breakpoint set -n main
+Breakpoint 1: where = host_debug_example_dpu`main at host_debug_example_dpu.c:7:42, address = 
+(lldb) process continue
+Process 1000000 resuming
+Process 1000000 stopped
+* thread #1, name = &#39;DPUthread0&#39;, stop reason = breakpoint 1.1
+    frame #0:  host_debug_example_dpu`main at host_debug_example_dpu.c:7:42
+   4   	
+   5   	int main() {
+   6   	
+-&gt; 7   	  __dma_aligned volatile uint64_t wait = wait_value;
+    	                                         ^
+   8   	  while (wait) // loops forever
+   9   	    ;
+   10  	
+
+(lldb) thread backtrace
+* thread #1, name = &#39;DPUthread0&#39;, stop reason = breakpoint 1.1
+  * frame #0: 0x80000090 host_debug_example_dpu`main at host_debug_example_dpu.c:7:42
+    frame #1: 0x80000078 host_debug_example_dpu`__bootstrap at crt0.c:36:5
+</pre></div>
+</div>
+</section>
+<section id="attaching-when-the-dpu-is-running">
+<h2>Attaching when the DPU is running<a class="headerlink" href="#attaching-when-the-dpu-is-running" title="Permalink to this heading"></a></h2>
+<p>To attach when a DPU is running, we need to use the <code class="docutils literal notranslate"><span class="pre">dpu_attach</span></code> command. Then we will be able to check why the DPU program does not end and fix it on the fly:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file host_debug_example_host
+settings set target.run-args 1
+process launch
+dpu_list -v
+dpu_attach 0.0.0
+frame variable
+expr wait = 0
+process continue
+dpu_detach
+exit
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(lldb) frame variable
+(volatile uint64_t) wait = 1
+(lldb) expr wait = 0
+(volatile uint64_t) $0 = 0
+(lldb) process continue
+Process 1000000 resuming
+Process 1000000 stopped
+* thread #1, name = &#39;DPUthread0&#39;, stop reason = memory fault
+    frame #0:  host_debug_example_dpu`main at host_debug_example_dpu.c:11:24
+   8   	  while (wait) // loops forever
+   9   	    ;
+   10  	
+-&gt; 11  	  *((int *)) = 0; // generates a memory fault
+    	                       ^
+   12  	
+   13  	  return 0;
+   14  	}
+</pre></div>
+</div>
+</section>
+<section id="attaching-after-the-end-of-the-dpu-program">
+<h2>Attaching after the end of the DPU program<a class="headerlink" href="#attaching-after-the-end-of-the-dpu-program" title="Permalink to this heading"></a></h2>
+<p>To attach after the end of the DPU program, we need to use the <code class="docutils literal notranslate"><span class="pre">dpu_attach</span></code> command. Then we will be able to check the state of the threads and disassemble the instruction:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file host_debug_example_host
+settings set target.run-args 0
+breakpoint set --source-pattern-regexp &quot;dpu_free&quot;
+process launch
+dpu_list -v
+dpu_attach 0.0.0
+thread backtrace
+disassemble
+dpu_detach
+exit
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(lldb) thread backtrace
+* thread #1, name = &#39;DPUthread0&#39;, stop reason = memory fault
+  * frame #0: 0x800000a8 host_debug_example_dpu`main at host_debug_example_dpu.c:11:24
+    frame #1: 0x80000050 host_debug_example_dpu`__bootstrap at crt0.c:36:5
+(lldb) disassemble
+host_debug_example_dpu`main:
+    0x80000058 &lt;+0&gt;:  move   r0, 0x0
+    0x80000060 &lt;+8&gt;:  add    r1, id8, 0x4e8
+    0x80000068 &lt;+16&gt;: ldma   r1, r0, 0x0
+    0x80000070 &lt;+24&gt;: ld     d0, r1, 0x0
+    0x80000078 &lt;+32&gt;: sd     r22, 0x0, d0
+    0x80000080 &lt;+40&gt;: move.s d2, 0x0
+    0x80000088 &lt;+48&gt;: ld     d0, r22, 0x0
+    0x80000090 &lt;+56&gt;: jneq   r1, r3, 0x80000088        ; &lt;+48&gt; at host_debug_example_dpu.c:8:10
+    0x80000098 &lt;+64&gt;: jneq   r0, r2, 0x80000088        ; &lt;+48&gt; at host_debug_example_dpu.c:8:10
+    0x800000a0 &lt;+72&gt;: move   r0, 0x0
+</pre></div>
+</div>
+<p>Also, as mentionned when running:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>./host_debug_example_host 0
+</pre></div>
+</div>
+<p>It is also possible to attach to the DPU after the execution of the host application by using <code class="docutils literal notranslate"><span class="pre">dpu-lldb-attach-dpu</span></code> to get the same information (see section <a class="reference internal" href="084_DPUDebugAttachWithoutHost.html"><span class="doc">Attaching to a DPU without having a host application</span></a> for more information on <code class="docutils literal notranslate"><span class="pre">dpu-lldb-attach-dpu</span></code>):</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>* thread #1, name = &#39;DPUthread0&#39;, stop reason = memory fault
+    frame #0:  host_debug_example_dpu`main at host_debug_example_dpu.c:11:24
+   8   	  while (wait) // loops forever
+   9   	    ;
+   10  	
+-&gt; 11  	  *((int *)) = 0; // generates a memory fault
+    	                       ^
+   12  	
+   13  	  return 0;
+   14  	}
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="082_DPUDebugHost.html" class="btn btn-neutral float-left" title="Debugging a Host application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="084_DPUDebugAttachWithoutHost.html" class="btn btn-neutral float-right" title="Attaching to a DPU without having a host application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

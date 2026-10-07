@@ -1,0 +1,95 @@
+=======================
+An example of debugging
+=======================
+
+Context
+-------
+
+The following example will try to reuse a maximum of the most used commands when debugging a *DPU* program. The content of
+the program is not important here: the program has no specific goal, and we are not debugging it to find some hidden bug
+(which would be a standard use for a debugger).
+
+The source files are ``debug_example_main.c`` and ``debug_example_misc.c``:
+
+.. literalinclude:: ../../../endtests/documentation/debug_example/debug_example_main.c
+  :language: c
+
+.. literalinclude:: ../../../endtests/documentation/debug_example/debug_example_misc.c
+  :language: c
+
+One header file is also needed, ``debug_example_misc.h``:
+
+.. literalinclude:: ../../../endtests/documentation/debug_example/debug_example_misc.h
+  :language: c
+
+We are building the program in debug mode with ``dpu-upmem-dpurte-clang``:
+
+.. literalinclude:: ../../../endtests/documentation/debug_example/debug_example.compile
+
+This creates the binary ``debug_example``.
+
+Initialization
+--------------
+
+First we load the program and check that we have debug information:
+
+.. literalinclude:: ../../../endtests/documentation/debug_example/debug_example.lldb.load_and_check_debug_info
+
+We can now see that ``dpu-lldb`` manage to get debug information from the ELF DPU binary:
+
+.. literalinclude:: ../../../endtests/documentation/debug_example/debug_example.output.load_and_check_debug_info
+
+Objectives
+----------
+
+Before starting the real debugging, let's define some objectives. We want to:
+
+  * track the value of ``global_variable`` (defined in ``debug_example_misc.h``)
+  * track the value of ``my_var`` (defined at multiple places in ``debug_example_main.c``)
+  * check the parameters of ``misc_func`` (defined in ``debug_example_misc.c``) when the function is called
+  * make some precise step by step debugging in the ``func`` function (defined in ``debug_example_main.c``)
+
+At different points, we may add some auxiliary objectives to make use of other commands.
+
+Start of the debugging
+----------------------
+
+Let's add the breakpoints and hooks to achieve our objectives:
+
+.. literalinclude:: ../../../endtests/documentation/debug_example/debug_example.output.start
+
+When stopping at the start of a function, the local variables may not have been initialized yet.
+This explains the value of ``my_var`` as ``0x00000000`` being the default value for non-initialized stack (but it could be another value if the stack has already been used or after a reset).
+
+Step by step debugging
+----------------------
+
+Now, let's continue until we hit the breakpoint on the ``func`` function, then step over until we hit the breakpoint on the ``misc_func`` function:
+
+.. literalinclude:: ../../../endtests/documentation/debug_example/debug_example.output.step_by_step
+
+At each step, we can see the value of our tracked variables (the value of ``my_var`` is only printed if the variable exists).
+We can also check the parameters of the ``misc_func`` function.
+
+Let's step to see the ``global_variable`` variable being incremented and then step-out until we are back into the ``func`` function:
+
+.. literalinclude:: ../../../endtests/documentation/debug_example/debug_example.output.step_out
+
+Use of conditional breakpoints
+------------------------------
+
+In some cases, you may want to trigger a breakpoint only when some conditions are verified.
+Here, we want to break at the last iteration of the loop, where ``i`` is equal to ``my_var-1``:
+
+.. literalinclude:: ../../../endtests/documentation/debug_example/debug_example.output.cond_bkp
+
+We can see that we stop at the last iteration of the loop where ``i`` is equal to ``my_var-1``.
+
+Finishing off debugging
+-----------------------
+
+Let's continue to let the program finish and then exit ``dpu-lldb``:
+
+.. literalinclude:: ../../../endtests/documentation/debug_example/debug_example.output.exit
+
+As explained in :doc:`the tutorial<02_HelloWorld>`, the exit status provided by ``dpu-lldb`` is the 8 LSB of the return value the thread 0.

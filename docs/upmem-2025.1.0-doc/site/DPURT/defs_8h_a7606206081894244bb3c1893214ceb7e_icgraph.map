@@ -1,0 +1,12 @@
+<map id="me" name="me">
+<area shape="rect" id="node2" href="$barrier_8h.html#a5878dc265610918c268ddda00d94d35c" title="Decrements the counter associated to the barrier and suspends the invoking tasklet. " alt="" coords="132,5,232,32"/>
+<area shape="rect" id="node3" href="$wramfifo_8h.html#af111d5981c5f7d601affd735c36d0bae" title="handler to continously process inputs from an input fifo and store results in an output fifo..." alt="" coords="316,19,459,61"/>
+<area shape="rect" id="node4" href="$defs_8h.html#a7135d978ada918bafe859836e07c89bd" title="check_stack" alt="" coords="131,107,233,133"/>
+<area shape="rect" id="node6" href="$handshake_8h.html#a6254de987ca9a184fa0d25df6f5a8ba1" title="Waits for the notifier tasklet. " alt="" coords="105,157,259,184"/>
+<area shape="rect" id="node7" href="$mram__unaligned_8h.html#ae513e1cd6e6238036bac5721b9bd5de4" title="Stores the specified number of bytes from WRAM to MRAM. The number of bytes must be at most 2048..." alt="" coords="96,208,268,235"/>
+<area shape="rect" id="node8" href="$profiling_8h.html#ad6db7adea27891249323daf32b2c3b16" title="Start profiling a code section. " alt="" coords="126,259,238,285"/>
+<area shape="rect" id="node9" href="$profiling_8h.html#a89875ce67a798a2df78c100d604e9566" title="Stop profiling a code section. " alt="" coords="127,309,237,336"/>
+<area shape="rect" id="node10" href="$sem_8h.html#a1a6e7cbee5b14a6421240d26add8dbff" title="Takes one unit in the given semaphore (cf Take definition). " alt="" coords="139,360,225,387"/>
+<area shape="rect" id="node11" href="$wramfifo_8h.html#a10027e18ced7e05798423c2c4d338b08" title="handler to continously process inputs from an input fifo and store results in an output fifo..." alt="" coords="103,411,261,453"/>
+<area shape="rect" id="node5" href="$defs_8h.html#a08e88541423135702811da0629858bb6" title="Halts the DPU. " alt="" coords="364,107,411,133"/>
+</map>

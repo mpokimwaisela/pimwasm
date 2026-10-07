@@ -1,0 +1,125 @@
+Coding tips and recommended practices
+=====================================
+
+Programming DPUs
+----------------
+
+Persistent and non-persistent objects amongst boots
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Let's consider the following program, computing !5 (in ``factorial.c``):
+
+.. literalinclude:: ../../../endtests/documentation/reboot_with_global/factorial.c
+  :language: c
+
+And its associated host program:
+
+.. tabs::
+    .. group-tab:: C
+
+       .. literalinclude:: ../../../endtests/documentation/reboot_with_global/factorial_host.c
+           :language: c
+
+    .. group-tab:: C++
+
+       .. literalinclude:: ../../../endtests/documentation/reboot_with_global/factorial_host.cpp
+           :language: c++
+
+    .. group-tab:: Java
+
+       .. literalinclude:: ../../../endtests/documentation/reboot_with_global/FactorialHost.java
+           :language: java
+
+    .. group-tab:: Python
+
+       .. literalinclude:: ../../../endtests/documentation/reboot_with_global/factorial_host.py
+           :language: python
+
+
+Build and execute it:
+
+.. tabs::
+    .. group-tab:: C
+
+       .. literalinclude:: ../../../endtests/documentation/reboot_with_global/reboot_with_global.build_and_run
+           :language: bash
+
+    .. group-tab:: C++
+
+       .. literalinclude:: ../../../endtests/documentation/reboot_with_global/reboot_with_global.build_and_run_cpp
+           :language: bash
+
+    .. group-tab:: Java
+
+       .. literalinclude:: ../../../endtests/documentation/reboot_with_global/reboot_with_global.build_and_run_java
+           :language: bash
+
+    .. group-tab:: Python
+
+       .. literalinclude:: ../../../endtests/documentation/reboot_with_global/reboot_with_global.build_and_run_py
+           :language: bash
+
+
+The first time the program runs, the returned value is 120, as expected
+But when rebooting the DPU and checking the results again, one will observe that the returned value is not !5, but 14400 (3840 in hexadecimal, equal to !5x!5).
+
+The reason why the result after a second boot is 120x120 instead of 120 is that the ``factorial`` variable is not re-initialized at the second boot. In other words, saying:
+
+.. code-block:: c
+
+  __dma_aligned int64_t factorial = 1;
+
+This means that the initial value for this variable is 1 only during the first boot.
+
+More generally, the **Runtime Library** does not reset system resources when re-booting.
+In particular, mutexes are not relaxed, and semaphore or barrier counters are not reset to their initial value.
+
+Multiplications and divisions of shorts and integers are expensive
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Multiplications of 32-bit words rely on the UPMEM DPU instruction ``mul_step``, implying an over cost up to 42 clock cycles per multiplication.
+The same applies to the 32-bit division and the remainder.
+
+As a consequence, avoid using these operations when not needed.
+
+64-bit variables are expensive
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The DPU is a native 32-bit machine. 64-bit instructions are emulated by the toolchain and are usually more expensive
+than 32-bit ones. Typically, and addition is emulated by 2 or three instructions, so is twice or thrice more expensive.
+
+As a consequence, 64-bit code is slower and requires more program memory than 32-bit code.
+
+Multi-threaded programs are more efficient than single-threaded
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The DPU pipeline is reaching the nominal performance (about 1 instruction per cycle) when there are more threads in
+action than the depth of the pipeline.
+
+It is recommended to implement algorithms with 16 active tasklets to absorb the latency of memory accesses.
+
+Floating-point support
+~~~~~~~~~~~~~~~~~~~~~~
+
+Albeit understood natively by the compiler, floating points are emulated by software. As a consequence, floating
+point operations are very slow and should be avoided.
+
+Host applications
+-----------------
+
+.. _data-sharing-label:
+
+Data sharing
+~~~~~~~~~~~~
+
+Communication with the DPU **WRAM** is slower than copies to/from **MRAM**.
+Moreover, the **WRAM** is a smaller memory compared to **MRAM**.
+As a consequence, the DPU **WRAM** should be used to share small amounts of data (tens to a hundred bytes).
+To share large buffers users should use copies to/from **MRAM**.
+
+Memory locality
+~~~~~~~~~~~~~~~
+
+Each DPU can only access data in its own **MRAM**.
+It is recommended to organize the data flow to make DPU execution as much as possible independent
+from external data.

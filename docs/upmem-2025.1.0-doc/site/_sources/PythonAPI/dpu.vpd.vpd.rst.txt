@@ -1,0 +1,7 @@
+dpu.vpd.vpd module
+==================
+
+.. automodule:: dpu.vpd.vpd
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tasklet management and synchronization &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Memory management" href="031_DPURuntimeService_Memory.html" />
+    <link rel="prev" title="Introduction" href="03_ProgrammingWithUpmemDpu.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tasklet management and synchronization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tasklets">Tasklets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mutual-exclusions">Mutual exclusions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#semaphores">Semaphores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#barriers">Barriers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#handshakes">Handshakes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Tasklet management and synchronization</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/030_DPURuntimeService_Tasklets.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tasklet-management-and-synchronization">
+<h1>Tasklet management and synchronization<a class="headerlink" href="#tasklet-management-and-synchronization" title="Permalink to this heading"></a></h1>
+<p>The <strong>Runtime Library</strong> provides an abstraction over the primitive threads, called tasklets.
+A thread is the hardware implementation of an execution thread, natively implemented by DPUs.
+A Tasklet is a software abstraction, providing the underlying associated hardware thread with some system abilities (like a stack).</p>
+<p>Based on tasklet capabilities, the runtime library offers various synchronization primitives: <a class="reference internal" href="#mutexes">mutexes</a>, <a class="reference internal" href="#semaphores">semaphores</a>, <a class="reference internal" href="#barriers">barriers</a>, and <a class="reference internal" href="#handshakes">handshakes</a>.</p>
+<section id="tasklets">
+<h2>Tasklets<a class="headerlink" href="#tasklets" title="Permalink to this heading"></a></h2>
+<p>Tasklets are reducing the scope of execution of threads with the following constraints:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Boot</strong>: every tasklet is started at boot time to execute the <code class="docutils literal notranslate"><span class="pre">main</span></code> function</p></li>
+<li><p><strong>Synchronization</strong>: it cannot be stopped, but may suspend its execution, via synchronization primitives, such as mutual exclusions</p></li>
+<li><p><strong>Memory</strong>: it owns a specific space in the <strong>WRAM</strong> to store its execution stack</p></li>
+</ul>
+</div></blockquote>
+<p>Notice that the tasklets share the same memory space.
+This means, in particular, that <strong>any global variable declared in the source code is accessible by any tasklet, whatever its scope is (static or not)</strong>.
+In other words, the developer should use global variables with care, relying on synchronization primitives whenever potential concurrence occurs.</p>
+<p>Every tasklet has a system name, which can be fetched by the function <code class="docutils literal notranslate"><span class="pre">me()</span></code>, defined in <a class="reference external" href="202_RTL.html#defs-h">defs.h</a>, returning a unique system name (<code class="docutils literal notranslate"><span class="pre">sysname_t</span></code>).</p>
+<p>Let’s consider the following code (in <code class="docutils literal notranslate"><span class="pre">tasklet_stack_check.c</span></code>):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;defs.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;tasklet %u: stack = %u</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">me</span><span class="p">(),</span><span class="w"> </span><span class="n">check_stack</span><span class="p">());</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">check_stack</span></code> function returns the remaining available size in the stack.</p>
+<p>To define the number of tasklets of a program and the size of each tasklets stack, the user needs to compile the program with specific options:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">NR_TASKLETS</span></code> is used to define the number of tasklets.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STACK_SIZE_DEFAULT</span></code> is used to define the size of the stack for all the tasklets which stack is not specified.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STACK_SIZE_TASKLET_&lt;X&gt;</span></code> is used to define the size of the stack for a specific tasklet.</p></li>
+</ul>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">dpu</span><span class="o">-</span><span class="n">upmem</span><span class="o">-</span><span class="n">dpurte</span><span class="o">-</span><span class="n">clang</span><span class="w"> </span><span class="o">-</span><span class="n">DNR_TASKLETS</span><span class="o">=</span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="n">DSTACK_SIZE_DEFAULT</span><span class="o">=</span><span class="mi">256</span><span class="w"> </span><span class="o">-</span><span class="n">DSTACK_SIZE_TASKLET_1</span><span class="o">=</span><span class="mi">2048</span><span class="w"> </span><span class="o">-</span><span class="n">O2</span><span class="w"> </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="n">tasklet_stack_check</span><span class="w"> </span><span class="n">tasklet_stack_check</span><span class="p">.</span><span class="n">c</span>
+</pre></div>
+</div>
+<p><strong>Note:</strong> Make sure to put those options before the <code class="docutils literal notranslate"><span class="pre">-o</span></code> option, otherwise they won’t be taken into account by the <code class="docutils literal notranslate"><span class="pre">clang</span></code> driver.</p>
+<p>Now let’s execute this program with <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file tasklet_stack_check
+process launch
+quit
+</pre></div>
+</div>
+<p>We can now check that the right number of tasklets have been executed with their corresponding size of stack:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>tasklet 0: stack = 232
+tasklet 1: stack = 2024
+tasklet 2: stack = 232
+</pre></div>
+</div>
+<p><strong>Note:</strong> The available stack size is less than the allocated value because of the memory space already taken by the main function.</p>
+</section>
+<section id="mutual-exclusions">
+<span id="mutexes"></span><h2>Mutual exclusions<a class="headerlink" href="#mutual-exclusions" title="Permalink to this heading"></a></h2>
+<p>Mutual exclusions (<em>mutexes</em>) are the simplest and fastest way to define critical sections between the tasklets.</p>
+<p>The <strong>Runtime Library</strong> defines a collection of functions in <a class="reference external" href="202_RTL.html#mutex-h">mutex.h</a> to lock and unlock mutexes, first defined by the runtime configuration:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mutex_lock</span></code> and <code class="docutils literal notranslate"><span class="pre">mutex_unlock</span></code> request for a lock and an unlock of mutual exclusion, respectively.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mutex_trylock</span></code> which has the same behavior of <code class="docutils literal notranslate"><span class="pre">mutex_lock</span></code> except returns immediately if the lock is already taken</p></li>
+</ul>
+</div></blockquote>
+<p>The declaration of mutexes is done with the <code class="docutils literal notranslate"><span class="pre">MUTEX_INIT(name)</span></code> macro, also available in <code class="docutils literal notranslate"><span class="pre">mutex.h</span></code>.
+<code class="docutils literal notranslate"><span class="pre">name</span></code> must be a C standard identifier.</p>
+<p>Let’s illustrate this with an example: given two tasklets running concurrently, the first tasklet entering a critical section records its system name into a global variable protected by a mutex.</p>
+<p>The C code is the following (in <code class="docutils literal notranslate"><span class="pre">mutex_example.c</span></code>):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;defs.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;mutex.h&quot;</span>
+
+<span class="cp">#define UNDEFINED_VAL (-1)</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">shared_variable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">UNDEFINED_VAL</span><span class="p">;</span>
+
+<span class="n">MUTEX_INIT</span><span class="p">(</span><span class="n">my_mutex</span><span class="p">);</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">mutex_lock</span><span class="p">(</span><span class="n">my_mutex</span><span class="p">);</span>
+
+<span class="w">  </span><span class="cm">/* Tasklet 0 would set shared_variable to 1, tasklet 1 to 2, and so on... */</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">shared_variable</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">UNDEFINED_VAL</span><span class="p">)</span>
+<span class="w">    </span><span class="n">shared_variable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">me</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">mutex_unlock</span><span class="p">(</span><span class="n">my_mutex</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">shared_variable</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To create the program:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-upmem-dpurte-clang -DNR_TASKLETS=2 -o mutex_example mutex_example.c
+</pre></div>
+</div>
+<p>Now let’s execute this program with <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file mutex_example
+process launch
+exit
+</pre></div>
+</div>
+<p>As a response you will get a message like:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>exited with status = 1 (0x00000001)
+</pre></div>
+</div>
+<p>From this information, we can see that the first tasklet that entered the critical section was tasklet number 0.</p>
+<p>The v1A DPU provides at most 56 hardware mutexes, while the v1B DPU provides at most 64.
+But the <strong>Runtime Library</strong> also provides a software abstraction for mutual exclusions in <a class="reference external" href="202_RTL.html#vmutex-h">vmutex.h</a>.
+It enables to create a larger number of <em>virtual mutexes</em>. This can be used, for instance, to protect the access to a large array shared by a number of tasklets.
+This is illustrated in the following example where the tasklets are creating the histogram of an input array (<code class="docutils literal notranslate"><span class="pre">vmutex_example.c</span></code>):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;defs.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mram.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;vmutex.h&gt;</span>
+
+<span class="cp">#define BUFFER_SIZE (1024 * 1024)</span>
+<span class="cp">#define NR_ELEMENTS_HIST (1 &lt;&lt; 8)</span>
+<span class="cp">#define NR_ELEMENTS_PER_TASKLET (BUFFER_SIZE / NR_TASKLETS)</span>
+
+<span class="n">__mram_noinit</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">input_table</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">];</span>
+<span class="n">__mram</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">histogram</span><span class="p">[</span><span class="n">NR_ELEMENTS_HIST</span><span class="p">];</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Create a virtual mutex to protect each element of the histogram.</span>
+<span class="cm"> * Only one hardware mutex is used.</span>
+<span class="cm"> **/</span>
+<span class="n">VMUTEX_INIT</span><span class="p">(</span><span class="n">my_vmutex</span><span class="p">,</span><span class="w"> </span><span class="n">NR_ELEMENTS_HIST</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">NR_ELEMENTS_PER_TASKLET</span><span class="p">;</span>
+<span class="w">       </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">NR_ELEMENTS_PER_TASKLET</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">input_table</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">     * Lock the virtual mutex with id &#39;elem&#39;</span>
+<span class="cm">     **/</span>
+<span class="w">    </span><span class="n">vmutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_vmutex</span><span class="p">,</span><span class="w"> </span><span class="n">elem</span><span class="p">);</span>
+<span class="w">    </span><span class="n">histogram</span><span class="p">[</span><span class="n">elem</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="n">vmutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_vmutex</span><span class="p">,</span><span class="w"> </span><span class="n">elem</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Virtual mutexes are declared using the <code class="docutils literal notranslate"><span class="pre">VMUTEX_INIT(name,</span> <span class="pre">nb_vmutexes,</span> <span class="pre">nb_mutexes)</span></code> macro.
+It creates <code class="docutils literal notranslate"><span class="pre">nb_vmutexes</span></code> virtual mutexes, using <code class="docutils literal notranslate"><span class="pre">nb_mutexes</span></code> hardware mutexes.
+Internally, each virtual mutex is a state bit in WRAM. The hardware mutexes are used to protect the access to the state bits.
+Note that the cost of acquiring or releasing a virtual mutex is considerably higher than for a harware mutex (around 10 instructions compared to one).
+However, it avoids any false conflicts in the critical section of the histogram example.
+In the same example, using one harware mutex to protect the histogram array is around 2 times slower, due to false conflicts in the critical section.
+For virtual mutexes, it is required that the number of hardware mutexes is a power of 2, and the number of virtual mutexes a multiple of 8.</p>
+<p>Another way to ensure mutual exclusion in the histogram example is to use a pool of hardware mutexes.
+For instance, with a pool of 8 hardware mutexes, each element in the histogram is protected using the hardware mutex corresponding to its position modulo 8 (i.e., hardware mutex 0 protects the elements 0, 8, 16 … and hardware mutex 1 protects the elements 1, 9, 17 etc.).
+The <strong>Runtime Library</strong> also provides this implementation in <a class="reference external" href="202_RTL.html#mutex-pool-h">mutex_pool.h</a> as shown in the following code (<code class="docutils literal notranslate"><span class="pre">mutex_pool_example.c</span></code>):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;defs.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mram.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mutex_pool.h&gt;</span>
+
+<span class="cp">#define BUFFER_SIZE (1024 * 1024)</span>
+<span class="cp">#define NR_ELEMENTS_HIST (1 &lt;&lt; 8)</span>
+<span class="cp">#define NR_ELEMENTS_PER_TASKLET (BUFFER_SIZE / NR_TASKLETS)</span>
+
+<span class="n">__mram_noinit</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">input_table</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">];</span>
+<span class="n">__mram</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">histogram</span><span class="p">[</span><span class="n">NR_ELEMENTS_HIST</span><span class="p">];</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Create a mutex pool of size 8 to protect access to the histogram.</span>
+<span class="cm"> **/</span>
+<span class="n">MUTEX_POOL_INIT</span><span class="p">(</span><span class="n">my_mutex_pool</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">);</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">NR_ELEMENTS_PER_TASKLET</span><span class="p">;</span>
+<span class="w">       </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">NR_ELEMENTS_PER_TASKLET</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">input_table</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">     * Lock the element with id &#39;elem&#39;.</span>
+<span class="cm">     * The call to mutex_pool_lock is internally locking the</span>
+<span class="cm">     * hardware mutex of id &#39;elem &amp; 7&#39;.</span>
+<span class="cm">     **/</span>
+<span class="w">    </span><span class="n">mutex_pool_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_mutex_pool</span><span class="p">,</span><span class="w"> </span><span class="n">elem</span><span class="p">);</span>
+<span class="w">    </span><span class="n">histogram</span><span class="p">[</span><span class="n">elem</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="n">mutex_pool_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_mutex_pool</span><span class="p">,</span><span class="w"> </span><span class="n">elem</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Compared to using virtual mutexes, this solution requires more hardware mutexes and is also not free of false conflicts in the critical section. However, locking/unlocking is faster. Which solution will perform best depends on the length of the critical section and the probability of conflicts.</p>
+</section>
+<section id="semaphores">
+<span id="id1"></span><h2>Semaphores<a class="headerlink" href="#semaphores" title="Permalink to this heading"></a></h2>
+<p>The <strong>Runtime Library</strong> also offers <strong>counting semaphore</strong> primitives for more sophisticated synchronizations.
+Please refer to <a class="reference external" href="https://en.wikipedia.org/wiki/Semaphore_(programming)">Wikipedia</a> for a “standard” definition of counting semaphores.</p>
+<p>These are less efficient than mutexes and must be used if and only if the program needs a counter for the synchronization.</p>
+<p>The <strong>Runtime Library</strong> defines a collection of functions in <a class="reference external" href="202_RTL.html#sem-h">sem.h</a> to take and give semaphores, first defined in the runtime configuration:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sem_take</span></code> and <code class="docutils literal notranslate"><span class="pre">sem_give</span></code> decrement and increment the semaphore counter, respectively. If the counter is zero or less, <code class="docutils literal notranslate"><span class="pre">sem_take</span></code> suspends the invoking tasklet execution until another tasklet invokes <code class="docutils literal notranslate"><span class="pre">sem_give</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>Semaphores are defined with the macro <code class="docutils literal notranslate"><span class="pre">SEMAPHORE_INIT(name,</span> <span class="pre">counter)</span></code>, available in <code class="docutils literal notranslate"><span class="pre">sem.h</span></code>.
+<code class="docutils literal notranslate"><span class="pre">name</span></code> must be a C standard identifier.
+<code class="docutils literal notranslate"><span class="pre">counter</span></code> is the initial counter for the semaphore, and must be an 8-bit value.</p>
+<p>A typical illustration of semaphore usage is the classical <em>rendez-vous</em>: uses a semaphore initialized to 0 to ensure that some <em>consumer</em> tasklets do not start before a <em>producer</em> tasklet performing some preliminary work.</p>
+<p>In the following example, the producer sets the global variable <code class="docutils literal notranslate"><span class="pre">result</span></code> to !10 (equal to <code class="docutils literal notranslate"><span class="pre">0x375f00</span></code>).
+The consumers wait for this result to be computed, then return this result, along with their respective tasklet name (in <code class="docutils literal notranslate"><span class="pre">rendezvous_example.c</span></code>):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;defs.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sem.h&gt;</span>
+
+<span class="n">SEMAPHORE_INIT</span><span class="p">(</span><span class="n">my_semaphore</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">factorial_result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">factorial10</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">f</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">f</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">producer</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">factorial_result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factorial10</span><span class="p">();</span>
+<span class="w">  </span><span class="n">sem_give</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_semaphore</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sem_give</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_semaphore</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">result_producer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">24</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">factorial_result</span><span class="p">;</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">result_producer</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">consumer</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">sem_take</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_semaphore</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">result_consumer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">24</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">factorial_result</span><span class="p">;</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">result_consumer</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">tasks</span><span class="p">[])(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">producer</span><span class="p">,</span><span class="w"> </span><span class="n">consumer</span><span class="p">,</span><span class="w"> </span><span class="n">consumer</span><span class="p">};</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">tasks</span><span class="p">[</span><span class="n">me</span><span class="p">()]();</span><span class="w"> </span><span class="p">}</span>
+</pre></div>
+</div>
+<p>To create the program:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-upmem-dpurte-clang -DNR_TASKLETS=3 -o rendezvous_example rendezvous_example.c
+</pre></div>
+</div>
+<p>Now let’s execute this program with <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file rendezvous_example
+breakpoint set --source-pattern-regexp &quot;return result&quot;
+target stop-hook add --one-liner &quot;target variable/x factorial_result&quot;
+process launch
+frame variable/x result_consumer
+process continue
+frame variable/x result_consumer
+process continue
+frame variable/x result_producer
+process continue
+exit
+</pre></div>
+</div>
+<p>We set a breakpoint in the return line of the <code class="docutils literal notranslate"><span class="pre">main</span></code> and <code class="docutils literal notranslate"><span class="pre">consumer</span></code> functions.
+Each tasklet will stop on the return line, allowing us to have a look at the returned result and the <code class="docutils literal notranslate"><span class="pre">factorial_result</span></code> variable.
+To do that we have added a stop-hook that will print the content of the <code class="docutils literal notranslate"><span class="pre">factorial_result</span></code> variable each time <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code> stops.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(int) factorial_result = 0x00375f00
+</pre></div>
+</div>
+<p>And we used the command <code class="docutils literal notranslate"><span class="pre">frame</span> <span class="pre">variable</span></code> to print the returned result.
+Notice that <code class="docutils literal notranslate"><span class="pre">frame</span> <span class="pre">variable</span></code> is used to display local variables, and <code class="docutils literal notranslate"><span class="pre">target</span> <span class="pre">variable</span></code> is used to display global variables. Also <code class="docutils literal notranslate"><span class="pre">/x</span></code> is added to the command to print the value in hexadecimal.</p>
+<p>By checking the result of each tasklet, users will see that the functions return !10 appended with the tasklet names(<code class="docutils literal notranslate"><span class="pre">(me()</span> <span class="pre">&lt;&lt;</span> <span class="pre">24)</span> <span class="pre">|</span> <span class="pre">result</span></code>)</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(int) result_consumer = 0x01375f00
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(int) result_consumer = 0x02375f00
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(int) result_producer = 0x00375f00
+</pre></div>
+</div>
+</section>
+<section id="barriers">
+<span id="id2"></span><h2>Barriers<a class="headerlink" href="#barriers" title="Permalink to this heading"></a></h2>
+<p>Barriers are special synchronization primitives ensuring that a specific number of tasklets suspend on the same synchronization point before restarting.</p>
+<p>When a tasklet calls <code class="docutils literal notranslate"><span class="pre">barrier_wait</span></code>, its execution is suspended until exactly N tasklets have called <code class="docutils literal notranslate"><span class="pre">barrier_wait</span></code>, where N is the specific number of tasklets for the specified barrier.</p>
+<p>Barriers are defined with the macro <code class="docutils literal notranslate"><span class="pre">BARRIER_INIT(name,</span> <span class="pre">counter)</span></code>, available in <code class="docutils literal notranslate"><span class="pre">barrier.h</span></code>.
+<code class="docutils literal notranslate"><span class="pre">name</span></code> must be a C standard identifier.
+<code class="docutils literal notranslate"><span class="pre">counter</span></code> is the initial counter for the barrier, and must be an 8-bit value.</p>
+<p>The runtime service API defines the following functions in <a class="reference external" href="202_RTL.html#barrier-h">barrier.h</a> to access barriers:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">barrier_wait</span></code> allows a tasklet to wait on a barrier</p></li>
+</ul>
+</div></blockquote>
+<p>A typical barrier use case is the initialization of a program implying:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>An initialization sequence</p></li>
+<li><p>Some tasklets that can’t start until the initialization is complete</p></li>
+</ul>
+</div></blockquote>
+<p>For example, let’s consider that the tasklet number 0 performs such an initialization sequence and the tasklets 1, 2, and 3 wait for this sequence to complete before running.</p>
+<p>Based on this configuration, the following program computes the checksum of portions of an array of bytes (<code class="docutils literal notranslate"><span class="pre">coefficients</span></code>):</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Every tasklet computes the sum of 32 consecutive bytes in <code class="docutils literal notranslate"><span class="pre">coefficients</span></code>, starting at an index equal to 32 times the tasklet’s name</p></li>
+<li><p>The table is initialized by the first tasklet, so that <code class="docutils literal notranslate"><span class="pre">coefficients[i]</span> <span class="pre">=</span> <span class="pre">i</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>The expected results are:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>Tasklet</p></td>
+<td><p>Expected result</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0+1+2+3+4+…+31 = 0x1f0</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>32+33+34+…+63 = 0x5f0</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>64+65+66+…+91 = 0x9f0</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>92+93+94+..+127 = 0xdf0</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>The C code is the following (in <code class="docutils literal notranslate"><span class="pre">barrier_example.c</span></code>):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;barrier.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;defs.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+
+<span class="n">BARRIER_INIT</span><span class="p">(</span><span class="n">my_barrier</span><span class="p">,</span><span class="w"> </span><span class="n">NR_TASKLETS</span><span class="p">);</span>
+
+<span class="kt">uint8_t</span><span class="w"> </span><span class="n">coefficients</span><span class="p">[</span><span class="mi">128</span><span class="p">];</span>
+
+<span class="cm">/* Computes the sum of coefficients within a tasklet specific range. */</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">compute_checksum</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">checksum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">32</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="n">checksum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">coefficients</span><span class="p">[(</span><span class="n">me</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">];</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">checksum</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* Initializes the coefficient table. */</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">setup_coefficients</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">128</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">coefficients</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cm">/* The main thread initializes the table and joins the barrier to wake up the</span>
+<span class="cm"> * other tasklets. */</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">master</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">setup_coefficients</span><span class="p">();</span>
+<span class="w">  </span><span class="n">barrier_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_barrier</span><span class="p">);</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">compute_checksum</span><span class="p">();</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* Tasklets wait for the initialization to complete, then compute their</span>
+<span class="cm"> * checksum. */</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">slave</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">barrier_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_barrier</span><span class="p">);</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">compute_checksum</span><span class="p">();</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">me</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">master</span><span class="p">()</span><span class="o">:</span><span class="w"> </span><span class="n">slave</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To create the program:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-upmem-dpurte-clang -DNR_TASKLETS=4 -o barrier_example barrier_example.c
+</pre></div>
+</div>
+<p>Now let’s execute this program with <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file barrier_example
+breakpoint set --source-pattern-regexp &quot;return result&quot;
+target stop-hook add --one-liner &quot;frame variable/x result&quot;
+process launch
+process continue
+process continue
+process continue
+process continue
+exit
+</pre></div>
+</div>
+<p>As expected all the tasklets operated on a valid table of coefficients since they were properly synchronized on a common barrier.</p>
+</section>
+<section id="handshakes">
+<span id="id3"></span><h2>Handshakes<a class="headerlink" href="#handshakes" title="Permalink to this heading"></a></h2>
+<p>Handshakes ease synchronization between two tasklets, usually to start one of them when the other has finished a specific task.</p>
+<p>When a tasklet calls <code class="docutils literal notranslate"><span class="pre">handshake_wait_for(notifier)</span></code>, its execution is suspended until the notifier tasklet calls <code class="docutils literal notranslate"><span class="pre">handshake_notify()</span></code>.
+If the notifier calls <code class="docutils literal notranslate"><span class="pre">handshake_notify()</span></code> before the other tasklet starts to wait, the notifier execution is suspended until a tasklet
+calls <code class="docutils literal notranslate"><span class="pre">handshake_wait_for(notifier)</span></code>. If a tasklet calls <code class="docutils literal notranslate"><span class="pre">handshake_wait_for(notifier)</span></code> with an already waiting tasklet on this notifier,
+the second tasklet does not wait and an error is returned.</p>
+<p>Handshakes do not need additional configuration to be enabled.</p>
+<p>The runtime service API defines the following functions in <a class="reference external" href="202_RTL.html#handshake-h">handshake.h</a> to access handshakes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">handshake_wait_for(sysname_t</span> <span class="pre">notifier)</span></code> allows a tasklet to wait on another one and returns <code class="docutils literal notranslate"><span class="pre">0</span></code> in case of success</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">handshake_notify(void)</span></code> allows a tasklet to notify a waiting tasklet</p></li>
+</ul>
+</div></blockquote>
+<p>Let’s see a simple example:</p>
+<p>We have three tasks: task0, task1, task2. The result of task2 should be returned to the host. task2 depends on the results of task0 and task1,
+which are independent. task0 and task2 will be executed by tasklet#0, while task1 will be executed by tasklet#1. A handshake
+will be used to synchronize task2 (tasklet#0) and task1 (tasklet#1).</p>
+<p>The C code is the following (in <code class="docutils literal notranslate"><span class="pre">handshake_example.c</span></code>):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;handshake.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;defs.h&gt;</span>
+
+<span class="cp">#define TASKLET_1 1</span>
+
+<span class="kt">uint32_t</span><span class="w"> </span><span class="n">message</span><span class="p">;</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">complex_operation_0</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">complex_operation_1</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">complex_operation_2</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="kt">uint32_t</span><span class="w"> </span><span class="nf">task2</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">result0</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">result1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">complex_operation_2</span><span class="p">(</span><span class="n">result0</span><span class="p">,</span><span class="w"> </span><span class="n">result1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">task1</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">param</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x19</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">complex_operation_1</span><span class="p">(</span><span class="n">param</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="w">  </span><span class="n">handshake_notify</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">task0</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">param</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x42</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">complex_operation_0</span><span class="p">(</span><span class="n">param</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">handshake_wait_for</span><span class="p">(</span><span class="n">TASKLET_1</span><span class="p">);</span>
+<span class="w">  </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">task2</span><span class="p">(</span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">tasks</span><span class="p">[])(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">task0</span><span class="p">,</span><span class="w"> </span><span class="n">task1</span><span class="p">};</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">tasks</span><span class="p">[</span><span class="n">me</span><span class="p">()]();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To create the program:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpu-upmem-dpurte-clang -DNR_TASKLETS=2 -o handshake_example handshake_example.c
+</pre></div>
+</div>
+<p>Now let’s execute this program with <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file handshake_example
+process launch
+exit
+</pre></div>
+</div>
+<p>Now let’s verify that <code class="docutils literal notranslate"><span class="pre">task0</span></code> compute the expected result (<code class="docutils literal notranslate"><span class="pre">(0x19</span> <span class="pre">*</span> <span class="pre">3)</span> <span class="pre">-</span> <span class="pre">(0x42</span> <span class="pre">+</span> <span class="pre">1)</span> <span class="pre">=</span> <span class="pre">0x8</span></code>) by looking at the exit status. It should print:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>exited with status = 8 (0x00000008)
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="03_ProgrammingWithUpmemDpu.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="031_DPURuntimeService_Memory.html" class="btn btn-neutral float-right" title="Memory management" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

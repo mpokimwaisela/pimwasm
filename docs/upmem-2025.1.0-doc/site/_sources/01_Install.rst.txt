@@ -1,0 +1,168 @@
+####################################
+ Installing the UPMEM DPU toolchain
+####################################
+
+The UPMEM DPU toolchain has versions qualified on Linux for the
+following distributions:
+
++-------------------------+-------------------------+-------------------------+
+| Operating system        | V1A DPUs                | V1B DPUs                |
++=========================+=========================+=========================+
+| Debian 10               | Supported               | Supported               |
++-------------------------+-------------------------+-------------------------+
+| Ubuntu Server 20.04 LTS | Supported               | Not Supported           |
++-------------------------+-------------------------+-------------------------+
+| Ubuntu Server 22.04 LTS | Supported               | Supported               |
++-------------------------+-------------------------+-------------------------+
+| Rocky 8                 | Supported               | Supported               |
++-------------------------+-------------------------+-------------------------+
+
+Please note that the toolchain only supports the Server editions of the
+Ubuntu distribution. Notably, it doesn't support the Desktop editions.
+
+**************
+ Dependencies
+**************
+
+Python
+======
+
+The debugging tools use Python-based helpers and scripts. Ensure you
+have Python 3.x installed:
+
+.. tabs::
+
+   .. code-tab:: console Debian/Ubuntu
+
+      $ sudo apt install python3
+
+   .. code-tab:: console Rocky
+
+      $ sudo yum install python3
+
+***********************
+ Installation packages
+***********************
+
+You can install the UPMEM DPU toolchain in the following ways:
+
+Recommended: Installation from the PPA
+======================================
+
+For straightforward installation and automatic updates, install the
+UPMEM DPU toolchain from the UPMEM PPA repository for supported Debian
+and Ubuntu distributions.
+
+   #. Add the UPMEM public key to your system:
+
+      .. code:: console
+
+         $ wget -qO - https://upmem-sdk.s3.amazonaws.com/upmem.gpg.key | sudo apt-key add -
+
+   #. Add the UPMEM PPA repository to your system:
+
+      .. code:: console
+
+         $ sudo apt install software-properties-common
+         $ sudo add-apt-repository -y "deb http://upmem-sdk.s3.amazonaws.com/$(lsb_release -is | tr '[:upper:]' '[:lower:]')/$(lsb_release -cs) $(lsb_release -cs) main"
+
+   #. Update the package list:
+
+      .. code:: console
+
+         $ sudo apt update
+
+   #. Install the UPMEM DPU toolchain:
+
+      .. code:: console
+
+         $ sudo apt install upmem-firmware
+         $ sudo apt install upmem upmem-driver-dkms
+
+Installation from the Debian/RPM package
+========================================
+
+Download the Debian or RPM packages `from the UPMEM website
+<https://sdk.upmem.com/>`_ and install them and their dependencies using
+the following commands:
+
+.. tabs::
+
+   .. code-tab:: console Debian/Ubuntu
+
+      $ sudo apt install ./upmem-firmware_<version>_amd64.deb # Only needed for V1B DIMMs
+      $ sudo apt install ./upmem-driver-dkms_<version>_amd64.deb # For machines with real hardware
+      $ sudo apt install ./upmem_<version>_amd64.deb
+
+   .. code-tab:: console Rocky
+
+      $ sudo dnf install epel-release
+      $ sudo dnf install --enablerepo powertools upmem-firmware-<version>-1.x86_64.rpm # Only needed for V1B DIMMs
+      $ sudo dnf install --enablerepo powertools upmem-driver-dkms-<version>-1.noarch.rpm # For machines with real hardware
+      $ sudo dnf install --enablerepo powertools upmem-<version>-1.x86_64.rpm
+
+Installation from tar.gz binary archive
+=======================================
+
+Users can install the SDK from a tar.gz binary archive `listed as
+"tarball" in the download page. <https://sdk.upmem.com/>`_
+
+You want to use this method when:
+   -  you don't have administrative rights on the system.
+   -  you want to install more than one version of the SDK on the same
+      machine.
+   -  you want to install the SDK in a specific directory.
+
+**Note**: on a system with UPMEM DIMMs, you still need to install the
+firmware and the driver using the Debian/RPM package to operate the
+DIMMs. The SDK and driver versions must match.
+
+The binary archive contains a script named ``upmem_env.sh`` to set the
+environment variables needed to use the SDK. To set the environment
+variables, source the script:
+
+   #. Untar the binary package, for instance into the
+      ``$HOME/upmem-sdk`` directory
+   #. Source the script ``$HOME/upmem-sdk/upmem_env.sh`` to set
+      environment variables to appropriate values.
+
+Dependencies
+------------
+
+Unlike the Debian package, the tar.gz binary archive doesn't manage
+dependencies automatically. Depending on your usage of the SDK, you'll
+need some or all the following dependencies:
+
+.. code:: text
+
+   binutils libc6-dev libffi-dev libnuma1 libstdc++6 libudev1 libxml2 pkg-config
+   python3 python3-dev python3-psutil python3-pygments python3-yaml python3-six
+   python3-serial python3-babeltrace
+
+**********************
+ Functional simulator
+**********************
+
+The UPMEM DPU toolchain integrates a functional simulator.
+
+Internal functions of the toolchain are automatically mapped to the
+simulator at runtime if the program can't find UPMEM DIMMs in the
+system. This means that users don't need to do anything specific to use
+the simulator. A program running on a machine with no UPMEM DIMMs
+automatically falls back on the simulator. If the system contains real
+hardware, the code executes on it.
+
+Users can force the use of the simulator even with DIMMs present by
+sourcing the ``upmem_env.sh`` script with the ``simulator`` option:
+
+.. code:: console
+
+   $ source $HOME/upmem-sdk/upmem_env.sh simulator
+
+The simulator allocates virtual ranks made of a single chip, and a chip
+provides one DPU by default. It can allocate up to 64 chips for a total
+of 64 DPUs.
+
+Please note that the simulator is functional and not cycle accurate. It
+can only provide an accurate number of instructions. Don't rely on the
+provided number of cycles.

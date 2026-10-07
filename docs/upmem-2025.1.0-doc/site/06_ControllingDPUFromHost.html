@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Controlling the execution of DPUs from host applications &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Communication with host applications" href="032_DPURuntimeService_HostCommunication.html" />
+    <link rel="prev" title="Exceptions" href="05_Exceptions.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Controlling the execution of DPUs from host applications</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#obtaining-dpus">Obtaining DPUs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#loading-programs">Loading programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#executing-programs">Executing programs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Controlling the execution of DPUs from host applications</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/06_ControllingDPUFromHost.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="controlling-the-execution-of-dpus-from-host-applications">
+<h1>Controlling the execution of DPUs from host applications<a class="headerlink" href="#controlling-the-execution-of-dpus-from-host-applications" title="Permalink to this heading"></a></h1>
+<p>The DPU host API facilitates interactions between host applications and DPUs by offering functions to:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Dynamically obtain some DPUs to achieve its goal</p></li>
+<li><p>Load the DPUs with a program</p></li>
+<li><p>Start DPUs and get their execution status</p></li>
+</ul>
+</div></blockquote>
+<section id="obtaining-dpus">
+<h2>Obtaining DPUs<a class="headerlink" href="#obtaining-dpus" title="Permalink to this heading"></a></h2>
+<p>From a physical standpoint, DPUs are grouped by <strong>ranks</strong>. Within a rank, each operation can address one or several
+DPUs at a time. The size of a rank varies depending on the actual underneath implementation:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>UPMEM DIMMs provide ranks of 64 DPUs</p></li>
+<li><p>F1 on AWS provide ranks of 32 DPUs</p></li>
+<li><p>The UPMEM simulator provides ranks of 1 DPU only</p></li>
+<li><p>Etc.</p></li>
+</ul>
+</div></blockquote>
+<p>However, often one may want to apply the same action on all DPUs of all ranks. And sometimes, there is no performance drop
+in doing so, rather than applying the action at the rank level.</p>
+<p>As a consequence, the host API works on sets of DPUs, which may contain multiple DPU ranks. The provided C macro <code class="docutils literal notranslate"><span class="pre">DPU_RANK_FOREACH</span></code>
+and <code class="docutils literal notranslate"><span class="pre">DPU_FOREACH</span></code> iterate over the ranks and DPUs respectively of a set. Here are some of the available C functions to manage a DPU set:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dpu_alloc</span></code>: returns a set of DPUs, which contains exactly the specified number of DPUs, or an error if the given number of DPUs cannot be allocated. Unless <code class="docutils literal notranslate"><span class="pre">DPU_ALLOCATE_ALL</span></code> is used, which means that <code class="docutils literal notranslate"><span class="pre">dpu_alloc</span></code> will allocate all available DPUs.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dpu_free</span></code>: frees a given set of DPUs. Only sets allocated with <code class="docutils literal notranslate"><span class="pre">dpu_alloc</span></code> can be freed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dpu_get_nr_ranks</span></code>: returns the number of ranks in a DPU set</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dpu_get_nr_dpus</span></code>: returns the number of DPUs in a DPU set</p></li>
+</ul>
+</div></blockquote>
+<p>The allocation functions get a string (called the profile) to describe the target:</p>
+<p>This string is a comma separated list of key and values:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&quot;key1=value1,key2=value2,key3=value3,...&quot;
+</pre></div>
+</div>
+<p>Here is a non-exhaustive list of keys with their associated values:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">backend</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">simulator</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hw</span></code></p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cycleAccurate</span></code> (only for FPGA)</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p>A <code class="docutils literal notranslate"><span class="pre">NULL</span></code> profile is equivalent to an empty profile.</p>
+<p>In C++, Java and Python the <code class="docutils literal notranslate"><span class="pre">allocate</span></code> method is used to obtain a set of DPUs or ranks, represented as a <code class="docutils literal notranslate"><span class="pre">DpuSet</span></code> or <code class="docutils literal notranslate"><span class="pre">DpuSystem</span></code> object. More information can be found in the documentation for the host APIs in <a class="reference internal" href="205_CppHostAPI.html"><span class="doc">C++ Host API</span></a>, <a class="reference internal" href="206_JavaAPI.html"><span class="doc">Java Library</span></a> and <a class="reference internal" href="PythonAPI/modules.html"><span class="doc">Python Library</span></a>.</p>
+</section>
+<section id="loading-programs">
+<h2>Loading programs<a class="headerlink" href="#loading-programs" title="Permalink to this heading"></a></h2>
+<p>This operation is achieved by <code class="docutils literal notranslate"><span class="pre">dpu_load</span></code> to program all the DPUs in a set.
+The function gets a binary file path as input and loads the enclosed program onto the specified DPUs.
+The program information that can be stored in a given pointer, or ignored if the pointer is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p>
+<p>The program is persistent in the DPU memory, meaning that it can be rebooted as many times
+as the application wants and will always execute the same code.</p>
+<p><strong>Note: as explained in</strong> <a class="reference internal" href="fff_CodingTips.html"><span class="doc">Coding tips and recommended practices</span></a> <strong>global constants are persistent amongst boot, even if static.</strong></p>
+<p>Applications may, however, reload DPUs with new programs, by invoking <code class="docutils literal notranslate"><span class="pre">dpu_load</span></code> at any moment.</p>
+<p>Note that the C host API also provides 2 functions similar to <code class="docutils literal notranslate"><span class="pre">dpu_load</span></code> to load program from memory:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dpu_load_from_incbin</span></code> loads a program stored in memory using the <code class="docutils literal notranslate"><span class="pre">DPU_INCBIN</span></code> macro.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dpu_load_from_memory</span></code> loads a program stored in memory.</p></li>
+</ul>
+</div></blockquote>
+<p>In C++, Java and Python the <code class="docutils literal notranslate"><span class="pre">load</span></code> method is available for this operation. Please check the Host API documentation of the corresponding language for more details.</p>
+</section>
+<section id="executing-programs">
+<h2>Executing programs<a class="headerlink" href="#executing-programs" title="Permalink to this heading"></a></h2>
+<p>This goal is achieved by “booting” DPUs, via invocations to <code class="docutils literal notranslate"><span class="pre">dpu_launch</span></code> to boot all the DPUs of a given set</p>
+<p>Some resources, but not all of them, are reset before booting. More details about what is reset can be found in <a class="reference internal" href="fff_CodingTips.html"><span class="doc">Coding tips and recommended practices</span></a>.</p>
+<p>Applications can execute DPUs <em>synchronously</em> or <em>asynchronously</em>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DPU_SYNCHRONOUS</span></code> suspends the application until the requested DPUs complete their execution (or encounters an error)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DPU_ASYNCHRONOUS</span></code> immediately gives back the control to the application, which will be in charge of checking the DPU’s status via
+<code class="docutils literal notranslate"><span class="pre">dpu_status</span></code> or <code class="docutils literal notranslate"><span class="pre">dpu_sync</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>In C++, Java and Python the <code class="docutils literal notranslate"><span class="pre">exec</span></code> method is used to boot the DPUs. Please check the Host API documentation of the corresponding language for more details.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="05_Exceptions.html" class="btn btn-neutral float-left" title="Exceptions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="032_DPURuntimeService_HostCommunication.html" class="btn btn-neutral float-right" title="Communication with host applications" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

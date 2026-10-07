@@ -1,0 +1,47 @@
+Introduction
+============
+
+The next chapters describe how to create programs running on DPUs, interacting with host applications.
+
+It includes:
+
+ * Using the functionality provided by the **Runtime Library** in the DPU program
+ * Using the **Host API** that allows host applications to start and control the execution of DPUs
+
+Those two components are tightly correlated, offering different categories of services:
+
+ * :doc:`030_DPURuntimeService_Tasklets`: how to define threads, how they operate and interact
+ * :doc:`031_DPURuntimeService_Memory`: how to access the different memories within a DPU
+ * :doc:`032_DPURuntimeService_HostCommunication`: how to share data with the host
+ * :doc:`04_Stdlib`: how to use the C standard library
+ * :doc:`05_Exceptions`: understanding the SDK exception model
+ * :doc:`06_ControllingDPUFromHost`: how to control the DPU from the host side
+ * :doc:`07_Logging`: how to log messages from the DPU
+ * :doc:`071_MeasuringPerformances`: how to access hardware performance counter
+
+DPU chip characteristics
+------------------------
+
+UPMEM curently provides two different models of DPU, named v1A and v1B.
+
+The major differences between these two are as follows:
+
++--------------------------------+----------------------+----------------------+
+|                                | v1A                  | v1B                  |
++================================+======================+======================+
+| Nominal frequency              | 350 MHz              | 400 MHz              |
++--------------------------------+----------------------+----------------------+
+| Instruction Memory (IRAM) [1]_ | <= 4096 instructions | <= 3968 instructions |
++--------------------------------+----------------------+----------------------+
+| Working memory (WRAM) [1]_     | <= 65536 bytes       | <= 63488 bytes       |
++--------------------------------+----------------------+----------------------+
+| Tasklets [2]_                  | <= 24                | <= 16                |
++--------------------------------+----------------------+----------------------+
+| Mutexes                        | <= 56                | <= 64                |
++--------------------------------+----------------------+----------------------+
+
+.. [1] Part of the IRAM and WRAM in the v1B has been reserved for production and quality control purposes.
+
+.. [2] The DPU's arithmetic performance is not affected by the maximum number of tasklets. 
+       Both types of chips execute the same number of instructions concurrently (11).
+       In real-world scenarios, including applications developed internally and by our users, we have observed that exceeding 16 tasklets generally does not enhance performance.

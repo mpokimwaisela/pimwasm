@@ -1,0 +1,23 @@
+====================================================
+Attaching to a DPU without having a host application
+====================================================
+
+dpu-lldb-attach-dpu
+===================
+
+``dpu-lldb-attach-dpu`` is a tool that allows the user to attach to a hardware DPU without having to attach first to a host application.
+
+This tool is to be used as describe below::
+
+  dpu-lldb-attach-dpu <dpu_id> [<dpu_program_path>]
+
+The ``dpu_id`` is an id in the format: ``x.x.x`` as printed when using the ``dpu_list`` command.
+
+The ``dpu_program_path`` argument is optional but can help to explore the DPU memories using the symbols of the DPU program.
+
+Limitations
+===========
+
+ * It is not possible to attach to a DPU already used by a host application.
+
+ * It is not possible to run a program using ``dpu-lldb-attach-dpu`` (at least not using the ``process launch`` command).

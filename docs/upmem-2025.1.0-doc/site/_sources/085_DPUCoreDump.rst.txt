@@ -1,0 +1,29 @@
+=============
+DPU Core Dump
+=============
+
+``dpu-lldb`` provides a way to save the state of the DPU and to load it.
+
+Let's consider the following DPU program (in ``core_dump_example.c``), and compile it:
+
+.. literalinclude:: ../../../endtests/documentation/core_dump_example/core_dump_example.c
+   :language: c
+
+.. literalinclude:: ../../../endtests/documentation/core_dump_example/core_dump_example.compile
+
+
+We are now ready to run the program until it gets to the ``mram_read`` function.
+Then we will generate a Core Dump of the execution using the ``process save-core`` command of ``dpu-lldb``:
+
+.. literalinclude:: ../../../endtests/documentation/core_dump_example/core_dump_example.lldb_script_generate
+
+.. literalinclude:: ../../../endtests/documentation/core_dump_example/core_dump_example.output_generate
+
+We have created a Core Dump of the execution in the ``core_dump_example.core_dump`` file.
+Let's load it with ``dpu-lldb``, and stop at entry to see that the Core Dump program start just where we were at when generating it.
+Then we will be able to resume the program to let it finish:
+
+.. literalinclude:: ../../../endtests/documentation/core_dump_example/core_dump_example.run_core_dump
+
+.. literalinclude:: ../../../endtests/documentation/core_dump_example/core_dump_example.lldb_script_run_core_dump
+

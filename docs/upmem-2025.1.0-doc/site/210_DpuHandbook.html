@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DPU Handbook &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/dark_mode_js/default_dark.js"></script>
+        <script src="_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Runtime Library" href="202_RTL.html" />
+    <link rel="prev" title="Instruction Set Architecture" href="201_IS.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">DPU Handbook</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">1)  Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dpu-state">2)  DPU state</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#threads-32-bit-registers">2.1)  Threads 32-bit registers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#r0-r23-seen-as-stack-registers">2.1.1)  R0 - R23 seen as Stack Registers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#r0-r23-register-pair-seen-as-64-bit-registers">2.1.2)  R0 - R23 register pair seen as 64-bit registers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#threads-pc-register">2.3)  Threads PC register</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#naming-conventions">2.4)  Naming Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#threads-zf-and-cf-flags">2.5)  Threads ZF and CF flags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-time-register">2.6)  The TIME register</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-iram">2.6)  The IRAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-wram">2.7)  The WRAM</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#load-store-memory-exception">2.7.1)  Load/Store Memory Exception</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stack-overflow-exception">2.7.2)  Stack Overflow Exception</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#the-mram">2.8)  The MRAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-atomic-memory">2.9)  The ATOMIC memory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-run-memory">2.10)  The RUN memory</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#result-destination">3)  Result Destination</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#zero-as-destination-register">3.1)  <strong>ZERO</strong> as destination register</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-u-and-s-instruction-modifiers">3.2)  The ‘.u’ and ‘.s’ instruction modifiers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#jump-boolean-conditions">4)  Jump &amp; Boolean Conditions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">4.1)  Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#condition-identifier">4.2)  Condition Identifier</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#common-conditions">4.2.1)  Common Conditions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#specific-conditions-common-to-addition-and-subtraction">4.2.2)  Specific Conditions Common To Addition and Subtraction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#addition-specific-conditions">4.2.3)  Addition Specific Conditions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#comparison-specific-conditions">4.2.4)  Comparison specific Conditions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#extended-z-conditions">4.2.5)  Extended Z Conditions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#shift-specific-conditions">4.2.6)  Shift specific Conditions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bit-count-specific-conditions">4.2.7)  Bit Count Specific Conditions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bit-multiply-specific-conditions">4.2.8)  8-bit Multiply Specific Conditions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ldma-ldmai-sdma-dma">5)  LDMA / LDMAI / SDMA (DMA)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#generalities">5.1)  Generalities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#behaviours">5.2)  Behaviours</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#loads-stores">1)  Loads / Stores</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#common-properties">6.1)  Common Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#loads">6.2)  Loads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stores-register">6.3)  Stores Register</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stores-immediate-value">6.4)  Stores Immediate Value</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stores-id-ored-with-immediate-value">6.5)  Stores ID ORed With Immediate Value</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#endianness-modifiers">6.6)  Endianness Modifiers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#additions-and-subtractions">7)  Additions and Subtractions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cf-update">7.1) CF update</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#why-sub-32-is-replaced-with-an-add">7.2)  Why sub #32 is replaced with an add?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#why-subc-32-is-replaced-with-an-addc">7.3)  Why subc #32 is replaced with an addc?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-conditions">7.4)  Supported Conditions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#logical-instructions">8)  Logical instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#extub-extsb-extuh-extsh-zero-sign-extensions">9)  EXTUB / EXTSB / EXTUH / EXTSH (Zero/Sign Extensions)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hash">10)  HASH</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hash-operation">10.1)  Hash operation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#sats-saturation-signed">11)  SATS (SATuration, Signed)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#shift-rotate">12)  Shift / Rotate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#shift-rotate-add-sub">13)  Shift/Rotate &amp; add/sub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#clz-clo-cls-cao-bit-count">14)  CLZ / CLO / CLS / CAO (bit count)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mul-step-div-step-movd-swapd">15)  MUL_STEP / DIV_STEP / MOVD / SWAPD</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mul-step">15.1)  mul_step</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#div-step">15.2)  div_step</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#movd">15.3)  movd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#swapd">15.3  swapd</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#x-8-multiplications">16)  8 x 8 Multiplications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cmpb4">17)  CMPB4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#call">18)  CALL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#acquire-release">19)  ACQUIRE / RELEASE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stop">20)  STOP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#boot-resume-clr-run">21)  BOOT / RESUME / CLR_RUN</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#clr-run">21.1) CLR_RUN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#boot-resume">21.2) BOOT / RESUME</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">21.3) Supported conditions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#time-time-cfg">22)  TIME / TIME_CFG</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#time-increment-configuration">22.1) TIME Increment Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#nop-bkp">23)  NOP / BKP</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PythonAPI/modules.html">Python Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">DPU Handbook</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/210_DpuHandbook.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dpu-handbook">
+<h1>DPU Handbook<a class="headerlink" href="#dpu-handbook" title="Permalink to this heading"></a></h1>
+<section id="introduction">
+<h2>1)  Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h2>
+<p>The DPU is a multithreaded 32-bit processor that has several hardware threads available, depending on the version of the DPU:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>On a v1A DPU, there are 24 threads, indexed from 0 through 23.</p></li>
+<li><p>On a v1B DPU, there are 16 threads, indexed from 0 through 15.</p></li>
+</ul>
+</div></blockquote>
+<p>A thread can be running or stopped. The state of the thread <em>i</em> is reflected in the 24-lsb
+of a 64-bit register named RUN (the 40-msb being used for other purposes, described later):</p>
+<ul class="simple">
+<li><p>RUN[ <em>i</em> ] = 0 -&gt; the thread <em>i</em> is stopped (not executing),</p></li>
+<li><p>RUN[ <em>i</em> ] = 1 -&gt; the thread <em>i</em> is running (executing).</p></li>
+</ul>
+<p>The full performance of the DPU is achieved when enough hardware threads are
+running so that the DPU pipeline remains filled (this number being &gt; 10).
+Note that ‘overfilling’ the pipeline is recommended to palliate the fact that
+threads issuing DMA instructions are temporarily removed from the pipeline.</p>
+</section>
+<section id="dpu-state">
+<h2>2)  DPU state<a class="headerlink" href="#dpu-state" title="Permalink to this heading"></a></h2>
+<section id="threads-32-bit-registers">
+<h3>2.1)  Threads 32-bit registers<a class="headerlink" href="#threads-32-bit-registers" title="Permalink to this heading"></a></h3>
+<p>A thread knows 32 x 32 bit registers:</p>
+<ul class="simple">
+<li><p>24 general purpose 32-bit registers, private to the thread: <strong>R0 - R23</strong></p></li>
+<li><p>4 fixed 32-bit registers, common to all threads:</p>
+<ul>
+<li><p><strong>ZERO</strong> : fixed to the value 0,</p></li>
+<li><p><strong>ONE</strong>  : fixed to the value 1,</p></li>
+<li><p><strong>LNEG</strong> : fixed to the value 0xFFFFFFFF (Least NEGative),</p></li>
+<li><p><strong>MNEG</strong> : fixed to the value 0x80000000 (Most NEGative).</p></li>
+</ul>
+</li>
+<li><p>4 fixed 32-bit registers, private to the thread:</p>
+<ul>
+<li><p><strong>ID</strong>   : fixed to the thread index.</p></li>
+<li><p><strong>ID2</strong>  : fixed to the thread index <strong>x 2</strong>.</p></li>
+<li><p><strong>ID4</strong>  : fixed to the thread index <strong>x 4</strong>.</p></li>
+<li><p><strong>ID8</strong>  : fixed to the thread index <strong>x 8</strong>.</p></li>
+</ul>
+</li>
+</ul>
+<section id="r0-r23-seen-as-stack-registers">
+<h4>2.1.1)  R0 - R23 seen as Stack Registers<a class="headerlink" href="#r0-r23-seen-as-stack-registers" title="Permalink to this heading"></a></h4>
+<p>The 24 general-purpose 32-bit registers can be seen
+as well as 24 x 32-bit stack registers: S0 - S23.</p>
+<p>Some instructions support the specification of an <strong>Sn</strong> register instead of
+an <strong>Rn</strong> register. While the register value is unchanged the way this value
+is used is changed, as described in the <strong>the stack exceptions chapter</strong>.</p>
+</section>
+<section id="r0-r23-register-pair-seen-as-64-bit-registers">
+<h4>2.1.2)  R0 - R23 register pair seen as 64-bit registers<a class="headerlink" href="#r0-r23-register-pair-seen-as-64-bit-registers" title="Permalink to this heading"></a></h4>
+<p>The 24 general-purpose 32-bit registers can be seen as well as 12 x 64-bit registers:</p>
+<ul class="simple">
+<li><p><strong>D0</strong>  = { <strong>R0</strong>  , <strong>R1</strong>  }</p></li>
+<li><p><strong>D2</strong>  = { <strong>R2</strong>  , <strong>R3</strong>  }</p></li>
+<li><p><strong>D4</strong>  = { <strong>R4</strong>  , <strong>R5</strong>  }</p></li>
+<li><p><strong>D6</strong>  = { <strong>R6</strong>  , <strong>R7</strong>  }</p></li>
+<li><p><strong>D8</strong>  = { <strong>R8</strong>  , <strong>R9</strong>  }</p></li>
+<li><p><strong>D10</strong> = { <strong>R10</strong> , <strong>R11</strong> }</p></li>
+<li><p><strong>D12</strong> = { <strong>R12</strong> , <strong>R13</strong> }</p></li>
+<li><p><strong>D14</strong> = { <strong>R14</strong> , <strong>R15</strong> }</p></li>
+<li><p><strong>D16</strong> = { <strong>R16</strong> , <strong>R17</strong> }</p></li>
+<li><p><strong>D18</strong> = { <strong>R18</strong> , <strong>R19</strong> }</p></li>
+<li><p><strong>D20</strong> = { <strong>R20</strong> , <strong>R21</strong> }</p></li>
+<li><p><strong>D22</strong> = { <strong>R22</strong> , <strong>R23</strong> }</p></li>
+</ul>
+<p>The Dn 32-msb are held by the even Rn register, the 32-lsb being held by the odd Rn+1 register.</p>
+</section>
+</section>
+<section id="threads-pc-register">
+<h3>2.3)  Threads PC register<a class="headerlink" href="#threads-pc-register" title="Permalink to this heading"></a></h3>
+<p>A thread comprises a <strong>PC</strong> register, whose width is implementation dependant:</p>
+<ul class="simple">
+<li><p>the PC width is in the range 12-16 bits,</p></li>
+<li><p>the first DPU implementation has a 12-bit PC.</p></li>
+</ul>
+<p><strong>Note:</strong> the PC contains an <strong>instruction address</strong>, not <strong>a byte address</strong>.</p>
+</section>
+<section id="naming-conventions">
+<h3>2.4)  Naming Conventions<a class="headerlink" href="#naming-conventions" title="Permalink to this heading"></a></h3>
+<p>To specify which operands are allowed for each instruction, the following naming conventions are used:</p>
+<ul class="simple">
+<li><p><strong>#32</strong>                : a 32-bit immediate value.</p></li>
+<li><p><strong>#28</strong>                : a 28-bit immediate value, sign extended to 32-bit.</p></li>
+<li><p><strong>#27</strong>                : a 27-bit immediate value, sign extended to 32-bit.</p></li>
+<li><p><strong>#24</strong>                : a 24-bit immediate value, sign extended to 32-bit.</p></li>
+<li><p><strong>#16</strong>                : a 16-bit immediate value, that is, according to the instruction considered, either:</p>
+<ul>
+<li><p>not extended,</p></li>
+<li><p>sign extended to 32-bit,</p></li>
+<li><p>sign extended to 64-bit.</p></li>
+</ul>
+</li>
+<li><p><strong>#8</strong>                 : a 8-bit immediate value.</p></li>
+<li><p><strong>#WRAM</strong>              : an immediate signed value whose width is <em>p</em> + 1 when the WRAM size is 2 ^ <em>p</em>.</p></li>
+<li><p><strong>disp24</strong>             : a 24-bit immediate value.</p></li>
+<li><p><strong>disp12</strong>             : a 12-bit immediate value, sign extended to 24-bit.</p></li>
+<li><p><strong>#28-PC</strong>             : an immediate value whose width is 28 minus the width of PC, sign-extended to 32-bit.</p></li>
+<li><p><strong>#27-PC</strong>             : an immediate value whose width is 27 minus the width of PC, sign-extended to 32-bit.</p></li>
+<li><p><strong>#24-PC</strong>             : an immediate value whose width is 24 minus the width of PC, sign-extended to 32-bit.</p></li>
+<li><p><strong>#PC</strong>                : an immediate value whose width is the width of PC.</p></li>
+<li><p><strong>#6</strong>                 : a 6-bit immediate value.</p></li>
+<li><p><strong>#5</strong>                 : a 5-bit immediate value.</p></li>
+<li><p><strong>Rm</strong>, <strong>Rn</strong>, <strong>Rp</strong> : one of the register R0-R23.</p></li>
+<li><p><strong>Rnx</strong>                : one of the register R0-R23 or one of the fiXed register: ZERO, ONE, LNEG, MNEG, ID, ID2, ID4 or ID8.</p></li>
+<li><p><strong>Rmz</strong>                : one of the register R0-R23 or the ZERO register</p></li>
+<li><p><strong>Dm</strong>, <strong>Dp</strong>         : one of the register D0-D22.</p></li>
+<li><p><strong>Dmz</strong>                : one of the register D0-D22 or the ZERO register.</p></li>
+<li><p><strong>Xm</strong>                 : one of the register R0-R23 or D0-D22.</p></li>
+<li><p><strong>Xmz</strong>                : one of the register R0-R23, D0-D22 or the ZERO register.</p></li>
+</ul>
+</section>
+<section id="threads-zf-and-cf-flags">
+<h3>2.5)  Threads ZF and CF flags<a class="headerlink" href="#threads-zf-and-cf-flags" title="Permalink to this heading"></a></h3>
+<p>To help the execution of 64-bit arithmetic, each thread has 2 x 1-bit flags:</p>
+<ul class="simple">
+<li><p><strong>ZF</strong> : Zero Flag,</p></li>
+<li><p><strong>CF</strong> : Carry Flag.</p></li>
+</ul>
+</section>
+<section id="the-time-register">
+<h3>2.6)  The TIME register<a class="headerlink" href="#the-time-register" title="Permalink to this heading"></a></h3>
+<p>This 36-bit register is common to all the threads. According to its configuration, TIME either:</p>
+<ul class="simple">
+<li><p>stays unchanged,</p></li>
+<li><p>increments at every cycle,</p></li>
+<li><p>increments at every executed instruction.</p></li>
+</ul>
+<p>The TIME_CFG (TIME ConFiGure) instruction allows:</p>
+<ul class="simple">
+<li><p>the optional setting of the TIME configuration</p></li>
+<li><p>the optional clearing of TIME[35:0]</p></li>
+</ul>
+<p>The 32-msb of TIME can be obtained through the TIME and TIME_CFG instructions.</p>
+</section>
+<section id="the-iram">
+<h3>2.6)  The IRAM<a class="headerlink" href="#the-iram" title="Permalink to this heading"></a></h3>
+<p>A DPU comprises an Instruction memory named <strong>IRAM</strong> holding
+2 ^ <em>p</em> 48-bit wide instructions, where <em>p</em> is the <strong>PC</strong> width.</p>
+<p><strong>PC_width and instruction encoding</strong></p>
+<ul class="simple">
+<li><p>In many instructions, the width of the immediate value
+that can be encoded varies counter wise to the PC width.</p></li>
+<li><p>The current implementation has a 12-bit PC but supports (through the configuration
+by the <strong>HCPU</strong> of the <strong>PC_MODE</strong> control register) the execution of binaries
+generated for DPU with larger PC width, as long these binaries fit into the <strong>IRAM</strong>.</p></li>
+</ul>
+<p>The <strong>IRAM</strong> can be accessed:</p>
+<ul class="simple">
+<li><p>by the <strong>HCPU</strong> through the control interface,</p>
+<ul>
+<li><p>The HCPU can read/write the <strong>IRAM</strong> even when threads are running.</p></li>
+</ul>
+</li>
+<li><p>by the <strong>DPU</strong> through the execution of <strong>ldmai</strong> instructions,</p>
+<ul>
+<li><p>the <strong>DPU</strong> reads the <strong>IRAM</strong> only through the fetching of instructions.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="the-wram">
+<h3>2.7)  The WRAM<a class="headerlink" href="#the-wram" title="Permalink to this heading"></a></h3>
+<p>The <strong>WRAM</strong> is a <strong>64 KB</strong> memory that is accessible:</p>
+<ul class="simple">
+<li><p>by the <strong>HCPU</strong> through the control interface,</p></li>
+<li><p>by the <strong>DPU</strong> through:</p>
+<ul>
+<li><p>8-bit, 16-bit, 32-bit and 64-bit load/store instructions,</p></li>
+<li><p><strong>ldma</strong>/<strong>sdma</strong> instructions.</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Note 1:</strong> The <strong>WRAM</strong> has a 24-bit wide address space, where currently only the range 0x000000 - 0x00FFFF is used.</p>
+<p><strong>Note 2:</strong> On the v1B DPU, only 63488 bytes is usable.</p>
+<section id="load-store-memory-exception">
+<h4>2.7.1)  Load/Store Memory Exception<a class="headerlink" href="#load-store-memory-exception" title="Permalink to this heading"></a></h4>
+<p>Load/Store generates a memory exception when:</p>
+<ul class="simple">
+<li><p>the address is not aligned with respect of the access size,</p></li>
+<li><p>the address is outside the range 0: (64 KB – 1),</p></li>
+<li><p>the address is a stack address and cross its associated bound.</p></li>
+</ul>
+<p><strong>Note:</strong> exception handling is performed by the <strong>HCPU</strong>.</p>
+</section>
+<section id="stack-overflow-exception">
+<h4>2.7.2)  Stack Overflow Exception<a class="headerlink" href="#stack-overflow-exception" title="Permalink to this heading"></a></h4>
+<p>Since up to 24 threads are running, up to 24 different stacks are present,
+thus the DPU comprises a hardware mechanism to detect stack overflow early on.</p>
+<section id="stack-overflow-exception-caused-by-load-store">
+<h5>2.7.2.1)  Stack Overflow Exception Caused By Load/Store<a class="headerlink" href="#stack-overflow-exception-caused-by-load-store" title="Permalink to this heading"></a></h5>
+<p>Load/Store allows the specification of an <strong>Sn</strong> register instead of an <strong>Rn</strong> register as the base of the effective address calculation.
+While <strong>Sn</strong> and <strong>Rn</strong> contents are identical, specifying an <strong>Sn</strong> register changes the way this content is used.</p>
+<p>Considering a WRAM of size 2 ^ <em>p</em>, then:</p>
+<ul class="simple">
+<li><p><strong>Sn</strong> [31 : <em>p</em>  ] contains the stack bound address (or its MSB),</p></li>
+<li><p><strong>Sn</strong> [ <em>p</em> -1:0 ] contains the current stack address.</p></li>
+</ul>
+<p>The stack bound address encoding adapted to the WRAM size as follow:</p>
+<ul class="simple">
+<li><p><strong>64  KB</strong> : stack bound [15:0] is   Rn[31:16]</p></li>
+<li><p><strong>128 KB</strong> : stack bound [16:0] is { Rn[31:17], 00 }</p></li>
+<li><p><strong>256 KB</strong> : stack bound [17:0] is { Rn[31:18], 0000 }</p></li>
+<li><p><strong>512 KB</strong> : stack bound [18:0] is { Rn[31:19], 000000 }</p></li>
+<li><p><strong>1   MB</strong> : stack bound [19:0] is { Rn[31:20], 00000000 }</p></li>
+</ul>
+<p>The STACK_UP control register (configurable by the <strong>HCPU</strong>) specifies the progression direction for all the stacks.</p>
+<ul class="simple">
+<li><p><strong>STACK_UP set</strong> … <strong>upward progressing stacks</strong>: an Sn-based load/store at
+an address bigger or equal to the stack bound address generates a memory exception.</p></li>
+<li><p><strong>STACK_UP cleared</strong> … <strong>downward progressing stacks</strong>: an Sn-based load/store at
+an address strictly smaller than the stack bound address generates a memory exception.</p></li>
+</ul>
+</section>
+<section id="stack-overflow-exception-caused-by-addition-subtraction">
+<h5>2.7.2.1)  Stack Overflow Exception Caused by Addition/Subtraction<a class="headerlink" href="#stack-overflow-exception-caused-by-addition-subtraction" title="Permalink to this heading"></a></h5>
+<p>An addition/subtraction to a stack pointer must keep the msb of this stack pointer unchanged
+as these MSB specify the stack bound. Thus <strong>add</strong>/<strong>addc</strong>/<strong>sub</strong>/<strong>subc</strong>/<strong>rsub</strong>/<strong>rsubc</strong>
+instructions with an <strong>Sn</strong> register specified as first source operand will generate
+an exception if the result [31: <em>p</em> ] differs from <strong>Sn</strong> [31: <em>p</em> ].</p>
+<p><strong>Note:</strong> when an addition/subtraction has an <strong>Sn</strong> register as the first source operand, then the assembler
+allows, for naming coherency/cosmetic purpose, to use an <strong>Sm</strong> register as the destination register.</p>
+</section>
+</section>
+</section>
+<section id="the-mram">
+<h3>2.8)  The MRAM<a class="headerlink" href="#the-mram" title="Permalink to this heading"></a></h3>
+<p>The <strong>MRAM</strong> is a <strong>64 MB</strong> memory accessible:</p>
+<ul class="simple">
+<li><p>by the <strong>HCPU</strong> through the DDR4 legacy interface,</p></li>
+<li><p>by the <strong>DPU</strong>  through <strong>ldma</strong> instructions,</p></li>
+<li><p>by the <strong>DPU</strong>  through <strong>sdma</strong> instructions.</p></li>
+</ul>
+</section>
+<section id="the-atomic-memory">
+<h3>2.9)  The ATOMIC memory<a class="headerlink" href="#the-atomic-memory" title="Permalink to this heading"></a></h3>
+<p>This 256-bit memory is used for thread synchronization.</p>
+<ul class="simple">
+<li><p>A bit of the <strong>ATOMIC</strong> memory can be set by a thread through the <strong>ACQUIRE</strong> instruction,</p>
+<ul>
+<li><p>the thread conditionally jumping according to the bit initial value.</p></li>
+</ul>
+</li>
+<li><p>A bit of the <strong>ATOMIC</strong> memory can be cleared by a thread through the <strong>RELEASE</strong> instruction,</p>
+<ul>
+<li><p>the thread conditionnally jumping according to the bit initial value.</p></li>
+</ul>
+</li>
+<li><p>A bit of the <strong>ATOMIC</strong> memory can be set or cleared by the <strong>HCPU</strong> through the control interface,</p>
+<ul>
+<li><p>the <strong>HCPU</strong> obtaining in return the bit initial value.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="the-run-memory">
+<h3>2.10)  The RUN memory<a class="headerlink" href="#the-run-memory" title="Permalink to this heading"></a></h3>
+<p>The <strong>RUN</strong> memory is a 64-bit memory used to manage threads and HCPU synchronization:</p>
+<ul class="simple">
+<li><p>The bits [0] through [23] reflect the status of the 24 threads:</p>
+<ul>
+<li><p><strong>RUN</strong> [ <em>i</em> ] set means the thread <em>i</em> is running,</p></li>
+<li><p><strong>RUN</strong> [ <em>i</em> ] cleared means the thread <em>i</em> is stopped (not running).</p></li>
+</ul>
+</li>
+<li><p>The bits <strong>[24]</strong> through <strong>[63]</strong> are used for <strong>DPU</strong> / <strong>HCPU</strong> synchronization.</p>
+<ul>
+<li><p>the <strong>DPU</strong> can set/clr these bits through the <strong>CLR_RUN</strong> and <strong>BOOT</strong> instructions,</p>
+<ul>
+<li><p>the thread conditionally jumping according to the bit initial value.</p></li>
+</ul>
+</li>
+<li><p>the <strong>HCPU</strong> can set/clr these bits through the control interface,</p>
+<ul>
+<li><p>the <strong>HCPU</strong> obtaining in return the bit initial value.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="result-destination">
+<h2>3)  Result Destination<a class="headerlink" href="#result-destination" title="Permalink to this heading"></a></h2>
+<section id="zero-as-destination-register">
+<h3>3.1)  <strong>ZERO</strong> as destination register<a class="headerlink" href="#zero-as-destination-register" title="Permalink to this heading"></a></h3>
+<p>When the specified destination register is the <strong>ZERO</strong> register, then the instruction 32-bit or 64-bit result is discarded, the remaining functionality of the instruction being performed as usual.</p>
+</section>
+<section id="the-u-and-s-instruction-modifiers">
+<h3>3.2)  The ‘.u’ and ‘.s’ instruction modifiers<a class="headerlink" href="#the-u-and-s-instruction-modifiers" title="Permalink to this heading"></a></h3>
+<p>Instructions generating 32-bit results can be modified:</p>
+<ul class="simple">
+<li><p>by adding to the mnemonic the postfix <strong>&quot;.u&quot;</strong>: the instruction now generate
+a 64-bit result made by the <strong>zero-extension</strong> of the initial 32-bit result,</p>
+<ul>
+<li><p>now the destination register must be a Dm 64-bit register.</p></li>
+<li><p>a 32-bit result that is made by the sign extension of a smaller result cannot be zero-extended to 64-bit.</p>
+<ul>
+<li><p>For example LBS.u is illegal.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>by adding to the mnemonic the postfix <strong>'.s'</strong>: the instruction now generate
+a 64-bit result made by the <strong>sign-extension</strong> of the initial 32-bit result,</p>
+<ul>
+<li><p>now the destination register must be a Dm 64-bit register.</p></li>
+<li><p>a 32-bit result that is made by the zero extension of a smaller result cannot be sign-extended to 64-bit.</p>
+<ul>
+<li><p>For example LBU.s is illegal.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>To cope with the multiple possible combinations, the instruction description uses:</p>
+<ul class="simple">
+<li><p>Xm to refers to Rm or Dm, according to the fact that the instruction is used or not with the ‘.u’ or ‘.s’ modifier.</p></li>
+<li><p>Xmz to refers to Xm or the <strong>ZERO</strong> register.</p></li>
+</ul>
+</section>
+</section>
+<section id="jump-boolean-conditions">
+<h2>4)  Jump &amp; Boolean Conditions<a class="headerlink" href="#jump-boolean-conditions" title="Permalink to this heading"></a></h2>
+<section id="id1">
+<h3>4.1)  Introduction<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<p>Most DPU instructions know conditions based on their result or the properties of one of their source operands:</p>
+<ul class="simple">
+<li><p>an instruction can include a condition, such that, after having performed its native functionality:</p>
+<ul>
+<li><p>the instruction execution continues at a specified address if the condition is true,</p></li>
+<li><p>the instruction execution continues sequentially otherwise.</p></li>
+</ul>
+</li>
+<li><p>an instruction can include a condition, such that, after having
+performed its native functionality and generated a native result:</p>
+<ul>
+<li><p>the instruction, instead of writing its native result, replaces this result
+with the Boolean value that corresponds to the trueness of the condition,</p></li>
+<li><p>the instruction execution continuing sequentially.</p></li>
+</ul>
+</li>
+</ul>
+<p>The allowed conditions are specific to each instruction. They are specified as follow:</p>
+<ul class="simple">
+<li><p>a conditional jump is specified by placing a condition identifier
+and an IRAM address after the original operands.</p>
+<ul>
+<li><p>in the instruction description the term <strong>Jcc</strong> means a Jump condition.</p></li>
+</ul>
+</li>
+<li><p>a Boolean Replacement is specified by placing only a condition identifier after the original operands.</p>
+<ul>
+<li><p>in the instruction description the term <strong>Bcc</strong> means a Boolean Replacement condition.</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>add R2, R3, R4                  //      R2 =   R3 + R4 ;
+add R2, R3, R4, z, null_result  // if ((R2 =   R3 + R4 ) == 0) GOTO null_result;
+add R2, R3, R4, z               //      R2 = ( R3 + R4 ) == 0;
+</pre></div>
+</div>
+<p><strong>Note:</strong> the add instruction allows the same condition <strong>z</strong> as the Jump condition and as Boolean Replacement condition.</p>
+</section>
+<section id="condition-identifier">
+<h3>4.2)  Condition Identifier<a class="headerlink" href="#condition-identifier" title="Permalink to this heading"></a></h3>
+<section id="common-conditions">
+<h4>4.2.1)  Common Conditions<a class="headerlink" href="#common-conditions" title="Permalink to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>t</strong>   : true</p></li>
+<li><p><strong>z</strong>   : true when the native result is null (Zero)</p></li>
+<li><p><strong>nz</strong>  : true when the native result is not null (Not Zero)</p></li>
+<li><p><strong>sz</strong>  : true when the first Source operand is null (Zero)</p></li>
+<li><p><strong>snz</strong> : true when the first Source operand is not null (Not Zero)</p></li>
+<li><p><strong>pl</strong>  : true when the native result is positive (PLus)</p></li>
+<li><p><strong>mi</strong>  : true when the native result is negative (MInus)</p></li>
+<li><p><strong>spl</strong> : true when the first Source operand is positive (PLus)</p></li>
+<li><p><strong>smi</strong> : true when the first Source operand is negative (MInus)</p></li>
+</ul>
+</section>
+<section id="specific-conditions-common-to-addition-and-subtraction">
+<h4>4.2.2)  Specific Conditions Common To Addition and Subtraction<a class="headerlink" href="#specific-conditions-common-to-addition-and-subtraction" title="Permalink to this heading"></a></h4>
+<p><strong>Notations</strong></p>
+<ul class="simple">
+<li><p><strong>op1</strong> : means the first operand</p></li>
+<li><p><strong>op2</strong> : means the second operand</p></li>
+</ul>
+<p><strong>carry numbering</strong></p>
+<p>carry <em>p</em> is the carry generated by:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>for         addition    :  op1[ *p* : 0 ] +  op2[ *p* : 0 ]
+for         subtraction :  op1[ *p* : 0 ] + ~op2[ *p* : 0 ] + 1
+for reverse subtraction : ~op1[ *p* : 0 ] +  op2[ *p* : 0 ] + 1
+</pre></div>
+</div>
+<p><strong>The v/nv/c/nc Conditions</strong></p>
+<ul class="simple">
+<li><p><strong>v</strong>  : true when an oVerflow has been generated by an addition or subtraction</p></li>
+<li><p><strong>nv</strong> : true when No oVerflow has been generated by an addition or subtraction</p></li>
+<li><p><strong>c</strong>  : true when:</p>
+<ul>
+<li><p>a Carry 31 is generated by an addition,</p></li>
+<li><p>no carry 31 is generated by a subtraction.</p></li>
+</ul>
+</li>
+<li><p><strong>nc</strong> (No Carry) condition is the opposite of <strong>c</strong>.</p></li>
+</ul>
+</section>
+<section id="addition-specific-conditions">
+<h4>4.2.3)  Addition Specific Conditions<a class="headerlink" href="#addition-specific-conditions" title="Permalink to this heading"></a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>nc4  : true when no carry 4  is generated
+nc5  : true when no carry 5  is generated
+nc6  : true when no carry 6  is generated
+nc7  : true when no carry 7  is generated
+nc8  : true when no carry 8  is generated
+nc9  : true when no carry 9  is generated
+nc10 : true when no carry 10 is generated
+nc11 : true when no carry 11 is generated
+nc12 : true when no carry 12 is generated
+nc13 : true when no carry 13 is generated
+</pre></div>
+</div>
+<p><strong>Why So Many No Carry Conditions ?</strong></p>
+<p>Because considering:</p>
+<ul class="simple">
+<li><p>a memory buffer of size 2 ^ <em>s</em>, aligned onto its own size,</p></li>
+<li><p>a pointer initially pointing inside this memory buffer, this pointer being used to read/write data from/to this buffer,</p></li>
+<li><p>the addition or subtraction performed onto this pointer after each access to this buffer,</p></li>
+<li><p>THEN:</p>
+<ul>
+<li><p>nc <em>s</em> true  means the new pointer value is still inside this buffer,</p></li>
+<li><p>nc <em>s</em> false means the new pointer value is now outside this buffer.</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Note:</strong> these conditions work even though the added value is positive
+or negative, as long its absolute value is strictly smaller than the buffer size.</p>
+</section>
+<section id="comparison-specific-conditions">
+<h4>4.2.4)  Comparison specific Conditions<a class="headerlink" href="#comparison-specific-conditions" title="Permalink to this heading"></a></h4>
+<p>These conditions are available only for instruction based on subtraction
+but the <strong>lsl_sub</strong> instruction (that performs a shift then a subtraction):</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ltu : op1  &lt; op2  // unsigned comparison
+geu : op1 &gt;= op2  // unsigned comparison
+leu : op1 &lt;= op2  // unsigned comparison
+gtu : op1  &gt; op2  // unsigned comparison
+lts : op1  &lt; op2  //   signed comparison
+ges : op1 &gt;= op2  //   signed comparison
+les : op1 &lt;= op2  //   signed comparison
+gts : op1 &gt;  op2  //   signed comparison
+</pre></div>
+</div>
+</section>
+<section id="extended-z-conditions">
+<h4>4.2.5)  Extended Z Conditions<a class="headerlink" href="#extended-z-conditions" title="Permalink to this heading"></a></h4>
+<p>When an instruction supports the z/nz conditions, then sequentially:</p>
+<ul class="simple">
+<li><p>it generates internally a z property based on the instruction native result,</p></li>
+<li><p>it generates internally an <strong>extended z property</strong>: <strong>z &amp;&amp; ZF</strong>.</p></li>
+</ul>
+<p>An Extended conditions use the <strong>extended z</strong> where the non extended condition use <strong>z</strong>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span> xz  : true when the extended z is true
+nxz  : true when the extended z is false
+xleu : op1 &lt;= op2  // unsigned comparison using extended z instead of z
+xgtu : op1 &gt;  op2  // unsigned comparison using extended z instead of z
+xles : op1 &lt;= op2  //   signed comparison using extended z instead of z
+xgts : op1 &gt;  op2  //   signed comparison using extended z instead of z
+</pre></div>
+</div>
+<p>Extended conditions ease the construction of conditions on 64-bit results.</p>
+<p><strong>ZF update</strong></p>
+<p>The <strong>ZF</strong> flag is let unchanged by the following instructions:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ldma, ldmai, sdma                             (DMA   )
+sb, sh, sw, sd, sb_id, sh_id, sw_id, sd_id    (Stores)
+lbu, lbs, lhu, lhs, lw, ld                    (Loads )
+acquire, release, stop, clr_run, boot, resume (ATOMIC)
+nop, bkp, call
+</pre></div>
+</div>
+<p><strong>The others instructions update the ZF flag with the z property (BEWARE: not with the extended z property).</strong></p>
+</section>
+<section id="shift-specific-conditions">
+<h4>4.2.6)  Shift specific Conditions<a class="headerlink" href="#shift-specific-conditions" title="Permalink to this heading"></a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span> se   : true when op1[0] == 0  // Source Even
+ so   : true when op1[0] == 1  // Source Odd
+nsh32 : true when op2[5] == 0  // Not Shift 32
+ sh32 : true when op2[5] == 1  //     Shift 32
+</pre></div>
+</div>
+<p>The <strong>sh32</strong>/<strong>nsh32</strong> conditions can be used to speedup 64-bit shift operations where the shift amount is in the 6-lsb of a register, as they enable a quick differentiation of the following cases:</p>
+<ul class="simple">
+<li><p>shift by 32 bits or more,</p></li>
+<li><p>shift by strictly less than 32 bits.</p></li>
+</ul>
+<p>The <strong>se</strong>/<strong>so</strong> conditions can be used to speedup 64-bit right shift
+by 1-bit, as they enable a quick differentiation of the following cases:</p>
+<ul class="simple">
+<li><p>a 1 will be shifted out by a 1-bit right shift,</p></li>
+<li><p>a 0 will be shifted out by a 1-bit right shift.</p></li>
+</ul>
+</section>
+<section id="bit-count-specific-conditions">
+<h4>4.2.7)  Bit Count Specific Conditions<a class="headerlink" href="#bit-count-specific-conditions" title="Permalink to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>max</strong> (MAXimal result) true when the result is equal to:</p>
+<ul>
+<li><p>32 for the CAO instruction ( <strong>Count All     Ones</strong> )</p></li>
+<li><p>32 for the CLO instruction ( <strong>Count Leading ones</strong> )</p></li>
+<li><p>32 for the CLZ instruction ( <strong>Count Leading Zero</strong> )</p></li>
+<li><p>31 for the CLS instruction ( <strong>Count Leading Sign</strong> )</p></li>
+</ul>
+</li>
+<li><p><strong>nmax</strong> (Not MAXimal result) is the opposite of <strong>max</strong></p></li>
+</ul>
+<p>These conditions allow the speeding-up of multi 32-bit words bit counting operations</p>
+</section>
+<section id="bit-multiply-specific-conditions">
+<h4>4.2.8)  8-bit Multiply Specific Conditions<a class="headerlink" href="#bit-multiply-specific-conditions" title="Permalink to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>small</strong> : (op1[15:8] == 0) &amp;&amp; (op2[15:8] == 0)</p></li>
+<li><p><strong>large</strong> : opposite of small</p></li>
+</ul>
+<p>These conditions detect the case where a 16 x 16 multiply can be reduced to a single 8 x 8 multiply.</p>
+</section>
+</section>
+</section>
+<section id="ldma-ldmai-sdma-dma">
+<h2>5)  LDMA / LDMAI / SDMA (DMA)<a class="headerlink" href="#ldma-ldmai-sdma-dma" title="Permalink to this heading"></a></h2>
+<section id="generalities">
+<h3>5.1)  Generalities<a class="headerlink" href="#generalities" title="Permalink to this heading"></a></h3>
+<p>A thread requests a DMA transfer through a DMA instruction.</p>
+<ul class="simple">
+<li><p>DMA transfers are 64-bit aligned,</p></li>
+<li><p>transfers sizes are <em>n</em> x 64-bit, where <em>n</em> ranges from 1 to 256,</p></li>
+<li><p>When executing a DMA instruction, the thread is suspended for the duration of the transfer,</p>
+<ul>
+<li><p>the thread is temporarily absent from the pipeline,</p>
+<ul>
+<li><p>it is useful to have more than 11 threads running, to palliate for the ones that
+temporarily leave the pipeline as they wait for the completion of a DMA instruction.</p></li>
+</ul>
+</li>
+<li><p>the thread <strong>RUN</strong> bit remaining set during this suspension.</p></li>
+</ul>
+</li>
+</ul>
+<p>The DMA is capable of:</p>
+<ul class="simple">
+<li><p>Moving <strong>MRAM</strong> data to <strong>IRAM</strong></p>
+<ul>
+<li><p>Only the 48-lsb of the 64-bit words are written into the <strong>IRAM</strong>, the 16-msb being discarded.</p></li>
+</ul>
+</li>
+<li><p>Moving <strong>MRAM</strong> data to <strong>WRAM</strong></p></li>
+<li><p>Moving <strong>WRAM</strong> data to <strong>MRAM</strong></p></li>
+</ul>
+<p><strong>Note: MRAM</strong>, <strong>WRAM</strong>, and <strong>IRAM</strong> have separate address spaces.</p>
+<p><strong>Note:</strong> the <strong>HCPU</strong> is not capable of performing DMA operations.</p>
+</section>
+<section id="behaviours">
+<h3>5.2)  Behaviours<a class="headerlink" href="#behaviours" title="Permalink to this heading"></a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ldma  #8, Rnx, Rp  // Load  WRAM (Rnx address) with MRAM (Rp address)
+ldmai #8, Rnx, Rp  // Load  IRAM (Rnx address) with MRAM (Rp address)
+sdma  #8, Rnx, Rp  // Store WRAM (Rnx address) into MRAM (Rp address)
+</pre></div>
+</div>
+<p>Transfer size is: 1 + ((Rnx[30:24] + #8) &amp; 0xFF), allowing transfers from 1 - 256 word of 64-bits.</p>
+<p>Source and destination addresses are specified as follow:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ldma, ldmai, sdma: the 32-bit MRAM byte address is {Rp [31 :3], 0b000}
+ldma, sdma       : the 24-bit WRAM byte address is {Rnx[23 :3], 0b000}
+ldmai            : the IRAM instruction address is  Rnx[p+2:3] where p is the PC width
+</pre></div>
+</div>
+<p>For all DMA instructions, if the MRAM byte address is bigger than the implemented MRAM then the
+instruction fails and generates a memory exception. MRAM size in first DPU implementation is <strong>64 MB</strong>.</p>
+<p>For ldma and sdma, if the WRAM byte address is bigger than the implemented WRAM then the instruction
+fails and generates a memory exception. WRAM size is <strong>64 KB</strong> in v1A, and <strong>63488 B</strong> in v1B.</p>
+<p>For ldmai, if the IRAM instruction address is bigger than the implemented IRAM then the instruction
+fails and generates a memory exception. IRAM size is <strong>4K instructions</strong> in v1A, and <strong>3968 instructions</strong> in v1B.</p>
+<p><strong>Additional characteristics:</strong></p>
+<ul class="simple">
+<li><p>DMA instructions support no jump nor Boolean Replacement.</p></li>
+<li><p>DMA instructions affect no registers.</p></li>
+</ul>
+</section>
+</section>
+<section id="loads-stores">
+<h2>1)  Loads / Stores<a class="headerlink" href="#loads-stores" title="Permalink to this heading"></a></h2>
+<section id="common-properties">
+<h3>6.1)  Common Properties<a class="headerlink" href="#common-properties" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>The 24-bit effective address is given by the sum of a
+24-bit displacement and the 24-lsb of base Rnx register</p>
+<ul>
+<li><p>Rnx[31:24] are ignored,</p></li>
+<li><p>for most instruction the displacement is a 24-bit immediate value,</p></li>
+<li><p>for some store the 24-bit displacement is the sign extension of a 12-bit immediate value.</p></li>
+</ul>
+</li>
+<li><p>The access effective address must be aligned according to the access width,</p></li>
+<li><p>ZF and CF flags are left unchanged,</p></li>
+<li><p>no condition is supported.</p></li>
+</ul>
+</section>
+<section id="loads">
+<h3>6.2)  Loads<a class="headerlink" href="#loads" title="Permalink to this heading"></a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>lbu    Xm, Rnx, disp24  // Xm is loaded with the Unsigned Byte @ Rnx + disp24   .s and .sb modifiers illegal
+lbs    Xm, Rnx, disp24  // Xm is loaded with the   signed Byte @ Rnx + disp24   .u and .ub modifiers illegal
+lhu    Xm, Rnx, disp24  // Xm is loaded with the Unsigned Half @ Rnx + disp24   .s and .sb modifiers illegal
+lhs    Xm, Rnx, disp24  // Xm is loaded with the   signed Half @ Rnx + disp24   .u and .ub modifiers illegal
+lw     Xm, Rnx, disp24  // Xm is loaded with the          Word @ Rnx + disp24
+ld     Dm, Rnx, disp24  // Dm is loaded with the Double   word @ Rnx + disp24
+</pre></div>
+</div>
+</section>
+<section id="stores-register">
+<h3>6.3)  Stores Register<a class="headerlink" href="#stores-register" title="Permalink to this heading"></a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sb     Rnx, disp24, Rp  // Rp[ 7:0] is stored @ Rnx + disp24
+sh     Rnx, disp24, Rp  // Rp[15:0] is stored @ Rnx + disp24
+sw     Rnx, disp24, Rp  // Rp       is stored @ Rnx + disp24
+sd     Rnx, disp24, Dp  // Dp       is stored @ Rnx + disp24
+</pre></div>
+</div>
+</section>
+<section id="stores-immediate-value">
+<h3>6.4)  Stores Immediate Value<a class="headerlink" href="#stores-immediate-value" title="Permalink to this heading"></a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sb     Rnx, disp12, #8   // store                     #8    @ Rnx + sign_extend24( disp12 )
+sh     Rnx, disp12, #16  // store                     #16   @ Rnx + sign_extend24( disp12 )
+sw     Rnx, disp12, #16  // store      sign_extend32( #16 ) @ Rnx + sign_extend24( disp12 )
+sd     Rnx, disp12, #16  // store      sign_extend64( #16 ) @ Rnx + sign_extend24( disp12 )
+</pre></div>
+</div>
+</section>
+<section id="stores-id-ored-with-immediate-value">
+<h3>6.5)  Stores ID ORed With Immediate Value<a class="headerlink" href="#stores-id-ored-with-immediate-value" title="Permalink to this heading"></a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sb_id  Rnx, disp12, #8   // store ID |                #8    @ Rnx + sign_extend24( disp12 )
+sh_id  Rnx, disp12, #16  // store ID |                #16   @ Rnx + sign_extend24( disp12 )
+sw_id  Rnx, disp12, #16  // store ID | sign_extend32( #16 ) @ Rnx + sign_extend24( disp12 )
+sd_id  Rnx, disp12, #16  // store ID | sign_extend64( #16 ) @ Rnx + sign_extend24( disp12 )
+</pre></div>
+</div>
+</section>
+<section id="endianness-modifiers">
+<h3>6.6)  Endianness Modifiers<a class="headerlink" href="#endianness-modifiers" title="Permalink to this heading"></a></h3>
+<p>By default, the load/store instruction uses the little-endian memory organization. Load/store
+instructions operating on 16-bit, 32-bit, or 64-bit data, may have the ‘.b’ modifier added
+to their mnemonic, forcing these instructions to use the big-endian memory organization.</p>
+<p>For lhu, lhs and lw, use the .ub/.sb modifier to cummulate the .u/.s and .b modifiers.</p>
+</section>
+</section>
+<section id="additions-and-subtractions">
+<h2>7)  Additions and Subtractions<a class="headerlink" href="#additions-and-subtractions" title="Permalink to this heading"></a></h2>
+<p><strong>Addition, result = op1 + op2</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>add    Xmz,  Sn ,  Rp
+add    Xmz,  Rnx,  Rp
+add    Xmz,  Rnx,  Rp   , Bcc
+add    Xmz,  Rnx,  Rp   , Jcc, IRAM_address
+-----------------------------------------------
+add    Xmz,  Sn ,  #WRAM
+add    ZERO, Rn ,  #32
+add    Rm,   Rnx,  #32
+add    Dm,   Rn ,  #32
+add    ZERO, Rnx,  #27
+add    Xm,   Rnx,  #24
+-----------------------------------------------
+add    Xm,   Rnx,  #24  , Bcc
+add    ZERO, Rnx,  #27PC, Jcc, IRAM_address
+add    Xm,   Rnx,  #24PC, Jcc, IRAM_address
+</pre></div>
+</div>
+<p><strong>Addition with Carry, result = op1 + op2 + CF</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>addc   Xmz,  Sn ,  Rp
+addc   Xmz,  Rnx,  Rp
+addc   Xmz,  Rnx,  Rp   , Bcc
+addc   Xmz,  Rnx,  Rp   , Jcc, IRAM_address
+-----------------------------------------------
+addc   Xmz,  Sn ,  #WRAM
+addc   ZERO, Rn ,  #32
+addc   Rm,   Rnx,  #32
+addc   ZERO, Rnx,  #27
+addc   Xm,   Rnx,  #24
+-----------------------------------------------
+addc   Xm,   Rnx,  #24  , Bcc
+addc   ZERO, Rnx,  #27PC, Jcc, IRAM_address
+addc   Xm,   Rnx,  #24PC, Jcc, IRAM_address
+</pre></div>
+</div>
+<p><strong>Reverse subtraction, result = op1 + ~op2 + 1</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>rsub   Xmz,  Sn ,  Rp
+rsub   Xmz,  Rnx,  Rp
+rsub   Xmz,  Rnx,  Rp   , Bcc
+rsub   Xmz,  Rnx,  Rp   , Jcc, IRAM_address
+-----------------------------------------------
+rsub   Xmz,  Sn ,  #WRAM
+rsub   ZERO, Rn ,  #32
+rsub   Rm,   Rnx,  #32
+rsub   ZERO, Rnx,  #27
+rsub   Xm,   Rnx,  #24
+-----------------------------------------------
+rsub   Xm,   Rnx,  #24  , Bcc
+rsub   ZERO, Rnx,  #27PC, Jcc, IRAM_address
+rsub   Xm,   Rnx,  #24PC, Jcc, IRAM_address
+</pre></div>
+</div>
+<p><strong>Reverse subtraction with Carry, result = op1 + ~op2 + CF</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>rsubc  Xmz,  Sn ,  Rp
+rsubc  Xmz,  Rnx,  Rp
+rsubc  Xmz,  Rnx,  Rp   , Bcc
+rsubc  Xmz,  Rnx,  Rp   , Jcc, IRAM_address
+-----------------------------------------------
+rsubc  Xmz,  Sn ,  #WRAM
+rsubc  ZERO, Rn ,  #32
+rsubc  Rm,   Rnx,  #32
+rsubc  ZERO, Rnx,  #27
+rsubc  Xm,   Rnx,  #24
+-----------------------------------------------
+rsubc  Xm,   Rnx,  #24  , Bcc
+rsubc  ZERO, Rnx,  #27PC, Jcc, target_address
+rsubc  Xm,   Rnx,  #24PC, Jcc, target_address
+</pre></div>
+</div>
+<p><strong>Subtraction, result = opa + ~opB + 1</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sub    Xmz,  Sn ,  Rp
+sub    Xmz,  Rnx,  Rp
+sub    Xmz,  Rnx,  Rp   , Bcc
+sub    Xmz,  Rnx,  Rp   , Jcc, IRAM_address
+-------------------------------------------------------------------
+sub    Xmz,  Sn ,  #WRAM
+sub    Dmz , Rn ,  #32    // replaced with add instructions
+sub    Rm  , Rnx,  #32    // ...
+sub    ZERO, Rnx,  #27
+sub    Xm,   Rnx,  #24
+-------------------------------------------------------------------
+sub    Xm,   Rnx,  #24  , Bcc
+sub    ZERO, Rnx,  #27PC, Jcc, target_address
+sub    Xm,   Rnx,  #24PC, Jcc, target_address
+</pre></div>
+</div>
+<p><strong>Subtraction with carry, result = op1 + ~op2 + CF</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>subc   Xmz,  Sn ,  Rp
+subc   Xmz,  Rnx,  Rp
+subc   Xmz,  Rnx,  Rp   , Bcc
+subc   Xmz,  Rnx,  Rp   , Jcc, IRAM_address
+-------------------------------------------------------------------
+subc   Xmz,  Sn ,  #WRAM
+subc   ZERO, Rn ,  #32    // replaced with addc instructions
+subc   Rm  , Rnx,  #32    // ...
+subc   ZERO, Rnx,  #27
+subc   Xm,   Rnx,  #24
+-------------------------------------------------------------------
+subc   Xm,   Rnx,  #24  , Bcc
+subc   ZERO, Rnx,  #27PC, Jcc, target_address
+subc   Xm,   Rnx,  #24PC, Jcc, target_address
+</pre></div>
+</div>
+<section id="cf-update">
+<h3>7.1) CF update<a class="headerlink" href="#cf-update" title="Permalink to this heading"></a></h3>
+<p>As shown in the descriptions above, add/addc/sub/subc/rsub/rsubc use a <strong>32-bit adder</strong>.
+These instructions update CF with is the native carry 31 of this <strong>32-bit adder</strong>.
+Another way of expressing the new CF value is:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>when executing a             ADD or  ADDC, CF is set to the c   condition,
+when executing a SUB, SUBC, RSUB, or RSUBC, CF is set to the geu condition.
+</pre></div>
+</div>
+</section>
+<section id="why-sub-32-is-replaced-with-an-add">
+<h3>7.2)  Why sub #32 is replaced with an add?<a class="headerlink" href="#why-sub-32-is-replaced-with-an-add" title="Permalink to this heading"></a></h3>
+<p>There is no encoding for the sub instruction with #32 because the two instructions:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sub Rm, Rn,  #32
+add Rm, Rn, ~#32 + 1
+</pre></div>
+</div>
+<p>would be equivalent in terms of 32-bit result generated. Concerning the CF flag update setting:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>if #32 &lt;&gt; 0 then ~#32+1 generates no carry, thus sub #32 is entirely equivalent to add -#32,
+if #32 == 0 then the sub Rm, Rn, #0 instruction is encoded.
+</pre></div>
+</div>
+</section>
+<section id="why-subc-32-is-replaced-with-an-addc">
+<h3>7.3)  Why subc #32 is replaced with an addc?<a class="headerlink" href="#why-subc-32-is-replaced-with-an-addc" title="Permalink to this heading"></a></h3>
+<p>There is no encoding for subc #32 as it is entirely equivalent to addc Rm, Rn, ~#32.</p>
+</section>
+<section id="supported-conditions">
+<h3>7.4)  Supported Conditions<a class="headerlink" href="#supported-conditions" title="Permalink to this heading"></a></h3>
+<p><strong>add and addc</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi, v, nv, c, nc, nc4, nc5, nc6, nc7, nc8, nc9, nc10, nc11, nc12, nc13.
+Bcc:    z, nz, xz, nxz.
+</pre></div>
+</div>
+<p><strong>sub and subc</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi, v, nv, ltu, geu, lts, ges, les, gts, leu, gtu, xles, xgts, xleu, xgtu.
+Bcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi, v, nv, ltu, geu, lts, ges, les, gts, leu, gtu, xles, xgts, xleu, xgtu.
+</pre></div>
+</div>
+<p><strong>rsub and rsubc</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi, v, nv, ltu, geu, lts, ges, les, gts, leu, gtu, xles, xgts, xleu, xgtu.
+Bcc:    z, nz, xz, nxz.
+</pre></div>
+</div>
+</section>
+</section>
+<section id="logical-instructions">
+<h2>8)  Logical instructions<a class="headerlink" href="#logical-instructions" title="Permalink to this heading"></a></h2>
+<p><strong>AND, result = op1 &amp; op2</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>AND   Xmz , Rnx, Rp
+AND   Xmz , Rnx, Rp   , Bcc
+AND   Xmz , Rnx, Rp   , Jcc, IRAM_address
+-----------------------------------------------
+AND   Rmz , Rn , #32
+AND   Dm  , Rnx, #32
+AND   ZERO, Rnx, #28
+AND   Xm  , Rnx, #24
+-----------------------------------------------
+AND   Xm  , Rnx, #24  , Bcc
+AND   ZERO, Rnx, #28PC, Jcc, IRAM_address
+AND   Xm  , Rnx, #24PC, Jcc, IRAM_address
+</pre></div>
+</div>
+<p><strong>NAND, result = ~(op1 &amp; op2)</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>NAND  Xmz , Rnx, Rp
+NAND  Xmz , Rnx, Rp   , Bcc
+NAND  Xmz , Rnx, Rp   , Jcc, IRAM_address
+-----------------------------------------------
+NAND  ZERO, Rnx, #28
+NAND  Xm  , Rnx, #24
+-----------------------------------------------
+NAND  Xm  , Rnx, #24  , Bcc
+NAND  ZERO, Rnx, #28PC, Jcc, IRAM_address
+NAND  Xm  , Rnx, #24PC, Jcc, IRAM_address
+</pre></div>
+</div>
+<p><strong>ANDN, result = (~op1) &amp; op2</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ANDN  Xmz , Rnx, Rp
+ANDN  Xmz , Rnx, Rp   , Bcc
+ANDN  Xmz , Rnx, Rp   , Jcc, IRAM_address
+-----------------------------------------------
+ANDN  ZERO, Rnx, #28
+ANDN  Xm  , Rnx, #24
+-----------------------------------------------
+ANDN  Xm  , Rnx, #24  , Bcc
+ANDN  ZERO, Rnx, #28PC, Jcc, IRAM_address
+ANDN  Xm  , Rnx, #24PC, Jcc, IRAM_address
+</pre></div>
+</div>
+<p><strong>OR, result = op1 | op2</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>OR    Xmz , Rnx, Rp
+OR    Xmz , Rnx, Rp   , Bcc
+OR    Xmz , Rnx, Rp   , Jcc, IRAM_address
+-----------------------------------------------
+OR    Dmz , Rn , #32
+OR    Rm  , Rnx, #32
+OR    ZERO, Rnx, #28
+OR    Xm  , Rnx, #24
+-----------------------------------------------
+OR    Xm  , Rnx, #24  , Bcc
+OR    ZERO, Rnx, #28PC, Jcc, IRAM_address
+OR    Xm  , Rnx, #24PC, Jcc, IRAM_address
+</pre></div>
+</div>
+<p><strong>NOR, result = ~(op1 | op2)</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>NOR   Xmz , Rnx, Rp
+NOR   Xmz , Rnx, Rp   , Bcc
+NOR   Xmz , Rnx, Rp   , Jcc, IRAM_address
+-----------------------------------------------
+NOR   ZERO, Rnx, #28
+NOR   Xm  , Rnx, #24
+-----------------------------------------------
+NOR   Xm  , Rnx, #24  , Bcc
+NOR   ZERO, Rnx, #28PC, Jcc, IRAM_address
+NOR   Xm  , Rnx, #24PC, Jcc, IRAM_address
+</pre></div>
+</div>
+<p><strong>ORN, result = (~op1) | op2</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ORN   Xmz , Rnx, Rp
+ORN   Xmz , Rnx, Rp   , Bcc
+ORN   Xmz , Rnx, Rp   , Jcc, IRAM_address
+-----------------------------------------------
+ORN   ZERO, Rnx, #28
+ORN   Xm  , Rnx, #24
+-----------------------------------------------
+ORN   Xm  , Rnx, #24  , Bcc
+ORN   ZERO, Rnx, #28PC, Jcc, IRAM_address
+ORN   Xm  , Rnx, #24PC, Jcc, IRAM_address
+</pre></div>
+</div>
+<p><strong>XOR, result = op1 ^ op2</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>XOR   Xmz , Rnx, Rp
+XOR   Xmz , Rnx, Rp   , Bcc
+XOR   Xmz , Rnx, Rp   , Jcc, IRAM_address
+---------------------------------------------
+XOR   ZERO, Rn , #32
+XOR   Rm  , Rnx, #32
+XOR   ZERO, Rnx, #28
+XOR   Xm  , Rnx, #24
+-----------------------------------------------
+XOR   Xm  , Rnx, #24  , Bcc
+XOR   ZERO, Rnx, #28PC, Jcc, IRAM_address
+XOR   Xm  , Rnx, #24PC, Jcc, IRAM_address
+</pre></div>
+</div>
+<p><strong>NXOR, result = ~(op1 ^ op2)</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>NXOR  Xmz , Rnx, Rp
+NXOR  Xmz , Rnx, Rp   , Bcc
+NXOR  Xmz , Rnx, Rp   , Jcc, IRAM_address
+-------------------------------------------------------------------
+NXOR  ZERO, Rn , #32  // replaced with XOR instructions
+NXOR  Rm  , Rnx, #32  // ...
+NXOR  ZERO, Rnx, #28
+NXOR  Xm  , Rnx, #24
+-------------------------------------------------------------------
+NXOR  Xm  , Rnx, #24  , Bcc
+NXOR  ZERO, Rnx, #28PC, Jcc, IRAM_address
+NXOR  Xm  , Rnx, #24PC, Jcc, IRAM_address
+</pre></div>
+</div>
+<p><strong>Supported Conditions</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi
+Bcc:    z, nz, xz, nxz
+</pre></div>
+</div>
+<p><strong>Note:</strong> Logical instructions updates ZF but let CF unchanged.</p>
+</section>
+<section id="extub-extsb-extuh-extsh-zero-sign-extensions">
+<h2>9)  EXTUB / EXTSB / EXTUH / EXTSH (Zero/Sign Extensions)<a class="headerlink" href="#extub-extsb-extuh-extsh-zero-sign-extensions" title="Permalink to this heading"></a></h2>
+<p>The following instructions don’t support the .s modifier:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Extub  Xmz, Rn                     // 8-bit (Byte) to 32-bit zero (Unsigned) extension
+Extub  Xmz, Rn, Bcc                // ...
+Extub  Xmz, Rn, Jcc, IRAM_address  // ...
+---------------------------------------------------------------------------------------
+Extub  Xmz, Rn                     // 16-bit (Half) to 32-bit zero (Unsigned) extension
+Extub  Xmz, Rn, Bcc                // ...
+Extub  Xmz, Rn, Jcc, IRAM_address  // ...
+</pre></div>
+</div>
+<p>The following instructions don’t support the .u modifier:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Extsb  Xmz, Rn                     // 8-bit (Byte) to 32-bit Signed extension
+Extsb  Xmz, Rn, Bcc                // ...
+Extsb  Xmz, Rn, Jcc, IRAM_address  // ...
+---------------------------------------------------------------------------------------
+Extsh  Xmz, Rn                     // 16-bit (Half) to 32-bit Signed extension
+Extsh  Xmz, Rn, Bcc                // ...
+Extsh  Xmz, Rn, Jcc, IRAM_address  // ...
+</pre></div>
+</div>
+<p><strong>Supported Conditions</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi
+Bcc:    z, nz, xz, nxz
+</pre></div>
+</div>
+</section>
+<section id="hash">
+<h2>10)  HASH<a class="headerlink" href="#hash" title="Permalink to this heading"></a></h2>
+<p>These instructions don’t support the .s modifier.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>hash Xmz, Rnx, Rp
+hash Xmz, Rnx, Rp   , Bcc
+hash Xmz, Rnx, Rp   , Jcc, IRAM_address
+-----------------------------------------------
+hash Xmz, Rnx, #24
+hash Xmz, Rnx, #24  , Bcc
+hash Xmz, Rnx, #24PC, Jcc, IRAM_address
+</pre></div>
+</div>
+<section id="hash-operation">
+<h3>10.1)  Hash operation<a class="headerlink" href="#hash-operation" title="Permalink to this heading"></a></h3>
+<p>The instruction result is given by the following table:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>op2[18:17]</p></th>
+<th class="head"><p>op2[16]</p></th>
+<th class="head"><p>Result</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="2"><p>00</p></td>
+<td><p>0</p></td>
+<td><p>Op1[6:0] ^ Op1[13: 7]</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Op1[6:0] ^ Op1[13: 7] ^ Op1[20:14]</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><p>01</p></td>
+<td><p>0</p></td>
+<td><p>Op1[7:0] ^ Op1[15: 8]</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Op1[7:0] ^ Op1[15: 8] ^ Op1[23:16]</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><p>10</p></td>
+<td><p>0</p></td>
+<td><p>Op1[8:0] ^ Op1[17: 9]</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Op1[8:0] ^ Op1[17: 9] ^ Op1[26:18]</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><p>11</p></td>
+<td><p>0</p></td>
+<td><p>Op1[9:0] ^ Op1[19:10]</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Op1[9:0] ^ Op1[19:10] ^ Op1[29:20]</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Supported Conditions</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi
+Bcc:    z, nz, xz, nxz
+</pre></div>
+</div>
+</section>
+</section>
+<section id="sats-saturation-signed">
+<h2>11)  SATS (SATuration, Signed)<a class="headerlink" href="#sats-saturation-signed" title="Permalink to this heading"></a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sats  Xmz, Rnx
+sats  Xmz, Rnx, Bcc
+sats  Xmz, Rnx, Jcc, IRAM_address
+</pre></div>
+</div>
+<p><strong>result</strong> = (Rx[31] == 1) ? 0x7FFFFFFF : 0x80000000</p>
+<p><strong>Supported Conditions</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi
+Bcc:    z, nz, xz, nxz
+</pre></div>
+</div>
+</section>
+<section id="shift-rotate">
+<h2>12)  Shift / Rotate<a class="headerlink" href="#shift-rotate" title="Permalink to this heading"></a></h2>
+<p>The shift value is the 5-lsb of the second operand, thus the shift/rotate amount ranges
+from 0 through 31: it can be the 5-lsb of an Rp register or a 5-bit immediate value.</p>
+<p>The following table describes the Shift/Rotate instructions:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head" rowspan="2"></th>
+<th class="head" rowspan="2"><p>Description</p></th>
+<th class="head" colspan="3"><p>examples</p></th>
+</tr>
+<tr class="row-even"><th class="head"><p>initial</p></th>
+<th class="head"><p>shift</p></th>
+<th class="head"><p>result</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><td><p>ROL</p></td>
+<td><p>ROtate Left</p></td>
+<td><p>12345678</p></td>
+<td><p>4</p></td>
+<td><p>23456781</p></td>
+</tr>
+<tr class="row-even"><td><p>ROR</p></td>
+<td><p>ROtate Right</p></td>
+<td><p>12345678</p></td>
+<td><p>4</p></td>
+<td><p>81234567</p></td>
+</tr>
+<tr class="row-odd"><td><p>LSL</p></td>
+<td><p>Logical Shift Left</p></td>
+<td><p>12345678</p></td>
+<td><p>4</p></td>
+<td><p>23456780</p></td>
+</tr>
+<tr class="row-even"><td><p>LSL1</p></td>
+<td><p>Logical Shift Left
+with 1 insertion</p></td>
+<td><p>12345678</p></td>
+<td><p>4</p></td>
+<td><p>2345678F</p></td>
+</tr>
+<tr class="row-odd"><td><p>LSR</p></td>
+<td><p>Logical Shift Right</p></td>
+<td><p>12345678</p></td>
+<td><p>4</p></td>
+<td><p>01234567</p></td>
+</tr>
+<tr class="row-even"><td><p>LSR1</p></td>
+<td><p>Logical Shift Right
+with 1 insertion</p></td>
+<td><p>12345678</p></td>
+<td><p>4</p></td>
+<td><p>F1234567</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><p>ASR</p></td>
+<td rowspan="2"><p>Arithmetic Shift Right</p></td>
+<td><p>12345678</p></td>
+<td><p>4</p></td>
+<td><p>01234567</p></td>
+</tr>
+<tr class="row-even"><td><p>89ABCDEF</p></td>
+<td><p>4</p></td>
+<td><p>F89ABCDE</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><p>LSLX</p></td>
+<td rowspan="3"><p>LSL  eXtended. The result
+is the part that would
+be shifted out by an LSL,
+its MSB being 0-filled.</p></td>
+<td><p>12345678</p></td>
+<td><p>0</p></td>
+<td><p>00000000</p></td>
+</tr>
+<tr class="row-even"><td><p>12345678</p></td>
+<td><p>4</p></td>
+<td><p>00000001</p></td>
+</tr>
+<tr class="row-odd"><td><p>12345678</p></td>
+<td><p>28</p></td>
+<td><p>01234567</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><p>LSL1X</p></td>
+<td rowspan="3"><p>LSL1 eXtended. The result
+is the part that would
+be shifted out by a LSL1,
+its MSB being 1-filled.</p></td>
+<td><p>12345678</p></td>
+<td><p>0</p></td>
+<td><p>FFFFFFFF</p></td>
+</tr>
+<tr class="row-odd"><td><p>12345678</p></td>
+<td><p>4</p></td>
+<td><p>FFFFFFF1</p></td>
+</tr>
+<tr class="row-even"><td><p>12345678</p></td>
+<td><p>28</p></td>
+<td><p>F1234567</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><p>LSRX</p></td>
+<td rowspan="3"><p>LSR  eXtended. The result
+is the part that would
+be shifted out by an LSR,
+its LSB being 0-filled.</p></td>
+<td><p>12345678</p></td>
+<td><p>0</p></td>
+<td><p>00000000</p></td>
+</tr>
+<tr class="row-even"><td><p>12345678</p></td>
+<td><p>4</p></td>
+<td><p>80000000</p></td>
+</tr>
+<tr class="row-odd"><td><p>12345678</p></td>
+<td><p>28</p></td>
+<td><p>23456780</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><p>LSR1X</p></td>
+<td rowspan="3"><p>LSR1 eXtended. The result
+is the part that would
+be shifted out by a LSR1,
+its LSB being 1-filled.</p></td>
+<td><p>12345678</p></td>
+<td><p>0</p></td>
+<td><p>FFFFFFFF</p></td>
+</tr>
+<tr class="row-odd"><td><p>12345678</p></td>
+<td><p>4</p></td>
+<td><p>8FFFFFFF</p></td>
+</tr>
+<tr class="row-even"><td><p>12345678</p></td>
+<td><p>28</p></td>
+<td><p>2345678F</p></td>
+</tr>
+</tbody>
+</table>
+<p>All shift/rotate instructions allow for the same operands combinations</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>LSL  Xmz, Rnx, Rp
+LSL  Xmz, Rnx, Rp, Bcc
+LSL  Xmz, Rnx, Rp, Jcc, IRAM_address
+-------------------------------------
+LSL  Xmz, Rnx, #5
+LSL  Xmz, Rnx, #5, Bcc
+LSL  Xmz, Rnx, #5, Jcc, IRAM_address
+</pre></div>
+</div>
+<p><strong>Supported Conditions</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi, nsh32, sh32, se, so
+Bcc:    z, nz, xz, nxz
+</pre></div>
+</div>
+</section>
+<section id="shift-rotate-add-sub">
+<h2>13)  Shift/Rotate &amp; add/sub<a class="headerlink" href="#shift-rotate-add-sub" title="Permalink to this heading"></a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>rol_add  Xmz, Rnx, Rp, #5                     // rotate left then addition
+rol_add  Xmz, Rnx, Rp, #5, Bcc                // ...
+rol_add  Xmz, Rnx, Rp, #5, Jcc, IRAM_address  // ...
+-----------------------------------------------------------------------------
+lsr_add  Xmz, Rnx, Rp, #5                     // shift right then addition
+lsr_add  Xmz, Rnx, Rp, #5, Bcc                // ...
+lsr_add  Xmz, Rnx, Rp, #5, Jcc, IRAM_address  // ...
+-----------------------------------------------------------------------------
+lsl_add  Xmz, Rnx, Rp, #5                     // shift left then addition
+lsl_add  Xmz, Rnx, Rp, #5, Bcc                // ...
+lsl_add  Xmz, Rnx, Rp, #5, Jcc, IRAM_address  // ...
+-----------------------------------------------------------------------------
+lsl_sub  Xmz, Rnx, Rp, #5                     // shift left then subtraction
+lsl_sub  Xmz, Rnx, Rp, #5, Bcc                // ...
+lsl_sub  Xmz, Rnx, Rp, #5, Jcc, IRAM_address  // ...
+</pre></div>
+</div>
+<p>For all these instructions the content of Rnx is shifted or rotated by
+the #5 immediate value, giving an intermediary result that is added
+or subtracted to the Rp value giving the instruction final result.</p>
+<p><strong>Supported Conditions</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi
+Bcc:    z, nz, xz, nxz
+</pre></div>
+</div>
+<p><strong>NOTE: the z, nz, xz, nxz, pl and mi CONDITIONS ARE EVALUATED AGAINST THE INTERMEDIARY RESULT, NOT AGAINST THE FINAL RESULT</strong></p>
+</section>
+<section id="clz-clo-cls-cao-bit-count">
+<h2>14)  CLZ / CLO / CLS / CAO (bit count)<a class="headerlink" href="#clz-clo-cls-cao-bit-count" title="Permalink to this heading"></a></h2>
+<p>These instructions don’t support the .s modifier.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>CLZ  Xmz, Rnx                     // Count Leading Zero
+CLZ  Xmz, Rnx, Bcc                // ...
+CLZ  Xmz, Rnx, Jcc, IRAM_address  // ...
+-------------------------------------------------------------------------------------------------
+CLO  Xmz, Rnx                     // Count Leading Ones
+CLO  Xmz, Rnx, Bcc                // ...
+CLO  Xmz, Rnx, Jcc, IRAM_address  // ...
+-------------------------------------------------------------------------------------------------
+CLS  Xmz, Rnx                     // Count Leading Sign: Indicates by how many bits the
+CLS  Xmz, Rnx, Bcc                // source operand can be left-shifted without having
+CLS  Xmz, Rnx, Jcc, IRAM_address  // its sign changed, the result being in the range 0-31.
+-------------------------------------------------------------------------------------------------
+CAO  Xmz, Rnx                     // Count All Ones: counts the number
+CAO  Xmz, Rnx, Bcc                // of one in the source operand
+CAO  Xmz, Rnx, Jcc, IRAM_address  // ...
+</pre></div>
+</div>
+<p><strong>Supported Conditions</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Jcc: t, z, nz, xz, nxz, max, nmax, sz, nsz, spl, smi
+Bcc:    z, nz, xz, nxz
+</pre></div>
+</div>
+<p>For CLS, the <strong>max</strong> (MAXimum) condition is true when the result is 31, For CLZ, CLO and CAO, the <strong>max</strong>
+condition is true when the result is 32. The <strong>nmax</strong> condition is always the opposite of the <strong>max</strong> condition.</p>
+</section>
+<section id="mul-step-div-step-movd-swapd">
+<h2>15)  MUL_STEP / DIV_STEP / MOVD / SWAPD<a class="headerlink" href="#mul-step-div-step-movd-swapd" title="Permalink to this heading"></a></h2>
+<section id="mul-step">
+<h3>15.1)  mul_step<a class="headerlink" href="#mul-step" title="Permalink to this heading"></a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>mul_step  Dmz, Rnx, Dp, #5
+mul_step  Dmz, Rnx, Dp, #5, Bcc
+mul_step  Dmz, Rnx, Dp, #5, Jcc, IRAM_address
+</pre></div>
+</div>
+<p><strong>Action performed</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>if (Dp[32] &amp; 1) Dm[31: 0] = Dp[31: 0] + (Rnx &lt;&lt; #5)  // if the destination is the ZERO register,
+                Dm[63:32] = Dp[63:32]        &gt;&gt; 1    // ... then no register is affected
+</pre></div>
+</div>
+<p><strong>Supported Conditions</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Jcc: t, z, nz, sz, nsz, spl, smi
+</pre></div>
+</div>
+</section>
+<section id="div-step">
+<h3>15.2)  div_step<a class="headerlink" href="#div-step" title="Permalink to this heading"></a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>div_step  Dmz, Rnx, Dp, #5
+div_step  Dmz, Rnx, Dp, #5, Bcc
+div_step  Dmz, Rnx, Dp, #5, Jcc, IRAM_address
+</pre></div>
+</div>
+<p><strong>Action performed</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>if  (Dp[31: 0] &gt;=              (Rnx &lt;&lt; #5)){  // the comparison is unsigned
+     Dm[31: 0]  =  Dp[31: 0] - (Rnx &lt;&lt; #5);   // if the destination is the ZERO register
+     Dm[63:32]  = (Dp[63:32] &lt;&lt; 1)  | 1   ;   // ... then no register is affected
+}                                             // ...
+else Dm[63:32]  = (Dp[63:32] &lt;&lt; 1)        ;   // ...
+</pre></div>
+</div>
+<p><strong>Supported Conditions</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Jcc: t, sz, nsz, spl, smi
+</pre></div>
+</div>
+</section>
+<section id="movd">
+<h3>15.3)  movd<a class="headerlink" href="#movd" title="Permalink to this heading"></a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>movd  Dmz, Dp
+movd  Dmz, Dp, Bcc
+movd  Dmz, Dp, Jcc, IRAM_address
+</pre></div>
+</div>
+<p><strong>result = Dp</strong></p>
+<p><strong>Supported Conditions</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Jcc:  t, sz, nsz, spl, smi
+</pre></div>
+</div>
+</section>
+<section id="swapd">
+<h3>15.3  swapd<a class="headerlink" href="#swapd" title="Permalink to this heading"></a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>swapd  Dmz, Dp
+swapd  Dmz, Dp, Bcc
+swapd  Dmz, Dp, Jcc, IRAM_address
+</pre></div>
+</div>
+<p><strong>result = { Dp[31:0], Dp[63:32] }</strong></p>
+<p><strong>Supported Conditions</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Jcc:  t, sz, nsz, spl, smi
+</pre></div>
+</div>
+</section>
+</section>
+<section id="x-8-multiplications">
+<h2>16)  8 x 8 Multiplications<a class="headerlink" href="#x-8-multiplications" title="Permalink to this heading"></a></h2>
+<p>The result of a 8 x 8 multiplication is initially 16-bit, then this 16-bit result is:</p>
+<ul class="simple">
+<li><p>zero-extended to 32-bit for unsigned x unsigned multiplication,</p></li>
+<li><p>sign-extended to 32-bit otherwise.</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>mnemonic</p></th>
+<th class="head"><p>result[15:0]</p></th>
+<th class="head"><p>multiply variant</p></th>
+<th class="head"><p>Comment</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>mul_ul_ul</p></td>
+<td><p>op1[ 7:0] x op2[7: 0]</p></td>
+<td rowspan="4"><p>unsigned x unsigned</p>
+<p>(zero-extended to 32-bit)</p>
+</td>
+<td rowspan="4"><p>.s forbidden</p></td>
+</tr>
+<tr class="row-odd"><td><p>mul_ul_uh</p></td>
+<td><p>op1[ 7:0] x op2[15:8]</p></td>
+</tr>
+<tr class="row-even"><td><p>mul_uh_ul</p></td>
+<td><p>op1[15:8] x op2[ 7:0]</p></td>
+</tr>
+<tr class="row-odd"><td><p>mul_uh_uh</p></td>
+<td><p>op1[15:8] x op2[15:8]</p></td>
+</tr>
+<tr class="row-even"><td><p>mul_sl_ul</p></td>
+<td><p>op1[ 7:0] x op2[7: 0]</p></td>
+<td rowspan="4"><p>signed x unsigned</p>
+<p>(sign-extended to 32-bit)</p>
+</td>
+<td rowspan="8"><p>.u forbidden</p></td>
+</tr>
+<tr class="row-odd"><td><p>mul_sl_uh</p></td>
+<td><p>op1[ 7:0] x op2[15:8]</p></td>
+</tr>
+<tr class="row-even"><td><p>mul_sh_ul</p></td>
+<td><p>op1[15:8] x op2[ 7:0]</p></td>
+</tr>
+<tr class="row-odd"><td><p>mul_sh_uh</p></td>
+<td><p>op1[15:8] x op2[15:8]</p></td>
+</tr>
+<tr class="row-even"><td><p>mul_sl_sl</p></td>
+<td><p>op1[ 7:0] x op2[7: 0]</p></td>
+<td rowspan="4"><p>signed x signed</p>
+<p>(sign-extended to 32-bit)</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>mul_sl_sh</p></td>
+<td><p>op1[ 7:0] x op2[15:8]</p></td>
+</tr>
+<tr class="row-even"><td><p>mul_sh_sl</p></td>
+<td><p>op1[15:8] x op2[ 7:0]</p></td>
+</tr>
+<tr class="row-odd"><td><p>mul_sh_sh</p></td>
+<td><p>op1[15:8] x op2[15:8]</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>syntax</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>mul_ul_ul     Xmz, Rnx, Rp                     // similar syntax for the others
+mul_ul_ul     Xmz, Rnx, Rp, Bcc                // 8 x 8 multiplications instructions
+mul_ul_ul     Xmz, Rnx, Rp, Jcc, IRAM_address  // ...
+</pre></div>
+</div>
+<p><strong>Supported Conditions</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi, ms8, nms8, mu8, nmu8
+Bcc:    z, nz, xz, nxz
+</pre></div>
+</div>
+</section>
+<section id="cmpb4">
+<h2>17)  CMPB4<a class="headerlink" href="#cmpb4" title="Permalink to this heading"></a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cmpb4  Xmz, Rnx, Rp
+</pre></div>
+</div>
+<p><strong>Functionality</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>result[31:24] = (Rx[31:24] == Rp[31:24]) ? 0x01 : 0x00;
+result[23:16] = (Rx[23:16] == Rp[23:16]) ? 0x01 : 0x00;
+result[15: 8] = (Rx[15: 8] == Rp[15: 8]) ? 0x01 : 0x00;
+result[ 7: 0] = (Rx[ 7: 0] == Rp[ 7: 0]) ? 0x01 : 0x00;
+</pre></div>
+</div>
+<p><strong>Supported Conditions</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Bcc:    z, nz, xz, nxz
+Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi
+</pre></div>
+</div>
+</section>
+<section id="call">
+<h2>18)  CALL<a class="headerlink" href="#call" title="Permalink to this heading"></a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>call  Xmz, Rnx, Rp
+call  Xmz, Rnx, #PC  // #PC is an immediate whose width is the one of the PC
+</pre></div>
+</div>
+<p><strong>Functionality</strong></p>
+<ul class="simple">
+<li><p>result = current PC + 1</p></li>
+<li><p>The thread jump to the IRAM address given by Rnx + Rp or by Rnx + #PC</p></li>
+</ul>
+<p><strong>Note:</strong> there is no RETURN instruction: a “CALL ZERO, Rnx” instruction is used
+instead, where Rnx is the register where the return address has been previously saved.</p>
+</section>
+<section id="acquire-release">
+<h2>19)  ACQUIRE / RELEASE<a class="headerlink" href="#acquire-release" title="Permalink to this heading"></a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>acquire: Rnx, #16
+acquire: Rnx, #16, Jcc, IRAM_address
+release: Rnx, #16
+release: Rnx, #16, Jcc, IRAM_address
+</pre></div>
+</div>
+<p><strong>Functionality</strong></p>
+<p>For both instruction an 8-bit index <em>i</em> is calculated as follows:</p>
+<ul class="simple">
+<li><p>tmp[15:0] = Rnx + #16</p></li>
+<li><p><em>i</em> = tmp[15:8] ^ tmp[7:0]</p></li>
+</ul>
+<p>Then:</p>
+<ul class="simple">
+<li><p>for ACQUIRE: ATOMIC[ <em>i</em> ] = 1,</p></li>
+<li><p>for RELEASE: ATOMIC[ <em>i</em> ] = 0.</p></li>
+</ul>
+<p>In both cases, the z/nz conditions are evaluated using the initial value of the ATOMIC[ <em>i</em> ] bit.</p>
+<p><strong>Supported Jcc Conditions for ACQUIRE</strong>: t, z, nz</p>
+<p><strong>Supported Jcc Conditions for RELEASE</strong>:       nz</p>
+<p><strong>Note:</strong> when ACQUIRE/RELEASE is used correctly, the nz condition is always true for RELEASE.</p>
+</section>
+<section id="stop">
+<h2>20)  STOP<a class="headerlink" href="#stop" title="Permalink to this heading"></a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>stop
+stop  t, IRAM_address  // only the t (True) condition is supported
+</pre></div>
+</div>
+<p><strong>Functionality</strong></p>
+<p>The RUN bit corresponding to the thread executing the STOP instruction is cleared,
+if a t condition is present, the thread PC is set to the specified jump address,
+independently of the presence of the t condition, the thread is non longer running.</p>
+</section>
+<section id="boot-resume-clr-run">
+<h2>21)  BOOT / RESUME / CLR_RUN<a class="headerlink" href="#boot-resume-clr-run" title="Permalink to this heading"></a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>boot     Rnx, #6
+boot     Rnx, #6, Jcc, IRAM_address
+resume   Rnx, #6
+resume   Rnx, #6, Jcc, IRAM_address
+clr_run  Rnx, #6
+clr_run  Rnx, #6, Jcc, IRAM_address
+</pre></div>
+</div>
+<p><strong>Functionality</strong></p>
+<p>Both instructions generate first a 6-bit unsigned index <em>i</em>:</p>
+<ul class="simple">
+<li><p>tmp[13:0] = Rnx[13:0] + #6</p></li>
+<li><p><em>i</em>       = tmp[13:8] ^ tmp[5:0]</p></li>
+</ul>
+<section id="clr-run">
+<h3>21.1) CLR_RUN<a class="headerlink" href="#clr-run" title="Permalink to this heading"></a></h3>
+<p>clr_run just clears the bit RUN[ <em>i</em> ], the CLR_RUN instruction is now over.</p>
+</section>
+<section id="boot-resume">
+<h3>21.2) BOOT / RESUME<a class="headerlink" href="#boot-resume" title="Permalink to this heading"></a></h3>
+<p>If RUN[ <em>i</em> ] is initially set then the BOOT/RESUME instruction is over.</p>
+<p>Otherwise:</p>
+<ul class="simple">
+<li><p>RUN[ <em>i</em> ] is set</p></li>
+<li><p>if <em>i</em> &lt; 24 then the execution of the thread <em>i</em> is resumed:</p>
+<ul>
+<li><p>for BOOT instructions: at the IRAM address 0</p></li>
+<li><p>for RESUME instructions: at the current value of PC[ <em>i</em> ] (the PC of the thread <em>i</em>).</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id2">
+<h3>21.3) Supported conditions<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<p>The CLR_RUN, BOOT, and RESUME instructions support the same set of conditions</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Jcc: t, z, nz, xz, nxz, pl, mi, sz, nsz, spl, smi
+</pre></div>
+</div>
+<p><strong>Note:</strong> the z, nz, xz, nxz conditions use the nullity/non-nullity of the initial value of the bit RUN[ <em>i</em> ].</p>
+</section>
+</section>
+<section id="time-time-cfg">
+<h2>22)  TIME / TIME_CFG<a class="headerlink" href="#time-time-cfg" title="Permalink to this heading"></a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>time      Xmz
+time      Xmz,      t, IRAM_address  // only the t (True) condition is allowed
+time_cfg  Xmz, Rnx
+time_cfg  Xmz, Rnx, t, IRAM_address  // only the t (True) condition is allowed
+</pre></div>
+</div>
+<p>For both instructions: result = TIME[35:4] (the 32-msb of TIME)</p>
+<section id="time-increment-configuration">
+<h3>22.1) TIME Increment Configuration<a class="headerlink" href="#time-increment-configuration" title="Permalink to this heading"></a></h3>
+<p><strong>This part concerns only the time_cfg instruction</strong></p>
+<p>To have Rnx[0] set clears the TIME[35:0] register, the field Rnx[2:1] being used as follow:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>00: keep the current increment configuration
+01: set the configuration such that TIME[35:0] is     incremented every DPU cycle
+10: set the configuration such that TIME[35:0] is     incremented every executed instruction
+11: set the configuration such that TIME[35:0] is not incremented
+</pre></div>
+</div>
+</section>
+</section>
+<section id="nop-bkp">
+<h2>23)  NOP / BKP<a class="headerlink" href="#nop-bkp" title="Permalink to this heading"></a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>NOP  // Does nothing
+BKP  // Does nothing besides causing a BKP exception
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="201_IS.html" class="btn btn-neutral float-left" title="Instruction Set Architecture" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="202_RTL.html" class="btn btn-neutral float-right" title="Runtime Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

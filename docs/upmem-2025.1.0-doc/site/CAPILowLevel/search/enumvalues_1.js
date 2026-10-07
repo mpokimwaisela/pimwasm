@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['dpu_5fcommand_5fall_5fpostexecution',['DPU_COMMAND_ALL_POSTEXECUTION',['../dpu__custom_8h.html#ab228fc8008d21d42cf217bad848afa48a7d01d824b3cca663c785588b104440ee',1,'dpu_custom.h']]],
+  ['dpu_5fcommand_5fall_5fpreexecution',['DPU_COMMAND_ALL_PREEXECUTION',['../dpu__custom_8h.html#ab228fc8008d21d42cf217bad848afa48a4c4a9f28062d29b60f6b0dde6f02372f',1,'dpu_custom.h']]],
+  ['dpu_5fcommand_5fall_5fsoft_5freset',['DPU_COMMAND_ALL_SOFT_RESET',['../dpu__custom_8h.html#ab228fc8008d21d42cf217bad848afa48a6ec19990dea829c7aca22c3cd5ad9898',1,'dpu_custom.h']]],
+  ['dpu_5fcommand_5fbinary_5fpath',['DPU_COMMAND_BINARY_PATH',['../dpu__custom_8h.html#ab228fc8008d21d42cf217bad848afa48afa6493b07109707524c20600efed5c5a',1,'dpu_custom.h']]],
+  ['dpu_5fcommand_5fcustom_5flabel',['DPU_COMMAND_CUSTOM_LABEL',['../dpu__custom_8h.html#ab228fc8008d21d42cf217bad848afa48ae75b5c1b14c8cd035103d24493e851ad',1,'dpu_custom.h']]],
+  ['dpu_5fcommand_5fdpu_5fpostexecution',['DPU_COMMAND_DPU_POSTEXECUTION',['../dpu__custom_8h.html#ab228fc8008d21d42cf217bad848afa48a7cd2edd6851a289beef600c73070d82a',1,'dpu_custom.h']]],
+  ['dpu_5fcommand_5fdpu_5fpreexecution',['DPU_COMMAND_DPU_PREEXECUTION',['../dpu__custom_8h.html#ab228fc8008d21d42cf217bad848afa48aa18b7edb4ee6bb14feec0bcfcc68117a',1,'dpu_custom.h']]],
+  ['dpu_5fcommand_5fdpu_5fsoft_5freset',['DPU_COMMAND_DPU_SOFT_RESET',['../dpu__custom_8h.html#ab228fc8008d21d42cf217bad848afa48adf8f4d7fd6d3340d3370f6d2195ecfcc',1,'dpu_custom.h']]],
+  ['dpu_5fcommand_5fevent_5fend',['DPU_COMMAND_EVENT_END',['../dpu__custom_8h.html#ab228fc8008d21d42cf217bad848afa48ab8dc80cda7653755602de63b821a31d8',1,'dpu_custom.h']]],
+  ['dpu_5fcommand_5fevent_5fstart',['DPU_COMMAND_EVENT_START',['../dpu__custom_8h.html#ab228fc8008d21d42cf217bad848afa48ae72fa244e6c184d0e611cfa24a802535',1,'dpu_custom.h']]],
+  ['dpu_5fcommand_5fpostmortem',['DPU_COMMAND_POSTMORTEM',['../dpu__custom_8h.html#ab228fc8008d21d42cf217bad848afa48a4e57cfc8d91d17dadb68e018831ad3fe',1,'dpu_custom.h']]],
+  ['dpu_5fcommand_5fset_5fslice_5finfo',['DPU_COMMAND_SET_SLICE_INFO',['../dpu__custom_8h.html#ab228fc8008d21d42cf217bad848afa48afe5aaecdb33bc113ea498c23f5635cb4',1,'dpu_custom.h']]],
+  ['dpu_5fcommand_5fsystem_5freport',['DPU_COMMAND_SYSTEM_REPORT',['../dpu__custom_8h.html#ab228fc8008d21d42cf217bad848afa48aef4b13ff61219f4d8fed0111fc119066',1,'dpu_custom.h']]],
+  ['dpu_5floader_5ftarget_5fdpu',['DPU_LOADER_TARGET_DPU',['../dpu__loader_8h.html#a33d30f156cc4fbccdb630a13795db003a723a9a7ce4a2944e0b88b84c873791f5',1,'dpu_loader.h']]],
+  ['dpu_5floader_5ftarget_5frank',['DPU_LOADER_TARGET_RANK',['../dpu__loader_8h.html#a33d30f156cc4fbccdb630a13795db003ac574e1591bcd82e873e059d09f026716',1,'dpu_loader.h']]],
+  ['dpu_5fprofiling_5fnop',['DPU_PROFILING_NOP',['../dpu__profiler_8h.html#a8d1000224ceda181d11edc325b75acd3a5466b61de4ffa49ebf2fe290b47c1d2d',1,'dpu_profiler.h']]],
+  ['dpu_5fprofiling_5fsamples',['DPU_PROFILING_SAMPLES',['../dpu__profiler_8h.html#a8d1000224ceda181d11edc325b75acd3a6154881cc104eab08d1598f220869cc6',1,'dpu_profiler.h']]],
+  ['dpu_5fprofiling_5fsections',['DPU_PROFILING_SECTIONS',['../dpu__profiler_8h.html#a8d1000224ceda181d11edc325b75acd3afc169783252b5ba1071c7038f62d63ff',1,'dpu_profiler.h']]],
+  ['dpu_5fprofiling_5fstats',['DPU_PROFILING_STATS',['../dpu__profiler_8h.html#a8d1000224ceda181d11edc325b75acd3a91d4ec81da831c56ce8829f26b3e8510',1,'dpu_profiler.h']]],
+  ['dpu_5fvpd_5ferr',['DPU_VPD_ERR',['../dpu__vpd__structures_8h.html#a5b9876ba970a0ab10f4d40d523ed461ba4c3df0ad13c7cf620f9928407a358fa0',1,'dpu_vpd_structures.h']]],
+  ['dpu_5fvpd_5fok',['DPU_VPD_OK',['../dpu__vpd__structures_8h.html#a5b9876ba970a0ab10f4d40d523ed461baaa6a22c8a792e5fec6cf8da89e6e1cd5',1,'dpu_vpd_structures.h']]],
+  ['dpu_5fvpd_5frepair_5firam',['DPU_VPD_REPAIR_IRAM',['../dpu__vpd__structures_8h.html#a88e37a08d8532a2ed8eb2c0ac1e0de51a29537ccc88324d458824f292546fca9e',1,'dpu_vpd_structures.h']]],
+  ['dpu_5fvpd_5frepair_5fwram',['DPU_VPD_REPAIR_WRAM',['../dpu__vpd__structures_8h.html#a88e37a08d8532a2ed8eb2c0ac1e0de51af9fb78b3467faa69e8e3a599b5907176',1,'dpu_vpd_structures.h']]]
+];

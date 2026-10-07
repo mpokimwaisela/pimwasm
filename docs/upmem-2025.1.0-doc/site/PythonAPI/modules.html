@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Library &mdash; UPMEM DPU SDK 2025.1.0 Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/style.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/fav_upmem_32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/dark_mode_js/default_dark.js"></script>
+        <script src="../_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="dpu package" href="dpu.html" />
+    <link rel="prev" title="Java Library" href="../206_JavaAPI.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #343131" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/UPMEM.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2025.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../00_ToolchainAtAGlance.html">The UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01_Install.html">Installing the UPMEM DPU toolchain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_HelloWorld.html">Hello World! Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Programming</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../03_ProgrammingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../030_DPURuntimeService_Tasklets.html">Tasklet management and synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../031_DPURuntimeService_Memory.html">Memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_Stdlib.html">Standard library functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06_ControllingDPUFromHost.html">Controlling the execution of DPUs from host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../032_DPURuntimeService_HostCommunication.html">Communication with host applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../033_AdvancedHostFeatures.html">Advanced Features of the Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07_Logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fff_CodingTips.html">Coding tips and recommended practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ggg_LanguageServer.html">The Clangd Language Server</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Debugging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../08_DebuggingWithUpmemDpu.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../080_AboutDPULLDB.html">About dpu-lldb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../081_DPUDebugExample.html">An example of debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../082_DPUDebugHost.html">Debugging a Host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../083_DPUDebugHostExample.html">An example of debugging a DPU booted by a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../084_DPUDebugAttachWithoutHost.html">Attaching to a DPU without having a host application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../085_DPUCoreDump.html">DPU Core Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../086_DPUDebugLimitations.html">dpu-lldb limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../087_DPUTrace.html">Using dputrace tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../088_DPUMemcheck.html">Verifying memory accesses with dpugrind</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ggg_ReleaseNotesAndKnownIssues.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ggg_ReportingErrors.html">Reporting errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Assembler and Instruction set</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../200_AsmSyntax.html">Assembler syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../200_AsmConditions.html">DPU condition classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../201_AsmExample.html">Examples of an assembly program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../201_AsmAndC.html">Integrating assembly code with C programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../201_DPU_ABI.html">DPU ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../201_IS.html">Instruction Set Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../210_DpuHandbook.html">DPU Handbook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../202_RTL.html">Runtime Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../203_HostAPI.html">Host Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../204_LLHostAPI.html">Low-level Host Library (to be used with caution)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../205_CppHostAPI.html">C++ Host API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../206_JavaAPI.html">Java Library</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Python Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#contents">Contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dpu.html">dpu package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#debugging">Debugging</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../230_Configuration.html">SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../240_Dpu_Versionning.html">DPU Version Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../250_Driver.html">Kernel Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../260_Profiling.html">Profiling DPU binary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../071_MeasuringPerformances.html">Performance Counters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../261_Application_profiling.html">Application profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../263_WramFifo.html">WRAM Parallel Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../264_MRAMUnaligned.html">Unaligned MRAM Accesses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../265_ScatterGatherXfer.html">Scatter Gather Memory Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../270_StackAnalyzer.html">Stack Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../280_Server_configuration.html">Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../281_Permissions.html">Permissions Requirements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #343131" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">UPMEM development tools documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Python Library</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/PythonAPI/modules.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="python-library">
+<h1>Python Library<a class="headerlink" href="#python-library" title="Permalink to this heading"></a></h1>
+<p>The UPMEM DPU toolchain contains a Python Host library to manage DPUs.
+It is based on the C Host library and provides a subset of its features, which should cover the main use cases. Knowing the C API should not be necessary to understand the Python API.</p>
+<section id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dpu.html">dpu package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dpu.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dpu.vpd.html">dpu.vpd package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dpu.vpd.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dpu.vpd.html#module-dpu.vpd">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dpu.compiler.html">dpu.compiler module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dpu.compiler.html#dpu.compiler.Compiler"><code class="docutils literal notranslate"><span class="pre">Compiler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dpu.compiler.html#dpu.compiler.O0"><code class="docutils literal notranslate"><span class="pre">O0</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dpu.compiler.html#dpu.compiler.O1"><code class="docutils literal notranslate"><span class="pre">O1</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dpu.compiler.html#dpu.compiler.O2"><code class="docutils literal notranslate"><span class="pre">O2</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dpu.compiler.html#dpu.compiler.O3"><code class="docutils literal notranslate"><span class="pre">O3</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dpu.compiler.html#dpu.compiler.Os"><code class="docutils literal notranslate"><span class="pre">Os</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dpu.compiler.html#dpu.compiler.Oz"><code class="docutils literal notranslate"><span class="pre">Oz</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dpu.compiler.html#dpu.compiler.getDpuArchVersion"><code class="docutils literal notranslate"><span class="pre">getDpuArchVersion()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.disasm.html">dpu.disasm module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dpu.disasm.html#dpu.disasm.Instruction"><code class="docutils literal notranslate"><span class="pre">Instruction</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dpu.disasm.html#dpu.disasm.disassemble"><code class="docutils literal notranslate"><span class="pre">disassemble()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dpu.disasm.html#dpu.disasm.disassemble_raw"><code class="docutils literal notranslate"><span class="pre">disassemble_raw()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dpu.driver.html">dpu.driver module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dpu.driver.html#dpu.driver.DpuContext"><code class="docutils literal notranslate"><span class="pre">DpuContext</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dpu.driver.html#dpu.driver.DpuError"><code class="docutils literal notranslate"><span class="pre">DpuError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dpu.driver.html#dpu.driver.DpuProgram"><code class="docutils literal notranslate"><span class="pre">DpuProgram</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dpu.driver.html#dpu.driver.DpuSet"><code class="docutils literal notranslate"><span class="pre">DpuSet</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dpu.driver.html#dpu.driver.DpuSymbol"><code class="docutils literal notranslate"><span class="pre">DpuSymbol</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dpu.driver.html#dpu.driver.DpuThreadContext"><code class="docutils literal notranslate"><span class="pre">DpuThreadContext</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dpu.driver.html#dpu.driver.DpuVariable"><code class="docutils literal notranslate"><span class="pre">DpuVariable</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dpu.html#module-dpu">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<p>The following code is an example of a Python application with a simple DPU program with no real use case.
+The goal here is to present some of the main features of the Python API.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/env python3</span>
+
+<span class="kn">from</span> <span class="nn">dpu</span> <span class="kn">import</span> <span class="n">DpuSet</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
+<span class="kn">from</span> <span class="nn">sys</span> <span class="kn">import</span> <span class="n">stdout</span>
+
+<span class="n">DPU_PROGRAM</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    #include &lt;mram.h&gt;</span>
+<span class="s1">    #include &lt;stdint.h&gt;</span>
+<span class="s1">    #include &lt;stdio.h&gt;</span>
+
+<span class="s1">    __mram uint64_t my_var; // Initialized by the host application</span>
+
+<span class="s1">    int main() {</span>
+<span class="s1">        uint64_t data = my_var;</span>
+<span class="s1">        printf(&quot;My_Var before = 0x</span><span class="si">%016lx</span><span class="se">\\</span><span class="s1">n&quot;, data);</span>
+
+<span class="s1">        my_var = data + 1;</span>
+
+<span class="s1">        return 0;</span>
+<span class="s1">    }</span>
+<span class="s1">&#39;&#39;&#39;</span>
+
+<span class="k">with</span> <span class="n">DpuSet</span><span class="p">(</span><span class="n">nr_dpus</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">c_source</span><span class="o">=</span><span class="n">StringIO</span><span class="p">(</span><span class="n">DPU_PROGRAM</span><span class="p">))</span> <span class="k">as</span> <span class="n">dpu</span><span class="p">:</span>
+    <span class="n">dpu</span><span class="o">.</span><span class="n">my_var</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+    <span class="n">dpu</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">log</span><span class="o">=</span><span class="n">stdout</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">dpu</span><span class="o">.</span><span class="n">my_var</span><span class="o">.</span><span class="n">uint64</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;My_Var after = 0x</span><span class="si">%016x</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">value</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>Creating a <a class="reference internal" href="dpu.driver.html#dpu.driver.DpuSet" title="dpu.driver.DpuSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">DpuSet</span></code></a> will allocate a number of DPUs (which can be changed with the <code class="docutils literal notranslate"><span class="pre">nr_dpus</span></code> and defaults to the <code class="docutils literal notranslate"><span class="pre">ALLOCATE_ALL</span></code> value).
+It can be used as a context manager: the allocated DPUs will be freed at the end of the <code class="docutils literal notranslate"><span class="pre">with</span></code> block.
+Multiple parameters can be applied to the <a class="reference internal" href="dpu.driver.html#dpu.driver.DpuSet" title="dpu.driver.DpuSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">DpuSet</span></code></a> constructor. Here <code class="docutils literal notranslate"><span class="pre">c_source</span></code> is used to compile and load the DPU program based on the Python string. <code class="docutils literal notranslate"><span class="pre">binary</span></code> could have been used instead to directly provide an existing file path for the DPU binary program.
+See the <a class="reference internal" href="dpu.driver.html#module-dpu.driver" title="dpu.driver"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dpu.driver</span></code></a> module for a complete documentation of the <a class="reference internal" href="dpu.driver.html#dpu.driver.DpuSet" title="dpu.driver.DpuSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">DpuSet</span></code></a> methods.</p>
+<p>All public DPU variables (using the <code class="docutils literal notranslate"><span class="pre">__host</span></code> or <code class="docutils literal notranslate"><span class="pre">__mram</span></code> attributes) are accessible in the <a class="reference internal" href="dpu.driver.html#dpu.driver.DpuSet" title="dpu.driver.DpuSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">DpuSet</span></code></a> as attributes.
+Setting/Fetching one of these attributes will copy the provided data to/from the DPUs.
+For more options, the <a class="reference internal" href="dpu.driver.html#dpu.driver.DpuSet.copy" title="dpu.driver.DpuSet.copy"><code class="xref py py-meth docutils literal notranslate"><span class="pre">copy()</span></code></a> method can be used.</p>
+<p>The <a class="reference internal" href="dpu.driver.html#dpu.driver.DpuSet.exec" title="dpu.driver.DpuSet.exec"><code class="xref py py-meth docutils literal notranslate"><span class="pre">exec()</span></code></a> method will boot the DPUs and wait until the program completion. Here the <code class="docutils literal notranslate"><span class="pre">log</span></code> parameter is also specified, to print the DPU logs on the host standard output.</p>
+<p>When fetching a DPU attribute, the raw byte data can be retrieved with the <a class="reference internal" href="dpu.driver.html#dpu.driver.DpuVariable.data" title="dpu.driver.DpuVariable.data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">data()</span></code></a> method, but other methods, like <a class="reference internal" href="dpu.driver.html#dpu.driver.DpuVariable.uint64" title="dpu.driver.DpuVariable.uint64"><code class="xref py py-meth docutils literal notranslate"><span class="pre">uint64()</span></code></a>, can be used to get directly an inter.</p>
+<p>The program can be run with:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>python3 python_example.py
+</pre></div>
+</div>
+<p>And will give the output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>=== DPU#0x0 ===
+My_Var before = 0x0706050403020100
+My_Var after = 0x0706050403020101
+</pre></div>
+</div>
+</section>
+<section id="debugging">
+<h2>Debugging<a class="headerlink" href="#debugging" title="Permalink to this heading"></a></h2>
+<p>Some rudimentary debugging features are available when using the Python API.
+It is possible to use <code class="docutils literal notranslate"><span class="pre">dpu-lldb</span></code> to observe and attach to running DPUs.
+Notably, as described in <a class="reference internal" href="../082_DPUDebugHost.html"><span class="doc">Debugging a Host application</span></a>, the <code class="docutils literal notranslate"><span class="pre">dpu_attach_on_boot</span></code> command will be useful to debug a DPU program.</p>
+<p>Currently, the same features are not available while using <code class="docutils literal notranslate"><span class="pre">Pdb</span></code>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../206_JavaAPI.html" class="btn btn-neutral float-left" title="Java Library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dpu.html" class="btn btn-neutral float-right" title="dpu package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, UPMEM SAS - All rights reserved.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,299 @@
+=================
+Memory management
+=================
+
+The UPMEM DPU **Runtime Library** defines a specific usage of memories:
+
+  * The **WRAM** is the execution memory for programs. This is where the stacks, global variables, etc. are placed, according to a pre-defined scheme.
+  * Within the **WRAM**, the runtime configuration defines specific memory areas to implement a heap and shared memories.
+  * The **MRAM** is seen as an "external peripheral", whose access is simplified by **Runtime Library** functions.
+
+From the programming perspective, this means that the **Runtime Library** defines primitives for:
+
+  * the `WRAM management`_: to dynamically manage the **WRAM**
+  * the `MRAM accesses`_: to manage the transactions between the **MRAM** and the **WRAM**
+
+.. _WRAM management:
+
+WRAM Management
+===============
+
+Tasklets have the possibility to get buffers in memory for their own purpose or access some pre-reserved shared memories for collaborative work.
+
+.. _alloc:
+
+Heap allocation
+---------------
+
+Due to the complexity and memory footprint required by dynamic memory allocators, the **Runtime Library** implements simple mechanisms to allocate memory within the **WRAM**:
+
+  * an incremental allocator
+  * a fixed-size block allocator
+  * a buddy allocator
+
+**Incremental Allocator**
+
+  * The **Runtime Library** organizes the **WRAM** in such a way that the memory ends with a "free area", left to programs. The area size depends on the amount of memory used by the program, in particular, the total amount of stack needed to execute the tasklets
+  * Within this free area, a task can dynamically request a buffer, which is exclusively reserved for its own usage
+  * There is no "free" method: once allocated, a buffer remains the property of its owning tasklet until the program ends
+  * However, there's a *reset* function, to clean-up the heap if very necessary: ``mem_reset()``.
+    In particular, if a DPU is booted multiple times by an application, it shall be used at the beginning of the program to ensure that it restarts from a "fresh heap".
+
+To request a new buffer, a tasklet invokes ``mem_alloc(size_t size)`` (defined in `alloc.h <202_RTL.html#alloc-h>`_), returning a pointer to the newly allocated buffer.
+If the heap is full, the function puts the DPU in error.
+
+The returned buffer address is aligned on 64 bits; the allocation procedure is multi-tasklet safe.
+The provided buffer is directly usable for transfers between the *WRAM* and the *MRAM*.
+
+**Fixed-Size Block Allocator**
+
+A fixed-size block allocator allows the user to allocate and free blocks of fixed size. The size and number of the blocks are defined
+when allocating and initializing the allocator.
+All the needed functions are defined in `fsb_allocator.h <202_RTL.html#fsb_allocator-h>`_, but are also included in `alloc.h <202_RTL.html#alloc-h>`_.
+
+To instantiate a new fixed-size block allocator, the user invokes ``fsb_alloc(unsigned int block_size, unsigned int nb_of_blocks)``, returning the newly
+created and initialized allocator. If the heap if full, the function puts the DPU in error.
+
+To allocate a block, a tasklet invokes ``fsb_get(fsb_allocator_t allocator)``, returning a pointer to the allocated block (or *NULL* if no block
+is available). The returned block address is aligned on 64 bits; the allocation procedure is multi-tasklet safe. After allocating a block,
+the memory content is undefined.
+
+To free an allocated block, a tasklet invokes ``fsb_free(fsb_allocator_t allocator, void* ptr)``. The procedure is multi-tasklet safe.
+Beware that there is no protection preventing an invalid pointer to be freed or preventing a block from one allocator to be given back
+to another allocator. After freeing a block, the memory content is undefined.
+
+The following example illustrates how the fixed-size block allocator can be used with a simplistic list implementation:
+
+  * the allocator is defined
+  * the list is populated with some data
+  * some data is filtered out of the list
+  * the sum of the remaining data is calculated
+  * the list is cleaned
+
+Next is the code achieving this task (in ``fsb_example.c``):
+
+.. literalinclude:: ../../../endtests/documentation/fsb_example/fsb_example.c
+  :language: c
+
+The code is built to be executed by a single tasklet:
+
+.. literalinclude:: ../../../endtests/documentation/fsb_example/fsb_example.compile
+
+To validate that everything works, let's debug the program with ``dpu-lldb``:
+
+.. literalinclude:: ../../../endtests/documentation/fsb_example/fsb_example.lldb_script
+
+The exit status of the process should print the sum of the data (``0x45``):
+
+.. literalinclude:: ../../../endtests/documentation/fsb_example/fsb_example.output_reference
+
+**Buddy Allocator**
+
+A buddy allocator uses a pre-allocated area in the heap to perform dynamic allocation and freeing of buffers, offering functions similar
+to standard *malloc* and *free*.
+
+All the needed functions are defined in `buddy_alloc.h <202_RTL.html#buddy-alloc-h>`_, but are also included in `alloc.h <202_RTL.html#alloc-h>`_.
+
+Any program that needs to use the buddy allocator must first allocate and initialize the *buddy area* in the heap by
+invoking ``buddy_init``. Then the program can:
+
+  * Allocate buffers, using ``buddy_alloc``, with the following restrictions:
+
+    * Allocated buffer size should not exceed **4096 bytes**
+
+    * Minimum size of allocated buffers is **32 bytes**
+
+    * Allocated buffers are automatically aligned on DMA-transfer size, so that they can be used to transfer data from/to ``MRAM``
+
+  * Free previously allocated buffers, using ``buddy_free``
+
+The following example uses the buddy allocator to store temporary strings. The input is a list of cities and states represented
+in comma-separated values (*CSV*). It logs the states found in this initial list.
+
+.. literalinclude:: ../../../endtests/documentation/buddy_example/buddy_example.c
+  :language: c
+
+The code is built to be executed by a single tasklet:
+
+.. literalinclude:: ../../../endtests/documentation/buddy_example/buddy_allocator_example.compile
+
+To validate that everything works, let's debug the program with ``dpu-lldb``:
+
+.. literalinclude:: ../../../endtests/documentation/buddy_example/buddy_allocator_example.lldb_script
+
+The debugger should print:
+
+.. literalinclude:: ../../../endtests/documentation/buddy_example/buddy_allocator_example.output_reference
+
+.. _MRAM accesses:
+
+MRAM Management
+===============
+
+The **MRAM** management routines define a collection of functions that simplify transactions between the **MRAM** and the **WRAM**, taking into account the alignment and size constraints defined by the UPMEM DPU.
+They also define some useful functions that simplify the programming model implying such transactions.
+
+These functions are grouped according to the level of abstraction they offset:
+
+ * Low level accesses to the **MRAM** resources, via mram_ functions
+ * Mapping of the **MRAM** onto the **WRAM**, using **sequential readers** (seqread_)
+
+MRAM variables
+--------------
+
+**MRAM** variable can be declared directly in the DPU program source code. Including ``mram.h`` gives access to three variable attributes:
+
+  * ``__mram`` which will place the associated variable in **MRAM**.
+  * ``__mram_noinit`` which does the same as ``__mram`` but no initial value will be associated with the variable. This will help reduce the size of the DPU binary and the program loading, notably when declaring big MRAM arrays.
+  * ``__mram_ptr`` which enable to use a pointer on a **MRAM** variable or declare a ``extern`` **MRAM** variable.
+
+
+.. _dpu-mram-heap-pointer-explanation-label:
+
+The DPU MRAM Heap Pointer
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A special **MRAM** variable is defined in ``mram.h``: ``DPU_MRAM_HEAP_POINTER``.
+It defines the end of the memory range used by the **MRAM** variables.
+The range from ``DPU_MRAM_HEAP_POINTER`` to the end of the **MRAM** can be used freely by a DPU program,
+for example to handle dynamically-sized **MRAM** arrays.
+
+.. _implicit_mram:
+
+Software cache
+~~~~~~~~~~~~~~
+
+An **MRAM** variable can be accessed like any **WRAM** variable. When doing so, a pre-defined cache in **WRAM** is used
+to handle the **MRAM** transactions.
+
+This model is very convenient for developers who want to focus first on the algorithmic part of their implementation
+and then address the memory transactions. However, the cost of such a cache can be significant. Indeed, each access to
+an **MRAM** variable will imply an **MRAM** transfer, which is much slower than a WRAM access. Using `direct MRAM access <_mram>`_
+can provide better results.
+
+**Implicit write access of MRAM variables is not multi-tasklet safe for data types lower than 8 bytes** (e.g., char, int). Indeed, such an access is decomposed as three operations: 1) read 8 bytes in WRAM cache, 2) modify x bytes (x < 8), and 3) write 8 bytes back. When two tasklets are trying to write values within the same 8-byte location (such as two consecutive integers), a race condition may happen. 
+
+Example
+~~~~~~~
+
+These attributes can be used like so:
+
+.. literalinclude:: ../../../endtests/documentation/mram_variable_example/mram_variable_example.c
+  :language: c
+
+The code is built to be executed:
+
+.. literalinclude:: ../../../endtests/documentation/mram_variable_example/mram_variable_example.compile
+
+To validate that everything works, let's check the result in ``dpu-lldb``:
+
+.. literalinclude:: ../../../endtests/documentation/mram_variable_example/mram_variable_example.lldb_script
+
+The result of the print should be the data stored from the **WRAM** ``input`` array:
+
+.. literalinclude:: ../../../endtests/documentation/mram_variable_example/mram_variable_example.output_reference
+
+.. _mram:
+
+Direct access to the MRAM
+-------------------------
+
+The first collection of functions of the **Runtime Library** defined in `mram.h <202_RTL.html#mram-h>`_ allow to perform transactions between the **MRAM** and the **WRAM**.
+The source and destination buffers must comply with the strict rules defined by DPUs:
+
+  * The source or target address in **WRAM** must be aligned on 8 bytes.
+  * The source or target address in **MRAM** must be aligned on 8 bytes. Developers must carefully respect this rule since the **Runtime Library** does not perform any check regarding this point
+  * The size of the transfer must be a multiple of 8, at least equal to 8 and not greater than 2048.
+
+The **Runtime Library** defines two "low level" functions to perform a copy:
+
+  * From the **WRAM** to the **MRAM** (``mram_write(const void *from, __mram_ptr void *to, unsigned int nb_of_bytes)``)
+  * From the **MRAM** to the **WRAM** (``mram_read(const __mram_ptr void *from, void *to, unsigned int nb_of_bytes)``)
+
+**Notes**
+
+When possible, the compiler will try and check the different constraints, triggering an error if they are not respected.
+This is not always possible. For example, with no optimization (ie ``-O0``), no check is made. It is also the case when
+the size argument is not a compile-time constant.
+
+**Example**
+
+The next example illustrates the **WRAM**/**MRAM** transactions with a simple copy:
+
+ * A buffer (``input``) in **WRAM** is populated with well-known data (a byte count)
+ * The buffer is copied in an **MRAM** buffer, defined as an **MRAM** variable
+ * The program reads back the **MRAM** at this location into a new buffer (``output``)
+
+Notice that the **WRAM** buffers (``input`` and ``output``) are ``__dma_aligned``.
+It is mandatory to use ``__dma_aligned`` for WRAM buffers used in direct MRAM access.
+
+Next is the code achieving this task (in ``mram_example.c``):
+
+.. literalinclude:: ../../../endtests/documentation/mram_example/mram_example.c
+    :language: c
+
+The code is built to be executed by a single tasklet:
+
+.. literalinclude:: ../../../endtests/documentation/mram_example/mram_example.compile
+
+To validate that everything works, let's debug the program with ``dpu-lldb``:
+
+.. literalinclude:: ../../../endtests/documentation/mram_example/mram_example.lldb_script
+
+We can see that everything is at the expected values:
+
+.. literalinclude:: ../../../endtests/documentation/mram_example/mram_example.array_reference_output
+
+.. literalinclude:: ../../../endtests/documentation/mram_example/mram_example.memory_reference_output
+
+Notice that for lldb the **MRAM** starts at the address ``0x08000000``.
+
+.. _seqread:
+
+Sequential readers
+------------------
+
+The third collection of **Runtime Library** functions, defined in `seqread.h <202_RTL.html#seqread-h>`_ allow to simplify sequential reads of the **MRAM**.
+This abstraction uses a cache in **WRAM** to store temporary data from the **MRAM**, and a reader, to store where the next element should be read in **WRAM** and **MRAM**.
+Moreover, this abstraction implementation has been optimized and will provide better performance than a standard C check of the cache boundaries.
+
+A sequential reader is managed by three functions:
+
+  * ``seqread_alloc()`` to allocate the cache. The cache size is determined by the macro ``SEQREAD_CACHE_SIZE``, which is defined as ``256`` by default, but can be set to ``32``, ``64``, ``128``, ``256``, ``512`` or ``1024``.
+  * ``seqread_init(seqreader_buffer_t *cache, __mram_ptr void *mram_addr, seqreader_t *reader)`` to initialize the reader, using the specified cache, starting at the specified **MRAM** address, and returning the first value corresponding to the **MRAM** address.
+  * ``seqread_get(void *ptr, uint32_t inc, seqreader_t *reader)`` to get next value of the specified size for the specified reader.
+  * ``seqread_seek(__mram_ptr void *mram_addr, seqreader_t *reader)`` to jump to a **MRAM** address for the specified reader, and returning the first value corresponding to the **MRAM** address.
+  * ``seqread_tell(void *ptr, seqreader_t *reader)`` to get the current **MRAM** address corresponding to the specified pointer (which should be a pointer in the cache specified during the initialization of the reader).
+
+Notice that the sequential reader implementation is **not thread-safe**.
+
+**Example**
+
+The following example will illustrate a typical use of a sequential reader on a simple case. The goal is to compute the sum of some data placed in **MRAM** and to store the result at the start of the **MRAM**.
+The main task here is to read the data from the **MRAM**, the process of the data being trivial and the write-back consisting only of the result value.
+Thus the sequential reader can be really effective here. The **MRAM** structure is the following:
+
+  * The first 4 bytes in **MRAM** represent the buffer size ``N``
+  * The subsequent ``N`` bytes in **MRAM** contain the data for which the application requests a checksum computation
+
+Next is the code placed in the **DPU** (in ``seqreader_example.c``):
+
+.. literalinclude:: ../../../endtests/documentation/seqreader_example/seqreader_example.c
+  :language: c
+
+The code is built to be executed:
+
+.. literalinclude:: ../../../endtests/documentation/seqreader_example/seqreader_example.compile
+
+To validate that everything works, let's check the result in ``dpu-lldb``, using a sample **MRAM** (``sample.bin`` contains the **MRAM** image of 64KB of counting bytes):
+
+.. literalinclude:: ../../../endtests/documentation/seqreader_example/seqreader_example.lldb_script
+
+The result of the print should be the checksum of 64KB of counting bytes:
+
+.. literalinclude:: ../../../endtests/documentation/seqreader_example/seqreader_example.output_reference
+
+Below is the code to generate ``sample.bin`` (in ``sampleGenerator.c``):
+
+.. literalinclude:: ../../../endtests/documentation/seqreader_example/sampleGenerator.c
+   :language: c

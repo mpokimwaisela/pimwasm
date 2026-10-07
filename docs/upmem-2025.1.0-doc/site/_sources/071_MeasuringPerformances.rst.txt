@@ -1,0 +1,136 @@
+====================
+Performance Counters
+====================
+
+To measure runtime performance, multiple performance monitoring counters (PMCs) are available.
+
+There are on-core PMCs, which are configured via the DPU kernel program. These PMCs allow for the monitoring of clock cycles spent and instruction counts during execution. Additionally, there are off-core PMCs available for the host program, which can monitor bank interface activities related to MRAM. The bank interface is the layer that interconnect the DRAM with the DPU.
+
+On DPU v1A hardware, there is a single counter on the DPU and no bank interface counters.
+On DPU v1B hardware, there are two counters on the DPU and two bank interface counters.
+
+The following sections describe how to use these PMCs.
+
+DPU PMC
+=======
+
+The runtime environment provides functions to program the hardware performance counter defined by DPUs:
+
+  * ``perfcounter_config``: configures the performance counter to measure:
+
+    * ``COUNT_CYCLES``: count the elapsing clock cycles, to get an accurate execution time
+    * ``COUNT_INSTRUCTIONS``: count the elapsed instructions, to get an accurate workload estimation
+    * ``COUNT_SAME``: apply the same counter as the last one used
+    * ``COUNT_ENABLE_BOTH``: count both clock cycles and number of instructions executed (v1B only)
+    * ``COUNT_DISABLE_BOTH``: disable both counters (v1B only)
+  * ``perfcounter_get``: returns the current counter value
+  * ``perfcounter_get_both``: returns the values of both counters (v1B only)
+
+*The main difference between counting cycles and instructions is that cycles include the execution time of instructions AND the memory transfers.*
+
+Please note that when using the UPMEM simulator, the performance counter only provides a reliable number of instructions. One should not rely on the provided number of cycles.
+
+``perfcounter_config`` may reset the counter (if the second parameter is true) or keep the current counter value, in
+which case this initial value is returned by the function.
+
+In other words, one may reset the counter and count cycles or instructions when reaching another point of time::
+
+  (void) perfcounter_config(COUNT_CYCLES, true);
+    ...
+  perfcounter_t run_time = perfcounter_get();
+
+Or choose to checkpoint two parts of the code and compute the delta between the two::
+
+  perfcounter_t initial_time = perfcounter_config(COUNT_CYCLES, false);
+    ...
+  perfcounter_t duration = perfcounter_get() - initial_time;
+
+However, whatever your choice is, you have to carefully manage counter overflows, since the hardware counter
+is 36-bit wide. Also, remember that the counter precision is 16 cycles (or instructions).
+
+The DPU cycle count can be converted to time (seconds) using the variable ``CLOCKS_PER_SEC``.
+The variable is available on the DPU side, and can also be retrieved on the host side through a copy.
+
+Below is a simple code example where the host measures the execution time of a dummy DPU program running a loop.
+
+.. literalinclude:: ../../../endtests/documentation/frequency_example/frequency_example.c
+   :language: c
+
+.. tabs::
+    .. group-tab:: C
+
+       .. literalinclude:: ../../../endtests/documentation/frequency_example/frequency_example_host.c
+           :language: c
+
+    .. group-tab:: C++
+
+       .. literalinclude:: ../../../endtests/documentation/frequency_example/frequency_example_host.cpp
+           :language: c++
+
+    .. group-tab:: Java
+
+       .. literalinclude:: ../../../endtests/documentation/frequency_example/FrequencyExampleHost.java
+           :language: java
+
+    .. group-tab:: Python
+
+       .. literalinclude:: ../../../endtests/documentation/frequency_example/frequency_example_host.py
+           :language: python
+
+On DPU v1B hardware, it is possible to count both clock cycles and executed number of instructions at the same time.
+
+.. literalinclude:: ../../../endtests/documentation/ipc_cpi_example/ipc_cpi_example_dpu.c
+   :language: c
+
+
+BANK INTERFACE PMC (v1B only)
+=============================
+
+The host library provides several functions for manipulating bank interface performance monitoring counters, briefly outlined below. A code sample demonstrating their usage follows.
+
+All functions take the specific DPU, to which the function will apply, as the first parameter.
+
+To enable and configure these counters, the function ``dpu_bank_interface_pmc_enable`` is employed. The second parameter specifies the desired configuration.
+The counters can be configured to either count two 32-bit values or one 64-bit value. Calling this function resets the counters.
+
+The possible values for configuration are as follows:
+
+  * ``BANK_INTERFACE_PMC_LDMA_INSTRUCTION``: counts the bank ACTIVATE row commands issued by ``LDMA`` instructions by the DPU
+  * ``BANK_INTERFACE_PMC_SDMA_INSTRUCTION``: counts the bank ACTIVATE row commands issued by ``SDMA`` instructions by the DPU
+  * ``BANK_INTERFACE_PMC_READ_64BIT_INSTRUCTION``: counts the number of 64-bit values read by the DPU
+  * ``BANK_INTERFACE_PMC_WRITE_64BIT_INSTRUCTION``: counts the number of 64-bit values written by the DPU
+  * ``BANK_INTERFACE_PMC_HOST_ACTIVATE_COMMAND``: counts the number of ACTIVATE commands issued by the host
+  * ``BANK_INTERFACE_PMC_HOST_REFRESH_COMMAND``: counts the number of REFRESH commands issued by the host
+  * ``BANK_INTERFACE_PMC_ROW_HAMMER_REFRESH_COMMAND``: counts the RowHammer refresh protection commands issued by the bank interface
+  * ``BANK_INTERFACE_PMC_CYCLE``: counts clock cycles
+
+To stop the counters, use the function ``dpu_bank_interface_pmc_stop_counters``.
+
+Use the function ``dpu_bank_interface_pmc_read_counters`` to retrieve the counter values. The second parameter is a pointer where the result will be stored. The result is stored as an union of structs for easy access.
+
+To disable and deactivate the bank interface PMC module, use the function ``dpu_bank_interface_pmc_disable``. This helps avoid unnecessary energy consumption.
+
+Code example (host side)
+------------------------
+Below is a simple code example showing how to configure and enable bank interface PMCs.
+
+.. literalinclude:: ../../../endtests/host/dma_pmc/host.c
+   :language: c
+
+Code example (dpu side)
+-----------------------
+
+The next code fragment is a simple DPU kernel that performs read and write accesses from the DPU to its MRAM. The decompiled binary exhibits three ``LDMA`` instructions and two ``SDMA`` instructions.
+
+.. literalinclude:: ../../../endtests/host/dma_pmc/dpu.c
+   :language: c
+
+.. literalinclude:: ../../../endtests/host/dma_pmc/dpu_bin.objdump.txt
+   :start-at: 80000058 <main>:
+   :emphasize-lines: 6,10,11,13,19
+   :language: objdump
+
+When running this kernel with the above host program in 32-bit mode, the expected output is::
+
+  counter_1 = 0x1 => 2
+  counter_2 = 0x2 => 3
