@@ -17,7 +17,7 @@ Guest pointers refer to offsets in Wasm linear memory, not native host addresses
 
 ## 2. Compile it
 
-You need the UPMEM SDK, GCC, Python 3, `clang-15`, `wasm-ld-15`, and WABT
+You need the `UPMEM SDK`, `GCC`, `Python 3`, `clang-15`, `wasm-ld-15`, and `WABT`
 (`wasm2c`, `wat2wasm`, `wasm-validate`). The adapter expects WABT
 `1.0.36 (git~1.0.36-44-g46648b096)`. Use `make versions` to inspect installed tools.
 
