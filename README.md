@@ -75,14 +75,10 @@ The public API is [pimwasm.h](include/pimwasm.h); the runtime is in `src/dpu/`.
 See [runtime.md](docs/runtime.md) for supported features and resource limits.
 This is a bounded research runtime, not full Wasm compatibility or a validated
 security sandbox. Simulation is rejected. No automated test suite is included.
-## Third-party reference code
 
-The original PRIM benchmarks are a Git submodule at
-`third-party/prim-benchmarks/`. They are reference code; building PIMWASM
-examples does not require them. Git records their repository URL and pinned
-commit rather than copying their source into this repository.
+## Third-party
 
-To download them after cloning:
+PRIM benchmarks: `third-party/prim-benchmarks/` (Git submodule).
 
 ```sh
 git submodule update --init --recursive
